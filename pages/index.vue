@@ -3,8 +3,8 @@ import TopItems from "~/components/dashboard/topItems.vue";
 import DashboardBlock from "~/components/dashboard/dashboardBlock.vue";
 
 
-const { items } = useList();
-
+const { items, fetchItems } = useList();
+fetchItems()
 let count = ref(items.value.length ?? 0);
 
 </script>

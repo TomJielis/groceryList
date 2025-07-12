@@ -3,31 +3,48 @@ import {ref} from 'vue'
 export function useList() {
     const items = ref<any[]>(typeof localStorage !== 'undefined' ? JSON.parse(localStorage.getItem('items') || '[]') : [])
 
-    function addItem(item: string) {
+    async function fetchItems() {
+        try {
+            const response = await fetch('/api/listItem/');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch items: ${response.statusText}`);
+            }
+            items.value = await response.json();
+        } catch (error) {
+            console.error('Error fetching items:', error);
+        }
+    }
+
+    async function addItem(item: string) {
+        const { data, error } = await useFetch('/api/listItem/store', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            },
+            body: { name: item, quantity: 1 },
+        });
+
+
         items.value.push({name: item, quantity: 1})
-        localStorage.setItem('items', JSON.stringify(items.value))
     }
 
     function removeItem(item: string) {
 
         items.value = items.value.filter(i => i.name !== item)
-        localStorage.setItem('items', JSON.stringify(items.value))
     }
 
     function clearItems() {
         items.value = []
-        localStorage.setItem('items', JSON.stringify(items.value))
     }
 
     function clearItem(item: string){
         items.value = items.value.filter(i => i.name !== item)
-        localStorage.setItem('items', JSON.stringify(items.value))
     }
 
     function increaseItems(item: string) {
         const foundItem = items.value.find(i => i.name === item)
         foundItem.quantity += 1
-        localStorage.setItem('items', JSON.stringify(items.value))
     }
 
     function decreaseItems(item: string) {
@@ -38,11 +55,11 @@ export function useList() {
             return
         }
         foundItem.quantity -= 1
-        localStorage.setItem('items', JSON.stringify(items.value))
     }
 
     return {
         items,
+        fetchItems,
         addItem,
         removeItem,
         clearItems,
