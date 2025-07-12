@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import AddItemListForm from "~/components/list/AddItemListForm.vue";
-
 const {items, increaseItems, decreaseItems, clearItem} = useList();
-let showAddItem = ref(false);
 
+let showAddItem = ref(false);
 </script>
 <template>
   <div class="max-w-2xl mx-auto p-4">
@@ -26,7 +25,7 @@ let showAddItem = ref(false);
       </button>
     </div>
     <div v-else>
-      <AddItemListForm @item-added="showAddItem = false" />
+      <AddItemListForm @item-added="() => { showAddItem = false; items = useList().items.value; }" />
     </div>
   </div>
 </template>

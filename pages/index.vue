@@ -16,7 +16,7 @@ let count = ref(items.value.length ?? 0);
         Grocery Shopping List Dashboard
       </h1>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <dashboardBlock :title="'Items to buy'" :count="parseInt(count)" />
+        <dashboardBlock :title="'Items to buy'" :count="parseInt(count)" @click="$router.push('/list')" class="cursor-pointer"/>
         <dashboardBlock :title="'Categories'" :count="parseInt('3')" />
         <dashboardBlock :title="'Stores'" :count="parseInt('2')" />
       </div>
