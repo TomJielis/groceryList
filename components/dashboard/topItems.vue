@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const { items } = useList();
+const { items, fetchItems } = useList();
+await fetchItems()
 let topFive = ref(items.value.slice(0, 5));
 </script>
 <template>

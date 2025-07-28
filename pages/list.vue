@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import AddItemListForm from "~/components/list/AddItemListForm.vue";
-const {items, increaseItems, decreaseItems, clearItem} = useList();
-
+const {items, fetchItems,  increaseItems, decreaseItems, clearItem} = useList();
+await fetchItems()
 let showAddItem = ref(false);
 </script>
 <template>

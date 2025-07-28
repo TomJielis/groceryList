@@ -1,7 +1,7 @@
-import {ref} from 'vue'
+import {ref, toRaw} from 'vue'
 
 export function useList() {
-    const items = ref<any[]>(typeof localStorage !== 'undefined' ? JSON.parse(localStorage.getItem('items') || '[]') : [])
+    const items = ref<any[]>( [])
 
     async function fetchItems() {
         try {
@@ -9,7 +9,8 @@ export function useList() {
             if (!response.ok) {
                 throw new Error(`Failed to fetch items: ${response.statusText}`);
             }
-            items.value = await response.json();
+          let listItems  = (await response.json()).data;
+          items.value = toRaw(listItems);
         } catch (error) {
             console.error('Error fetching items:', error);
         }
@@ -61,8 +62,6 @@ export function useList() {
         items,
         fetchItems,
         addItem,
-        removeItem,
-        clearItems,
         clearItem,
         increaseItems,
         decreaseItems
