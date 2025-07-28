@@ -22,7 +22,7 @@ export function useList() {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
             },
-            body: { name: item, quantity: 1 },
+            body: { name: item, quantity: 1, csrf_token: localStorage.getItem('csrfToken') || '' },
         });
 
 
