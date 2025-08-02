@@ -1,26 +1,26 @@
 export default defineEventHandler(async (event) => {
     let body = await readBody(event);
-    const {name, email, password} = body;
+    const {email, password} = body;
 
     try {
-        const response = await fetch('http://grocerylistapi.test/api/register', {
+        const response = await fetch('http://grocerylistapi.test/api/login', {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify({ email, password }),
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to register user: ${response.statusText}`);
+            throw new Error(`Failed to login with user: ${response.statusText}`);
         }
 
-        const newUserData = await response.json();
-        // return {
-        //     success: true,
-        //     user: newUserData,
-        // };
+        const user = await response.json();
+        return {
+            success: true,
+            user: user.user,
+        };
     } catch (error) {
         console.error('Error during user registration:', error);
         return {

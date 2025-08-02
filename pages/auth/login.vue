@@ -1,13 +1,24 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import {useAuth} from "~/composables/useAuth";
+const { login } = useAuth();
 
-const email = ref('');
-const password = ref('');
+
+const userData = ref({
+  email: 'tomjielis@hotmail.com',
+  password: 'test1234'
+});
 
 function handleLogin() {
-  console.log('Email:', email.value);
-  console.log('Password:', password.value);
-  // Add login logic here
+  login(userData.value)
+    .then(() => {
+      // Redirect to home or dashboard after successful login
+      window.location.href = '/';
+    })
+    .catch((error) => {
+      console.error('Login failed:', error);
+      // Handle login error (e.g., show a notification)
+    });
 }
 </script>
 
@@ -21,7 +32,7 @@ function handleLogin() {
           <input
               type="email"
               id="email"
-              v-model="email"
+              v-model="userData.email"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Enter your email"
               required
@@ -32,7 +43,7 @@ function handleLogin() {
           <input
               type="password"
               id="password"
-              v-model="password"
+              v-model="userData.password"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Enter your password"
               required

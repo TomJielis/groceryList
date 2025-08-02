@@ -9,7 +9,4 @@
 
 import {useAuth} from "~/composables/useAuth.js";
 
-const {retrieveCsrfToken} = useAuth();
-retrieveCsrfToken();
-
 </script>

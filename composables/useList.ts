@@ -17,13 +17,12 @@ export function useList() {
     }
 
     async function addItem(item: string) {
-        const { data, error } = await useFetch('/api/listItem/store', {
+        const { data, error } = await $fetch('/api/listItem/store', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
             },
-            body: { name: item, quantity: 1, csrf_token: localStorage.getItem('csrfToken') || '' },
+            body: { name: item, quantity: 1, 'csrf':localStorage.getItem('csrfToken')  },
         });
 
 
