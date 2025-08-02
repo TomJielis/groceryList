@@ -6,7 +6,4 @@
 </template>
 
 <script>
-
-import {useAuth} from "~/composables/useAuth.js";
-
 </script>

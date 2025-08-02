@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+
+definePageMeta({
+  middleware: 'auth',
+});
+
 import AddItemListForm from "~/components/list/AddItemListForm.vue";
 const {items, fetchItems,  increaseItems, decreaseItems, clearItem} = useList();
 await fetchItems()
 let showAddItem = ref(false);
+
 </script>
 <template>
   <div class="max-w-2xl mx-auto p-4">

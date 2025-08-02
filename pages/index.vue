@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import TopItems from "~/components/dashboard/topItems.vue";
 import DashboardBlock from "~/components/dashboard/dashboardBlock.vue";
-
+definePageMeta({
+  middleware: 'auth',
+});
 const { items, fetchItems } = useList();
 await fetchItems()
 let count = ref(items.value.length ?? 0);
