@@ -19,10 +19,10 @@ let showAddItem = ref(false);
         <li class="flex items-center justify-between" v-for="item in items" :key="item">
           <span>{{ item.name }}</span>
           <div class="flex items-center space-x-2">
-            <button class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300" @click="decreaseItems(item.name)">-</button>
+            <button class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300" @click="decreaseItems(item)">-</button>
             <span class="font-bold">{{ item.quantity || 1 }}</span>
-            <button class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300" @click="increaseItems(item.name)">+</button>
-            <button class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300" @click="clearItem(item.name)">X</button>
+            <button class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300" @click="increaseItems(item)">+</button>
+            <button class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300" @click="clearItem(item)">X</button>
           </div>
         </li>
       </ul>

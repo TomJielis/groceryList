@@ -17,41 +17,40 @@ export function useList() {
     }
 
     async function addItem(item: string) {
-        const { data, error } = await $fetch('/api/listItem/store', {
+        // @ts-ignore
+        const { data } = await $fetch('/api/listItem/store', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: { name: item, quantity: 1, 'csrf':localStorage.getItem('csrfToken')  },
+            body: { name: item, quantity: 1  },
         });
 
 
-        items.value.push({name: item, quantity: 1})
+        items.value.push({id: data.id, name: data.name, quantity: 1})
     }
 
-    function removeItem(item: string) {
-
-        items.value = items.value.filter(i => i.name !== item)
+    function clearItem(item: object){
+        items.value = items.value.filter(i => i.name !== item.name)
+        let route = '/api/listItem/delete'
+        $fetch(route, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: {id: item.id}
+        });
     }
 
-    function clearItems() {
-        items.value = []
-    }
-
-    function clearItem(item: string){
-        items.value = items.value.filter(i => i.name !== item)
-    }
-
-    function increaseItems(item: string) {
-        const foundItem = items.value.find(i => i.name === item)
+    function increaseItems(item: object) {
+        const foundItem = items.value.find(i => i.id === item.id)
         foundItem.quantity += 1
     }
 
-    function decreaseItems(item: string) {
-        const foundItem = items.value.find(i => i.name === item)
-
-        if(foundItem.quantity <= 1){
-            removeItem(item)
+    function decreaseItems(item: object) {
+        const foundItem = items.value.find(i => i.id === item.id)
+        if(foundItem.quantity === 1){
+            clearItem(item)
             return
         }
         foundItem.quantity -= 1
