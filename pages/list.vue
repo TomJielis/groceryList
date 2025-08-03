@@ -6,9 +6,18 @@ definePageMeta({
 });
 
 import AddItemListForm from "~/components/list/AddItemListForm.vue";
-const {items, fetchItems,  increaseItems, decreaseItems, clearItem} = useList();
-await fetchItems()
 let showAddItem = ref(false);
+
+const list = useList();
+const { items, fetchItems, increaseItems, decreaseItems, clearItem } = list;
+await fetchItems();
+
+
+function handleItemAdded() {
+  showAddItem.value = false;
+  fetchItems();
+}
+
 
 </script>
 <template>
@@ -16,7 +25,7 @@ let showAddItem = ref(false);
     <h1 class="text-2xl font-bold mb-4">Grocery List</h1>
     <div v-if="!showAddItem">
       <ul class="list-disc pl-5 space-y-2">
-        <li class="flex items-center justify-between" v-for="item in items" :key="item">
+        <li class="flex items-center justify-between" v-for="item in items" :key="item.id">
           <span>{{ item.name }}</span>
           <div class="flex items-center space-x-2">
             <button class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300" @click="decreaseItems(item)">-</button>
@@ -31,7 +40,7 @@ let showAddItem = ref(false);
       </button>
     </div>
     <div v-else>
-      <AddItemListForm @item-added="() => { showAddItem = false; items = useList().items.value; }" />
+      <AddItemListForm @item-added="handleItemAdded();" />
     </div>
   </div>
 </template>

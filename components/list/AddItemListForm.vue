@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {ref, defineEmits} from "vue";
-const {items, addItem} = useList();
+const { addItem} = useList();
 const emit = defineEmits(['item-added']);
 
 let newItem = ref('');
 
-function addItemToList() {
+async function addItemToList() {
 
   if (newItem.value.trim() !== '') {
-    addItem(newItem.value.trim());
+    await addItem(newItem.value.trim());
     newItem.value = '';
     emit('item-added');
   }

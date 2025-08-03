@@ -1,7 +1,7 @@
 import {ref, toRaw} from 'vue'
 
 export function useList() {
-    const items = ref<any[]>( [])
+    let items = ref([]);
 
     async function fetchItems() {
         try {
@@ -9,8 +9,11 @@ export function useList() {
             if (!response.ok) {
                 throw new Error(`Failed to fetch items: ${response.statusText}`);
             }
-          let listItems  = (await response.json()).data;
-          items.value = toRaw(listItems);
+            let listItems = (await response.json()).data;
+            items.value = listItems.map(item => ({
+                ...item,
+                quantity: item.quantity || 1
+            }));
         } catch (error) {
             console.error('Error fetching items:', error);
         }
@@ -25,9 +28,7 @@ export function useList() {
             },
             body: { name: item, quantity: 1  },
         });
-
-
-        items.value.push({id: data.id, name: data.name, quantity: 1})
+        items.value = [...items.value, data];
     }
 
     function clearItem(item: object){
