@@ -45,6 +45,14 @@ export function useList() {
     function increaseItems(item: object) {
         const foundItem = items.value.find(i => i.id === item.id)
         foundItem.quantity += 1
+        let route = '/api/listItem/increase'
+        $fetch(route, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: {id: item.id}
+        });
     }
 
     function decreaseItems(item: object) {
@@ -54,6 +62,15 @@ export function useList() {
             return
         }
         foundItem.quantity -= 1
+
+        let route = '/api/listItem/decrease'
+        $fetch(route, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: {id: item.id}
+        });
     }
 
     return {
