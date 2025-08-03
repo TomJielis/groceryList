@@ -21,7 +21,7 @@ await fetchItems(listId);
 //Should be done by using a reactive variable
 function handleItemAdded() {
   showAddItem.value = false;
-  fetchItems();
+  fetchItems(listId);
 }
 
 
