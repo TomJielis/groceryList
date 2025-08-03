@@ -7,12 +7,13 @@ definePageMeta({
 
 import AddItemListForm from "~/components/list/AddItemListForm.vue";
 let showAddItem = ref(false);
-
 const list = useList();
 const { items, fetchItems, increaseItems, decreaseItems, clearItem } = list;
 await fetchItems();
 
 
+//TODO This must be fixed, That the items are not fetched again after adding an item
+//Should be done by using a reactive variable
 function handleItemAdded() {
   showAddItem.value = false;
   fetchItems();
