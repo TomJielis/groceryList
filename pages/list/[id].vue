@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+import {useRoute} from 'vue-router';
 
+
+const route = useRoute();
+const listId = route.params.id;
 definePageMeta({
   middleware: 'auth',
 });
@@ -10,7 +14,7 @@ import {useGroceryList} from "~/composables/useGroceryList";
 let showAddItem = ref(false);
 const list = useGroceryList();
 const { items, fetchItems, increaseItems, decreaseItems, clearItem } = list;
-await fetchItems();
+await fetchItems(listId);
 
 
 //TODO This must be fixed, That the items are not fetched again after adding an item

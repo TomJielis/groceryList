@@ -41,9 +41,15 @@ export function useGroceryList() {
 
 
 
-    async function fetchItems() {
+    async function fetchItems(listId : number | null = null) {
         try {
-            const response = await fetch('/api/groceryListItem/');
+            const response = await fetch('/api/groceryListItem/', {
+                method: 'POST',
+                body: JSON.stringify({ listId }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
             if (!response.ok) {
                 throw new Error(`Failed to fetch items: ${response.statusText}`);
             }
@@ -57,13 +63,14 @@ export function useGroceryList() {
         }
     }
 
-    async function addItem(item: string) {
+    async function addItem(item: string, listId: string) {
+        console.log(listId);
         const { data } = await $fetch('/api/groceryListItem/store', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: { name: item, quantity: 1  },
+            body: { name: item, quantity: 1, listId: listId },
         });
         items.value = [...items.value, data];
     }
