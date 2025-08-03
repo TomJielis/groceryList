@@ -1,4 +1,4 @@
-import {ref, toRaw} from 'vue'
+import {ref} from 'vue'
 
 export function useList() {
     let items = ref([]);
@@ -20,7 +20,6 @@ export function useList() {
     }
 
     async function addItem(item: string) {
-        // @ts-ignore
         const { data } = await $fetch('/api/listItem/store', {
             method: 'POST',
             headers: {
