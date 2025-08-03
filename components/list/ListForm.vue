@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import {ref, defineEmits} from "vue";
 import {useGroceryList} from "~/composables/useGroceryList";
-const { addItem} = useGroceryList();
-const emit = defineEmits(['item-added']);
+const emit = defineEmits(['list-added']);
+const { createList } = useGroceryList();
 
-let newItem = ref('');
+let newList = ref('');
 
-async function addItemToList() {
-
-  if (newItem.value.trim() !== '') {
-    await addItem(newItem.value.trim());
-    newItem.value = '';
-    emit('item-added');
-  }
+async function addList() {
+    createList(newList.value.trim());
+    newList.value = '';
+    emit('list-added');
 }
 </script>
 
@@ -20,15 +17,15 @@ async function addItemToList() {
   <div class="mt-4">
     <input
         type="text"
-        v-model="newItem"
+        v-model="newList"
         placeholder="Enter new item"
         class="border border-gray-300 rounded px-4 py-2 w-full mb-2"
     />
     <button
         class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        @click="addItemToList"
+        @click="addList"
     >
-      Add Item
+      Add List
     </button>
   </div>
 </template>

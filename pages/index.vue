@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import TopItems from "~/components/dashboard/topItems.vue";
 import DashboardBlock from "~/components/dashboard/dashboardBlock.vue";
+import {useGroceryList} from "~/composables/useGroceryList";
 definePageMeta({
   middleware: 'auth',
 });
-const { items, fetchItems } = useList();
+const { lists, items, fetchLists, fetchItems } = useGroceryList();
 await fetchItems()
+await fetchLists();
 let count = ref(items.value.length ?? 0);
+let countLists = ref(lists.value.length ?? 0)
 </script>
 
 <template>
@@ -17,7 +20,7 @@ let count = ref(items.value.length ?? 0);
       </h1>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <dashboardBlock :title="'Items to buy'" :count="count" @click="$router.push('/list')" class="cursor-pointer"/>
-        <dashboardBlock :title="'Categories'" :count="parseInt('3')" />
+        <dashboardBlock :title="'Lists'" @click="$router.push('/lists')" :count="parseInt(countLists)" />
         <dashboardBlock :title="'Stores'" :count="parseInt('2')" />
       </div>
       <topItems />

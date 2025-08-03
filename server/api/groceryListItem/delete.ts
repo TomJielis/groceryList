@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const {id} = body
     try {
-        const data = await $fetch('http://grocerylistapi.test/api/list-item/' + id + "/delete", {
+        const data = await $fetch('http://grocerylistapi.test/api/grocery-list-item/' + id + "/delete", {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

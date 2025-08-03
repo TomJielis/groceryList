@@ -1,11 +1,49 @@
 import {ref} from 'vue'
 
-export function useList() {
+export function useGroceryList() {
     let items = ref([]);
+    let lists = ref([]);
+
+
+    async function fetchLists() {
+        try {
+            const response = await fetch('/api/groceryList/');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch lists: ${response.statusText}`);
+            }
+            let listResult = (await response.json()).data;
+            lists.value = listResult.map(item => ({
+                ...item,
+            }));
+        } catch (error) {
+            console.error('Error fetching lists:', error);
+        }
+    }
+
+    async function createList(name: string) {
+        try {
+            const response = await fetch('/api/groceryList/store', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name }),
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to create list: ${response.statusText}`);
+            }
+            const data = await response.json();
+            lists.value.push(data);
+        } catch (error) {
+            console.error('Error creating list:', error);
+        }
+    }
+
+
 
     async function fetchItems() {
         try {
-            const response = await fetch('/api/listItem/');
+            const response = await fetch('/api/groceryListItem/');
             if (!response.ok) {
                 throw new Error(`Failed to fetch items: ${response.statusText}`);
             }
@@ -20,7 +58,7 @@ export function useList() {
     }
 
     async function addItem(item: string) {
-        const { data } = await $fetch('/api/listItem/store', {
+        const { data } = await $fetch('/api/groceryListItem/store', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,7 +70,7 @@ export function useList() {
 
     function clearItem(item: object){
         items.value = items.value.filter(i => i.name !== item.name)
-        let route = '/api/listItem/delete'
+        let route = '/api/groceryListItem/delete'
         $fetch(route, {
             method: 'DELETE',
             headers: {
@@ -45,7 +83,7 @@ export function useList() {
     function increaseItems(item: object) {
         const foundItem = items.value.find(i => i.id === item.id)
         foundItem.quantity += 1
-        let route = '/api/listItem/increase'
+        let route = '/api/groceryListItem/increase'
         $fetch(route, {
             method: 'POST',
             headers: {
@@ -63,7 +101,7 @@ export function useList() {
         }
         foundItem.quantity -= 1
 
-        let route = '/api/listItem/decrease'
+        let route = '/api/groceryListItem/decrease'
         $fetch(route, {
             method: 'POST',
             headers: {
@@ -75,6 +113,9 @@ export function useList() {
 
     return {
         items,
+        lists,
+        fetchLists,
+        createList,
         fetchItems,
         addItem,
         clearItem,

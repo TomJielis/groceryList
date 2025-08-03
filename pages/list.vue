@@ -6,8 +6,9 @@ definePageMeta({
 });
 
 import AddItemListForm from "~/components/list/AddItemListForm.vue";
+import {useGroceryList} from "~/composables/useGroceryList";
 let showAddItem = ref(false);
-const list = useList();
+const list = useGroceryList();
 const { items, fetchItems, increaseItems, decreaseItems, clearItem } = list;
 await fetchItems();
 

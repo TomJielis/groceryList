@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { items, fetchItems } = useList();
+import {useGroceryList} from "~/composables/useGroceryList";
+
+const { items, fetchItems } = useGroceryList();
 await fetchItems()
 console.log(items.value)
 let topFive = ref(items.value.sort((a, b) => b.quantity - a.quantity).slice(0, 5));
