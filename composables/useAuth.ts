@@ -26,7 +26,7 @@ export function useAuth() {
 
     async function login(userData: { email: string, password: string }) {
         try {
-            const registerResponse = await fetch('/api/user/login/', {
+            const loginResponse = await fetch('/api/user/login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,11 +34,11 @@ export function useAuth() {
                 body: JSON.stringify(userData),
             });
 
-            if (!registerResponse.ok) {
-                throw new Error(`Failed to register user: ${registerResponse.statusText}`);
+            if (!loginResponse.ok) {
+                throw new Error(`Failed to register user: ${loginResponse.statusText}`);
             }
 
-            const data = await registerResponse.json();
+            const data = await loginResponse.json();
             user = data; // Update user state with returned data
             localStorage.setItem('user', JSON.stringify(data.user));
             localStorage.setItem('csrfToken', data.csrfToken); // Store CSRF token
