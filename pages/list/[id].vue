@@ -69,12 +69,12 @@ function handleItemAdded() {
           class="w-full border border-gray-300 rounded px-4 py-2 hover:bg-gray-100"
           @click="showAddItem = true"
       >
-        ➕ Item toevoegen
+        ➕ Add item
       </button>
     </div>
 
     <div v-else>
-      <AddItemListForm @item-added="handleItemAdded" />
+      <AddItemListForm @item-added="handleItemAdded" @close="showAddItem = false" />
     </div>
   </div>
 </template>

@@ -40,6 +40,10 @@ async function addItemToList() {
     >
       Add Item
     </button>
+    <button
+        class="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 mt-2"
+        @click="$emit('close')"
+        >Go back</button>
   </div>
 </template>
 >

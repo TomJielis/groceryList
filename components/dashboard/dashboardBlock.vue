@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  defineProps<{ title: string, count: number   }>();
+  defineProps<{ title: string, count: number}>();
 </script>
 <template>
   <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
