@@ -5,10 +5,8 @@ import {useGroceryList} from "~/composables/useGroceryList";
 definePageMeta({
   middleware: 'auth',
 });
-const { lists, items, fetchLists, fetchItems } = useGroceryList();
+const { lists, fetchLists } = useGroceryList();
 await fetchLists();
-
-console.log();
 
 let totalUncheckedItems = ref(
     lists.value.reduce(

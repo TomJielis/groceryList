@@ -39,8 +39,6 @@ export function useAuth() {
             }
 
             const data = await registerResponse.json();
-            console.log('update user');
-            console.log(data);
             user = data; // Update user state with returned data
             localStorage.setItem('user', JSON.stringify(data.user));
             localStorage.setItem('csrfToken', data.csrfToken); // Store CSRF token
