@@ -66,10 +66,10 @@ function handleItemAdded() {
       </ul>
 
       <button
-          class="w-full border border-gray-300 rounded px-4 py-2 hover:bg-gray-100"
+          class="fixed bottom-6 right-6 bg-blue-500 text-white px-5 py-3 rounded-full shadow-lg hover:bg-blue-600 transition"
           @click="showAddItem = true"
       >
-        ➕ Add item
+        Create Item
       </button>
     </div>
 

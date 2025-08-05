@@ -64,7 +64,6 @@ export function useGroceryList() {
     }
 
     async function addItem(item: string, listId: string) {
-        console.log(listId);
         const { data } = await $fetch('/api/groceryListItem/store', {
             method: 'POST',
             headers: {

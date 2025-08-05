@@ -38,7 +38,7 @@ async function addItemToList() {
         class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         @click="addItemToList"
     >
-      Add Item
+      Create Item
     </button>
     <button
         class="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 mt-2"
