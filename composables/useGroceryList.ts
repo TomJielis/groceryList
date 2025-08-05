@@ -87,6 +87,17 @@ export function useGroceryList() {
         });
     }
 
+    function checked(item: object) {
+        let route = '/api/groceryListItem/checked'
+        $fetch(route, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: {id: item.id, checked:item.checked}
+        });
+    }
+
     function increaseItems(item: object) {
         const foundItem = items.value.find(i => i.id === item.id)
         foundItem.quantity += 1
@@ -125,6 +136,7 @@ export function useGroceryList() {
         createList,
         fetchItems,
         addItem,
+        checked,
         clearItem,
         increaseItems,
         decreaseItems
