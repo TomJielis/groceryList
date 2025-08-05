@@ -51,13 +51,13 @@ function handleLogin() {
         </div>
         <button
             type="submit"
-            class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
         >
           Login
         </button>
       </form>
       <p class="text-sm text-center text-gray-600 mt-4">
-        Don't have an account? <a href="/auth/register" class="text-indigo-600 hover:underline">Register</a>
+        Don't have an account? <a href="/auth/register" class="text-green-500 hover:underline">Register</a>
       </p>
     </div>
   </div>
