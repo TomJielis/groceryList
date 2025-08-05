@@ -1,42 +1,55 @@
 <script setup lang="ts">
-import {useGroceryList} from "~/composables/useGroceryList";
-const list = useGroceryList();
-const { lists, fetchLists } = list;
+import { ref } from 'vue'
+import { useGroceryList } from '~/composables/useGroceryList'
+import ListForm from '~/components/list/ListForm.vue'
 
-let openlistForm = ref(false);
-await fetchLists();
+const list = useGroceryList()
+const { lists, fetchLists } = list
+
+const openListForm = ref(false)
+
+await fetchLists()
 
 async function handleList() {
-  openlistForm.value = false;
-  await fetchLists();
+  openListForm.value = false
+  await fetchLists()
 }
-
-
-console.log(lists)
 </script>
 
 <template>
-  <div class="container mx-auto p-4" v-if="!openlistForm">
-    <h1 class="text-2xl font-bold mb-4">Grocery Lists</h1>
-    <nuxtLink class="inline-block mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" @click="openlistForm = true">
-      Create New List
-    </nuxtLink>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <ul class="list-disc pl-5 space-y-2">
-        <li class="flex items-center justify-between" v-for="list in lists" :key="list.id">
-          <span>{{ list.name }}</span>
-          <button
+  <div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">📋 Jouw Boodschappenlijsten</h1>
+
+    <div v-if="!openListForm">
+      <ul class="space-y-4">
+        <li
+            v-for="list in lists"
+            :key="list.id"
+            class="flex items-center justify-between border rounded p-4 hover:shadow"
+            @click="$router.push(`/list/${list.id}`)"
+        >
+          <span class="text-lg font-medium">{{ list.name }}</span>
+          <span
               class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-              @click="$router.push(`/list/${list.id}`)">
-            View
-          </button>
+              @click="$router.push(`/list/${list.id}`)"
+          >
+            {{ list.grocery_list_items_checked_count }} / {{ list.grocery_list_items_count }}
+          </span>
         </li>
       </ul>
+
+      <!-- Floating button -->
+      <button
+          class="fixed bottom-6 right-6 bg-blue-500 text-white px-5 py-3 rounded-full shadow-lg hover:bg-blue-600 transition"
+          @click="openListForm = true"
+      >
+        ➕ Nieuwe lijst aanmaken
+      </button>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+    <div v-else>
+      <ListForm @list-added="handleList" />
     </div>
-  </div>
-  <div class="container mx-auto p-4" v-else>
-    <ListForm @list-added="handleList();"/>
   </div>
 </template>
+

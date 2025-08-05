@@ -20,8 +20,8 @@ let countLists = ref(lists.value.length ?? 0)
       </h1>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <dashboardBlock :title="'Items to buy'" :count="count" @click="$router.push('/list')" class="cursor-pointer"/>
-        <dashboardBlock :title="'Lists'" @click="$router.push('/lists')" :count="parseInt(countLists)" />
-        <dashboardBlock :title="'Stores'" :count="parseInt('2')" />
+        <dashboardBlock :title="'Lists'" @click="$router.push('/lists')" :count="parseInt(countLists)" class="cursor-pointer" />
+        <dashboardBlock :title="'Stores'" :count="parseInt('2')" class="cursor-pointer"/>
       </div>
       <topItems />
     </div>
