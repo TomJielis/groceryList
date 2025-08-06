@@ -4,7 +4,6 @@ export function useGroceryList() {
     let items = ref([]);
     let lists = ref([]);
 
-
     async function fetchLists() {
         try {
             const response = await fetch('/api/groceryList/');
@@ -38,6 +37,23 @@ export function useGroceryList() {
             console.error('Error creating list:', error);
         }
     }
+
+  async function deleteList(id: number) {
+    try {
+      const response = await fetch('/api/groceryList/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to create list: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Error creating list:', error);
+    }
+  }
 
 
 
@@ -133,6 +149,7 @@ export function useGroceryList() {
         lists,
         fetchLists,
         createList,
+        deleteList,
         fetchItems,
         addItem,
         checked,
