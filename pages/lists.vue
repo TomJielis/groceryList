@@ -21,7 +21,6 @@ function toggleDropdown(id: number) {
 }
 
 function confirmDelete(id: number) {
-  console.log(id);
   if (confirm('Are you sure you want to delete this list?')) {
     deleteList(id).then(fetchLists)
   }

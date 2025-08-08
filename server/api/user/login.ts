@@ -11,15 +11,13 @@ export default defineEventHandler(async (event) => {
             },
             body: JSON.stringify({ email, password }),
         });
-
         if (!response.ok) {
             throw new Error(`Failed to login with user: ${response.statusText}`);
         }
-
         const user = await response.json();
         return {
             success: true,
-            user: user.user,
+            user: user.data,
         };
     } catch (error) {
         console.error('Error during user registration:', error);
