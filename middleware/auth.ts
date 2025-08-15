@@ -1,7 +1,8 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-    const { user, retrieveJwtToken } = useAuth();
+// jwt.value will be reactive
+  const { jwt,user } = useAuth();
   console.log('hier is the middleware');
-  console.log(retrieveJwtToken());
+  console.log(jwt.value);
     if (!user.value) {
         return navigateTo('/auth/login');
     }

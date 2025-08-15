@@ -1,6 +1,9 @@
+import {ref} from 'vue'
+
+let jwt = ref();
+let user = ref();
+
 export function useAuth() {
-  let jwt = ref(process.client ? localStorage.getItem('jwt') || null : null);
-  let user = ref(process.client ? localStorage.getItem('user') || null : null);
 
   async function register(userData: { name: string, email: string, password: string }) {
     try {
@@ -42,8 +45,10 @@ export function useAuth() {
       user.value = data.user; // Update user state with returned data
       console.log(data.user.access_token);
       jwt.value = data.user.access_token; // Update user state with returned data
-      localStorage.setItem('user', JSON.stringify(data.user.auth_user));
-      localStorage.setItem('jwt', data.user.access_token); // Store CSRF token
+
+      jwt.value = 'strong';
+      // localStorage.setItem('user', JSON.stringify(data.user.auth_user));
+      // localStorage.setItem('jwt', data.user.access_token); // Store CSRF token
     } catch (error) {
       console.error('Error registering user:', error);
     }
@@ -69,17 +74,10 @@ export function useAuth() {
     window.location.href = '/';
   }
 
-  function retrieveJwtToken() {
-    if (process.client) {
-      jwt.value = localStorage.getItem('jwt') || null;
-    }
-  }
-
 
   return {
     user,
     jwt,
-    retrieveJwtToken,
     login,
     logout,
     register,
