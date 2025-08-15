@@ -7,7 +7,9 @@ export default defineEventHandler(async (event) => {
         const data = await $fetch('http://grocerylistapi.test/api/grocery-list-item/' + id + "/increase", {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer 13|NagTVTDzm5QaqdQ4DWJkMHDhHX7gb48YYlqipOCqc034b991`, // Assuming token is stored in context
             },
         });
 
