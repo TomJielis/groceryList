@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'token')
 
     // console.log(`dit is mijn token ${authStore.token}`);
-    console.log(`dit is mijn cookie  ${token}`);
     const response = await fetch('http://grocerylistapi.test/api/grocery-list/index',
       {
         method: 'GET',

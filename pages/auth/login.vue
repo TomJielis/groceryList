@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {useAuth} from "~/composables/useAuth";
-const { login } = useAuth();
+import {useAuthStore} from "~/stores/auth";
+import { useRouter } from 'vue-router';
 
+const { login } = useAuth();
+const authStore = useAuthStore();
+const router = useRouter();
 
 const userData = ref({
   email: 'tomjielis@hotmail.com',
@@ -11,13 +15,13 @@ const userData = ref({
 
 function handleLogin() {
   login(userData.value)
-    .then(() => {
-      // Redirect to home or dashboard after successful login
-      window.location.href = '/';
+    .then((data) => {
+      authStore.setUser(data.user);
+
+      router.push('/');
     })
     .catch((error) => {
       console.error('Login failed:', error);
-      // Handle login error (e.g., show a notification)
     });
 }
 </script>

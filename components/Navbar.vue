@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {useAuth} from "~/composables/useAuth";
-const { user, logout } = useAuth();
-
+import {useAuthStore} from "~/stores/auth";
+const {  logout } = useAuth();
+const authStore = useAuthStore();
 function logoutUser() {
-  logout()
+  authStore.clearUser();
 }
 
 </script>
@@ -13,10 +14,10 @@ function logoutUser() {
     <div class="container mx-auto flex justify-between items-center">
       <h1 class="text-xl font-bold"><nuxtLink to="/">Grocery List</nuxtLink></h1>
       <ul class="flex space-x-4">
-        <nuxtLink to="/lists" class="hover:underline">Lists</nuxtLink>
-        <nuxtLink v-if="!user" to="/auth/login" class="hover:underline">Login</nuxtLink>
-        <nuxtLink v-if="!user" to="/auth/register" class="hover:underline">Register</nuxtLink>
-        <nuxtLink v-if="user" @click="logoutUser" class="hover:underline">Logout</nuxtLink>
+        <nuxtLink v-if="authStore.user" to="/list/lists" replace class="hover:underline">Lists</nuxtLink>
+        <nuxtLink v-if="!authStore.user" to="/auth/login" replace class="hover:underline">Login</nuxtLink>
+        <nuxtLink v-if="!authStore.user" to="/auth/register" replace class="hover:underline">Register</nuxtLink>
+        <nuxtLink v-if="authStore.user" @click="logoutUser" class="hover:underline">Logout</nuxtLink>
       </ul>
     </div>
   </nav>

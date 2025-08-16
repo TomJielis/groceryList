@@ -2,9 +2,20 @@
 import TopItems from "~/components/dashboard/topItems.vue";
 import DashboardBlock from "~/components/dashboard/dashboardBlock.vue";
 import {useGroceryList} from "~/composables/useGroceryList";
+import { useAuthStore} from "~/stores/auth";
+import { useRouter } from 'vue-router';
+
+const authStore = useAuthStore();
 definePageMeta({
   middleware: 'auth',
 });
+
+const router = useRouter();
+
+if(!authStore.user) {
+  router.push('/auth/login');
+}
+
 const { lists, fetchLists } = useGroceryList();
 await fetchLists();
 
@@ -25,8 +36,8 @@ let countLists = ref(lists.value.length ?? 0)
         Grocery Shopping List Dashboard
       </h1>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <dashboardBlock :title="'Items to buy'" :count="totalUncheckedItems" @click="$router.push('/lists')" class="cursor-pointer"/>
-        <dashboardBlock :title="'Lists'" @click="$router.push('/lists')" :count="parseInt(countLists)" class="cursor-pointer" />
+        <dashboardBlock :title="'Items to buy'" :count="totalUncheckedItems" @click="$router.push('/list/lists')" class="cursor-pointer"/>
+        <dashboardBlock :title="'Lists'" @click="$router.push('/list/lists')" :count="parseInt(countLists)" class="cursor-pointer" />
         <dashboardBlock :title="'Stores'" :count="parseInt('2')" class="cursor-pointer"/>
       </div>
       <topItems />

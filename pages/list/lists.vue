@@ -4,7 +4,7 @@ import { useGroceryList } from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
 
 const list = useGroceryList()
-const { lists, fetchLists, deleteList, shareListWithUser } = list // assuming these methods exist
+const { lists, fetchLists, deleteList } = list // assuming these methods exist
 
 const openListForm = ref(false)
 const openDropdown = ref<number | null>(null)

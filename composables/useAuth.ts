@@ -1,8 +1,7 @@
 import {useAuthStore} from "~/stores/auth";
+import { useRouter } from 'vue-router';
 
 export function useAuth() {
-    const csrfToken = computed(() => localStorage.getItem('csrfToken') || null);
-    let user = computed(() => localStorage.getItem('user') || null);
     const authStore = useAuthStore();
     async function register(userData: { name: string, email: string, password: string }) {
         try {
@@ -19,8 +18,7 @@ export function useAuth() {
             }
 
             const data = await registerResponse.json();
-            user = data.user; // Update user state with returned data
-            localStorage.setItem('user', JSON.stringify(data.user));
+            authStore.setUser(data.user); // Update user state with returned data
         } catch (error) {
             console.error('Error registering user:', error);
         }
@@ -40,7 +38,7 @@ export function useAuth() {
                 throw new Error(`Failed to register user: ${loginResponse.statusText}`);
             }
 
-           await loginResponse.json();
+           return await loginResponse.json();
         } catch (error) {
             console.error('Error registering user:', error);
         }
@@ -53,25 +51,22 @@ export function useAuth() {
             if (!response.ok) {
                 throw new Error(`Failed to fetch user: ${response.statusText}`);
             }
-            user = await response.json();
+            const data = await response.json()
+            authStore.setUser(data.user) ;
         } catch (error) {
             console.error('Error fetching user:', error);
         }
     }
 
     function logout(){
-        user = null;
-        localStorage.removeItem('user');
-        localStorage.removeItem('csrfToken');
+        authStore.clearUser();
 
-        authStore.clearAuth();
-        window.location.href = '/';
+        const router = useRouter();
+        router.push('/login');
     }
 
 
     return {
-        user,
-        csrfToken,
         login,
         logout,
         register,
