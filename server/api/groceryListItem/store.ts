@@ -1,6 +1,9 @@
 import {readBody} from 'h3'
+import { getCookie } from 'h3'
 
 export default defineEventHandler(async (event) => {
+    const token = getCookie(event, 'token')
+
     const body = await readBody(event)
     const {name, listId} = body
     try {
@@ -9,6 +12,8 @@ export default defineEventHandler(async (event) => {
             body: JSON.stringify({ name, quantity: 1, list_id: listId }),
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Assuming token is stored in context
+
             },
         });
         return data;

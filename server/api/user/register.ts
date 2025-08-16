@@ -16,11 +16,7 @@ export default defineEventHandler(async (event) => {
             throw new Error(`Failed to register user: ${response.statusText}`);
         }
 
-        const newUserData = await response.json();
-        // return {
-        //     success: true,
-        //     user: newUserData,
-        // };
+
     } catch (error) {
         console.error('Error during user registration:', error);
         return {

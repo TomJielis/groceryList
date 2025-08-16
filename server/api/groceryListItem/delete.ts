@@ -1,6 +1,9 @@
 import {readBody} from 'h3'
+import { getCookie } from 'h3'
 
 export default defineEventHandler(async (event) => {
+    const token = getCookie(event, 'token')
+
     const body = await readBody(event)
     const {id} = body
     try {
@@ -8,7 +11,7 @@ export default defineEventHandler(async (event) => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                // 'X-CSRF-TOKEN': csrf, // Ensure CSRF token is included
+                'Authorization': `Bearer ${token}`, // Assuming token is stored in context
             },
         });
 

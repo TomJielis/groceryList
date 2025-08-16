@@ -1,4 +1,7 @@
+import { getCookie } from 'h3'
+
 export default defineEventHandler(async (event) => {
+    const token = getCookie(event, 'token')
 
     let body = await readBody(event);
     const {listId} = body;
@@ -8,6 +11,8 @@ export default defineEventHandler(async (event) => {
         body: JSON.stringify({ listId }),
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Assuming token is stored in context
+
         },
     });
 

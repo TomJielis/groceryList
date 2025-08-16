@@ -1,8 +1,10 @@
 import { useAuthStore } from "~/stores/auth";
+import { setCookie } from 'h3'
+
 export default defineEventHandler(async (event) => {
+    // const authStore = useAuthStore();
     let body = await readBody(event);
     const {email, password} = body;
-    const authStore = useAuthStore();
     try {
         const response = await fetch('http://grocerylistapi.test/api/login', {
             method: 'POST',
@@ -18,9 +20,13 @@ export default defineEventHandler(async (event) => {
         }
 
         const user = await response.json();
-        console.log(user);
-        authStore.setUser(user.user);
-        authStore.setToken(user.access_token);
+
+        setCookie(event, 'token', user.access_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+        })
+
         return {
             success: true,
             user: user.user,
