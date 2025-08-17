@@ -26,6 +26,7 @@ function handleLogin() {
 }
 </script>
 
+
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
@@ -67,3 +68,9 @@ function handleLogin() {
     </div>
   </div>
 </template>
+
+<style scoped>
+body {
+  font-family: 'Inter', sans-serif;
+}
+</style>
