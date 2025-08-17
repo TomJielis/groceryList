@@ -32,6 +32,8 @@ function handleItemAdded() {
   showAddItem.value = false
   fetchItems(listId) // FIXME: Should be reactive in composable ideally
 }
+
+const sortedItems = computed(() => items.value.slice().sort((a: any, b: any) => a.checked - b.checked))
 </script>
 
 <template>
@@ -41,7 +43,7 @@ function handleItemAdded() {
     <div v-if="!showAddItem">
       <ul class="space-y-3 mb-20">
         <li
-            v-for="item in items"
+            v-for="item in sortedItems"
             :key="item.id"
             class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 active:shadow-md transition"
         >
