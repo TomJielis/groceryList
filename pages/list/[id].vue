@@ -52,7 +52,7 @@ const sortedItems = computed(() => items.value.slice().sort((a: any, b: any) => 
                 type="checkbox"
                 class="h-6 w-6 text-green-600 rounded"
                 :checked="item.checked"
-                @change="checked({ ...item, checked: $event.target.checked })"
+                @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
             />
             <span
                 class="ml-3 text-base font-medium truncate"
