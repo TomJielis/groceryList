@@ -44,19 +44,6 @@ export function useAuth() {
         }
     }
 
-    async function fetchUser() {
-        try {
-            const response = await fetch('/api/user/');
-            if (!response.ok) {
-                throw new Error(`Failed to fetch user: ${response.statusText}`);
-            }
-            const data = await response.json()
-            authStore.setUser(data.user) ;
-        } catch (error) {
-            console.error('Error fetching user:', error);
-        }
-    }
-
     return {
         login,
         register,
