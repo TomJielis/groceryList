@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {useAuth} from "~/composables/useAuth";
-const { register } = useAuth();
+import {useRouter} from "vue-router";
 
+const { register } = useAuth();
+const router = useRouter();
 const userData = ref({
   name: 'Tom',
   email: 'tomjielis@hotmail.com',
@@ -11,6 +13,8 @@ const userData = ref({
 
 function handleRegister() {
   register(userData.value);
+  router.push('/auth/login');
+
 }
 </script>
 
