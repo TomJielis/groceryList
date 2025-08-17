@@ -12,21 +12,19 @@ async function addList() {
     emit('list-added');
 }
 </script>
-
 <template>
-  <div class="mt-4">
+  <div class="mt-6 max-w-md mx-auto px-4">
     <input
         type="text"
         v-model="newList"
-        placeholder="Enter new item"
-        class="border border-gray-300 rounded px-4 py-2 w-full mb-2"
+        placeholder="Enter new list"
+        class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base"
     />
     <button
-        class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        class="w-full py-3 rounded-xl bg-blue-500 text-white font-semibold text-base shadow-md hover:bg-blue-600 active:scale-[0.98] transition"
         @click="addList"
     >
-      Create List
+      ➕ Create List
     </button>
   </div>
 </template>
->

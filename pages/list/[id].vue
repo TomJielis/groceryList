@@ -35,41 +35,62 @@ function handleItemAdded() {
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto p-4">
+  <div class="max-w-lg mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">🛒 Grocery list</h1>
 
     <div v-if="!showAddItem">
-      <ul class="space-y-3 mb-4">
+      <ul class="space-y-3 mb-20">
         <li
             v-for="item in items"
             :key="item.id"
-            class="flex items-center justify-between border-b pb-2"
+            class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 active:shadow-md transition"
         >
-          <input type="checkbox" class="form-checkbox h-5 w-5 text-green-600" :checked="item.checked" @change="checked({ ...item, checked: $event.target.checked })" />
-          <span class="font-medium flex-1 ml-2 ml-7">{{ item.name }}</span>
+          <!-- Left: checkbox + name -->
+          <div class="flex items-center flex-1">
+            <input
+                type="checkbox"
+                class="h-6 w-6 text-green-600 rounded"
+                :checked="item.checked"
+                @change="checked({ ...item, checked: $event.target.checked })"
+            />
+            <span
+                class="ml-3 text-base font-medium truncate"
+                :class="{ 'line-through text-gray-400': item.checked }"
+            >
+              {{ item.name }}
+            </span>
+          </div>
+
+          <!-- Right: controls -->
           <div class="flex items-center space-x-2">
             <button
-                class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                class="w-9 h-9 flex items-center justify-center bg-gray-200 rounded-full text-lg font-bold hover:bg-gray-300"
                 @click="decreaseItems(item)"
-            >-</button>
-            <span class="font-bold">{{ item.quantity || 1 }}</span>
+            >−</button>
+
+            <span class="text-base font-semibold min-w-[24px] text-center">
+              {{ item.quantity || 1 }}
+            </span>
+
             <button
-                class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                class="w-9 h-9 flex items-center justify-center bg-gray-200 rounded-full text-lg font-bold hover:bg-gray-300"
                 @click="increaseItems(item)"
             >+</button>
+
             <button
-                class="px-2 py-1 bg-red-400 text-white rounded hover:bg-red-500"
+                class="w-9 h-9 flex items-center justify-center bg-red-500 text-white rounded-full text-lg font-bold hover:bg-red-600"
                 @click="clearItem(item)"
-            >X</button>
+            >✕</button>
           </div>
         </li>
       </ul>
 
+      <!-- Floating Action Button -->
       <button
-          class="fixed bottom-6 right-6 bg-blue-500 text-white px-5 py-3 rounded-full shadow-lg hover:bg-blue-600 transition"
+          class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
           @click="showAddItem = true"
       >
-        Create Item
+        ➕
       </button>
     </div>
 

@@ -20,30 +20,30 @@ async function addItemToList() {
   }
 }
 </script>
-
 <template>
-  <div class="mt-4">
+  <div class="mt-6 max-w-md mx-auto px-4">
     <input
         type="text"
         v-model="newItem"
         placeholder="Enter new item"
-        class="border border-gray-300 rounded px-4 py-2 w-full mb-2"
+        class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base"
     />
     <input
         type="number"
         v-model.number="listId"
-        class="border border-gray-300 rounded px-4 py-2 w-full mb-2 hidden"
-        />
+        class="hidden"
+    />
     <button
-        class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        class="w-full py-3 rounded-xl bg-blue-500 text-white font-semibold text-base shadow-md hover:bg-blue-600 active:scale-[0.98] transition"
         @click="addItemToList"
     >
-      Create Item
+      ➕ Create Item
     </button>
     <button
-        class="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 mt-2"
+        class="w-full py-3 rounded-xl bg-gray-200 text-gray-800 font-medium text-base mt-3 hover:bg-gray-300 active:scale-[0.98] transition"
         @click="$emit('close')"
-        >Go back</button>
+    >
+      ← Go back
+    </button>
   </div>
 </template>
->

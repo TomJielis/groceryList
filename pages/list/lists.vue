@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useGroceryList } from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+
 
 const list = useGroceryList()
 const { lists, fetchLists,shareList, deleteList } = list // assuming these methods exist
@@ -20,6 +21,25 @@ function toggleDropdown(id: number) {
   openDropdown.value = openDropdown.value === id ? null : id
 }
 
+// Close dropdown if click happens outside
+function handleClickOutside(event: MouseEvent) {
+  const dropdowns = document.querySelectorAll('.dropdown-menu')
+  let clickedInside = false
+  dropdowns.forEach((dropdown) => {
+    if (dropdown.contains(event.target as Node)) clickedInside = true
+  })
+  if (!clickedInside) openDropdown.value = null
+}
+
+watch(openDropdown, (val) => {
+  if (val !== null) {
+    document.addEventListener('click', handleClickOutside)
+  } else {
+    document.removeEventListener('click', handleClickOutside)
+  }
+})
+
+
 function confirmDelete(id: number) {
   console.log(id);
   if (confirm('Are you sure you want to delete this list?')) {
@@ -36,53 +56,54 @@ function shareListWithUser(id: number) {
 }
 </script>
 
-<<template>
-  <div class="max-w-4xl mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-6">📋 Your grocery lists</h1>
+
+<template>
+  <div class="max-w-md mx-auto p-4">
+    <h1 class="text-xl font-bold mb-4">📋 Your grocery lists</h1>
 
     <div v-if="!openListForm">
-      <ul class="space-y-4">
+      <ul class="space-y-3">
         <li
-          v-for="listItem in lists"
-          :key="listItem.id"
-          class="group relative flex items-center justify-between border rounded p-4 hover:shadow transition"
+            v-for="listItem in lists"
+            :key="listItem.id"
+            class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 active:shadow-md transition relative"
         >
           <!-- Left: List name -->
           <div class="flex-1 cursor-pointer" @click="$router.push(`/list/${listItem.id}`)">
-            <span class="text-lg font-medium">{{ listItem.name }}</span>
+            <span class="text-base font-medium truncate">{{ listItem.name }}</span>
           </div>
 
           <!-- Middle: Count badge -->
           <div
-            class="ml-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 cursor-pointer"
-            @click="$router.push(`/list/${listItem.id}`)"
+              class="ml-3 text-xs font-medium bg-green-100 text-green-700 px-3 py-1 rounded-full"
+              @click="$router.push(`/list/${listItem.id}`)"
           >
-            {{ listItem.grocery_list_items_checked_count }} / {{ listItem.grocery_list_items_count }}
+            {{ listItem.grocery_list_items_checked_count }}/{{ listItem.grocery_list_items_count }}
           </div>
 
           <!-- Right: Dropdown trigger -->
-          <div class="relative ml-4">
+          <div class="relative ml-2">
             <button
-              class="text-gray-500 hover:text-black px-2 focus:outline-none"
-              @click.stop="toggleDropdown(listItem.id)"
+                class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-600 active:bg-gray-200"
+                @click.stop="toggleDropdown(listItem.id)"
             >
               ⋮
             </button>
 
             <!-- Dropdown -->
             <div
-              v-if="openDropdown === listItem.id"
-              class="absolute right-0 top-8 z-10 w-40 bg-white border rounded shadow-lg"
+                v-if="openDropdown === listItem.id"
+                class="dropdown-menu absolute right-0 top-12 z-20 w-40 bg-white border rounded-xl shadow-lg"
             >
               <button
-                class="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                @click.stop="shareListWithUser(listItem.id)"
+                  class="block w-full text-left px-4 py-3 hover:bg-gray-100"
+                  @click.stop="shareListWithUser(listItem.id)"
               >
                 👥 Share
               </button>
               <button
-                class="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-100"
-                @click.stop="confirmDelete(listItem.id)"
+                  class="block w-full text-left px-4 py-3 text-red-600 hover:bg-red-100"
+                  @click.stop="confirmDelete(listItem.id)"
               >
                 🗑️ Delete
               </button>
@@ -91,12 +112,13 @@ function shareListWithUser(id: number) {
         </li>
       </ul>
 
-      <!-- Floating button -->
+      <!-- Floating Action Button -->
       <button
-        class="fixed bottom-6 right-6 bg-blue-500 text-white px-5 py-3 rounded-full shadow-lg hover:bg-blue-600 transition"
-        @click="openListForm = true"
+          class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
+          style="padding-bottom: env(safe-area-inset-bottom)"
+          @click="openListForm = true"
       >
-        ➕ Create new list
+        ➕
       </button>
     </div>
 
