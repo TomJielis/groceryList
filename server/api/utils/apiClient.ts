@@ -1,5 +1,3 @@
-import { getCookie } from 'h3'
-
 type TApiClientOptions<T> = {
     method?: string;
     headers?: Record<string, string>;

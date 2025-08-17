@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
         const response = await apiClient('/register', {
             method: 'POST',
             body: { name, email, password },
-        })
+        },undefined)
     } catch (error) {
         console.error('Error during user registration:', error);
         return {
