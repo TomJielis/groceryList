@@ -1,5 +1,6 @@
 import { getCookie } from 'h3'
 import {apiClient} from "~/server/api/utils/apiClient";
+import {TGroceryListItem} from "~/types/TGroceryListItem";
 
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'token')
@@ -14,5 +15,5 @@ export default defineEventHandler(async (event) => {
         }, token);
 
 
-    return response;
+    return response as unknown as TGroceryListItem[];
 });

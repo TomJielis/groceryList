@@ -1,14 +1,8 @@
 import { useAuthStore } from "~/stores/auth";
 import { setCookie } from 'h3'
 import { apiClient } from '~/server/api/utils/apiClient'
-type TUser = {
-    id:number,
-    email: string,
-    password: any,
-    name: any,
-    created_at: string,
-    updated_at: string,
-}
+import type { TUser } from '~/types/TUser'
+
 type LoginResponse<T> = {
     user: TUser;
     access_token: string;

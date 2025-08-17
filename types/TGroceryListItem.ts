@@ -1,10 +1,10 @@
 // ~/types/user.ts
-export type TGroceryList = {
+export type TGroceryListItem = {
     id: number;
     name: string;
-    created_by: number;
+    quantity: number;
+    list_id: number;
+    checked: number;
     created_at: string;
     updated_at: string;
-    grocery_list_items_count: number;
-    grocery_list_items_checked_count: number;
 }

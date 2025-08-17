@@ -2,8 +2,9 @@
 import { useGroceryList } from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { useAuthStore} from "~/stores/auth";
 
-
+const auth = useAuthStore()
 const list = useGroceryList()
 const { lists, fetchLists,shareList, deleteList } = list // assuming these methods exist
 
@@ -81,9 +82,11 @@ function shareListWithUser(id: number) {
             <button
                 class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-600 active:bg-gray-200"
                 @click.stop="toggleDropdown(listItem.id)"
+                :class="{ invisible: listItem.created_by !== auth.user.id }"
             >
               ⋮
             </button>
+
             <div
                 v-if="openDropdown === listItem.id"
                 class="dropdown-menu absolute right-0 top-12 z-20 w-40 bg-white border rounded-xl shadow-lg"
