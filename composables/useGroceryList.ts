@@ -38,6 +38,21 @@ export function useGroceryList() {
         }
     }
 
+    async function shareList(listId: number, email: string) {
+        // Placeholder for share functionality
+        console.log(`Sharing list with ID: ${listId}`);
+
+        let route = '/api/groceryList/share'
+        $fetch(route, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: {id: listId, email: email}
+        });
+
+    }
+
   async function deleteList(id: number) {
     try {
       const response = await fetch('/api/groceryList/delete', {
@@ -149,6 +164,7 @@ export function useGroceryList() {
         lists,
         fetchLists,
         createList,
+        shareList,
         deleteList,
         fetchItems,
         addItem,

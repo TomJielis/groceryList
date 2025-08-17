@@ -29,7 +29,7 @@ export const apiClient = async <T = any>(
         body: options.body ? JSON.stringify(options.body) : undefined,
     });
 
-    console.log(response);
+    console.log(response.statusText, response.status, response.url);
 
     if (!response.ok) {
         throw new Error(`API call failed: ${response.statusText}`);

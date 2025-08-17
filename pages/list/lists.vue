@@ -4,7 +4,7 @@ import { useGroceryList } from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
 
 const list = useGroceryList()
-const { lists, fetchLists, deleteList } = list // assuming these methods exist
+const { lists, fetchLists,shareList, deleteList } = list // assuming these methods exist
 
 const openListForm = ref(false)
 const openDropdown = ref<number | null>(null)
@@ -27,11 +27,11 @@ function confirmDelete(id: number) {
   }
 }
 
-function shareList(id: number) {
+function shareListWithUser(id: number) {
   // You might want to show a modal here
   const email = prompt('Enter email to share the list with:')
   if (email) {
-    shareListWithUser(id, email).then(() => alert('List shared!'))
+    shareList(id, 'cynthia@gmail.com').then(() => alert('List shared!'))
   }
 }
 </script>
@@ -76,7 +76,7 @@ function shareList(id: number) {
             >
               <button
                 class="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                @click.stop="shareList(listItem.id)"
+                @click.stop="shareListWithUser(listItem.id)"
               >
                 👥 Share
               </button>
