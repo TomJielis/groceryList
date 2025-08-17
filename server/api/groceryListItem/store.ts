@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
         const response = await apiClient('/grocery-list-item/store',
             {
                 method: 'POST',
-                body: JSON.stringify({ name:name, quantity: 1, list_id: listId }),
+                body: { name:name, quantity: 1, list_id: listId },
             }, token);
         return response;
     } catch (error) {

@@ -28,7 +28,7 @@ export const apiClient = async <T = any>(
             'Authorization': token ? `Bearer ${token}` : '',
             ...(options.headers || {}),
         },
-        body: options.body ? options.body : undefined,
+        body: options.body ? JSON.stringify(options.body) : undefined,
     });
 
     console.log(response);

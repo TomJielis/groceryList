@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
         const response = await apiClient('/grocery-list/store',
             {
                 method: 'POST',
-                body: JSON.stringify({ name }),
+                body: { name:name },
             }, token);
 
         return response;
