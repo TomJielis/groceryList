@@ -44,7 +44,6 @@ export function useAuth() {
         }
     }
 
-
     async function fetchUser() {
         try {
             const response = await fetch('/api/user/');
@@ -58,17 +57,8 @@ export function useAuth() {
         }
     }
 
-    function logout(){
-        authStore.clearUser();
-
-        const router = useRouter();
-        return router.push('/auth/login');
-    }
-
-
     return {
         login,
-        logout,
         register,
     }
 }
