@@ -68,20 +68,15 @@ function shareListWithUser(id: number) {
             :key="listItem.id"
             class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 active:shadow-md transition relative"
         >
-          <!-- Left: List name -->
           <div class="flex-1 cursor-pointer" @click="$router.push(`/list/${listItem.id}`)">
             <span class="text-base font-medium truncate">{{ listItem.name }}</span>
           </div>
-
-          <!-- Middle: Count badge -->
           <div
               class="ml-3 text-xs font-medium bg-green-100 text-green-700 px-3 py-1 rounded-full"
               @click="$router.push(`/list/${listItem.id}`)"
           >
             {{ listItem.grocery_list_items_checked_count }}/{{ listItem.grocery_list_items_count }}
           </div>
-
-          <!-- Right: Dropdown trigger -->
           <div class="relative ml-2">
             <button
                 class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-600 active:bg-gray-200"
@@ -89,8 +84,6 @@ function shareListWithUser(id: number) {
             >
               ⋮
             </button>
-
-            <!-- Dropdown -->
             <div
                 v-if="openDropdown === listItem.id"
                 class="dropdown-menu absolute right-0 top-12 z-20 w-40 bg-white border rounded-xl shadow-lg"
@@ -111,8 +104,6 @@ function shareListWithUser(id: number) {
           </div>
         </li>
       </ul>
-
-      <!-- Floating Action Button -->
       <button
           class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
           style="padding-bottom: env(safe-area-inset-bottom)"

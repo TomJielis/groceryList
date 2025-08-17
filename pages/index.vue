@@ -44,9 +44,3 @@ let countLists = ref(lists.value.length ?? 0)
     </div>
   </div>
 </template>
-
-<!-- Tailwind CSS should be included in your project for the above classes to work.
-If not already set up, add the following to your main entry file (e.g., main.ts or main.js):
-
-import 'tailwindcss/tailwind.css'
--->

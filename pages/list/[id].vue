@@ -45,7 +45,6 @@ function handleItemAdded() {
             :key="item.id"
             class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 active:shadow-md transition"
         >
-          <!-- Left: checkbox + name -->
           <div class="flex items-center flex-1">
             <input
                 type="checkbox"
@@ -60,8 +59,6 @@ function handleItemAdded() {
               {{ item.name }}
             </span>
           </div>
-
-          <!-- Right: controls -->
           <div class="flex items-center space-x-2">
             <button
                 class="w-9 h-9 flex items-center justify-center bg-gray-200 rounded-full text-lg font-bold hover:bg-gray-300"
@@ -84,8 +81,6 @@ function handleItemAdded() {
           </div>
         </li>
       </ul>
-
-      <!-- Floating Action Button -->
       <button
           class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
           @click="showAddItem = true"
