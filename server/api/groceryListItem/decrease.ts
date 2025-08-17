@@ -1,5 +1,6 @@
 import {readBody} from 'h3'
 import { getCookie } from 'h3'
+import {apiClient} from "~/server/api/utils/apiClient";
 
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'token')
@@ -7,15 +8,12 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const {id} = body
     try {
-        const data = await $fetch('http://grocerylistapi.test/api/grocery-list-item/' + id + "/decrease", {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Assuming token is stored in context
-            },
-        });
+        const response = await apiClient('/grocery-list-item/' + id + '/decrease',
+            {
+                method: 'POST',
+            }, token);
 
-        return data;
+        return response;
     } catch (error) {
         throw new Error(`Failed to fetch data: ${error}`);
     }

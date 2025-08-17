@@ -62,7 +62,7 @@ export function useAuth() {
         authStore.clearUser();
 
         const router = useRouter();
-        router.push('/login');
+        return router.push('/auth/login');
     }
 
 

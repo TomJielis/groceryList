@@ -1,27 +1,17 @@
 import { useAuthStore } from "~/stores/auth";
 import { setCookie } from 'h3'
+import { apiClient } from '~/server/api/utils/apiClient'
 
 export default defineEventHandler(async (event) => {
-    // const authStore = useAuthStore();
     let body = await readBody(event);
     const {email, password} = body;
     try {
-        const response = await fetch('http://grocerylistapi.test/api/login', {
+        const response = await apiClient('/login', {
             method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
+            body: { email, password },
+        })
 
-        if (!response.ok) {
-            throw new Error(`Failed to login with user: ${response.statusText}`);
-        }
-
-        const user = await response.json();
-
-        setCookie(event, 'token', user.access_token, {
+        setCookie(event, 'token', response.access_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             path: '/',
@@ -29,8 +19,8 @@ export default defineEventHandler(async (event) => {
 
         return {
             success: true,
-            user: user.user,
-            token: user.access_token,
+            user: response.user,
+            token: response.access_token,
         };
     } catch (error) {
         console.error('Error during user registration:', error);

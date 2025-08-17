@@ -1,9 +1,11 @@
 import { useAuthStore } from '~/stores/auth'
-export default defineNuxtRouteMiddleware((to, from) => {
+import { useRouter} from "vue-router";
 
+export default defineNuxtRouteMiddleware((to, from) => {
+    const router = useRouter();
     const authStore = useAuthStore();
     const user = authStore.user;
     if (!user) {
-        return navigateTo('/auth/login');
+        return router.push('/auth/login')
     }
 });

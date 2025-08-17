@@ -1,10 +1,8 @@
 import { getCookie } from 'h3'
 
 export default defineEventHandler(async (event) => {
-    // const authStore = useAuthStore();
     const token = getCookie(event, 'token')
 
-    // console.log(`dit is mijn token ${authStore.token}`);
     const response = await fetch('http://grocerylistapi.test/api/grocery-list/index',
       {
         method: 'GET',
