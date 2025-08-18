@@ -35,7 +35,7 @@ let countLists = ref(lists.value.length ?? 0)
       <h1 class="text-3xl font-bold text-green-700 mb-6 text-center">
         Grocery Shopping List Dashboard
       </h1>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <dashboardBlock :title="'Items to buy'" :count="totalUncheckedItems" @click="$router.push('/list/lists')" class="cursor-pointer"/>
         <dashboardBlock :title="'Lists'" @click="$router.push('/list/lists')" :count="parseInt(countLists)" class="cursor-pointer" />
       </div>
