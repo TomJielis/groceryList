@@ -2,8 +2,9 @@ import { getCookie } from 'h3'
 import {TGroceryList} from '~/types/TGroceryList'
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'token')
-
-    const response  = await fetch('http://grocerylistapi.test/api/grocery-list/index',
+  const config = useRuntimeConfig();
+  const baseUrl = config.api.url + config.api.basePath;
+    const response  = await fetch(baseUrl + '/grocery-list/index',
       {
         method: 'GET',
         headers: {

@@ -1,4 +1,3 @@
-import { useAuthStore } from "~/stores/auth";
 import { setCookie } from 'h3'
 import { apiClient } from '~/server/api/utils/apiClient'
 import type { TUser } from '~/types/TUser'
