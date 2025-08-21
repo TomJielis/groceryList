@@ -19,11 +19,11 @@ export default defineEventHandler(async (event) => {
         console.log('coockie token ' + response.access_token);
         setCookie(event, 'token', response.access_token, {
             httpOnly: true,
-            secure: false, // Use true only if HTTPS is enabled
+            secure: false, // Set to true only if HTTPS is enabled
             path: '/',
-            sameSite: 'none', // Allows cookies for same-site requests and top-level navigation
-            domain: 'localhost', // Set the domain to match the frontend
-        })
+            sameSite: 'lax', // Use 'lax' for development on localhost
+        });
+
         event.res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
         event.res.setHeader('Access-Control-Allow-Credentials', 'true')
 
