@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
         setCookie(event, 'token', response.access_token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: false,
             path: '/',
         })
 
