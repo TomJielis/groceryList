@@ -17,8 +17,10 @@ export default defineEventHandler(async (event) => {
 
         setCookie(event, 'token', response.access_token, {
             httpOnly: true,
-            secure: false,
+            secure: false, // Use true only if HTTPS is enabled
             path: '/',
+            sameSite: 'lax', // Allows cookies for same-site requests and top-level navigation
+            domain: 'localhost', // Set the domain to match the frontend
         })
 
         return {
