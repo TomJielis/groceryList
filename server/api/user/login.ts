@@ -15,6 +15,8 @@ export default defineEventHandler(async (event) => {
             body: { email, password },
         }, undefined);
 
+        console.log('new coockie');
+        console.log('coockie token ' + response.access_token);
         setCookie(event, 'token', response.access_token, {
             httpOnly: true,
             secure: false, // Use true only if HTTPS is enabled
