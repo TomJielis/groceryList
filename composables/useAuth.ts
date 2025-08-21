@@ -30,6 +30,7 @@ export function useAuth() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'withCredentials': 'true', // Ensure cookies are sent with the request
                 },
                 body: JSON.stringify(userData),
             });
