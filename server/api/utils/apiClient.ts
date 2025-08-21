@@ -17,7 +17,7 @@ export const apiClient = async <T = any>(
 ): Promise<TApiResponse<T>> => {
     const config = useRuntimeConfig();
     const baseUrl = config.api.url + config.api.basePath;
-    console.log(token);
+    console.log('token: ' + token);
     const response = await fetch(baseUrl + endpoint, {
         ...options,
         headers: {
