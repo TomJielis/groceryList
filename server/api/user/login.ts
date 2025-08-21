@@ -21,9 +21,11 @@ export default defineEventHandler(async (event) => {
             httpOnly: true,
             secure: false, // Use true only if HTTPS is enabled
             path: '/',
-            sameSite: 'lax', // Allows cookies for same-site requests and top-level navigation
+            sameSite: 'none', // Allows cookies for same-site requests and top-level navigation
             domain: 'localhost', // Set the domain to match the frontend
         })
+        event.res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+        event.res.setHeader('Access-Control-Allow-Credentials', 'true')
 
         return {
             success: true,
