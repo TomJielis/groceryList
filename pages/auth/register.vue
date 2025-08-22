@@ -6,9 +6,9 @@ import {useRouter} from "vue-router";
 const { register } = useAuth();
 const router = useRouter();
 const userData = ref({
-  name: 'Tom',
-  email: 'tomjielis@hotmail.com',
-  password: 'test1234'
+  name: '',
+  email: '',
+  password: ''
 });
 
 function handleRegister() {
