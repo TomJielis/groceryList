@@ -42,7 +42,6 @@ watch(openDropdown, (val) => {
 
 
 function confirmDelete(id: number) {
-  console.log(id);
   if (confirm('Are you sure you want to delete this list?')) {
     deleteList(id).then(fetchLists)
   }
@@ -52,7 +51,7 @@ function shareListWithUser(id: number) {
   // You might want to show a modal here
   const email = prompt('Enter email to share the list with:')
   if (email) {
-    shareList(id, 'cynthia@gmail.com').then(() => alert('List shared!'))
+    shareList(id, email).then(() => alert('List shared!'))
   }
 }
 </script>
