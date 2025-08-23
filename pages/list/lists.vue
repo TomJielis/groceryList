@@ -59,7 +59,7 @@ function shareListWithUser(id: number) {
 
 <template>
   <div class="max-w-sm p-4">
-    <h1 class="text-xl font-bold mb-4">📋 Your grocery lists</h1>
+    <h1 class="text-xl font-bold mb-4 text-center">📋 Your grocery lists</h1>
 
     <div v-if="!openListForm">
       <ul class="space-y-3">
