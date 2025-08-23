@@ -9,8 +9,8 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const userData = ref({
-  email: '',
-  password: ''
+  email: 'tomjielis@hotmail.com',
+  password: 'test1234'
 });
 
 function handleLogin() {
