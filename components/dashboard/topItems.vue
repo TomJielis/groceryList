@@ -3,7 +3,7 @@ import {useGroceryList} from "~/composables/useGroceryList";
 
 const { items, fetchItems } = useGroceryList();
 await fetchItems()
-let topFive = ref(items.value.sort((a, b) => b.quantity - a.quantity).slice(0, 5));
+let topFive = ref(items.value.filter(item => !item.checked).sort((a, b) => b.quantity - a.quantity).slice(0, 5));
 </script>
 <template>
   <div class="bg-white rounded-lg shadow p-6">
