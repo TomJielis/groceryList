@@ -33,7 +33,9 @@ const filteredSuggestions = computed(() => {
   const suggestions = suggestionStore.combinedSuggestions.filter(item =>
       item.name.toLowerCase().includes(newItem.value.toLowerCase())
   );
-  return newItem.value ? [{ name: newItem.value }, ...suggestions] : suggestions;
+  const isDuplicate = suggestions.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
+  console.log(isDuplicate);
+  return newItem.value && !isDuplicate ? [{ name: newItem.value }, ...suggestions] : suggestions;
 });
 
 </script>
