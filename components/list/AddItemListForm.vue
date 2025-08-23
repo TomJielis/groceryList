@@ -18,7 +18,6 @@ const listId = route.params.id as string;
 
 const newItem = ref('');
 
-const suggestions = ref(suggestionsData); // Assuming suggestionsData is imported from a JSON file
 
 async function addItemToList(itemName: string) {
   const name = itemName.trim();
@@ -30,11 +29,12 @@ async function addItemToList(itemName: string) {
   emit('item-added');
 }
 
-const filteredSuggestions = computed(() =>
-    suggestionStore.combinedSuggestions.filter(item =>
-        item.name.toLowerCase().includes(newItem.value.toLowerCase())
-    )
-)
+const filteredSuggestions = computed(() => {
+  const suggestions = suggestionStore.combinedSuggestions.filter(item =>
+      item.name.toLowerCase().includes(newItem.value.toLowerCase())
+  );
+  return newItem.value ? [{ name: newItem.value }, ...suggestions] : suggestions;
+});
 
 </script>
 <template>
