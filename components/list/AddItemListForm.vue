@@ -34,7 +34,7 @@ const filteredSuggestions = computed(() => {
       item.name.toLowerCase().includes(newItem.value.toLowerCase())
   );
   const isDuplicate = suggestions.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
-  return newItem.value && !isDuplicate ? [{ name: newItem.value }, ...suggestions] : suggestions;
+  return newItem.value && !isDuplicate ? [{ name: newItem.value, checked:false }, ...suggestions] : suggestions;
 });
 
 </script>
@@ -56,7 +56,7 @@ const filteredSuggestions = computed(() => {
           >
             <div class="flex items-center space-x-2">
               <button @click="addItemToList(item.name)" class="text-lg sm:text-xl md:text-2xl">
-                ➕
+                {{ item.checked ?  '✔️' : '➕' }}
               </button>
               <span class="text-sm sm:text-base md:text-lg">{{ item.name }}</span>
             </div>

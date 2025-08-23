@@ -34,7 +34,7 @@ export const useSuggestionStore = defineStore('suggestions', {
 
                 const res = items.value;
                 this.userSuggestions = Array.isArray(res)
-                    ? res.map((item: any) => ({ name: item.name }))
+                    ? res.filter((item: any) => item.checked).map((item: any) => ({ name: item.name, checked: false }))
                     : []
                 // this.userSuggestions = (Array.isArray(res.data) ? res.data : []).map((item: any) => ({name: item.name}));
             } catch (error) {
