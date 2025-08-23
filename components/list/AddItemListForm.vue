@@ -30,12 +30,6 @@ async function addItemToList(itemName: string) {
   emit('item-added');
 }
 
-// const filteredSuggestions = computed(() =>
-//     suggestions.value.filter(i =>
-//         i.name.toLowerCase().includes(newItem.value.toLowerCase())
-//     )
-// );
-
 const filteredSuggestions = computed(() =>
     suggestionStore.combinedSuggestions.filter(item =>
         item.name.toLowerCase().includes(newItem.value.toLowerCase())

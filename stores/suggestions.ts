@@ -2,7 +2,7 @@
 import {defineStore} from 'pinia'
 import grocerySuggestions from '~/data/suggestions.json';
 import {useGroceryList} from "~/composables/useGroceryList";
-const { fetchItems } = useGroceryList();
+const { items, fetchItems } = useGroceryList();
 
 export const useSuggestionStore = defineStore('suggestions', {
     state: () => ({
@@ -26,13 +26,17 @@ export const useSuggestionStore = defineStore('suggestions', {
 
     actions: {
         async fetchSuggestions() {
+            await fetchItems();
             this.loading = true
             try {
                 this.defaultSuggestions = grocerySuggestions
 
-                // const res = await fetchItems()
-                // this.userSuggestions = (res.items || []).map((item: any) => ({ name: item.name }));
-                this.userSuggestions = ([]).map((item: any) => ({ name: item.name }));
+
+                const res = items.value;
+                this.userSuggestions = Array.isArray(res)
+                    ? res.map((item: any) => ({ name: item.name }))
+                    : []
+                // this.userSuggestions = (Array.isArray(res.data) ? res.data : []).map((item: any) => ({name: item.name}));
             } catch (error) {
                 console.error('Fout bij ophalen suggesties:', error)
             } finally {
