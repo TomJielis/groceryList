@@ -1,4 +1,14 @@
 export default defineNuxtConfig({
+  app: {
+    head: {
+      link: [
+        {
+          rel: 'manifest',
+          href: '/manifest.json'
+        } as any
+      ]
+    }
+  },
   css: ['@/assets/css/tailwind.css'],
   postcss: {
     plugins: {
