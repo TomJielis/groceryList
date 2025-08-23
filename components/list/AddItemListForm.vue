@@ -34,7 +34,6 @@ const filteredSuggestions = computed(() => {
       item.name.toLowerCase().includes(newItem.value.toLowerCase())
   );
   const isDuplicate = suggestions.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
-  console.log(isDuplicate);
   return newItem.value && !isDuplicate ? [{ name: newItem.value }, ...suggestions] : suggestions;
 });
 
