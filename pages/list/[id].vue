@@ -36,8 +36,6 @@ function handleItemAdded() {
 
 const uncheckedItems = computed(() => items.value.filter((item: any) => !item.checked))
 const checkedItems = computed(() => items.value.filter((item: any) => item.checked))
-
-
 </script>
 
 <template>

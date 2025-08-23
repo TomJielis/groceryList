@@ -28,7 +28,7 @@ function handleLogin() {
 
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <div class="flex items-center justify-center bg-gray-50 px-4 h-[90vh]">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
       <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-gray-900">🛒 Login</h2>
       <form @submit.prevent="handleLogin" class="space-y-5">
