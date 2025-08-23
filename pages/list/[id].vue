@@ -54,7 +54,7 @@ const checkedItems = computed(() => items.value.filter((item: any) => item.check
           <div class="flex items-center flex-1">
             <input
                 type="checkbox"
-                class="h-6 w-6 text-green-600 rounded"
+                class="h-6 w-6 text-green-600 rounded flex-shrink-0"
                 :checked="item.checked"
                 @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
             />
@@ -105,7 +105,7 @@ const checkedItems = computed(() => items.value.filter((item: any) => item.check
             <div class="flex items-center flex-1">
               <input
                   type="checkbox"
-                  class="h-6 w-6 text-green-600 rounded"
+                  class="h-6 w-6 text-green-600 rounded flex-shrink-0"
                   :checked="item.checked"
                   @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
               />
