@@ -59,8 +59,9 @@ function shareListWithUser(id: number) {
 
 
 <template>
-  <div class="max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-    <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-4">📋 Your grocery lists</h1>
+  <div class="max-w-sm p-4">
+    <h1 class="text-xl font-bold mb-4">📋 Your grocery lists</h1>
+
     <div v-if="!openListForm">
       <ul class="space-y-3">
         <li
