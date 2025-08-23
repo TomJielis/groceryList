@@ -2,10 +2,17 @@
 import {ref, computed} from 'vue';
 import {useRoute} from 'vue-router';
 import {useGroceryList} from '~/composables/useGroceryList';
+import { useSuggestionStore } from '~/stores/suggestions'
+
 import suggestionsData from '~/data/suggestions.json';
 const {addItem} = useGroceryList();
 const emit = defineEmits(['item-added', 'close']);
 
+const suggestionStore = useSuggestionStore()
+
+onMounted(() => {
+  suggestionStore.fetchSuggestions()
+})
 const route = useRoute();
 const listId = route.params.id as string;
 
@@ -23,11 +30,18 @@ async function addItemToList(itemName: string) {
   emit('item-added');
 }
 
+// const filteredSuggestions = computed(() =>
+//     suggestions.value.filter(i =>
+//         i.name.toLowerCase().includes(newItem.value.toLowerCase())
+//     )
+// );
+
 const filteredSuggestions = computed(() =>
-    suggestions.value.filter(i =>
-        i.name.toLowerCase().includes(newItem.value.toLowerCase())
+    suggestionStore.combinedSuggestions.filter(item =>
+        item.name.toLowerCase().includes(newItem.value.toLowerCase())
     )
-);
+)
+
 </script>
 <template>
   <div class="min-h-screen">
