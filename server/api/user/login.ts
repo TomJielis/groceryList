@@ -20,6 +20,7 @@ export default defineEventHandler(async (event) => {
             secure: false, // Set to true only if HTTPS is enabled
             path: '/',
             sameSite: 'lax', // Use 'lax' for development on localhost
+            maxAge: 60 * 60 * 24 * 28, // 4 weeks
         });
 
         event.res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
