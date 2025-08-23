@@ -37,8 +37,8 @@ const sortedItems = computed(() => items.value.slice().sort((a: any, b: any) => 
 </script>
 
 <template>
-  <div class="max-w-lg mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">🛒 Grocery list</h1>
+  <div class="max-w-sm p-4">
+    <h1 class="text-2xl font-bold mb-4 text-center">🛒 Grocery list</h1>
 
     <div v-if="!showAddItem">
       <ul class="space-y-3 mb-20">
@@ -54,30 +54,25 @@ const sortedItems = computed(() => items.value.slice().sort((a: any, b: any) => 
                 :checked="item.checked"
                 @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
             />
-            <span
-                class="ml-3 text-base font-medium truncate"
-                :class="{ 'line-through text-gray-400': item.checked }"
-            >
-              {{ item.name }}
-            </span>
+            <span class="text-base font-medium break-words whitespace-normal ml-2">{{ item.name }}</span>
           </div>
           <div class="flex items-center space-x-2">
             <button
-                class="w-9 h-9 flex items-center justify-center bg-gray-200 rounded-full text-lg font-bold hover:bg-gray-300"
+                class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
                 @click="decreaseItems(item)"
             >−</button>
 
-            <span class="text-base font-semibold min-w-[24px] text-center">
-              {{ item.quantity || 1 }}
-            </span>
+            <span class="text-sm sm:text-base font-semibold min-w-[20px] sm:min-w-[24px] text-center">
+    {{ item.quantity || 1 }}
+  </span>
 
             <button
-                class="w-9 h-9 flex items-center justify-center bg-gray-200 rounded-full text-lg font-bold hover:bg-gray-300"
+                class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
                 @click="increaseItems(item)"
             >+</button>
 
             <button
-                class="w-9 h-9 flex items-center justify-center bg-red-500 text-white rounded-full text-lg font-bold hover:bg-red-600"
+                class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-red-500 text-white rounded-full text-base sm:text-lg font-bold hover:bg-red-600"
                 @click="clearItem(item)"
             >✕</button>
           </div>

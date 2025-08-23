@@ -59,7 +59,7 @@ function shareListWithUser(id: number) {
 
 
 <template>
-  <div class="max-w-md mx-auto p-4">
+  <div class="max-w-sm p-4">
     <h1 class="text-xl font-bold mb-4">📋 Your grocery lists</h1>
 
     <div v-if="!openListForm">
@@ -70,7 +70,7 @@ function shareListWithUser(id: number) {
             class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 active:shadow-md transition relative"
         >
           <div class="flex-1 cursor-pointer" @click="$router.push(`/list/${listItem.id}`)">
-            <span class="text-base font-medium truncate">{{ listItem.name }}</span>
+            <span class="text-base font-medium break-words whitespace-normal">{{ listItem.name }}</span>
           </div>
           <div
               class="ml-3 text-xs font-medium bg-green-100 text-green-700 px-3 py-1 rounded-full"
