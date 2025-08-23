@@ -92,7 +92,7 @@ const checkedItems = computed(() => items.value.filter((item: any) => item.check
             class="text-center text-gray-700 mt-4 cursor-pointer hover:underline"
             @click="showCheckedItems = !showCheckedItems"
         >
-          {{ showCheckedItems ? 'Hide' : 'Show' }} checked items
+          {{ showCheckedItems ? 'Hide' : 'Show' }} checked items ({{ checkedItems.length }})
         </p>
         <ul v-if="showCheckedItems" class="space-y-3 mt-4">
           <li
@@ -138,7 +138,7 @@ const checkedItems = computed(() => items.value.filter((item: any) => item.check
               </button>
             </div>
           </li>
-s      </ul>
+       </ul>
       </ul>
       <button
           class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
