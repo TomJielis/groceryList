@@ -57,7 +57,7 @@ fetchItems(listId)
           >
             <div class="flex items-center space-x-2">
               <button @click="addItemToList(item.name)" :class="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? 'text-green-500' : 'text-black'">
-                {{ items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? '✔️' : '➕' }}
+                {{ items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? '✔️' : '➕' }}
               </button>
               <span class="text-sm sm:text-base md:text-lg">{{ item.name }}</span>
 
