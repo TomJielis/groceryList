@@ -87,7 +87,6 @@ function makefavorite(id: number) {
             <button
                 class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-600 active:bg-gray-200"
                 @click.stop="toggleDropdown(listItem.id)"
-                :class="{ invisible: listItem.created_by !== auth.user.id }"
             >
               ⋮
             </button>
@@ -103,12 +102,14 @@ function makefavorite(id: number) {
                 ⭐ Favorite
               </button>
               <button
+                  v-if="listItem.created_by == auth.user.id"
                   class="block w-full text-left px-4 py-3 hover:bg-gray-100"
                   @click.stop="shareListWithUser(listItem.id)"
               >
                 👥 Share
               </button>
               <button
+                  v-if="listItem.created_by == auth.user.id"
                   class="block w-full text-left px-4 py-3 text-red-600 hover:bg-red-100"
                   @click.stop="confirmDelete(listItem.id)"
               >
