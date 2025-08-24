@@ -63,8 +63,6 @@ function makefavorite(id: number| null) {
 
 function setFavoriteList(id: number) {
   let listId = auth?.user?.favorite_list_id == id ? null : id;
-  console.log(listId);
-
   makefavorite(listId)
   const data = auth.user;
   if(data){

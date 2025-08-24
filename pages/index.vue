@@ -27,7 +27,6 @@ let totalUncheckedItems = ref(
     )
 );
 let countLists = ref(lists.value.length ?? 0)
-console.log(lists);
 const favoriteListId = authStore.user?.favorite_list_id;
 const favoriteListUrl = favoriteListId ? `/list/${favoriteListId}` : '/list/lists';
 const favoriteList = lists.value.filter(

@@ -40,8 +40,6 @@ export function useGroceryList() {
 
     async function shareList(listId: number, email: string) {
         // Placeholder for share functionality
-        console.log(`Sharing list with ID: ${listId}`);
-
         let route = '/api/groceryList/share'
         $fetch(route, {
             method: 'POST',

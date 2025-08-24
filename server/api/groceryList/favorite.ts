@@ -14,8 +14,6 @@ export default defineEventHandler(async (event) => {
                 body: { listId:id },
             }, token);
 
-        console.log(response);
-
         return response;
     } catch (error) {
         throw new Error(`Failed to fetch data: ${error}`);

@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const {id, email} = body
     try {
-        console.log(id, email)
         const response = await apiClient('/grocery-list/share',
             {
                 method: 'POST',
