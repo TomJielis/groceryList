@@ -97,7 +97,7 @@ const checkedItems = computed(() => items.value.filter((item: any) => item.check
           {{ showCheckedItems ? 'Hide' : 'Show' }} checked items ({{ checkedItems.length }})
         </p>
         <ul v-if="showCheckedItems" class="space-y-3 mt-4">
-          <transition-group name="fade" tag="ul" class="space-y-3 mt-4">
+          <transition-group name="fade" tag="ul" class="space-y-3 mb-20">
             <li
                 v-for="item in checkedItems"
                 :key="item.id"
