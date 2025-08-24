@@ -5,7 +5,7 @@ import {useGroceryList} from '~/composables/useGroceryList';
 import { useSuggestionStore } from '~/stores/suggestions'
 
 import suggestionsData from '~/data/suggestions.json';
-const {addItem} = useGroceryList();
+const {addItem, items, fetchItems} = useGroceryList();
 const emit = defineEmits(['item-added', 'close']);
 
 const suggestionStore = useSuggestionStore()
@@ -14,7 +14,7 @@ onMounted(() => {
   suggestionStore.fetchSuggestions()
 })
 const route = useRoute();
-const listId = route.params.id as string;
+const listId = route.params.id as number;
 
 const newItem = ref('');
 
@@ -37,6 +37,7 @@ const filteredSuggestions = computed(() => {
   return newItem.value && !isDuplicate ? [{ name: newItem.value, checked:false }, ...suggestions] : suggestions;
 });
 
+fetchItems(listId)
 </script>
 <template>
   <div class="min-h-screen">
@@ -55,10 +56,11 @@ const filteredSuggestions = computed(() => {
               class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 sm:p-4 md:p-5"
           >
             <div class="flex items-center space-x-2">
-              <button @click="addItemToList(item.name)" class="text-lg sm:text-xl md:text-2xl">
-                {{ item.checked ?  '✔️' : '➕' }}
+              <button @click="addItemToList(item.name)" :class="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? 'text-green-500' : 'text-black'">
+                {{ items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? '✔️' : '➕' }}
               </button>
               <span class="text-sm sm:text-base md:text-lg">{{ item.name }}</span>
+
             </div>
           </li>
         </ul>
