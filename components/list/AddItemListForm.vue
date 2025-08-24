@@ -40,7 +40,7 @@ const filteredSuggestions = computed(() => {
 </script>
 <template>
   <div class="min-h-screen">
-    <div class="flex-auto overflow-y-auto p-4">
+    <div class="flex-auto overflow-y-auto p-4 pb-20">
       <div class="items-center flex-col">
         <input
             type="text"
