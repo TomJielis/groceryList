@@ -13,7 +13,7 @@ function logoutUser() {
 </script>
 
 <template>
-  <nav class="bg-green-500 text-white p-4">
+  <nav class="bg-green-500 text-white p-1">
     <div class="container mx-auto flex justify-between items-center">
       <h1 class="text-xl font-bold"><nuxtLink to="/">Grocery List</nuxtLink></h1>
       <ul class="flex space-x-4">
