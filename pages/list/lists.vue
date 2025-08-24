@@ -6,7 +6,7 @@ import { useAuthStore} from "~/stores/auth";
 
 const auth = useAuthStore()
 const list = useGroceryList()
-const { lists, fetchLists,shareList, deleteList } = list // assuming these methods exist
+const { lists, fetchLists,favorite, shareList, deleteList } = list // assuming these methods exist
 
 const openListForm = ref(false)
 const openDropdown = ref<number | null>(null)
@@ -54,6 +54,12 @@ function shareListWithUser(id: number) {
     shareList(id, email).then(() => alert('List shared!'))
   }
 }
+
+function makefavorite(id: number) {
+
+  favorite(id);
+  alert(`List ${id} favorited!`)
+}
 </script>
 
 
@@ -90,6 +96,12 @@ function shareListWithUser(id: number) {
                 v-if="openDropdown === listItem.id"
                 class="dropdown-menu absolute right-0 top-12 z-20 w-40 bg-white border rounded-xl shadow-lg"
             >
+              <button
+                  class="block w-full text-left px-4 py-3 hover:bg-gray-100"
+                  @click.stop="makefavorite(listItem.id)"
+              >
+                ⭐ Favorite
+              </button>
               <button
                   class="block w-full text-left px-4 py-3 hover:bg-gray-100"
                   @click.stop="shareListWithUser(listItem.id)"
