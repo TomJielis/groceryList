@@ -109,7 +109,7 @@ function setFavoriteList(id: number) {
                   class="block w-full text-left px-4 py-3 hover:bg-gray-100"
                   @click.stop="setFavoriteList(listItem.id)"
               >
-                {{auth?.user?.favorite_list_id === listItem.id  ? 'Remove favorite' : '⭐ Favorite'}}
+                {{auth?.user?.favorite_list_id === listItem.id  ? '❌ Remove favorite' : '⭐ Favorite'}}
               </button>
               <button
                   v-if="listItem.created_by == auth.user.id"
