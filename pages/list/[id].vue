@@ -81,7 +81,7 @@ function endSwipe(event, item) {
               @touchend="endSwipe($event, item)"
           >
             <div
-                class="absolute inset-0 bg-red-200 text-white flex items-center justify-center transition-opacity"
+                class="absolute inset-0 bg-red-200 text-white flex items-center justify-center transition-opacity pointer-events-none"
                 :style="{ opacity: item.swipeOffset < 0 ? 1 : 0 }"
             >
               Verwijderen
@@ -140,7 +140,7 @@ function endSwipe(event, item) {
                 @touchend="endSwipe($event, item)"
             >
               <div
-                  class="absolute inset-0 bg-red-200 text-white flex items-center justify-center transition-opacity"
+                  class="absolute inset-0 bg-red-200 text-white flex items-center justify-center transition-opacity pointer-events-none"
                   :style="{ opacity: item.swipeOffset < 0 ? 1 : 0 }"
               >
                 Verwijderen
