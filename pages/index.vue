@@ -12,6 +12,10 @@ definePageMeta({
 
 const router = useRouter();
 
+if(!authStore.user) {
+  router.push('/auth/login');
+}
+
 const { lists, fetchLists } = useGroceryList();
 await fetchLists();
 
