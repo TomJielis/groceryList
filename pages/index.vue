@@ -45,7 +45,7 @@ const favoriteListOpenItems = favoriteList.grocery_list_items_count - favoriteLi
       </h1>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <dashboardBlock :title="'Items to buy'" :count="totalUncheckedItems" @click="$router.push('/list/lists')" class="cursor-pointer"/>
-        <dashboardBlock v-if="authStore.user.favorite_list_id > 0" :title="' ⭐' + favoriteList.name" :count="favoriteListOpenItems"  @click="$router.push(favoriteListUrl)" class="cursor-pointer"/>
+        <dashboardBlock v-if="authStore.user.favorite_list_id > 0" :title="' ⭐' + favoriteList.name" :count="favoriteListOpenItems + '/'+ favoriteList.grocery_list_items_count "   @click="$router.push(favoriteListUrl)" class="cursor-pointer"/>
         <dashboardBlock :title="'Lists'" @click="$router.push('/list/lists')" :count="parseInt(countLists)" class="cursor-pointer" />
       </div>
       <topItems />

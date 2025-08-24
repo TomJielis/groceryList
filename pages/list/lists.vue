@@ -58,7 +58,7 @@ function shareListWithUser(id: number) {
 function makefavorite(id: number) {
 
   favorite(id);
-  alert(`List ${id} favorited!`)
+  alert(`List favorited!`)
 }
 </script>
 
