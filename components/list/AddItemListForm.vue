@@ -14,7 +14,7 @@ onMounted(() => {
   suggestionStore.fetchSuggestions()
 })
 const route = useRoute();
-const listId = route.params.id as number;
+const listId = parseInt(route.params.id as string)
 
 const newItem = ref('');
 
