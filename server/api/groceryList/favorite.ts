@@ -8,9 +8,10 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const {id} = body
     try {
-        const response = await apiClient('/grocery-list/' + id + '/favorite',
+        const response = await apiClient('/grocery-list/favorite',
             {
                 method: 'POST',
+                body: { listId:id },
             }, token);
 
         console.log(response);

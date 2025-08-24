@@ -53,7 +53,7 @@ export function useGroceryList() {
 
     }
 
-    async function favorite(id: number) {
+    async function favorite(id: number|null) {
         try {
             const response = await fetch('/api/groceryList/favorite', {
                 method: 'POST',

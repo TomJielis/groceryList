@@ -55,10 +55,22 @@ function shareListWithUser(id: number) {
   }
 }
 
-function makefavorite(id: number) {
+function makefavorite(id: number| null) {
 
   favorite(id);
   alert(`List favorited!`)
+}
+
+function setFavoriteList(id: number) {
+  let listId = auth?.user?.favorite_list_id == id ? null : id;
+  console.log(listId);
+
+  makefavorite(listId)
+  const data = auth.user;
+  if(data){
+    data.favorite_list_id = listId;
+    auth.setUser(data);
+  }
 }
 </script>
 
@@ -97,9 +109,9 @@ function makefavorite(id: number) {
             >
               <button
                   class="block w-full text-left px-4 py-3 hover:bg-gray-100"
-                  @click.stop="makefavorite(listItem.id)"
+                  @click.stop="setFavoriteList(listItem.id)"
               >
-                ⭐ Favorite
+                {{auth?.user?.favorite_list_id === listItem.id  ? 'Remove favorite' : '⭐ Favorite'}}
               </button>
               <button
                   v-if="listItem.created_by == auth.user.id"
