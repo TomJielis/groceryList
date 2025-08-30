@@ -1,10 +1,10 @@
 <template>
   <div
       v-if="message"
-      class="fixed top-0 left-0 right-0 bg-red-500 text-white text-center py-3 shadow-lg transition-transform"
+      class="fixed top-0 transform bg-orange-400 text-white p-4 text-center py-3 px-6 rounded-b-lg shadow-lg transition-transform flex items-center justify-between w-full"
       :class="{ 'translate-y-full': !visible, 'translate-y-0': visible }"
   >
-    {{ message }}
+    <span class="flex-1">{{ message }}</span>
   </div>
 </template>
 <script setup lang="ts">

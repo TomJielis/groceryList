@@ -36,7 +36,7 @@ export function useAuth() {
         });
 
         if (!loginResponse.ok) {
-            throw new Error(`Failed to register user: ${loginResponse.statusText}`);
+            throw new Error(`Failed to login user: ${loginResponse.statusText}`);
         }
 
         let result = await loginResponse.json();
