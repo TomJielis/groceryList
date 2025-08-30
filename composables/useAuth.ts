@@ -41,7 +41,7 @@ export function useAuth() {
 
         let result = await loginResponse.json();
 
-        if (!result.success) {
+        if (!result.user) {
             throw new Error(result.error || 'Login failed');
         }
 

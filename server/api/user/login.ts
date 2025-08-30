@@ -14,7 +14,8 @@ export default defineEventHandler(async (event) => {
         body: {email, password},
     }, undefined);
 
-    if (!response.success) {
+    console.log('Login response:', response);
+    if (!response.user) {
         return response;
     }
 
