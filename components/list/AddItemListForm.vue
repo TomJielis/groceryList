@@ -5,7 +5,13 @@ import {useGroceryList} from '~/composables/useGroceryList';
 import { useSuggestionStore } from '~/stores/suggestions'
 
 import suggestionsData from '~/data/suggestions.json';
-const {addItem, items, fetchItems} = useGroceryList();
+const {
+  addItem,
+  items,
+  fetchItems,
+  increaseItems,
+  decreaseItems
+} = useGroceryList();
 const emit = defineEmits(['item-added', 'close']);
 
 const suggestionStore = useSuggestionStore()
@@ -59,7 +65,24 @@ fetchItems(listId)
                 {{ items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? '✔️' : '➕' }}
               </button>
               <span class="text-sm sm:text-base md:text-lg">{{ item.name }}</span>
+              <div class="flex items-center space-x-2" v-if="items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())">
+                <button
+                    class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
+                    @click="decreaseItems(items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()))"
+                >−
+                </button>
 
+                <span class="text-sm sm:text-base font-semibold min-w-[20px] sm:min-w-[24px] text-center">
+                  {{ items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity ?? 1 }}
+                </span>
+
+                <button
+                    v-if="items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())"
+                    class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
+                    @click="increaseItems(items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()))"
+                >+
+                </button>
+              </div>
             </div>
           </li>
         </ul>
