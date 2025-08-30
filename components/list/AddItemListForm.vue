@@ -26,7 +26,6 @@ async function addItemToList(itemName: string) {
   await addItem(name, listId);
 
   newItem.value = '';
-  emit('item-added');
 }
 
 const filteredSuggestions = computed(() => {

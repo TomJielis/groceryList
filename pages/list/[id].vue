@@ -63,6 +63,11 @@ function endSwipe(event, item) {
   }
 }
 
+async function closeAddItemListForm() {
+  showAddItem.value = false
+  await fetchItems(listId);
+}
+
 </script>
 
 <template>
@@ -191,7 +196,7 @@ function endSwipe(event, item) {
       </button>
     </div>
     <div v-else>
-      <AddItemListForm @item-added="handleItemAdded" @close="showAddItem = false"/>
+      <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm"/>
     </div>
   </div>
 </template>
