@@ -3,7 +3,9 @@ import { ref } from 'vue';
 import {useAuth} from "~/composables/useAuth";
 import {useAuthStore} from "~/stores/auth";
 import { useRouter } from 'vue-router';
+import {useNotification} from "~/composables/useNotification";
 
+const {showNotification} = useNotification();
 const { login } = useAuth();
 const authStore = useAuthStore();
 const router = useRouter();
@@ -17,11 +19,10 @@ function handleLogin() {
   login(userData.value)
     .then((data) => {
       authStore.setUser(data.user);
-
       router.push('/');
     })
     .catch((error) => {
-      console.error('Login failed:', error);
+      showNotification(error);
     });
 }
 </script>

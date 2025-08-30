@@ -1,6 +1,6 @@
-import { setCookie } from 'h3'
-import { apiClient } from '~/server/api/utils/apiClient'
-import type { TUser } from '~/types/TUser'
+import {setCookie} from 'h3'
+import {apiClient} from '~/server/api/utils/apiClient'
+import type {TUser} from '~/types/TUser'
 
 type LoginResponse<T> = {
     user: TUser;
@@ -9,33 +9,29 @@ type LoginResponse<T> = {
 export default defineEventHandler(async (event) => {
     let body = await readBody(event);
     const {email, password} = body;
-    try {
-        const response: LoginResponse<any> = await apiClient('/login', {
-            method: 'POST',
-            body: { email, password },
-            // body: { email, password },
-        }, undefined);
+    const response: LoginResponse<any> = await apiClient('/login', {
+        method: 'POST',
+        body: {email, password},
+    }, undefined);
 
-        setCookie(event, 'token', response.access_token, {
-            httpOnly: true,
-            secure: false, // Set to true only if HTTPS is enabled
-            path: '/',
-            sameSite: 'lax', // Use 'lax' for development on localhost
-            maxAge: 60 * 60 * 24 * 28, // 4 weeks
-        });
-
-        event.res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-        event.res.setHeader('Access-Control-Allow-Credentials', 'true')
-
-        return {
-            success: true,
-            user: response.user,
-            token: response.access_token,
-        };
-    } catch (error) {
-        console.error('Error during user registration:', error);
-        return {
-            success: false,
-        };
+    if (!response.success) {
+        return response;
     }
+
+    setCookie(event, 'token', response.access_token, {
+        httpOnly: true,
+        secure: false, // Set to true only if HTTPS is enabled
+        path: '/',
+        sameSite: 'lax', // Use 'lax' for development on localhost
+        maxAge: 60 * 60 * 24 * 28, // 4 weeks
+    });
+
+    event.res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    event.res.setHeader('Access-Control-Allow-Credentials', 'true')
+
+    return {
+        success: true,
+        user: response.user,
+        token: response.access_token,
+    };
 });
