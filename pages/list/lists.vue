@@ -4,6 +4,10 @@ import ListForm from '~/components/list/ListForm.vue'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useAuthStore} from "~/stores/auth";
 
+definePageMeta({
+  middleware: 'auth',
+})
+
 const auth = useAuthStore()
 const list = useGroceryList()
 const { lists, fetchLists,favorite, shareList, deleteList } = list // assuming these methods exist

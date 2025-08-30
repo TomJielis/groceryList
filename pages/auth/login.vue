@@ -8,14 +8,10 @@ const { login } = useAuth();
 const authStore = useAuthStore();
 const router = useRouter();
 
-// const userData = ref({
-//   email: '',
-//   password: ''
-// });
-
 const userData = ref({
-  pincode: '',
-})
+  email: '',
+  password: ''
+});
 
 function handleLogin() {
   login(userData.value)
