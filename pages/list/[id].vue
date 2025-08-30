@@ -71,7 +71,7 @@ async function closeAddItemListForm() {
 </script>
 
 <template>
-  <div class="max-w-sm p-4">
+  <div class="max-w-sm p-4 overflow-y-auto">
     <h1 class="text-2xl font-bold mb-4 text-center">🛒 Grocery list</h1>
 
     <div v-if="!showAddItem">
