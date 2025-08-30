@@ -8,12 +8,11 @@ type LoginResponse<T> = {
 };
 export default defineEventHandler(async (event) => {
     let body = await readBody(event);
-    // const {email, password} = body;
-    const {pincode} = body;
+    const {email, password} = body;
     try {
         const response: LoginResponse<any> = await apiClient('/login', {
             method: 'POST',
-            body: { pincode },
+            body: { email, password },
             // body: { email, password },
         }, undefined);
 

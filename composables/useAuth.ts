@@ -24,8 +24,7 @@ export function useAuth() {
         }
     }
 
-    // async function login(userData: { email: string, password: string }) {
-    async function login(userData: { pincode: string }) {
+    async function login(userData: { email: string, password: string }) {
         try {
             const loginResponse = await fetch('/api/user/login/', {
                 method: 'POST',

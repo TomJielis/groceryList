@@ -60,11 +60,13 @@ fetchItems(listId)
               :key="item.name"
               class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 sm:p-4 md:p-5"
           >
-            <div class="flex items-center space-x-2">
-              <button @click="addItemToList(item.name)" :class="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? 'text-green-500' : 'text-black'">
-                {{ items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? '✔️' : '➕' }}
-              </button>
-              <span class="text-sm sm:text-base md:text-lg">{{ item.name }}</span>
+            <div class="flex items-center justify-between w-full">
+              <div class="flex items-center space-x-2">
+                <button @click="addItemToList(item.name)" :class="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? 'text-green-500' : 'text-black'">
+                  {{ items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? '✔️' : '➕' }}
+                </button>
+                <span class="text-sm sm:text-base md:text-lg">{{ item.name }}</span>
+              </div>
               <div class="flex items-center space-x-2" v-if="items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())">
                 <button
                     class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
@@ -73,7 +75,7 @@ fetchItems(listId)
                 </button>
 
                 <span class="text-sm sm:text-base font-semibold min-w-[20px] sm:min-w-[24px] text-center">
-                  {{ items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity ?? 1 }}
+                   {{ items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity ?? 1 }}
                 </span>
 
                 <button
