@@ -8,11 +8,13 @@ type LoginResponse<T> = {
 };
 export default defineEventHandler(async (event) => {
     let body = await readBody(event);
-    const {email, password} = body;
+    // const {email, password} = body;
+    const {pincode} = body;
     try {
         const response: LoginResponse<any> = await apiClient('/login', {
             method: 'POST',
-            body: { email, password },
+            body: { pincode },
+            // body: { email, password },
         }, undefined);
 
         setCookie(event, 'token', response.access_token, {
