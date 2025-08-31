@@ -20,7 +20,6 @@ export function useAuth() {
         const result = await registerResponse.json();
         console.log(result);
         if (!result.user) {
-            console.log(result);
             throw new Error(result.error || 'Register error');
         }
         authStore.setUser(result.user); // Update user state with returned data

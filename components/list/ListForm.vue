@@ -1,15 +1,24 @@
 <script setup lang="ts">
 import {ref, defineEmits} from "vue";
 import {useGroceryList} from "~/composables/useGroceryList";
+import {useNotification} from "~/composables/useNotification";
+
+const {showNotification} = useNotification();
 const emit = defineEmits(['list-added']);
 const { createList } = useGroceryList();
 
 let newList = ref('');
 
 async function addList() {
-    createList(newList.value.trim());
-    newList.value = '';
-    emit('list-added');
+  createList(newList.value.trim())
+      .then(() => {
+        newList.value = '';
+        emit('list-added');
+      })
+      .catch((error) => {
+        console.log(error);
+        showNotification(error);
+      });
 }
 </script>
 <template>

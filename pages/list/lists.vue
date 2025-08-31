@@ -3,6 +3,7 @@ import { useGroceryList } from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useAuthStore} from "~/stores/auth";
+import {useNotification} from "~/composables/useNotification";
 
 definePageMeta({
   middleware: 'auth',
@@ -11,6 +12,7 @@ definePageMeta({
 const auth = useAuthStore()
 const list = useGroceryList()
 const { lists, fetchLists,favorite, shareList, deleteList } = list // assuming these methods exist
+const {showNotification} = useNotification();
 
 const openListForm = ref(false)
 const openDropdown = ref<number | null>(null)
@@ -60,9 +62,14 @@ function shareListWithUser(id: number) {
 }
 
 function makefavorite(id: number| null) {
-
-  favorite(id);
-  alert(`List favorited!`)
+  favorite(id)
+      .then((data) => {
+        favorite(id);
+        alert(`List favorited!`)
+      })
+      .catch((error) => {
+        showNotification(error);
+      });
 }
 
 function setFavoriteList(id: number) {
