@@ -3,7 +3,9 @@ import { ref } from 'vue';
 import {useAuth} from "~/composables/useAuth";
 import {useRouter} from "vue-router";
 import {useAuthStore} from "~/stores/auth";
+import {useNotification} from "~/composables/useNotification";
 
+const {showNotification} = useNotification();
 const authStore = useAuthStore();
 const { register } = useAuth();
 const router = useRouter();
@@ -14,12 +16,15 @@ const userData = ref({
 });
 
 
-async function handleRegister() {
-  const result = await register(userData.value);
-  authStore.setUser(result.user);
-
-  router.push('/');
-
+function handleRegister() {
+  register(userData.value)
+      .then((data) => {
+        authStore.setUser(data.user);
+        router.push('/');
+      })
+      .catch((error) => {
+        showNotification(error);
+      });
 }
 </script>
 
