@@ -29,7 +29,7 @@ export const apiClient = async <T = any>(
     });
 
     if (!response.ok) {
-        throw new Error(`API call failed: ${response.statusText}`);
+        throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
     }
 
     return response.json();

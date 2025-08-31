@@ -2,7 +2,9 @@
 import { ref } from 'vue';
 import {useAuth} from "~/composables/useAuth";
 import {useRouter} from "vue-router";
+import {useAuthStore} from "~/stores/auth";
 
+const authStore = useAuthStore();
 const { register } = useAuth();
 const router = useRouter();
 const userData = ref({
@@ -11,9 +13,12 @@ const userData = ref({
   password: ''
 });
 
-function handleRegister() {
-  register(userData.value);
-  router.push('/auth/login');
+
+async function handleRegister() {
+  const result = await register(userData.value);
+  authStore.setUser(result.user);
+
+  router.push('/');
 
 }
 </script>
