@@ -3,10 +3,13 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import AddItemListForm from '~/components/list/AddItemListForm.vue';
 import { useGroceryList } from '~/composables/useGroceryList';
+import {useListStore} from "~/stores/lists";
 
 definePageMeta({
   middleware: 'auth',
 });
+
+const listStore = useListStore();
 
 const route = useRoute();
 const listId = route.params.id as string;
@@ -20,13 +23,11 @@ const startY = ref(0); // Track the starting Y position of the touch
 // Composable for grocery list logic
 const {
   items,
-  lists,
   fetchItems,
   increaseItems,
   decreaseItems,
   clearItem,
   checked,
-  fetchLists,
 } = useGroceryList();
 
 // Fetch list items on page load
@@ -92,8 +93,7 @@ async function closeAddItemListForm() {
 }
 
 
-await fetchLists()
-const list = lists.value.find((list: any) => list.id == parseInt(listId));
+const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
 </script>
 

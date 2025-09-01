@@ -4,7 +4,9 @@ import DashboardBlock from "~/components/dashboard/dashboardBlock.vue";
 import {useGroceryList} from "~/composables/useGroceryList";
 import { useAuthStore} from "~/stores/auth";
 import { useRouter } from 'vue-router';
+import {useListStore} from "~/stores/lists";
 
+const listStore = useListStore();
 const authStore = useAuthStore();
 definePageMeta({
   middleware: 'auth',
@@ -19,6 +21,7 @@ if(!authStore.user) {
 const { lists, fetchLists } = useGroceryList();
 await fetchLists();
 
+listStore.setList(lists.value);
 let totalUncheckedItems = ref(
     lists.value.reduce(
         (total, list) =>

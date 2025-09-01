@@ -4,24 +4,24 @@ import ListForm from '~/components/list/ListForm.vue'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
+import {useListStore} from "~/stores/lists";
 
+const listStore = useListStore();
 definePageMeta({
   middleware: 'auth',
 })
 
 const auth = useAuthStore()
 const list = useGroceryList()
-const { lists, fetchLists,favorite, shareList, deleteList } = list // assuming these methods exist
+const {favorite, shareList, deleteList } = list // assuming these methods exist
 const {showNotification} = useNotification();
 
 const openListForm = ref(false)
 const openDropdown = ref<number | null>(null)
 
-await fetchLists()
-
 async function handleList() {
   openListForm.value = false
-  await fetchLists()
+  await listStore.fetchLists()
 }
 
 function toggleDropdown(id: number) {
@@ -49,7 +49,7 @@ watch(openDropdown, (val) => {
 
 function confirmDelete(id: number) {
   if (confirm('Are you sure you want to delete this list?')) {
-    deleteList(id).then(fetchLists)
+    deleteList(id).then(listStore.fetchLists())
   }
 }
 
@@ -91,7 +91,7 @@ function setFavoriteList(id: number) {
     <div v-if="!openListForm">
       <ul class="space-y-3">
         <li
-            v-for="listItem in lists"
+            v-for="listItem in listStore.lists"
             :key="listItem.id"
             class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 active:shadow-md transition relative"
         >
