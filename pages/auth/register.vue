@@ -30,7 +30,7 @@ function handleRegister() {
 </script>
 
 <template>
-  <div class="h-[90vh] flex items-center justify-center bg-gray-50 px-4">
+  <div class="h-[90vh] flex items-center justify-center px-4">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
       <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-gray-900">📝 Register</h2>
       <form @submit.prevent="handleRegister" class="space-y-5">
