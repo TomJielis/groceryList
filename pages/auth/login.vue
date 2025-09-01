@@ -14,8 +14,8 @@ const router = useRouter();
 
 
 const userData = ref({
-  email: 'tomjielis@hotmail.com',
-  password: 'test1234'
+  email: '',
+  password: ''
 });
 
 function handleLogin() {
