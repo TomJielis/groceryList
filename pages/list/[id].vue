@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import {ref} from 'vue'
-import {useRoute} from 'vue-router'
-import AddItemListForm from '~/components/list/AddItemListForm.vue'
-import {useGroceryList} from '~/composables/useGroceryList'
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import AddItemListForm from '~/components/list/AddItemListForm.vue';
+import { useGroceryList } from '~/composables/useGroceryList';
 
 definePageMeta({
   middleware: 'auth',
-})
+});
 
-const route = useRoute()
-const listId = route.params.id as string
+const route = useRoute();
+const listId = route.params.id as string;
 
 // UI state
-const showAddItem = ref(false)
-const showCheckedItems = ref(false)
+const showAddItem = ref(false);
+const showCheckedItems = ref(false);
+const pullToRefresh = ref(false); // New state for pull-to-refresh
+const startY = ref(0); // Track the starting Y position of the touch
 
 // Composable for grocery list logic
 const {
@@ -23,19 +25,38 @@ const {
   decreaseItems,
   clearItem,
   checked,
-} = useGroceryList()
+} = useGroceryList();
 
 // Fetch list items on page load
-await fetchItems(listId)
+await fetchItems(listId);
 
 // Handler after new item is added
 function handleItemAdded() {
-  showAddItem.value = false
-  fetchItems(listId) // FIXME: Should be reactive in composable ideally
+  showAddItem.value = false;
+  fetchItems(listId); // FIXME: Should be reactive in composable ideally
 }
 
-const uncheckedItems = computed(() => items.value.filter((item: any) => !item.checked))
-const checkedItems = computed(() => items.value.filter((item: any) => item.checked))
+const uncheckedItems = computed(() => items.value.filter((item: any) => !item.checked));
+const checkedItems = computed(() => items.value.filter((item: any) => item.checked));
+
+// Pull-to-refresh logic
+function handleTouchStart(event: TouchEvent) {
+  startY.value = event.touches[0].clientY;
+}
+
+function handleTouchMove(event: TouchEvent) {
+  const currentY = event.touches[0].clientY;
+  if (currentY - startY.value > 50) {
+    pullToRefresh.value = true;
+  }
+}
+
+async function handleTouchEnd() {
+  if (pullToRefresh.value) {
+    pullToRefresh.value = false;
+    await fetchItems(listId); // Refresh the list
+  }
+}
 
 const startX = ref(0);
 
@@ -64,14 +85,18 @@ function endSwipe(event, item) {
 }
 
 async function closeAddItemListForm() {
-  showAddItem.value = false
+  showAddItem.value = false;
   await fetchItems(listId);
 }
-
 </script>
 
 <template>
-  <div class="max-w-sm p-4 overflow-y-auto">
+  <div
+      class="max-w-sm p-4 overflow-y-auto"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
+  >
     <h1 class="text-2xl font-bold mb-4 text-center">🛒 Grocery list</h1>
 
     <div v-if="!showAddItem">
@@ -105,24 +130,26 @@ async function closeAddItemListForm() {
                   class="text-base font-medium break-words whitespace-normal ml-2"
                   :class="{ 'line-through text-gray-500': item.checked }"
               >
-              {{ item.name }}
-           </span>
+                {{ item.name }}
+              </span>
             </div>
             <div class="flex items-center space-x-2">
               <button
                   class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
                   @click="decreaseItems(item)"
-              >−
+              >
+                −
               </button>
 
               <span class="text-sm sm:text-base font-semibold min-w-[20px] sm:min-w-[24px] text-center">
                 {{ item.quantity || 1 }}
-            </span>
+              </span>
 
               <button
                   class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
                   @click="increaseItems(item)"
-              >+
+              >
+                +
               </button>
             </div>
           </li>
@@ -164,24 +191,26 @@ async function closeAddItemListForm() {
                     class="text-base font-medium break-words whitespace-normal ml-2"
                     :class="{ 'line-through text-gray-500': item.checked }"
                 >
-        {{ item.name }}
-      </span>
+                  {{ item.name }}
+                </span>
               </div>
               <div class="flex items-center space-x-2">
                 <button
                     class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
                     @click="decreaseItems(item)"
-                >−
+                >
+                  −
                 </button>
 
                 <span class="text-sm sm:text-base font-semibold min-w-[20px] sm:min-w-[24px] text-center">
-          {{ item.quantity || 1 }}
-      </span>
+                  {{ item.quantity || 1 }}
+                </span>
 
                 <button
                     class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
                     @click="increaseItems(item)"
-                >+
+                >
+                  +
                 </button>
               </div>
             </li>
@@ -196,7 +225,7 @@ async function closeAddItemListForm() {
       </button>
     </div>
     <div v-else>
-      <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm"/>
+      <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
     </div>
   </div>
 </template>
