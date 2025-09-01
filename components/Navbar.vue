@@ -6,7 +6,7 @@ import { useRouter} from 'vue-router';
 const router = useRouter();
 const authStore = useAuthStore();
 function logoutUser() {
-  authStore.clearUser();
+  authStore.clearAuth();
   router.push('/auth/login');
 }
 
