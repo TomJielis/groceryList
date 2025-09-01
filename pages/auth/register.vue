@@ -20,6 +20,7 @@ function handleRegister() {
   register(userData.value)
       .then((data) => {
         authStore.setUser(data.user);
+        localStorage.setItem('token', data.token);
         router.push('/');
       })
       .catch((error) => {
