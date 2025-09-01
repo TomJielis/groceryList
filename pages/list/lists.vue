@@ -13,7 +13,7 @@ definePageMeta({
 
 const auth = useAuthStore()
 const list = useGroceryList()
-const {favorite, shareList, deleteList } = list // assuming these methods exist
+const {fetchLists, favorite, shareList, deleteList } = list // assuming these methods exist
 const {showNotification} = useNotification();
 
 const openListForm = ref(false)
@@ -47,9 +47,13 @@ watch(openDropdown, (val) => {
 })
 
 
-function confirmDelete(id: number) {
+async function confirmDelete(id: number) {
   if (confirm('Are you sure you want to delete this list?')) {
-    deleteList(id).then(listStore.fetchLists())
+    deleteList(id).then(async () => {
+      await listStore.fetchLists();
+    }).catch((error) => {
+      showNotification(error);
+    });
   }
 }
 
