@@ -4,21 +4,26 @@ import {useAuth} from "~/composables/useAuth";
 import {useAuthStore} from "~/stores/auth";
 import { useRouter } from 'vue-router';
 import {useNotification} from "~/composables/useNotification";
+import { defineStore } from 'pinia';
 
 const {showNotification} = useNotification();
 const { login } = useAuth();
 const authStore = useAuthStore();
 const router = useRouter();
 
+
+
 const userData = ref({
-  email: '',
-  password: ''
+  email: 'tomjielis@hotmail.com',
+  password: 'test1234'
 });
 
 function handleLogin() {
   login(userData.value)
     .then((data) => {
       authStore.setUser(data.user);
+      authStore.setToken(data.token);
+
       router.push('/');
     })
     .catch((error) => {

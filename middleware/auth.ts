@@ -1,11 +1,10 @@
-import { useAuthStore } from '~/stores/auth'
-import { useRouter} from "vue-router";
+import { useAuthStore } from '@/stores/auth'
 
 export default defineNuxtRouteMiddleware((to, from) => {
-    const router = useRouter();
-    const authStore = useAuthStore();
-    const user = authStore.user;
-    if (!user) {
-        return router.push('/auth/login')
+    if (process.server) return // 💡 middleware mag niets doen op de server
+
+    const authStore = useAuthStore()
+    if (!authStore.token) {
+        return navigateTo('/auth/login')
     }
-});
+})

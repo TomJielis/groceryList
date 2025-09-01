@@ -1,3 +1,5 @@
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -9,6 +11,7 @@ export default defineNuxtConfig({
       ]
     }
   },
+  modules: ['@pinia/nuxt'],
   css: ['@/assets/css/tailwind.css'],
   postcss: {
     plugins: {
