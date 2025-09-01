@@ -20,11 +20,13 @@ const startY = ref(0); // Track the starting Y position of the touch
 // Composable for grocery list logic
 const {
   items,
+  lists,
   fetchItems,
   increaseItems,
   decreaseItems,
   clearItem,
   checked,
+  fetchLists,
 } = useGroceryList();
 
 // Fetch list items on page load
@@ -88,6 +90,11 @@ async function closeAddItemListForm() {
   showAddItem.value = false;
   await fetchItems(listId);
 }
+
+
+await fetchLists()
+const list = lists.value.find((list: any) => list.id == parseInt(listId));
+
 </script>
 
 <template>
@@ -97,7 +104,7 @@ async function closeAddItemListForm() {
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
   >
-    <h1 class="text-2xl font-bold mb-4 text-center">🛒 Grocery list</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">🛒 {{list?.name}}</h1>
 
     <div v-if="!showAddItem">
       <ul class="space-y-3 mb-20">
