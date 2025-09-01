@@ -13,15 +13,15 @@ definePageMeta({
 
 const auth = useAuthStore()
 const list = useGroceryList()
-const {fetchLists, favorite, shareList, deleteList } = list // assuming these methods exist
+const { favorite, shareList, deleteList } = list // assuming these methods exist
 const {showNotification} = useNotification();
 
 const openListForm = ref(false)
 const openDropdown = ref<number | null>(null)
 
-async function handleList() {
+function handleList() {
   openListForm.value = false
-  await listStore.fetchLists()
+  listStore.fetchLists()
 }
 
 function toggleDropdown(id: number) {

@@ -36,7 +36,7 @@ export function useGroceryList() {
             throw new Error(`Failed to create list: ${response.statusText}`);
         }
 
-        lists.value.push(data);
+       return data;
     }
 
     async function shareList(listId: number, email: string) {
