@@ -105,7 +105,7 @@ function setFavoriteList(id: number) {
               class="ml-3 text-xs font-medium bg-green-100 text-green-700 px-3 py-1 rounded-full"
               @click="$router.push(`/list/${listItem.id}`)"
           >
-            {{ listItem.grocery_list_items_checked_count }}/{{ listItem.grocery_list_items_count }}
+            {{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0}}
           </div>
           <div class="relative ml-2">
             <button
