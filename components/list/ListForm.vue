@@ -14,7 +14,7 @@ let newList = ref('');
 async function addList() {
   createList(newList.value.trim())
       .then((data) => {
-        listStore.addList(data.data );
+        listStore.addList(data.data);
         newList.value = '';
         emit('list-added');
       })

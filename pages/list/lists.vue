@@ -21,7 +21,6 @@ const openDropdown = ref<number | null>(null)
 
 function handleList() {
   openListForm.value = false
-  listStore.fetchLists()
 }
 
 function toggleDropdown(id: number) {
@@ -50,7 +49,7 @@ watch(openDropdown, (val) => {
 async function confirmDelete(id: number) {
   if (confirm('Are you sure you want to delete this list?')) {
     deleteList(id).then(async () => {
-      await listStore.fetchLists();
+      listStore.removeList(id);
     }).catch((error) => {
       showNotification(error);
     });

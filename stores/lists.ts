@@ -14,6 +14,10 @@ export const useListStore = defineStore('list', {
     addList(groceryList: TGroceryList) {
       this.lists.push(groceryList);
     },
+    removeList(id: number) {
+        // @ts-ignore
+      this.lists = this.lists.filter(list => list.id !== id)
+    },
     clearList() {
       this.lists = [];
     },
