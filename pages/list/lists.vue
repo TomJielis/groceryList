@@ -7,6 +7,8 @@ import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
 
 const listStore = useListStore();
+await listStore.fetchLists()
+
 definePageMeta({
   middleware: 'auth',
 })
@@ -84,6 +86,7 @@ function setFavoriteList(id: number) {
     auth.setUser(data);
   }
 }
+
 </script>
 
 

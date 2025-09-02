@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import type {TGroceryList} from '~/types/TGroceryList';
 import { useGroceryList} from "~/composables/useGroceryList";
 
-const { fetchLists } = useGroceryList();
+const { fetchLists, lists } = useGroceryList();
 export const useListStore = defineStore('list', {
   state: () => ({
     lists: [] as TGroceryList[],
@@ -22,8 +22,9 @@ export const useListStore = defineStore('list', {
       this.lists = [];
     },
     async fetchLists() {
+      await fetchLists();
       // @ts-ignore
-      this.lists = await fetchLists();
+       this.setList(lists);
     }
   },
   persist: true,

@@ -68,7 +68,6 @@ export function useGroceryList() {
         if (!data.message) {
             throw new Error(`Failed to create list: ${response.statusText}`);
         }
-
     }
 
     async function deleteList(id: number) {
