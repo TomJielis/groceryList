@@ -40,7 +40,7 @@ function handleSubmit() {
 }
 </script>
 <template>
-  <div class="min-h-screen">
+  <div class="h-[90vh]">
     <form @submit.prevent="handleSubmit" class="space-y-4 p-4">
       <div>
         <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
