@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useCards } from "~/composables/useCards"; // werkt in Nuxt
-
+import {useRouter} from "vue-router";
 const formData = ref({
   title: "",
   attachment: null as File | null,
 });
 
 const { storeCard } = useCards();
-
+const router = useRouter();
 function handleFileChange(event: Event) {
   const target = event.target as HTMLInputElement;
   if (target.files && target.files[0]) {
@@ -33,6 +33,8 @@ function handleSubmit() {
       title: "",
       attachment: null,
     };
+
+    router.push('/');
   };
   reader.readAsDataURL(formData.value.attachment);
 }
