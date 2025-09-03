@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TopItems from "~/components/dashboard/topItems.vue";
+import cards from "~/components/dashboard/cards.vue";
 import DashboardBlock from "~/components/dashboard/dashboardBlock.vue";
 import {useGroceryList} from "~/composables/useGroceryList";
 import { useAuthStore} from "~/stores/auth";
@@ -51,6 +52,9 @@ const favoriteListOpenItems = favoriteList.grocery_list_items_count - favoriteLi
         <dashboardBlock v-if="authStore.user?.favorite_list_id === null" :title="'Lists'" @click="$router.push('/list/lists')" :count="parseInt(countLists)" class="cursor-pointer" />
       </div>
       <topItems />
+      <div class="max-w-3xl mx-auto mt-8">
+        <cards />
+      </div>
     </div>
   </div>
 </template>
