@@ -37,7 +37,6 @@ function closeModal() {
       <h2 class="text-lg font-bold mb-2">{{ card.title }}</h2>
       <div class="bg-gray-100 p-4 rounded-lg w-full">
         <img :src="card.attachment" alt="Attachment" class="w-full h-auto mb-2 rounded cursor-pointer" @click="openModal(card)" />
-<!--        <img :src="card.attachment" alt="Attachment" class="w-full h-auto mb-2 rounded" />-->
       </div>
       <button class="mt-8 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" @click="destroy(card.id)">
         Delete card
@@ -54,11 +53,11 @@ function closeModal() {
       </NuxtLink>
     </div>
     <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="closeModal">
-      <div class="bg-white rounded-lg p-4 max-w-sm w-full" @click.stop>
-        <img :src="selectedCard?.attachment" alt="Attachment Preview" class="w-full h-auto rounded mb-4" />
-        <button class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 w-full" @click="closeModal">
-          Close
+      <div class="bg-white rounded-lg p-4 max-w-sm w-full relative" @click.stop>
+        <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="closeModal">
+          &#x2715;
         </button>
+        <img :src="selectedCard?.attachment" alt="Attachment Preview" class="w-full h-auto rounded mb-4" />
       </div>
     </div>
   </div>
