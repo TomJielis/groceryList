@@ -28,6 +28,24 @@ export function useCards() {
         }
     }
 
+    async function deleteCard(id: number) {
+        try {
+            const response = await $fetch('/api/cards/delete', {
+                method: 'POST',
+                body: { id },
+            })
+
+            if (response.success) {
+                cards.value = cards.value.filter(card => card.id !== id)
+            } else {
+                console.warn('Delete card went wrong:', response.message)
+            }
+        } catch (error) {
+            console.error('Delete card went wrong:', error)
+            throw error
+        }
+    }
+
     async function getCards() {
         try {
             const response = await $fetch('/api/cards', {
@@ -47,6 +65,7 @@ export function useCards() {
 
     return {
         storeCard,
+        deleteCard,
         getCards,
         cards,
     }
