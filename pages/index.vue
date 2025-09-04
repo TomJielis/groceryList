@@ -5,7 +5,10 @@ import {useGroceryList} from "~/composables/useGroceryList";
 import { useAuthStore} from "~/stores/auth";
 import { useRouter } from 'vue-router';
 import {useListStore} from "~/stores/lists";
+import {useCards} from "~/composables/useCards";
 
+
+const {cards} = useCards();
 const listStore = useListStore();
 const authStore = useAuthStore();
 definePageMeta({
@@ -47,6 +50,7 @@ const favoriteListOpenItems = favoriteList.grocery_list_items_count - favoriteLi
       </h1>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <dashboardBlock :title="'total items to buy'" :count="totalUncheckedItems" @click="$router.push('/list/lists')" class="cursor-pointer"/>
+        <dashboardBlock :title="'cards'" :count="cards.length" @click="$router.push('/cards/')" class="cursor-pointer"/>
         <dashboardBlock v-if="authStore.user?.favorite_list_id > 0" :title="favoriteListOpenItems + ' items to buy'" :count="' ⭐' + favoriteList.name"   @click="$router.push(favoriteListUrl)" class="cursor-pointer"/>
         <dashboardBlock v-if="authStore.user?.favorite_list_id === null" :title="'Lists'" @click="$router.push('/list/lists')" :count="parseInt(countLists)" class="cursor-pointer" />
       </div>
