@@ -8,7 +8,8 @@ import {useListStore} from "~/stores/lists";
 import {useCards} from "~/composables/useCards";
 
 
-const {cards} = useCards();
+const {cards, getCards} = useCards();
+await getCards();
 const listStore = useListStore();
 const authStore = useAuthStore();
 definePageMeta({
