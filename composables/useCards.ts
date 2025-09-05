@@ -8,7 +8,8 @@ export interface Card {
     attachment: string
 }
 
-const cards = ref<Card[]>([])
+let cards = ref([]);
+
 export function useCards() {
     async function storeCard(newCard: Omit<Card, 'id'>) {
         try {
@@ -48,19 +49,15 @@ export function useCards() {
 
     async function getCards() {
         try {
-            const response = await $fetch('/api/cards', {
-                method: 'GET',
-            })
-            if (response.success && response.data) {
-                cards.value = response.data
-            } else {
-                console.warn('Kaarten niet geladen:', response.message)
+            const response = await fetch('/api/cards/');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch lists: ${response.statusText}`);
             }
+            let result = (await response.json()).data;
+            cards.value = result;
         } catch (error) {
-            console.error('Fout bij laden van kaarten:', error)
-            throw error
+            console.error('Error fetching lists:', error);
         }
-        return cards
     }
 
     return {

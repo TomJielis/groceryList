@@ -6,10 +6,6 @@ import { useAuthStore} from "~/stores/auth";
 import { useRouter } from 'vue-router';
 import {useListStore} from "~/stores/lists";
 import {useCards} from "~/composables/useCards";
-
-
-const {cards, getCards} = useCards();
-await getCards();
 const listStore = useListStore();
 const authStore = useAuthStore();
 definePageMeta({
@@ -24,6 +20,9 @@ if(!authStore.user) {
 
 const { lists, fetchLists } = useGroceryList();
 await fetchLists();
+
+const {cards, getCards} = useCards();
+await getCards();
 
 listStore.setList(lists.value);
 let totalUncheckedItems = ref(
