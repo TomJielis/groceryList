@@ -1,0 +1,1 @@
+import{_ as c,c as t,o,b as _,H as a}from"./B1RyEDXr.js";const n={},s={class:"page-wrapper"};function r(p,d){const e=a;return o(),t("div",s,[_(e)])}const l=c(n,[["render",r],["__scopeId","data-v-f293c004"]]);export{l as default};
