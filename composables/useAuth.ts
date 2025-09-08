@@ -50,8 +50,56 @@ export function useAuth() {
         return result;
     }
 
+    async function resetPassword(userData: { email: string }) {
+        const resetPasswordResponse = await fetch('/api/user/resetPassword/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if (!resetPasswordResponse.ok) {
+            throw new Error(`Failed to login user: ${resetPasswordResponse.statusText}`);
+        }
+
+        let result = await resetPasswordResponse.json();
+
+        // if (!result.user) {
+        //     throw new Error(result.error || 'Login failed');
+        // }
+
+        return result;
+    }
+
+    async function setNewPassword(userData: { email: string, password: string, repeatPassword: string, token: string }) {
+        const resetPasswordResponse = await fetch('/api/user/setNewPassword/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if (!resetPasswordResponse.ok) {
+            throw new Error(`Failed to login user: ${resetPasswordResponse.statusText}`);
+        }
+
+        let result = await resetPasswordResponse.json();
+
+        // if (!result.user) {
+        //     throw new Error(result.error || 'Login failed');
+        // }
+
+        return result;
+    }
+
+
+
     return {
         login,
         register,
+        resetPassword,
+        setNewPassword
     }
 }
