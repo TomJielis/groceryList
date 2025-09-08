@@ -8,7 +8,7 @@ import cardsComponent from "~/components/dashboard/cards.vue";
       <h1 class="text-3xl font-bold text-green-700 mb-6 text-center">
         Available cards
       </h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="grid grid-cols-1  sm:grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <cardsComponent/>
       </div>
     </div>
