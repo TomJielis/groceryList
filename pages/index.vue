@@ -44,7 +44,7 @@ const favoriteListOpenItems = favoriteList.grocery_list_items_count - favoriteLi
 
 <template>
   <div class="h-[90vh] p-8 overflow-auto">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-8xl mx-auto">
       <h1 class="text-3xl font-bold text-green-700 mb-6 text-center">
         Grocery Shopping List Dashboard
       </h1>
