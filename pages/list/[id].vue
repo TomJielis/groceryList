@@ -99,7 +99,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
 <template>
   <div
-      class="max-w-screen-xl p-4 overflow-y-auto"
+      class="max-w-8xl p-4 overflow-y-auto"
       @touchstart="handleTouchStart"
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
