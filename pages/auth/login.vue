@@ -4,7 +4,6 @@ import {useAuth} from "~/composables/useAuth";
 import {useAuthStore} from "~/stores/auth";
 import { useRouter } from 'vue-router';
 import {useNotification} from "~/composables/useNotification";
-import { defineStore } from 'pinia';
 
 const {showNotification} = useNotification();
 const { login } = useAuth();
