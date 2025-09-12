@@ -13,7 +13,7 @@ const props = defineProps({
     <div class="max-w-md w-full bg-white shadow-xl rounded-xl p-8">
       <div class="flex flex-col items-center space-y-4">
         <img
-            src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png"
+            src="/icons/groceryCart.png"
             alt="Grocery List Logo"
             class="w-14 h-14"
         />
