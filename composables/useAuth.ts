@@ -18,7 +18,6 @@ export function useAuth() {
         }
 
         const result = await registerResponse.json();
-        console.log(result);
         if (!result.user) {
             throw new Error(result.error || 'Register error');
         }
@@ -50,6 +49,29 @@ export function useAuth() {
         return result;
     }
 
+    async function verifyEmail(token: string) {
+        const loginResponse = await fetch('/api/user/verify-email/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(token),
+        });
+
+        if (!loginResponse.ok) {
+            throw new Error(`Verification failed: ${loginResponse.statusText}`);
+        }
+
+        let result = await loginResponse.json();
+
+        if(!result.success)
+        {
+            throw new Error(result.message || 'Verification failed');
+        }
+
+        return result;
+    }
+
     async function resetPassword(userData: { email: string }) {
         const resetPasswordResponse = await fetch('/api/user/resetPassword/', {
             method: 'POST',
@@ -64,10 +86,6 @@ export function useAuth() {
         }
 
         let result = await resetPasswordResponse.json();
-
-        // if (!result.user) {
-        //     throw new Error(result.error || 'Login failed');
-        // }
 
         return result;
     }
@@ -99,6 +117,7 @@ export function useAuth() {
     return {
         login,
         register,
+        verifyEmail,
         resetPassword,
         setNewPassword
     }
