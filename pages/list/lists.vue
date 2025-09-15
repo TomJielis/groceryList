@@ -156,7 +156,7 @@ function setFavoriteList(id: number) {
     </div>
 
     <div v-else>
-      <ListForm @list-added="handleList" />
+      <ListForm @list-added="handleList" @close="openListForm = false" />
     </div>
   </div>
 </template>

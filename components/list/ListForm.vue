@@ -6,7 +6,7 @@ import {useListStore} from "~/stores/lists";
 
 const listStore = useListStore();
 const {showNotification} = useNotification();
-const emit = defineEmits(['list-added']);
+const emit = defineEmits(['list-added', 'close']);
 const { createList } = useGroceryList();
 
 let newList = ref('');
@@ -19,7 +19,6 @@ async function addList() {
         emit('list-added');
       })
       .catch((error) => {
-        console.log(error);
         showNotification(error);
       });
 }
@@ -37,6 +36,14 @@ async function addList() {
         @click="addList"
     >
       ➕ Create List
+    </button>
+  </div>
+  <div class="fixed bottom-0 left-0 w-full mt-6 space-y-3 p-4">
+    <button
+        class="w-full py-3 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition"
+        @click="$emit('close')"
+    >
+      ← Back
     </button>
   </div>
 </template>
