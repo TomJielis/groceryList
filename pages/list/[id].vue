@@ -4,7 +4,9 @@ import {useRoute} from 'vue-router';
 import AddItemListForm from '~/components/list/AddItemListForm.vue';
 import {useGroceryList} from '~/composables/useGroceryList';
 import {useListStore} from "~/stores/lists";
-
+// import { useIsMobile } from '~/composables/useIsMobile';
+//
+// const { isMobile } = useIsMobile();
 definePageMeta({
   middleware: 'auth',
 });
