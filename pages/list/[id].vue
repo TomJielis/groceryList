@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import {ref, computed} from 'vue';
+import {useRoute} from 'vue-router';
 import AddItemListForm from '~/components/list/AddItemListForm.vue';
-import { useGroceryList } from '~/composables/useGroceryList';
+import {useGroceryList} from '~/composables/useGroceryList';
 import {useListStore} from "~/stores/lists";
 
 definePageMeta({
@@ -63,30 +63,6 @@ async function handleTouchEnd() {
 
 const startX = ref(0);
 
-function startSwipe(event, item) {
-  startX.value = event.touches[0].clientX;
-  item.swipeOffset = 0;
-}
-
-function moveSwipe(event, item) {
-  const currentX = event.touches[0].clientX;
-  const deltaX = currentX - startX.value;
-
-  if (deltaX < 0) {
-    item.swipeOffset = deltaX; // Alleen naar links swipen
-  }
-}
-
-function endSwipe(event, item) {
-  if (item.swipeOffset < -window.innerWidth / 2) {
-    // Als meer dan 50% van de breedte is geswiped, verwijder het item
-    clearItem(item);
-  } else {
-    // Reset swipe
-    item.swipeOffset = 0;
-  }
-}
-
 async function closeAddItemListForm() {
   showAddItem.value = false;
   await fetchItems(listId);
@@ -104,7 +80,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
   >
-    <h1 class="text-2xl font-bold mb-4 text-center">🛒 {{list?.name}}</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">🛒 {{ list?.name }}</h1>
 
     <div v-if="!showAddItem">
       <ul class="space-y-3 mb-20">
@@ -112,21 +88,9 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <li
               v-for="item in uncheckedItems"
               :key="item.id"
-              class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 active:shadow-md transition relative overflow-hidden"
-              @touchstart="startSwipe($event, item)"
-              @touchmove="moveSwipe($event, item)"
-              @touchend="endSwipe($event, item)"
+              class="flex items-center justify-between rounded-xl shadow-sm p-3 active:shadow-xl transition relative overflow-hidden"
           >
-            <div
-                class="absolute inset-0 bg-red-200 text-white flex items-center justify-center transition-opacity pointer-events-none"
-                :style="{ opacity: item.swipeOffset < 0 ? 1 : 0 }"
-            >
-              Verwijderen
-            </div>
-            <div
-                class="relative flex items-center flex-1 transition-transform"
-                :style="{ transform: `translateX(${item.swipeOffset || 0}px)` }"
-            >
+            <div class="relative flex items-center flex-1 transition-transform">
               <input
                   type="checkbox"
                   class="h-6 w-6 text-green-600 rounded flex-shrink-0"
@@ -174,20 +138,8 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
                 v-for="item in checkedItems"
                 :key="item.id"
                 class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 active:shadow-md transition relative overflow-hidden"
-                @touchstart="startSwipe($event, item)"
-                @touchmove="moveSwipe($event, item)"
-                @touchend="endSwipe($event, item)"
             >
-              <div
-                  class="absolute inset-0 bg-red-200 text-white flex items-center justify-center transition-opacity pointer-events-none"
-                  :style="{ opacity: item.swipeOffset < 0 ? 1 : 0 }"
-              >
-                Verwijderen
-              </div>
-              <div
-                  class="relative flex items-center flex-1 transition-transform"
-                  :style="{ transform: `translateX(${item.swipeOffset || 0}px)` }"
-              >
+              <div class="relative flex items-center flex-1 transition-transform">
                 <input
                     type="checkbox"
                     class="h-6 w-6 text-green-600 rounded flex-shrink-0"
@@ -232,7 +184,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
       </button>
     </div>
     <div v-else>
-      <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
+      <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm"/>
     </div>
   </div>
 </template>
@@ -240,6 +192,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.7s ease;
 }
+
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
