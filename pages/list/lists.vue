@@ -118,15 +118,12 @@ function calculateProgress(listItem) {
             :key="listItem.id"
             class="bg-white rounded-xl shadow-sm p-4 active:shadow-md transition relative"
         >
-          <!-- Titel + Menu knop -->
           <div class="flex items-start justify-between">
             <div class="cursor-pointer" @click="$router.push(`/list/${listItem.id}`)">
-      <span class="text-base font-medium break-words whitespace-normal">
-        {{ listItem.name }}
-      </span>
+              <span class="text-base font-medium break-words whitespace-normal">
+                {{ listItem.name }}
+              </span>
             </div>
-
-            <!-- ⋮ knop -->
             <div class="relative ml-2">
               <button
                   class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-600 active:bg-gray-200"
@@ -162,8 +159,6 @@ function calculateProgress(listItem) {
               </div>
             </div>
           </div>
-
-          <!-- Progress bar -->
           <div class="mt-3 flex items-center space-x-2">
             <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
               <div
@@ -175,28 +170,22 @@ function calculateProgress(listItem) {
               {{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }}
             </div>
           </div>
-
-
-          <!-- Gedeeld met badges -->
           <div
               v-if="listItem.grocery_list_invites && listItem.grocery_list_invites.length > 0"
               class="flex items-center mt-3 space-x-[-8px]"
           >
-    <span
-        v-for="invite in listItem.grocery_list_invites"
-        :key="invite.user.id"
-        class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
-        :style="{ backgroundColor: stringToColor(invite.user.name) }"
-        :title="invite.user.name"
-    >
-      {{ invite.user.name.charAt(0).toUpperCase() }}
-    </span>
+            <span
+                v-for="invite in listItem.grocery_list_invites"
+                :key="invite.user.id"
+                class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
+                :style="{ backgroundColor: stringToColor(invite.user.name) }"
+                :title="invite.user.name"
+            >
+              {{ invite.user.name.charAt(0).toUpperCase() }}
+            </span>
           </div>
         </li>
-
       </ul>
-
-      <!-- ➕ knop -->
       <button
           class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
           style="padding-bottom: env(safe-area-inset-bottom)"
@@ -207,7 +196,7 @@ function calculateProgress(listItem) {
     </div>
 
     <div v-else>
-      <ListForm @list-added="handleList" @close="openListForm = false" />
+      <ListForm @list-added="handleList" @close="openListForm = false"/>
     </div>
   </div>
 </template>
