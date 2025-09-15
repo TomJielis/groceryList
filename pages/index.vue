@@ -25,13 +25,7 @@ const {cards, getCards} = useCards();
 await getCards();
 
 listStore.setList(lists.value);
-let totalUncheckedItems = ref(
-    lists.value.reduce(
-        (total, list) =>
-            total + (list.grocery_list_items_count - list.grocery_list_items_checked_count),
-        0
-    )
-);
+
 let countLists = ref(lists.value.length ?? 0)
 const favoriteListId = authStore.user?.favorite_list_id;
 const favoriteListUrl = favoriteListId ? `/list/${favoriteListId}` : '/list/lists';
@@ -49,7 +43,6 @@ const favoriteListOpenItems = favoriteList.grocery_list_items_count - favoriteLi
         Grocery Shopping List Dashboard
       </h1>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <dashboardBlock :title="'total items to buy'" :count="totalUncheckedItems" @click="$router.push('/list/lists')" class="cursor-pointer"/>
         <dashboardBlock :title="'cards'" :count="cards.length" @click="$router.push('/cards/')" class="cursor-pointer"/>
         <dashboardBlock v-if="authStore.user?.favorite_list_id > 0" :title="favoriteListOpenItems + ' items to buy'" :count="' ⭐' + favoriteList.name"   @click="$router.push(favoriteListUrl)" class="cursor-pointer"/>
         <dashboardBlock v-if="authStore.user?.favorite_list_id === null" :title="'Lists'" @click="$router.push('/list/lists')" :count="parseInt(countLists)" class="cursor-pointer" />
