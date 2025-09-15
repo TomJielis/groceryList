@@ -84,7 +84,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
     <div v-if="!showAddItem">
       <ul class="space-y-3 mb-20">
-        <transition-group name="fade" tag="ul" class="space-y-3 mb-20">
+        <transition-group name="fade" tag="ul" class="space-y-3 mb-10">
           <li
               v-for="item in uncheckedItems"
               :key="item.id"
