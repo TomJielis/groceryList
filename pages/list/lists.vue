@@ -183,6 +183,14 @@ function calculateProgress(listItem) {
             >
               {{ invite.user.name.charAt(0).toUpperCase() }}
             </span>
+            <span
+                class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
+                :style="{ backgroundColor: stringToColor(listItem.created_by.name) }"
+                :title="listItem.created_by.name"
+            >
+              {{ listItem.created_by.name.charAt(0).toUpperCase() }}
+            </span>
+
           </div>
         </li>
       </ul>
