@@ -59,7 +59,7 @@ fetchItems(listId)
           <li
               v-for="item in filteredSuggestions"
               :key="item.name"
-              class="flex items-center justify-between bg-white rounded-xl shadow-sm p-3 sm:p-4 md:p-5"
+              class="flex items-center justify-between rounded-xl shadow-sm p-3 sm:p-4 md:p-5"
           >
             <div class="flex items-center justify-between w-full">
               <div class="flex items-center space-x-2">
