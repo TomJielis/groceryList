@@ -88,7 +88,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <li
               v-for="item in uncheckedItems"
               :key="item.id"
-              class="flex items-center justify-between rounded-xl shadow-sm p-3 active:shadow-xl transition relative overflow-hidden"
+              class="bg-white flex items-center justify-between rounded-xl shadow-sm p-3 active:shadow-xl transition relative overflow-hidden"
           >
             <div class="relative flex items-center flex-1 transition-transform">
               <input
@@ -137,7 +137,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             <li
                 v-for="item in checkedItems"
                 :key="item.id"
-                class="flex items-center justify-between rounded-xl shadow-sm p-3 active:shadow-md transition relative overflow-hidden"
+                class="bg-white flex items-center justify-between rounded-xl shadow-sm p-3 active:shadow-md transition relative overflow-hidden"
             >
               <div class="relative flex items-center flex-1 transition-transform">
                 <input
