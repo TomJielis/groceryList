@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import AddItemListForm from '~/components/list/AddItemListForm.vue';
-import GroceryListItem from '~/components/list/GroceryListItem.vue';
+import GroceryListItem from '~/components/list/groceryListItem.vue';
 import { useGroceryList } from '~/composables/useGroceryList';
 import { useListStore } from '~/stores/lists';
 
