@@ -133,16 +133,22 @@ export function useGroceryList() {
         });
     }
 
-    function checked(item: object) {
-        let route = '/api/groceryListItem/checked'
+    function checked(updatedItem: any) {
+        let route = '/api/groceryListItem/checked';
         $fetch(route, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: {id: item.id, checked: item.checked}
+            body: { id: updatedItem.id, checked: updatedItem.checked }
         });
+
+        // Force reactivity
+        items.value = items.value.map((item) =>
+            item.id === updatedItem.id ? { ...item, checked: updatedItem.checked } : item
+        );
     }
+
 
     function updateItem(item: object) {
         let route = '/api/groceryListItem/update'

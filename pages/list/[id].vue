@@ -1,50 +1,40 @@
 <script setup lang="ts">
-import {ref, computed} from 'vue';
-import {useRoute} from 'vue-router';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import AddItemListForm from '~/components/list/AddItemListForm.vue';
-import {useGroceryList} from '~/composables/useGroceryList';
-import {useListStore} from "~/stores/lists";
+import GroceryListItem from '~/components/list/GroceryListItem.vue';
+import { useGroceryList } from '~/composables/useGroceryList';
+import { useListStore } from '~/stores/lists';
 
 definePageMeta({
   middleware: 'auth',
 });
 
 const listStore = useListStore();
-
 const route = useRoute();
 const listId = route.params.id as string;
 
-// UI state
 const showAddItem = ref(false);
 const showCheckedItems = ref(false);
-const pullToRefresh = ref(false); // New state for pull-to-refresh
-const startY = ref(0); // Track the starting Y position of the touch
 const editingItemId = ref<number | null>(null);
 
-// Composable for grocery list logic
+const pullToRefresh = ref(false);
+const startY = ref(0);
+
 const {
   items,
   fetchItems,
   increaseItems,
   decreaseItems,
   updateItem,
-  clearItem,
   checked,
 } = useGroceryList();
 
-// Fetch list items on page load
 await fetchItems(listId);
-
-// Handler after new item is added
-function handleItemAdded() {
-  showAddItem.value = false;
-  fetchItems(listId); // FIXME: Should be reactive in composable ideally
-}
 
 const uncheckedItems = computed(() => items.value.filter((item: any) => !item.checked));
 const checkedItems = computed(() => items.value.filter((item: any) => item.checked));
 
-// Pull-to-refresh logic
 function handleTouchStart(event: TouchEvent) {
   startY.value = event.touches[0].clientY;
 }
@@ -59,11 +49,14 @@ function handleTouchMove(event: TouchEvent) {
 async function handleTouchEnd() {
   if (pullToRefresh.value) {
     pullToRefresh.value = false;
-    await fetchItems(listId); // Refresh the list
+    await fetchItems(listId);
   }
 }
 
-const startX = ref(0);
+function handleItemAdded() {
+  showAddItem.value = false;
+  fetchItems(listId);
+}
 
 async function closeAddItemListForm() {
   showAddItem.value = false;
@@ -73,18 +66,14 @@ async function closeAddItemListForm() {
 async function updateGroceryListItem(item: any) {
   try {
     updateItem(item);
-    items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
-
+    items.value = items.value.map((i) => (i.id === item.id ? { ...i, ...item } : i));
   } catch (error) {
     console.error('Failed to update item:', error);
   }
 }
 
-
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
-
 </script>
-
 <template>
   <div
       class="max-w-8xl p-4 overflow-y-auto"
@@ -97,85 +86,15 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
     <div v-if="!showAddItem">
       <ul class="space-y-3 mb-20">
         <transition-group name="fade" tag="ul" class="space-y-3 mb-10">
-          <li
+          <GroceryListItem
               v-for="item in uncheckedItems"
               :key="item.id"
-              class="bg-white rounded-xl shadow-sm p-3 transition relative overflow-hidden"
-          >
-            <!-- Bewerkmodus -->
-            <div v-if="editingItemId === item.id" class="flex flex-col space-y-2">
-              <input
-                  v-model="item.name"
-                  type="text"
-                  class="border rounded px-2 py-1 w-full"
-              />
-
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                  <button
-                      class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
-                      @click="item.quantity = Math.max((item.quantity || 1) - 1, 1)"
-                  >
-                    −
-                  </button>
-                  <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
-                  <button
-                      class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
-                      @click="item.quantity = (item.quantity || 1) + 1"
-                  >
-                    +
-                  </button>
-                </div>
-                <input
-                    v-model="item.unit_price"
-                    type="number"
-                    step="0.01"
-                    placeholder="€ prijs"
-                    class="border rounded px-2 py-1 w-24 text-right"
-                />
-              </div>
-
-              <button
-                  @click="updateGroceryListItem(item); editingItemId = null"
-                  class="self-end bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
-              >
-                Klaar
-              </button>
-            </div>
-
-            <!-- Weergavemodus -->
-            <!-- Weergavemodus -->
-            <div class="flex items-center justify-between">
-              <!-- Checkbox apart (klikbaar zonder editmodus) -->
-              <input
-                  type="checkbox"
-                  class="h-6 w-6 text-green-600 rounded flex-shrink-0 mr-2"
-                  :checked="item.checked"
-                  @click.stop
-                  @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
-              />
-
-              <!-- Rest van de regel opent de editmodus -->
-              <div class="flex flex-1 items-center justify-between cursor-pointer" @click="editingItemId = item.id">
-    <span
-        class="text-base font-medium break-words whitespace-normal"
-        :class="{ 'line-through text-gray-500': item.checked }"
-    >
-      {{ item.name }}
-    </span>
-                <div class="flex items-center space-x-2 ml-4">
-                  <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
-                  <span class="text-sm text-gray-500">
-        × €{{ item.unit_price?.toFixed(2) || '0.00' }}
-      </span>
-                  <span class="text-sm font-bold text-black ml-2">
-        = €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
-      </span>
-                </div>
-              </div>
-            </div>
-
-          </li>
+              :item="item"
+              :isEditing="editingItemId === item.id"
+              @edit="editingItemId = $event"
+              @check="checked"
+              @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+          />
         </transition-group>
 
         <p
@@ -189,83 +108,15 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         <!-- CHECKED ITEMS -->
         <ul v-if="showCheckedItems" class="space-y-3 mt-4">
           <transition-group name="fade" tag="ul" class="space-y-3 mb-20">
-            <li
+            <GroceryListItem
                 v-for="item in checkedItems"
                 :key="item.id"
-                class="bg-white rounded-xl shadow-sm p-3 transition relative overflow-hidden"
-            >
-              <!-- Bewerkmodus -->
-              <div v-if="editingItemId === item.id" class="flex flex-col space-y-2">
-                <input
-                    v-model="item.name"
-                    type="text"
-                    class="border rounded px-2 py-1 w-full"
-                />
-
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-2">
-                    <button
-                        class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
-                        @click="decreaseItems(item)"
-                    >
-                      −
-                    </button>
-                    <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
-                    <button
-                        class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
-                        @click="increaseItems(item)"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <input
-                      v-model.number="item.unit_price"
-                      type="number"
-                      step="0.01"
-                      placeholder="€ prijs"
-                      class="border rounded px-2 py-1 w-24 text-right"
-                  />
-                </div>
-
-                <button
-                    @click="() => { editingItemId = null; /* hier komt jouw save logic */ }"
-                    class="self-end bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
-                >
-                  Klaar
-                </button>
-              </div>
-
-              <!-- Weergavemodus -->
-              <div class="flex items-center justify-between">
-                <!-- Checkbox apart -->
-                <input
-                    type="checkbox"
-                    class="h-6 w-6 text-green-600 rounded flex-shrink-0 mr-2"
-                    :checked="item.checked"
-                    @click.stop
-                    @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
-                />
-
-                <!-- Rest van de regel opent de editmodus -->
-                <div class="flex flex-1 items-center justify-between cursor-pointer" @click="editingItemId = item.id">
-    <span
-        class="text-base font-medium break-words whitespace-normal"
-        :class="{ 'line-through text-gray-500': item.checked }"
-    >
-      {{ item.name }}
-    </span>
-                  <div class="flex items-center space-x-2 ml-4">
-                    <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
-                    <span class="text-sm text-gray-500">
-        × €{{ item.unit_price?.toFixed(2) || '0.00' }}
-      </span>
-                    <span class="text-sm font-bold text-black ml-2">
-        = €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
-      </span>
-                  </div>
-                </div>
-              </div>
-            </li>
+                :item="item"
+                :isEditing="editingItemId === item.id"
+                @edit="editingItemId = $event"
+                @check="checked"
+                @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+            />
           </transition-group>
         </ul>
       </ul>
