@@ -24,8 +24,6 @@ const startY = ref(0);
 const {
   items,
   fetchItems,
-  increaseItems,
-  decreaseItems,
   updateItem,
   checked,
 } = useGroceryList();
@@ -81,9 +79,17 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
   >
-    <h1 class="text-2xl font-bold mb-4 text-center">🛒 {{ list?.name }}</h1>
 
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-bold">🛒 {{ list?.name }}</h1>
+      <div class="text-lg font-bold">
+        Totaal: €{{
+          uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
+        }}
+      </div>
+    </div>
     <div v-if="!showAddItem">
+      <!-- UNCHECKED ITEMS -->
       <ul class="space-y-3 mb-20">
         <transition-group name="fade" tag="ul" class="space-y-3 mb-10">
           <GroceryListItem
@@ -120,11 +126,6 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           </transition-group>
         </ul>
       </ul>
-      <div class="text-right text-lg font-bold mt-4">
-        Totaal: €{{
-          uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
-        }}
-      </div>
       <button
           class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
           @click="showAddItem = true"
