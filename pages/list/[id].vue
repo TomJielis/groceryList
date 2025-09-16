@@ -144,33 +144,37 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             </div>
 
             <!-- Weergavemodus -->
-            <div v-else class="flex items-center justify-between">
-              <div class="flex items-center flex-1">
-                <input
-                    type="checkbox"
-                    class="h-6 w-6 text-green-600 rounded flex-shrink-0"
-                    :checked="item.checked"
-                    @click.stop
-                    @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
-                />
-                <span
-                    class="text-base font-medium break-words whitespace-normal ml-2 cursor-pointer"
-                    :class="{ 'line-through text-gray-500': item.checked }"
-                    @click="editingItemId = item.id"
-                >
-                  {{ item.name }}
-                </span>
-              </div>
-              <div class="flex items-center space-x-2 cursor-pointer" @click="editingItemId = item.id">
-                <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
-                <span class="text-sm text-gray-500">
-                  × €{{ item.unit_price?.toFixed(2) || '0.00' }}
-                </span>
-                <span class="text-sm font-bold text-black ml-2">
-                  = €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
-                </span>
+            <!-- Weergavemodus -->
+            <div class="flex items-center justify-between">
+              <!-- Checkbox apart (klikbaar zonder editmodus) -->
+              <input
+                  type="checkbox"
+                  class="h-6 w-6 text-green-600 rounded flex-shrink-0 mr-2"
+                  :checked="item.checked"
+                  @click.stop
+                  @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
+              />
+
+              <!-- Rest van de regel opent de editmodus -->
+              <div class="flex flex-1 items-center justify-between cursor-pointer" @click="editingItemId = item.id">
+    <span
+        class="text-base font-medium break-words whitespace-normal"
+        :class="{ 'line-through text-gray-500': item.checked }"
+    >
+      {{ item.name }}
+    </span>
+                <div class="flex items-center space-x-2 ml-4">
+                  <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
+                  <span class="text-sm text-gray-500">
+        × €{{ item.unit_price?.toFixed(2) || '0.00' }}
+      </span>
+                  <span class="text-sm font-bold text-black ml-2">
+        = €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
+      </span>
+                </div>
               </div>
             </div>
+
           </li>
         </transition-group>
 
@@ -232,31 +236,33 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
               </div>
 
               <!-- Weergavemodus -->
-              <div v-else class="flex items-center justify-between">
-                <div class="flex items-center flex-1">
-                  <input
-                      type="checkbox"
-                      class="h-6 w-6 text-green-600 rounded flex-shrink-0"
-                      :checked="item.checked"
-                      @click.stop
-                      @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
-                  />
-                  <span
-                      class="text-base font-medium break-words whitespace-normal ml-2 cursor-pointer"
-                      :class="{ 'line-through text-gray-500': item.checked }"
-                      @click="editingItemId = item.id"
-                  >
-                    {{ item.name }}
-                  </span>
-                </div>
-                <div class="flex items-center space-x-2 cursor-pointer" @click="editingItemId = item.id">
-                  <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
-                  <span class="text-sm text-gray-500">
-                    × €{{ item.unit_price?.toFixed(2) || '0.00' }}
-                  </span>
-                  <span class="text-sm font-bold text-black ml-2">
-                    = €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
-                  </span>
+              <div class="flex items-center justify-between">
+                <!-- Checkbox apart -->
+                <input
+                    type="checkbox"
+                    class="h-6 w-6 text-green-600 rounded flex-shrink-0 mr-2"
+                    :checked="item.checked"
+                    @click.stop
+                    @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
+                />
+
+                <!-- Rest van de regel opent de editmodus -->
+                <div class="flex flex-1 items-center justify-between cursor-pointer" @click="editingItemId = item.id">
+    <span
+        class="text-base font-medium break-words whitespace-normal"
+        :class="{ 'line-through text-gray-500': item.checked }"
+    >
+      {{ item.name }}
+    </span>
+                  <div class="flex items-center space-x-2 ml-4">
+                    <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
+                    <span class="text-sm text-gray-500">
+        × €{{ item.unit_price?.toFixed(2) || '0.00' }}
+      </span>
+                    <span class="text-sm font-bold text-black ml-2">
+        = €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
+      </span>
+                  </div>
                 </div>
               </div>
             </li>
@@ -264,7 +270,9 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         </ul>
       </ul>
       <div class="text-right text-lg font-bold mt-4">
-        Totaal: €{{ uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2) }}
+        Totaal: €{{
+          uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
+        }}
       </div>
       <button
           class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
@@ -275,7 +283,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
     </div>
 
     <div v-else>
-      <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
+      <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm"/>
     </div>
   </div>
 </template>
