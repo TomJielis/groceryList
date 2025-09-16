@@ -144,6 +144,17 @@ export function useGroceryList() {
         });
     }
 
+    function updateItem(item: object) {
+        let route = '/api/groceryListItem/update'
+        $fetch(route, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: {item}
+        });
+    }
+
     function increaseItems(item: object) {
         const foundItem = items.value.find(i => i.id === item.id)
         foundItem.quantity += 1
@@ -185,6 +196,7 @@ export function useGroceryList() {
         deleteList,
         fetchItems,
         addItem,
+        updateItem,
         checked,
         clearItem,
         increaseItems,

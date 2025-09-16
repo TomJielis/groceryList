@@ -19,6 +19,7 @@ const showAddItem = ref(false);
 const showCheckedItems = ref(false);
 const pullToRefresh = ref(false); // New state for pull-to-refresh
 const startY = ref(0); // Track the starting Y position of the touch
+const editingItemId = ref<number | null>(null);
 
 // Composable for grocery list logic
 const {
@@ -26,6 +27,7 @@ const {
   fetchItems,
   increaseItems,
   decreaseItems,
+  updateItem,
   clearItem,
   checked,
 } = useGroceryList();
@@ -68,6 +70,16 @@ async function closeAddItemListForm() {
   await fetchItems(listId);
 }
 
+async function updateGroceryListItem(item: any) {
+  try {
+    updateItem(item);
+    items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
+
+  } catch (error) {
+    console.error('Failed to update item:', error);
+  }
+}
+
 
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
@@ -88,43 +100,80 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <li
               v-for="item in uncheckedItems"
               :key="item.id"
-              class="bg-white flex items-center justify-between rounded-xl shadow-sm p-3 active:shadow-xl transition relative overflow-hidden"
+              class="bg-white rounded-xl shadow-sm p-3 transition relative overflow-hidden"
           >
-            <div class="relative flex items-center flex-1 transition-transform">
+            <!-- Bewerkmodus -->
+            <div v-if="editingItemId === item.id" class="flex flex-col space-y-2">
               <input
-                  type="checkbox"
-                  class="h-6 w-6 text-green-600 rounded flex-shrink-0"
-                  :checked="item.checked"
-                  @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
+                  v-model="item.name"
+                  type="text"
+                  class="border rounded px-2 py-1 w-full"
               />
-              <span
-                  class="text-base font-medium break-words whitespace-normal ml-2"
-                  :class="{ 'line-through text-gray-500': item.checked }"
+
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <button
+                      class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
+                      @click="item.quantity = Math.max((item.quantity || 1) - 1, 1)"
+                  >
+                    −
+                  </button>
+                  <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
+                  <button
+                      class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
+                      @click="item.quantity = (item.quantity || 1) + 1"
+                  >
+                    +
+                  </button>
+                </div>
+                <input
+                    v-model="item.unit_price"
+                    type="number"
+                    step="0.01"
+                    placeholder="€ prijs"
+                    class="border rounded px-2 py-1 w-24 text-right"
+                />
+              </div>
+
+              <button
+                  @click="updateGroceryListItem(item); editingItemId = null"
+                  class="self-end bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
               >
-                {{ item.name }}
-              </span>
+                Klaar
+              </button>
             </div>
-            <div class="flex items-center space-x-2">
-              <button
-                  class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
-                  @click="decreaseItems(item)"
-              >
-                −
-              </button>
 
-              <span class="text-sm sm:text-base font-semibold min-w-[20px] sm:min-w-[24px] text-center">
-                {{ item.quantity || 1 }}
-              </span>
-
-              <button
-                  class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
-                  @click="increaseItems(item)"
-              >
-                +
-              </button>
+            <!-- Weergavemodus -->
+            <div v-else class="flex items-center justify-between">
+              <div class="flex items-center flex-1">
+                <input
+                    type="checkbox"
+                    class="h-6 w-6 text-green-600 rounded flex-shrink-0"
+                    :checked="item.checked"
+                    @click.stop
+                    @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
+                />
+                <span
+                    class="text-base font-medium break-words whitespace-normal ml-2 cursor-pointer"
+                    :class="{ 'line-through text-gray-500': item.checked }"
+                    @click="editingItemId = item.id"
+                >
+                  {{ item.name }}
+                </span>
+              </div>
+              <div class="flex items-center space-x-2 cursor-pointer" @click="editingItemId = item.id">
+                <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
+                <span class="text-sm text-gray-500">
+                  × €{{ item.unit_price?.toFixed(2) || '0.00' }}
+                </span>
+                <span class="text-sm font-bold text-black ml-2">
+                  = €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
+                </span>
+              </div>
             </div>
           </li>
         </transition-group>
+
         <p
             v-if="checkedItems.length"
             class="text-center text-gray-700 mt-4 cursor-pointer hover:underline"
@@ -132,50 +181,91 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         >
           {{ showCheckedItems ? 'Hide' : 'Show' }} checked items ({{ checkedItems.length }})
         </p>
+
+        <!-- CHECKED ITEMS -->
         <ul v-if="showCheckedItems" class="space-y-3 mt-4">
           <transition-group name="fade" tag="ul" class="space-y-3 mb-20">
             <li
                 v-for="item in checkedItems"
                 :key="item.id"
-                class="bg-white flex items-center justify-between rounded-xl shadow-sm p-3 active:shadow-md transition relative overflow-hidden"
+                class="bg-white rounded-xl shadow-sm p-3 transition relative overflow-hidden"
             >
-              <div class="relative flex items-center flex-1 transition-transform">
+              <!-- Bewerkmodus -->
+              <div v-if="editingItemId === item.id" class="flex flex-col space-y-2">
                 <input
-                    type="checkbox"
-                    class="h-6 w-6 text-green-600 rounded flex-shrink-0"
-                    :checked="item.checked"
-                    @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
+                    v-model="item.name"
+                    type="text"
+                    class="border rounded px-2 py-1 w-full"
                 />
-                <span
-                    class="text-base font-medium break-words whitespace-normal ml-2"
-                    :class="{ 'line-through text-gray-500': item.checked }"
+
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-2">
+                    <button
+                        class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
+                        @click="decreaseItems(item)"
+                    >
+                      −
+                    </button>
+                    <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
+                    <button
+                        class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
+                        @click="increaseItems(item)"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <input
+                      v-model.number="item.unit_price"
+                      type="number"
+                      step="0.01"
+                      placeholder="€ prijs"
+                      class="border rounded px-2 py-1 w-24 text-right"
+                  />
+                </div>
+
+                <button
+                    @click="() => { editingItemId = null; /* hier komt jouw save logic */ }"
+                    class="self-end bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
                 >
-                  {{ item.name }}
-                </span>
+                  Klaar
+                </button>
               </div>
-              <div class="flex items-center space-x-2">
-                <button
-                    class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
-                    @click="decreaseItems(item)"
-                >
-                  −
-                </button>
 
-                <span class="text-sm sm:text-base font-semibold min-w-[20px] sm:min-w-[24px] text-center">
-                  {{ item.quantity || 1 }}
-                </span>
-
-                <button
-                    class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-gray-200 rounded-full text-base sm:text-lg font-bold hover:bg-gray-300"
-                    @click="increaseItems(item)"
-                >
-                  +
-                </button>
+              <!-- Weergavemodus -->
+              <div v-else class="flex items-center justify-between">
+                <div class="flex items-center flex-1">
+                  <input
+                      type="checkbox"
+                      class="h-6 w-6 text-green-600 rounded flex-shrink-0"
+                      :checked="item.checked"
+                      @click.stop
+                      @change="checked({ ...item, checked: $event.target.checked }); item.checked = $event.target.checked"
+                  />
+                  <span
+                      class="text-base font-medium break-words whitespace-normal ml-2 cursor-pointer"
+                      :class="{ 'line-through text-gray-500': item.checked }"
+                      @click="editingItemId = item.id"
+                  >
+                    {{ item.name }}
+                  </span>
+                </div>
+                <div class="flex items-center space-x-2 cursor-pointer" @click="editingItemId = item.id">
+                  <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
+                  <span class="text-sm text-gray-500">
+                    × €{{ item.unit_price?.toFixed(2) || '0.00' }}
+                  </span>
+                  <span class="text-sm font-bold text-black ml-2">
+                    = €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
+                  </span>
+                </div>
               </div>
             </li>
           </transition-group>
         </ul>
       </ul>
+      <div class="text-right text-lg font-bold mt-4">
+        Totaal: €{{ uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2) }}
+      </div>
       <button
           class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
           @click="showAddItem = true"
@@ -183,11 +273,13 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         ➕
       </button>
     </div>
+
     <div v-else>
-      <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm"/>
+      <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
     </div>
   </div>
 </template>
+
 <style scoped>
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.7s ease;
