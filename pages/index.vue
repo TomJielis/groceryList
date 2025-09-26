@@ -116,10 +116,11 @@ function calculateProgress(listItem) {
         <li
             v-for="listItem in listStore.lists"
             :key="listItem.id"
-            class="bg-white rounded-xl shadow-sm p-4 active:shadow-md transition relative"
+            @click="$router.push(`/list/${listItem.id}`)"
+            class="cursor-pointer bg-white rounded-xl shadow-sm p-4 active:shadow-md transition relative"
         >
-          <div class="flex items-start justify-between">
-            <div class="cursor-pointer" @click="$router.push(`/list/${listItem.id}`)">
+          <div class="flex items-start justify-between ">
+            <div>
               <span class="text-base font-medium break-words whitespace-normal">
                 {{ listItem.name }}
               </span>
