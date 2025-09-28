@@ -9,6 +9,16 @@ import {useListStore} from "~/stores/lists";
 const listStore = useListStore();
 await listStore.fetchLists()
 
+const sortedLists = computed(() => {
+  return [...listStore.lists].sort((a, b) => {
+    const isAFavorite = a.id === auth?.user?.favorite_list_id;
+    const isBFavorite = b.id === auth?.user?.favorite_list_id;
+    if (isAFavorite && !isBFavorite) return -1;
+    if (!isAFavorite && isBFavorite) return 1;
+    return 0;
+  });
+});
+
 definePageMeta({
   middleware: 'auth',
 })
@@ -79,6 +89,7 @@ function makefavorite(id: number | null) {
 function setFavoriteList(id: number) {
   let listId = auth?.user?.favorite_list_id == id ? null : id;
   makefavorite(listId)
+  openDropdown.value = null; // Close the submenu
   const data = auth.user;
   if (data) {
     data.favorite_list_id = listId;
@@ -112,16 +123,17 @@ function calculateProgress(listItem) {
     <div v-if="!openListForm">
       <ul class="space-y-3">
         <li
-            v-for="listItem in listStore.lists"
+            v-for="listItem in sortedLists"
             :key="listItem.id"
             @click="$router.push(`/list/${listItem.id}`)"
             class="cursor-pointer bg-white rounded-xl shadow-sm p-4 active:shadow-md transition relative"
         >
           <div class="flex items-start justify-between ">
             <div>
-              <span class="text-base font-medium break-words whitespace-normal">
+             <span class="text-base font-medium break-words whitespace-normal">
                 {{ listItem.name }}
-              </span>
+                <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-yellow-500">⭐</span>
+            </span>
             </div>
             <div class="relative ml-2">
               <button
