@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "Boodschappenlijst",
   "dependencies": {
     "nuxt": "^3.17.6",
     "pinia": "^3.0.3",
