@@ -38,7 +38,7 @@ auth.verifyEmail(form.value).then((data:any) => {
       <div class="flex flex-col items-center space-y-4">
         <img
             src="/icons/groceryCart.png"
-            alt="Grocery List Logo"
+            alt="Boodschappenlijst Logo"
             class="w-14 h-14"
         />
         <h1 class="text-2xl font-bold text-green-600">{{title}}</h1>

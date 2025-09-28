@@ -11,7 +11,7 @@ useHead({
   link: [
     { rel: 'manifest', href: '/manifest.json' }
   ],
-  title: 'Inloggen - Boodschappenlijstje',
+  title: 'Boodschappenlijst',
   meta: [
     {
       name: 'description',
