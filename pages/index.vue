@@ -146,7 +146,7 @@ function calculateProgress(listItem) {
                     class="block w-full text-left px-4 py-3 hover:bg-gray-100"
                     @click.stop="shareListWithUser(listItem.id)"
                 >
-                  👥 Share
+                  👥 Delen
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
