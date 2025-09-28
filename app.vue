@@ -26,7 +26,7 @@ useHead({
       <nuxtPage />
     </div>
 
-    <BottomBar class="md:hidden fixed bottom-0 left-0 right-0 z-50 h-20" />
+    <BottomBar class="md:hidden fixed bottom-0 left-0 right-0 z-50" />
   </div>
 </template>
 
