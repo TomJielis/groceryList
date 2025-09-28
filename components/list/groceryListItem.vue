@@ -53,7 +53,7 @@ watch(() => props.item, (newVal) => {
           @click="emit('save', localItem)"
           class="self-end bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
       >
-        Klaar
+        Opslaan
       </button>
     </div>
 
