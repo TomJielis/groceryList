@@ -45,7 +45,7 @@ function closeModal() {
     <div
         class="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center text-center text-gray-500 border-dashed border-2 border-gray-300"
     >
-      <p class="mb-4">Je hebt nog geen kaart toegevoegd.</p>
+      <p class="mb-4" v-if="cards.length === 0">Je hebt nog geen kaart toegevoegd.</p>
       <NuxtLink to="/cards/upload">
         <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
           Kaart toevoegen

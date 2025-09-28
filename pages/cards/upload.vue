@@ -7,7 +7,7 @@ const formData = ref({
   attachment: null as File | null,
 });
 
-const { storeCard } = useCards();
+const { storeCard , getCards} = useCards();
 const router = useRouter();
 function handleFileChange(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -20,7 +20,7 @@ function handleSubmit() {
   if (!formData.value.attachment) return;
 
   const reader = new FileReader();
-  reader.onload = () => {
+  reader.onload = async () => {
     const base64 = reader.result as string;
 
     storeCard({
@@ -34,7 +34,8 @@ function handleSubmit() {
       attachment: null,
     };
 
-    router.push('/');
+    await getCards();
+    router.push('/cards/');
   };
   reader.readAsDataURL(formData.value.attachment);
 }
