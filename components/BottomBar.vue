@@ -13,7 +13,7 @@ function logoutUser() {
 
 <template>
   <nav class="fixed bottom-0 left-0 right-0 bg-green-500 text-white flex justify-around items-center p-3 shadow-md md:hidden h-20">
-    <nuxtLink to="/" class="text-center flex-1">
+    <nuxtLink v-if="authStore.user" to="/" class="text-center flex-1">
       <span class="text-sm">Lijsten</span>
     </nuxtLink>
     <nuxtLink v-if="authStore.user" to="/cards/" class="text-center flex-1">
