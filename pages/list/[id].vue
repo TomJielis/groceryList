@@ -127,7 +127,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         </ul>
       </ul>
       <button
-          class="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 active:scale-95 transition"
+          class="fixed right-4 bottom-24 md:bottom-4 z-50 bg-blue-500 text-white rounded-full w-16 h-16 shadow-lg"
           @click="showAddItem = true"
       >
         ➕

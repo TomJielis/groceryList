@@ -47,7 +47,7 @@ const filteredSuggestions = computed(() => {
 fetchItems(listId)
 </script>
 <template>
-    <div class="flex-auto overflow-y-auto p-4 h-[80vh]">
+  <div class="flex-auto overflow-y-auto p-4 pb-32 md:pb-4 h-[80vh]">
       <div class="items-center flex-col">
         <input
             type="text"
@@ -91,7 +91,7 @@ fetchItems(listId)
         </ul>
       </div>
     </div>
-    <div class="fixed bottom-3 left-0 w-full mt-6 space-y-3 p-4">
+  <div class="fixed left-0 w-full mt-6 space-y-3 p-4 bottom-20 md:bottom-3 z-50">
       <button
           class="w-full py-3 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition"
           @click="$emit('close')"

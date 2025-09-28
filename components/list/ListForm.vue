@@ -38,7 +38,7 @@ async function addList() {
       ➕ Lijst maken
     </button>
   </div>
-  <div class="fixed bottom-3 left-0 w-full mt-6 space-y-3 p-4">
+  <div class="fixed left-0 w-full mt-6 space-y-3 p-4 bottom-20 md:bottom-3 z-50">
     <button
         class="w-full py-3 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition"
         @click="$emit('close')"
