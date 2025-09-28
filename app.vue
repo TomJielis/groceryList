@@ -10,6 +10,13 @@ import NotificationBar from '~/components/NotificationBar.vue';
 useHead({
   link: [
     { rel: 'manifest', href: '/manifest.json' }
+  ],
+  title: 'Inloggen - Boodschappenlijstje',
+  meta: [
+    {
+      name: 'description',
+      content: 'Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik.'
+    }
   ]
 })
 </script>

@@ -5,6 +5,17 @@ import {useAuthStore} from "~/stores/auth";
 import { useRouter } from 'vue-router';
 import {useNotification} from "~/composables/useNotification";
 
+useHead({
+  title: 'Inloggen - Boodschappenlijstje',
+  meta: [
+    {
+      name: 'description',
+      content: 'Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik.'
+    }
+  ]
+})
+
+
 const {showNotification} = useNotification();
 const { login } = useAuth();
 const authStore = useAuthStore();
