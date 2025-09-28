@@ -108,7 +108,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             class="text-center text-gray-700 mt-4 cursor-pointer hover:underline"
             @click="showCheckedItems = !showCheckedItems"
         >
-          {{ showCheckedItems ? 'Hide' : 'Show' }} checked items ({{ checkedItems.length }})
+          {{ showCheckedItems ? 'Verberg' : 'Weergeef' }} afgevinkte items ({{ checkedItems.length }})
         </p>
 
         <!-- CHECKED ITEMS -->

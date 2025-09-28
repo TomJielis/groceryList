@@ -15,7 +15,7 @@ definePageMeta({
 
 const auth = useAuthStore()
 const list = useGroceryList()
-const {favorite, shareList, deleteList} = list // assuming these methods exist
+const {favorite, shareList, deleteList} = list
 const {showNotification} = useNotification();
 
 const openListForm = ref(false)
@@ -29,7 +29,6 @@ function toggleDropdown(id: number) {
   openDropdown.value = openDropdown.value === id ? null : id
 }
 
-// Close dropdown if click happens outside
 function handleClickOutside(event: MouseEvent) {
   const dropdowns = document.querySelectorAll('.dropdown-menu')
   let clickedInside = false
@@ -49,7 +48,7 @@ watch(openDropdown, (val) => {
 
 
 async function confirmDelete(id: number) {
-  if (confirm('Are you sure you want to delete this list?')) {
+  if (confirm('Weet je zeker dat je deze lijst wilt verwijderen?')) {
     deleteList(id).then(async () => {
       listStore.removeList(id);
     }).catch((error) => {
@@ -60,17 +59,17 @@ async function confirmDelete(id: number) {
 
 function shareListWithUser(id: number) {
   // You might want to show a modal here
-  const email = prompt('Enter email to share the list with:')
+  const email = prompt('Voer een e-mailadres in om de lijst mee te delen:')
   if (email) {
-    shareList(id, email).then(() => alert('List shared!'))
+    shareList(id, email).then(() => alert('Lijst is gedeeld!'))
   }
 }
 
 function makefavorite(id: number | null) {
   favorite(id)
-      .then((data) => {
+      .then(() => {
         favorite(id);
-        alert(`List favorited!`)
+        alert(`Lijst als favoriet gemarkeerd!`)
       })
       .catch((error) => {
         showNotification(error);
@@ -88,13 +87,12 @@ function setFavoriteList(id: number) {
 }
 
 function stringToColor(str) {
-  // Simpele hash → pastel kleur
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   const h = hash % 360;
-  return `hsl(${h}, 70%, 85%)`; // pastelachtige kleuren
+  return `hsl(${h}, 70%, 85%)`;
 }
 
 function calculateProgress(listItem) {
@@ -109,7 +107,7 @@ function calculateProgress(listItem) {
 
 <template>
   <div class="max-w-8xl p-4">
-    <h1 class="text-xl font-bold mb-4 text-center">📋 Your grocery lists</h1>
+    <h1 class="text-xl font-bold mb-4 text-center">📋 Jouw boodschappenlijsten</h1>
 
     <div v-if="!openListForm">
       <ul class="space-y-3">
@@ -141,7 +139,7 @@ function calculateProgress(listItem) {
                     class="block w-full text-left px-4 py-3 hover:bg-gray-100"
                     @click.stop="setFavoriteList(listItem.id)"
                 >
-                  {{ auth?.user?.favorite_list_id === listItem.id ? '❌ Remove favorite' : '⭐ Favorite' }}
+                  {{ auth?.user?.favorite_list_id === listItem.id ? '❌ Verwijder favoriet' : '⭐ Markeer als favoriet' }}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
@@ -155,7 +153,7 @@ function calculateProgress(listItem) {
                     class="block w-full text-left px-4 py-3 text-red-600 hover:bg-red-100"
                     @click.stop="confirmDelete(listItem.id)"
                 >
-                  🗑️ Delete
+                  🗑️ Verwijder
                 </button>
               </div>
             </div>

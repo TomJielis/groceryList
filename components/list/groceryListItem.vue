@@ -57,7 +57,6 @@ watch(() => props.item, (newVal) => {
       </button>
     </div>
 
-    <!-- Weergavemodus -->
     <div v-else class="flex items-center justify-between">
       <input
           type="checkbox"

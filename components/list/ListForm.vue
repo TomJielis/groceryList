@@ -28,14 +28,14 @@ async function addList() {
     <input
         type="text"
         v-model="newList"
-        placeholder="Enter new list"
+        placeholder="Nieuwe lijst invoeren"
         class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base"
     />
     <button
         class="w-full py-3 rounded-xl bg-blue-500 text-white font-semibold text-base shadow-md hover:bg-blue-600 active:scale-[0.98] transition"
         @click="addList"
     >
-      ➕ Create List
+      ➕ Lijst maken
     </button>
   </div>
   <div class="fixed bottom-3 left-0 w-full mt-6 space-y-3 p-4">
@@ -43,7 +43,7 @@ async function addList() {
         class="w-full py-3 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition"
         @click="$emit('close')"
     >
-      ← Back
+      ← Terug
     </button>
   </div>
 </template>

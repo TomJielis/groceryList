@@ -30,17 +30,17 @@ function handleRegister() {
 <template>
   <div class="h-[90vh] flex items-center justify-center px-4">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-gray-900">📝 Register</h2>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-gray-900">📝 Registeren</h2>
       <div v-if="!verifyMailMessage">
         <form @submit.prevent="handleRegister" class="space-y-5">
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Naam</label>
             <input
                 type="text"
                 id="name"
                 v-model="userData.name"
                 class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-500 placeholder-gray-400"
-                placeholder="Enter your name"
+                placeholder="Naam"
                 required
             />
           </div>
@@ -51,12 +51,12 @@ function handleRegister() {
                 id="email"
                 v-model="userData.email"
                 class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-500 placeholder-gray-400"
-                placeholder="you@example.com"
+                placeholder="voorbeeld@gmail.com"
                 required
             />
           </div>
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Wachtwoord</label>
             <input
                 type="password"
                 id="password"
@@ -70,28 +70,25 @@ function handleRegister() {
               type="submit"
               class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 font-semibold"
           >
-            Register
+            Registeren
           </button>
         </form>
         <p class="text-sm text-center text-gray-600 mt-6">
-          Already have an account?
-          <nuxtLink to="/auth/login" class="text-green-500 hover:underline font-medium">Login</nuxtLink>
+          <nuxtLink to="/auth/login" class="text-green-500 hover:underline font-medium"> Heb je al een account?</nuxtLink>
         </p>
       </div>
       <div v-else>
         <div class="flex flex-col items-center space-y-4">
-          <h1 class="text-2xl font-bold text-green-600">Active your account</h1>
+          <h1 class="text-2xl font-bold text-green-600">Activeer je account</h1>
           <p class="text-gray-600">
-            A verification email has been sent to your email address. Please check your inbox and click on the verification link to activate your account.
+            Er is een verificatie-e-mail naar je e-mailadres verzonden. Controleer je inbox en klik op de verificatielink om je account te activeren.            <br>
             <br>
-            <br>
-            In case you don't see the email, please check your spam or junk folder.
-          </p>
+            In het geval dat je de e-mail niet ziet, controleer dan je spam- of junkmap          </p>
           <NuxtLink
               to="/auth/login"
               class="mt-4 bg-green-500 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-green-600 transition"
           >
-            Go to Login
+            Ga naar inloggen
           </NuxtLink>
         </div>
       </div>

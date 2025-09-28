@@ -20,19 +20,13 @@ form.value.token = route.params.id as string;
 
 
 auth.verifyEmail(form.value).then((data:any) => {
-  console.log(data);
-  title.value = 'Email Verified Successfully'
-  body.value = 'Your email has been successfully verified. You can now log in to your account.\n'
-  // Redirect to login or home page after successful verification
-  // window.location.href = '/login';
+  title.value = 'E-mail succesvol geverifieerd'
+  body.value = 'Je e-mail is succesvol geverifieerd. Je kunt nu inloggen op je account.\n'
 }).catch((error) => {
-  console.log('hiero')
-  title.value = 'Email Verified failed'
-  body.value = 'There was an issue verifying your email. Please try again or contact support.'
+  title.value = 'E-mail verificatie mislukt'
+  body.value = 'Er was een probleem bij het verifiëren van je e-mail. Probeer het opnieuw of neem contact op met de ondersteuning.'
   hasError.value = true;
-  console.log(error);
-  errorText.value = error || 'An unexpected error occurred.';
-
+  errorText.value = error || 'Er is een onverwachte fout opgetreden.';
   // Optionally, show an error message to the user
 });
 
@@ -59,13 +53,9 @@ auth.verifyEmail(form.value).then((data:any) => {
             to="/auth/login"
             class="mt-4 bg-green-500 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-green-600 transition"
         >
-          Go to Login
+          Ga naar inloggen
         </NuxtLink>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-
-</style>

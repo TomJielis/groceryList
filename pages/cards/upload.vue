@@ -43,7 +43,7 @@ function handleSubmit() {
   <div class="h-[90vh]">
     <form @submit.prevent="handleSubmit" class="space-y-4 p-4">
       <div>
-        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+        <label for="title" class="block text-sm font-medium text-gray-700">Titel</label>
         <input
             v-model="formData.title"
             type="text"
@@ -53,7 +53,7 @@ function handleSubmit() {
         />
       </div>
       <div>
-        <label for="attachment" class="block text-sm font-medium text-gray-700">Image</label>
+        <label for="attachment" class="block text-sm font-medium text-gray-700">Bijlage</label>
         <input
             @change="handleFileChange"
             type="file"

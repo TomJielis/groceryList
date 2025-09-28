@@ -44,12 +44,12 @@ function handleLogin() {
               id="email"
               v-model="userData.email"
               class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-500 placeholder-gray-400"
-              placeholder="you@example.com"
+              placeholder="voorbeeld@gmail.com"
               required
           />
         </div>
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Wachtwoord</label>
           <input
               type="password"
               id="password"
@@ -67,12 +67,10 @@ function handleLogin() {
         </button>
       </form>
       <p class="text-sm text-center text-gray-600 mt-6">
-        Forgot your password?
-        <a href="/auth/password/reset" class="text-green-500 hover:underline font-medium">Reset password</a>
+        <a href="/auth/password/reset" class="text-green-500 hover:underline font-medium">Wachtwoord vergeten?</a>
       </p>
       <p class="text-sm text-center text-gray-600 mt-6">
-        Don't have an account?
-        <a href="/auth/register" class="text-green-500 hover:underline font-medium">Register</a>
+        <a href="/auth/register" class="text-green-500 hover:underline font-medium">Nieuw account maken</a>
       </p>
     </div>
   </div>
