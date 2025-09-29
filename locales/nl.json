@@ -1,0 +1,63 @@
+{
+  "nav": {
+    "title": "Boodschappenlijst",
+    "cards": "Kaarten",
+    "lists": "Lijsten",
+    "login": "Login",
+    "register": "Registreren",
+    "logout": "Uitloggen"
+  },
+  "auth": {
+    "login": {
+      "title": "Inloggen - Boodschappenlijstje",
+      "description": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik.",
+      "heading": "🛒 Login",
+      "email": "E-mailadres",
+      "password": "Wachtwoord",
+      "submit": "Inloggen",
+      "forgot_password": "Wachtwoord vergeten?",
+      "no_account": "Nog geen account?",
+      "create_account": "Account aanmaken"
+    },
+    "register": {
+      "title": "Registreren",
+      "heading": "Account aanmaken",
+      "name": "Naam",
+      "email": "E-mailadres",
+      "password": "Wachtwoord",
+      "confirm_password": "Bevestig wachtwoord",
+      "submit": "Registreren",
+      "already_account": "Al een account?",
+      "login_here": "Hier inloggen"
+    }
+  },
+  "lists": {
+    "title": "Mijn Lijsten",
+    "create_new": "Nieuwe lijst maken",
+    "favorite": "Favoriet",
+    "share": "Delen",
+    "delete": "Verwijderen",
+    "items_count": "items"
+  },
+  "cards": {
+    "title": "Mijn Kaarten",
+    "upload_new": "Nieuwe kaart uploaden"
+  },
+  "common": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "edit": "Bewerken",
+    "delete": "Verwijderen",
+    "add": "Toevoegen",
+    "close": "Sluiten",
+    "loading": "Laden...",
+    "error": "Er is een fout opgetreden",
+    "success": "Gelukt!"
+  },
+  "language": {
+    "switch_language": "Taal wijzigen",
+    "dutch": "Nederlands",
+    "english": "Engels"
+  }
+}
+

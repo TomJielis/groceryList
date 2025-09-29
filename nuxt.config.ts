@@ -1,6 +1,5 @@
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-
 export default defineNuxtConfig({
+  compatibilityDate: '2025-09-29',
   app: {
     head: {
       link: [
@@ -11,7 +10,18 @@ export default defineNuxtConfig({
       ]
     }
   },
-  modules: ['@pinia/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxtjs/i18n'],
+  i18n: {
+    locales: ['nl', 'en'],
+    defaultLocale: 'nl',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      alwaysRedirect: false,
+      fallbackLocale: 'nl'
+    },
+  },
   css: ['@/assets/css/tailwind.css', '@/assets/css/main.css'],
   postcss: {
     plugins: {

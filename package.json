@@ -1,6 +1,8 @@
 {
   "name": "Boodschappenlijst",
   "dependencies": {
+    "@nuxtjs/i18n": "^10.1.0",
+    "@pinia/nuxt": "^0.11.2",
     "nuxt": "^3.17.6",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",

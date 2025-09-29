@@ -1,0 +1,63 @@
+{
+  "nav": {
+    "title": "Grocery List",
+    "cards": "Cards",
+    "lists": "Lists",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": {
+      "title": "Login - Grocery List",
+      "description": "Log in to manage your personal grocery lists. Free and easy to use.",
+      "heading": "🛒 Login",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Login",
+      "forgot_password": "Forgot password?",
+      "no_account": "Don't have an account?",
+      "create_account": "Create account"
+    },
+    "register": {
+      "title": "Register",
+      "heading": "Create account",
+      "name": "Name",
+      "email": "Email address",
+      "password": "Password",
+      "confirm_password": "Confirm password",
+      "submit": "Register",
+      "already_account": "Already have an account?",
+      "login_here": "Login here"
+    }
+  },
+  "lists": {
+    "title": "My Lists",
+    "create_new": "Create new list",
+    "favorite": "Favorite",
+    "share": "Share",
+    "delete": "Delete",
+    "items_count": "items"
+  },
+  "cards": {
+    "title": "My Cards",
+    "upload_new": "Upload new card"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success!"
+  },
+  "language": {
+    "switch_language": "Switch language",
+    "dutch": "Dutch",
+    "english": "English"
+  }
+}
+

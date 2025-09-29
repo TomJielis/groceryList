@@ -5,23 +5,22 @@ import {useAuthStore} from "~/stores/auth";
 import { useRouter } from 'vue-router';
 import {useNotification} from "~/composables/useNotification";
 
+const { t } = useI18n();
+
 useHead({
-  title: 'Inloggen - Boodschappenlijstje',
+  title: computed(() => t('auth.login.title')),
   meta: [
     {
       name: 'description',
-      content: 'Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik.'
+      content: computed(() => t('auth.login.description'))
     }
   ]
 })
-
 
 const {showNotification} = useNotification();
 const { login } = useAuth();
 const authStore = useAuthStore();
 const router = useRouter();
-
-
 
 const userData = ref({
   email: '',
@@ -33,7 +32,6 @@ function handleLogin() {
     .then((data) => {
       authStore.setUser(data.user);
       authStore.setToken(data.token);
-
       router.push('/');
     })
     .catch((error) => {
@@ -42,14 +40,13 @@ function handleLogin() {
 }
 </script>
 
-
 <template>
   <div class="flex items-center justify-center px-4 h-[90vh]">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-gray-900">🛒 Login</h2>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-gray-900">{{ $t('auth.login.heading') }}</h2>
       <form @submit.prevent="handleLogin" class="space-y-5">
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">{{ $t('auth.login.email') }}</label>
           <input
               type="email"
               id="email"
@@ -60,7 +57,7 @@ function handleLogin() {
           />
         </div>
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Wachtwoord</label>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">{{ $t('auth.login.password') }}</label>
           <input
               type="password"
               id="password"
@@ -74,14 +71,15 @@ function handleLogin() {
             type="submit"
             class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 font-semibold"
         >
-          Login
+          {{ $t('auth.login.submit') }}
         </button>
       </form>
       <p class="text-sm text-center text-gray-600 mt-6">
-        <a href="/auth/password/reset" class="text-green-500 hover:underline font-medium">Wachtwoord vergeten?</a>
+        <a href="/auth/password/reset" class="text-green-500 hover:underline font-medium">{{ $t('auth.login.forgot_password') }}</a>
       </p>
       <p class="text-sm text-center text-gray-600 mt-6">
-        <a href="/auth/register" class="text-green-500 hover:underline font-medium">Nieuw account maken</a>
+        {{ $t('auth.login.no_account') }}
+        <a href="/auth/register" class="text-green-500 hover:underline font-medium">{{ $t('auth.login.create_account') }}</a>
       </p>
     </div>
   </div>
