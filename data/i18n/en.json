@@ -1,0 +1,57 @@
+{
+  "app": {
+    "title": "Grocery List",
+    "metaDescription": "Log in to manage your personal grocery lists. Free and easy to use."
+  },
+  "nav": {
+    "brand": "Grocery List",
+    "cards": "Cards",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Log out",
+    "lists": "Lists",
+    "language": "Language",
+    "dutch": "Dutch",
+    "english": "English"
+  },
+  "auth": {
+    "loginTitle": "Login - Grocery List",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "example@gmail.com",
+    "loginBtn": "Login",
+    "forgotPassword": "Forgot password?",
+    "createAccount": "Create new account"
+  },
+  "common": {
+    "back": "Back",
+    "save": "Save"
+  },
+  "lists": {
+    "title": "Your grocery lists",
+    "confirmDelete": "Are you sure you want to delete this list?",
+    "sharePrompt": "Enter an email address to share the list with:",
+    "shared": "List has been shared!",
+    "favorited": "List marked as favorite!",
+    "menu": {
+      "removeFavorite": "Remove favorite",
+      "markFavorite": "Mark as favorite",
+      "share": "Share",
+      "delete": "Delete"
+    },
+    "form": {
+      "placeholder": "Enter new list",
+      "createBtn": "Create list"
+    }
+  },
+  "list": {
+    "total": "Total",
+    "showChecked": "Show",
+    "hideChecked": "Hide",
+    "checkedItemsSuffix": "checked items"
+  },
+  "items": {
+    "addPlaceholder": "Enter new item",
+    "pricePlaceholder": "€ price"
+  }
+}

@@ -2,19 +2,24 @@
 import NotificationBar from '~/components/NotificationBar.vue';
 import Navbar from '~/components/Navbar.vue';
 import BottomBar from '~/components/BottomBar.vue';
+import { useI18nStore } from "~/stores/i18n";
+import { computed, watch } from 'vue'
 
-useHead({
+const i18n = useI18nStore()
+const t = computed(() => i18n.t)
+
+useHead(() => ({
   link: [
     { rel: 'manifest', href: '/manifest.json' }
   ],
-  title: 'Boodschappenlijst',
+  title: t.value('app.title'),
   meta: [
     {
       name: 'description',
-      content: 'Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik.'
+      content: t.value('app.metaDescription')
     }
   ]
-})
+}))
 </script>
 
 <template>

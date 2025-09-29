@@ -1,0 +1,57 @@
+{
+  "app": {
+    "title": "Boodschappenlijst",
+    "metaDescription": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik."
+  },
+  "nav": {
+    "brand": "Boodschappenlijst",
+    "cards": "Kaarten",
+    "login": "Login",
+    "register": "Registreren",
+    "logout": "Uitloggen",
+    "lists": "Lijsten",
+    "language": "Taal",
+    "dutch": "Nederlands",
+    "english": "Engels"
+  },
+  "auth": {
+    "loginTitle": "Inloggen - Boodschappenlijstje",
+    "email": "Email",
+    "password": "Wachtwoord",
+    "emailPlaceholder": "voorbeeld@gmail.com",
+    "loginBtn": "Login",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "createAccount": "Nieuw account maken"
+  },
+  "common": {
+    "back": "Terug",
+    "save": "Opslaan"
+  },
+  "lists": {
+    "title": "📋 Jouw boodschappenlijsten",
+    "confirmDelete": "Weet je zeker dat je deze lijst wilt verwijderen?",
+    "sharePrompt": "Voer een e-mailadres in om de lijst mee te delen:",
+    "shared": "Lijst is gedeeld!",
+    "favorited": "Lijst als favoriet gemarkeerd!",
+    "menu": {
+      "removeFavorite": "Verwijder favoriet",
+      "markFavorite": "Markeer als favoriet",
+      "share": "Delen",
+      "delete": "Verwijder"
+    },
+    "form": {
+      "placeholder": "Nieuwe lijst invoeren",
+      "createBtn": "Lijst maken"
+    }
+  },
+  "list": {
+    "total": "Totaal",
+    "showChecked": "Weergeef",
+    "hideChecked": "Verberg",
+    "checkedItemsSuffix": "afgevinkte items"
+  },
+  "items": {
+    "addPlaceholder": "Nieuwe item invoeren",
+    "pricePlaceholder": "€ prijs"
+  }
+}

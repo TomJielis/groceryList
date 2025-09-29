@@ -1,0 +1,54 @@
+{
+  "nl": {
+    "app": {
+      "title": "Boodschappenlijst",
+      "metaDescription": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik."
+    },
+    "nav": {
+      "brand": "Boodschappenlijst",
+      "cards": "Kaarten",
+      "login": "Login",
+      "register": "Registreren",
+      "logout": "Uitloggen",
+      "lists": "Lijsten",
+      "language": "Taal",
+      "dutch": "Nederlands",
+      "english": "Engels"
+    },
+    "auth": {
+      "loginTitle": "Inloggen - Boodschappenlijstje",
+      "email": "Email",
+      "password": "Wachtwoord",
+      "emailPlaceholder": "voorbeeld@gmail.com",
+      "loginBtn": "Login",
+      "forgotPassword": "Wachtwoord vergeten?",
+      "createAccount": "Nieuw account maken"
+    }
+  },
+  "en": {
+    "app": {
+      "title": "Grocery List",
+      "metaDescription": "Log in to manage your personal grocery lists. Free and easy to use."
+    },
+    "nav": {
+      "brand": "Grocery List",
+      "cards": "Cards",
+      "login": "Login",
+      "register": "Register",
+      "logout": "Log out",
+      "lists": "Lists",
+      "language": "Language",
+      "dutch": "Dutch",
+      "english": "English"
+    },
+    "auth": {
+      "loginTitle": "Login - Grocery List",
+      "email": "Email",
+      "password": "Password",
+      "emailPlaceholder": "example@gmail.com",
+      "loginBtn": "Login",
+      "forgotPassword": "Forgot password?",
+      "createAccount": "Create new account"
+    }
+  }
+}
