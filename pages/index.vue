@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import {useGroceryList} from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
-import {ref, onMounted, onBeforeUnmount, watch} from 'vue'
+import ShareListModal from '~/components/ShareListModal.vue';
+import deleteModal from '~/components/deleteModal.vue';
+import {ref, watch, computed} from 'vue'
 import {useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
+import { useI18nStore } from '~/stores/i18n';
 
 const listStore = useListStore();
 await listStore.fetchLists()
@@ -26,10 +29,20 @@ definePageMeta({
 const auth = useAuthStore()
 const list = useGroceryList()
 const {favorite, shareList, deleteList} = list
-const {showNotification} = useNotification();
+const {showNotification, showSuccess} = useNotification();
+const i18n = useI18nStore();
 
 const openListForm = ref(false)
 const openDropdown = ref<number | null>(null)
+
+const showShareModal = ref(false)
+const shareEmail = ref('')
+const shareListId = ref<number | null>(null)
+const shareListName = ref('')
+
+const showDeleteModal = ref(false)
+const deleteListId = ref<number | null>(null)
+const deleteListName = ref('')
 
 function handleList() {
   openListForm.value = false
@@ -58,7 +71,7 @@ watch(openDropdown, (val) => {
 
 
 async function confirmDelete(id: number) {
-  if (confirm('Weet je zeker dat je deze lijst wilt verwijderen?')) {
+  if (confirm(i18n.t('lists.confirmDelete'))) {
     deleteList(id).then(async () => {
       listStore.removeList(id);
     }).catch((error) => {
@@ -68,18 +81,64 @@ async function confirmDelete(id: number) {
 }
 
 function shareListWithUser(id: number) {
-  // You might want to show a modal here
-  const email = prompt('Voer een e-mailadres in om de lijst mee te delen:')
-  if (email) {
-    shareList(id, email).then(() => alert('Lijst is gedeeld!'))
+  const list = listStore.lists.find((list: any) => list.id === id);
+  shareListId.value = id;
+  shareListName.value = list?.name || '';
+  shareEmail.value = '';
+  showShareModal.value = true;
+  openDropdown.value = null; // Close the dropdown
+}
+
+function handleShareConfirm(email: string) {
+  if (shareListId.value && email.trim()) {
+    shareList(shareListId.value, email).then(() => {
+      showSuccess(i18n.t('lists.shared'));
+      showShareModal.value = false;
+    }).catch((error) => {
+      showNotification(error);
+    });
   }
+}
+
+function closeShareModal() {
+  showShareModal.value = false;
+  shareEmail.value = '';
+  shareListId.value = null;
+  shareListName.value = '';
+}
+
+function deleteListItem(id: number) {
+  const list = listStore.lists.find((list: any) => list.id === id);
+  deleteListId.value = id;
+  deleteListName.value = list?.name || '';
+  showDeleteModal.value = true;
+  openDropdown.value = null; // Close the dropdown
+}
+
+function handleDeleteConfirm() {
+  if (deleteListId.value) {
+    deleteList(deleteListId.value).then(() => {
+      listStore.removeList(deleteListId.value);
+      showDeleteModal.value = false;
+      deleteListId.value = null;
+      deleteListName.value = '';
+    }).catch((error) => {
+      showNotification(error);
+    });
+  }
+}
+
+function closeDeleteModal() {
+  showDeleteModal.value = false;
+  deleteListId.value = null;
+  deleteListName.value = '';
 }
 
 function makefavorite(id: number | null) {
   favorite(id)
       .then(() => {
         favorite(id);
-        alert(`Lijst als favoriet gemarkeerd!`)
+        showSuccess(i18n.t('lists.favorited'));
       })
       .catch((error) => {
         showNotification(error);
@@ -118,7 +177,7 @@ function calculateProgress(listItem) {
 
 <template>
   <div class="max-w-8xl p-4">
-    <h1 class="text-xl font-bold mb-4 text-center">📋 Jouw boodschappenlijsten</h1>
+    <h1 class="text-xl font-bold mb-4 text-center"> {{ i18n.t('lists.title') }}</h1>
 
     <div v-if="!openListForm">
       <ul class="space-y-3">
@@ -151,21 +210,21 @@ function calculateProgress(listItem) {
                     class="block w-full text-left px-4 py-3 hover:bg-gray-100"
                     @click.stop="setFavoriteList(listItem.id)"
                 >
-                  {{ auth?.user?.favorite_list_id === listItem.id ? '❌ Verwijder favoriet' : '⭐ Markeer als favoriet' }}
+                  {{ auth?.user?.favorite_list_id === listItem.id ? `❌ ${i18n.t('lists.menu.removeFavorite')}` : `⭐ ${i18n.t('lists.menu.markFavorite')}` }}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
                     class="block w-full text-left px-4 py-3 hover:bg-gray-100"
                     @click.stop="shareListWithUser(listItem.id)"
                 >
-                  👥 Delen
+                  👥 {{ i18n.t('lists.menu.share') }}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
                     class="block w-full text-left px-4 py-3 text-red-600 hover:bg-red-100"
-                    @click.stop="confirmDelete(listItem.id)"
+                    @click.stop="deleteListItem(listItem.id)"
                 >
-                  🗑️ Verwijder
+                  🗑️ {{ i18n.t('lists.menu.delete') }}
                 </button>
               </div>
             </div>
@@ -217,6 +276,24 @@ function calculateProgress(listItem) {
     <div v-else>
       <ListForm @list-added="handleList" @close="openListForm = false"/>
     </div>
+
+    <ShareListModal
+        :is-visible="showShareModal"
+        v-model:email="shareEmail"
+        :list-name="shareListName"
+        @close="closeShareModal"
+        @confirm="handleShareConfirm"
+    />
+
+    <!-- Delete List Modal -->
+    <deleteModal
+        :is-visible="showDeleteModal"
+        :title="i18n.t('lists.deleteTitle')"
+        :content="i18n.t('lists.confirmDelete')"
+        :item-name="deleteListName"
+        :delete-button-text="i18n.t('lists.deleteBtn')"
+        @close="closeDeleteModal"
+        @confirm="handleDeleteConfirm"
+    />
   </div>
 </template>
-

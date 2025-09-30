@@ -1,5 +1,4 @@
 import {useAuthStore} from "~/stores/auth";
-import {useRouter} from 'vue-router';
 
 export function useAuth() {
     const authStore = useAuthStore();
@@ -112,6 +111,23 @@ export function useAuth() {
         return result;
     }
 
+    async function setLanguage(language: string) {
+        const upateLanguageResponse = await fetch('/api/user/updateLanguage/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(language),
+        });
+
+        if (!upateLanguageResponse.ok) {
+            throw new Error(`Failed to login user: ${upateLanguageResponse.statusText}`);
+        }
+
+        return await upateLanguageResponse.json();
+    }
+
+
 
 
     return {
@@ -119,6 +135,7 @@ export function useAuth() {
         register,
         verifyEmail,
         resetPassword,
-        setNewPassword
+        setNewPassword,
+        setLanguage
     }
 }

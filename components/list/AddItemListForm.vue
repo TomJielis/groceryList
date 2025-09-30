@@ -3,6 +3,7 @@ import {ref, computed} from 'vue';
 import {useRoute} from 'vue-router';
 import {useGroceryList} from '~/composables/useGroceryList';
 import {useSuggestionStore} from '~/stores/suggestions'
+import { useI18nStore } from '~/stores/i18n';
 
 import suggestionsData from '~/data/suggestions.json';
 
@@ -16,6 +17,7 @@ const {
 const emit = defineEmits(['item-added', 'close']);
 
 const suggestionStore = useSuggestionStore()
+const i18n = useI18nStore();
 
 onMounted(() => {
   suggestionStore.fetchSuggestions()
@@ -53,7 +55,7 @@ fetchItems(listId)
       <input
           type="text"
           v-model="newItem"
-          placeholder="Nieuwe item invoeren"
+          :placeholder="i18n.t('items.addPlaceholder')"
           class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base sm:text-lg md:text-xl"
       />
       <ul class="space-y-3">
@@ -101,7 +103,7 @@ fetchItems(listId)
         class="w-full py-3 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition"
         @click="$emit('close')"
     >
-      ← Terug
+      ← {{ i18n.t('common.back') }}
     </button>
   </div>
 </template>

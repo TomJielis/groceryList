@@ -1,0 +1,118 @@
+{
+  "app": {
+    "title": "Boodschappenlijst",
+    "metaDescription": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik."
+  },
+  "nav": {
+    "brand": "Boodschappenlijst",
+    "cards": "Kaarten",
+    "login": "Login",
+    "register": "Registreren",
+    "logout": "Uitloggen",
+    "profile": "Profiel",
+    "lists": "Lijsten",
+    "language": "Taal",
+    "dutch": "Nederlands",
+    "english": "Engels"
+  },
+  "auth": {
+    "loginTitle": "Inloggen - Boodschappenlijstje",
+    "email": "Email",
+    "password": "Wachtwoord",
+    "passwordPlaceholder": "••••••••",
+    "emailPlaceholder": "voorbeeld@gmail.com",
+    "loginBtn": "Login",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "createAccount": "Nieuw account maken",
+    "registerTitle": "Registreren",
+    "registerBtn": "Registreren",
+    "name": "Naam",
+    "verifyMailMessageTitle": "Verifieer je e-mail",
+    "verifyMailMessageBody": "Er is een verificatie-e-mail verzonden. Controleer je inbox.",
+    "verifyEmailTitle": "E-mail verifiëren",
+    "verifyingEmail": "Je e-mailadres wordt geverifieerd...",
+    "emailVerifiedTitle": "E-mail succesvol geverifieerd",
+    "emailVerifiedBody": "Je e-mail is succesvol geverifieerd. Je kunt nu inloggen op je account.",
+    "emailVerifyFailedTitle": "E-mail verificatie mislukt",
+    "emailVerifyFailedBody": "Er was een probleem bij het verifiëren van je e-mail. Probeer het opnieuw of neem contact op met de ondersteuning.",
+    "unexpectedError": "Er is een onverwachte fout opgetreden.",
+    "goToLogin": "Ga naar inloggen",
+    "resetPasswordTitle": "Wachtwoord resetten",
+    "resetPasswordBtn": "Wachtwoord resetten",
+    "repeatPassword": "Herhaal wachtwoord",
+    "passwordUpdatedTitle": "Wachtwoord bijgewerkt",
+    "passwordUpdatedBody": "Je wachtwoord is bijgewerkt. Je kunt nu inloggen.",
+    "sendBtn": "Verstuur",
+    "alreadyHaveAccount": "Heb je al een account?",
+    "checkEmailTitle": "Controleer je e-mail!",
+    "checkEmailBody": "Als er een account bestaat voor het opgegeven e-mailadres, hebben we je een link voor het opnieuw instellen van je wachtwoord gestuurd. Controleer je inbox — en vergeet niet om ook in je spam- of junkmap te kijken, voor het geval dat."
+  },
+  "common": {
+    "back": "Terug",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen"
+  },
+  "lists": {
+    "title": "📋 Jouw boodschappenlijsten",
+    "confirmDelete": "Weet je zeker dat je deze lijst wilt verwijderen?",
+    "deleteTitle": "Lijst Verwijderen",
+    "deleteListName": "Lijst",
+    "deleteBtn": "Verwijderen",
+    "sharePrompt": "Voer een e-mailadres in om de lijst mee te delen:",
+    "shareTitle": "Lijst Delen",
+    "shareListName": "Lijst",
+    "shareBtn": "Delen",
+    "shared": "Lijst is gedeeld!",
+    "favorited": "Lijst als favoriet gemarkeerd!",
+    "menu": {
+      "removeFavorite": "Verwijder favoriet",
+      "markFavorite": "Markeer als favoriet",
+      "share": "Delen",
+      "delete": "Verwijder"
+    },
+    "form": {
+      "placeholder": "Nieuwe lijst invoeren",
+      "createBtn": "Lijst maken"
+    }
+  },
+  "list": {
+    "total": "Totaal",
+    "showChecked": "Weergeef",
+    "hideChecked": "Verberg",
+    "checkedItemsSuffix": "afgevinkte items"
+  },
+  "items": {
+    "addPlaceholder": "Nieuwe item invoeren",
+    "pricePlaceholder": "€ prijs"
+  },
+  "cards": {
+    "available": "Beschikbare kaarten",
+    "title": "Titel",
+    "attachment": "Bijlage",
+    "upload": "Uploaden",
+    "confirmDelete": "Wil je deze kaart verwijderen?",
+    "deleteTitle": "Kaart Verwijderen",
+    "deleteCardName": "Kaart",
+    "deleteBtn": "Verwijder kaart",
+    "addBtn": "Kaart toevoegen",
+    "noCards": "Je hebt nog geen kaart toegevoegd."
+  },
+  "profile": {
+    "title": "Profiel",
+    "information": "Profiel Informatie",
+    "edit": "Bewerken",
+    "saveChanges": "Wijzigingen Opslaan",
+    "profileUpdated": "Profiel succesvol bijgewerkt",
+    "language": "Taal Instellingen",
+    "languageChanged": "Taal succesvol gewijzigd",
+    "accountActions": "Account Acties",
+    "deactivateAccount": "Account Deactiveren",
+    "deactivateAccountTitle": "Account Deactiveren",
+    "deactivateAccountWarning": "Deze actie kan niet ongedaan worden gemaakt. Je account en alle gegevens worden permanent verwijderd.",
+    "deactivateAccountConfirm": "Type 'DELETE' om te bevestigen:",
+    "typeDELETE": "Type DELETE",
+    "deleteConfirmError": "Type 'DELETE' om account verwijdering te bevestigen",
+    "accountDeactivated": "Account is gedeactiveerd"
+  }
+}
