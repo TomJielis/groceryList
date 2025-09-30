@@ -32,8 +32,10 @@ const userData = ref({
 function handleLogin() {
   login(userData.value)
     .then((data) => {
+      console.log(data.user)
       authStore.setUser(data.user);
       authStore.setToken(data.token);
+      i18n.setLocale(data.user.language || 'nl');
 
       router.push('/');
     })
