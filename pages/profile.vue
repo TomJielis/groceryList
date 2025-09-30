@@ -8,12 +8,15 @@ import ProfileInformation from '~/components/profile/ProfileInformation.vue';
 import LanguageSettings from '~/components/profile/LanguageSettings.vue';
 import AccountActions from '~/components/profile/AccountActions.vue';
 import DeactivateAccountModal from '~/components/profile/DeactivateAccountModal.vue';
+import {useAuth} from "~/composables/useAuth";
 
 definePageMeta({
   middleware: 'auth',
 });
 
 const authStore = useAuthStore();
+const { setLanguage } = useAuth();
+
 const i18n = useI18nStore();
 const { showNotification, showSuccess } = useNotification();
 const router = useRouter();
@@ -46,6 +49,8 @@ async function handleProfileUpdate(userData: { name: string; email: string }) {
 
 // Language switching
 function handleLanguageChange(locale: 'nl' | 'en') {
+  setLanguage(locale);
+
   i18n.setLocale(locale);
   showSuccess(t.value('profile.languageChanged'));
 }
