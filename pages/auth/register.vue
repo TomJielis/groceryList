@@ -8,11 +8,11 @@ import { useI18nStore } from '~/stores/i18n';
 const i18n = useI18nStore();
 const { showNotification } = useNotification();
 const { register } = useAuth();
-const router = useRouter();
 const userData = ref({
   name: '',
   email: '',
-  password: ''
+  password: '',
+  language:''
 });
 
 const verifyMailMessage = ref(false);
@@ -69,6 +69,30 @@ function handleRegister() {
                 :placeholder="i18n.t('auth.password')"
                 required
             />
+          </div>
+          <div class="bg-white rounded-xl shadow-sm">
+            <div class="space-y-3">
+              <label class="flex items-center">
+                <input
+                    type="radio"
+                    class="mr-3"
+                    name="language"
+                    value="nl"
+                    v-model="userData.language"
+                />
+                <span>🇳🇱 {{ i18n.t('nav.dutch') }}</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                    type="radio"
+                    class="mr-3"
+                    name="language"
+                    value="en"
+                    v-model="userData.language"
+                />
+                <span>🇺🇸 {{ i18n.t('nav.english') }}</span>
+              </label>
+            </div>
           </div>
           <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 font-semibold">
             {{ i18n.t('auth.registerBtn') }}
