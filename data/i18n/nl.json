@@ -9,6 +9,7 @@
     "login": "Login",
     "register": "Registreren",
     "logout": "Uitloggen",
+    "profile": "Profiel",
     "lists": "Lijsten",
     "language": "Taal",
     "dutch": "Nederlands",
@@ -48,12 +49,20 @@
   },
   "common": {
     "back": "Terug",
-    "save": "Opslaan"
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen"
   },
   "lists": {
     "title": "📋 Jouw boodschappenlijsten",
     "confirmDelete": "Weet je zeker dat je deze lijst wilt verwijderen?",
+    "deleteTitle": "Lijst Verwijderen",
+    "deleteListName": "Lijst",
+    "deleteBtn": "Verwijderen",
     "sharePrompt": "Voer een e-mailadres in om de lijst mee te delen:",
+    "shareTitle": "Lijst Delen",
+    "shareListName": "Lijst",
+    "shareBtn": "Delen",
     "shared": "Lijst is gedeeld!",
     "favorited": "Lijst als favoriet gemarkeerd!",
     "menu": {
@@ -83,8 +92,27 @@
     "attachment": "Bijlage",
     "upload": "Uploaden",
     "confirmDelete": "Wil je deze kaart verwijderen?",
+    "deleteTitle": "Kaart Verwijderen",
+    "deleteCardName": "Kaart",
     "deleteBtn": "Verwijder kaart",
     "addBtn": "Kaart toevoegen",
     "noCards": "Je hebt nog geen kaart toegevoegd."
+  },
+  "profile": {
+    "title": "Profiel",
+    "information": "Profiel Informatie",
+    "edit": "Bewerken",
+    "saveChanges": "Wijzigingen Opslaan",
+    "profileUpdated": "Profiel succesvol bijgewerkt",
+    "language": "Taal Instellingen",
+    "languageChanged": "Taal succesvol gewijzigd",
+    "accountActions": "Account Acties",
+    "deactivateAccount": "Account Deactiveren",
+    "deactivateAccountTitle": "Account Deactiveren",
+    "deactivateAccountWarning": "Deze actie kan niet ongedaan worden gemaakt. Je account en alle gegevens worden permanent verwijderd.",
+    "deactivateAccountConfirm": "Type 'DELETE' om te bevestigen:",
+    "typeDELETE": "Type DELETE",
+    "deleteConfirmError": "Type 'DELETE' om account verwijdering te bevestigen",
+    "accountDeactivated": "Account is gedeactiveerd"
   }
 }
