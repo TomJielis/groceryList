@@ -42,13 +42,28 @@ function handleLogin() {
       showNotification(error);
     });
 }
+
+// Function to toggle language for non-logged-in users
+function toggleLanguage() {
+  const newLocale = i18n.locale === 'en' ? 'nl' : 'en';
+  i18n.setLocale(newLocale);
+}
 </script>
 
 
 <template>
   <div class="flex items-center justify-center px-4 h-[90vh]">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-gray-900">🛒 {{ t('nav.login') }}</h2>
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900">🛒 {{ t('nav.login') }}</h2>
+        <button
+          @click="toggleLanguage"
+          class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md transition"
+          type="button"
+        >
+          {{ i18n.locale === 'en' ? 'NL' : 'EN' }}
+        </button>
+      </div>
       <form @submit.prevent="handleLogin" class="space-y-5">
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700 mb-1">{{ t('auth.email') }}</label>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import {useAuth} from "~/composables/useAuth";
 import {useRouter} from "vue-router";
 import {useNotification} from "~/composables/useNotification";
@@ -8,17 +8,24 @@ import { useI18nStore } from '~/stores/i18n';
 const i18n = useI18nStore();
 const { showNotification } = useNotification();
 const { register } = useAuth();
+const router = useRouter();
 const userData = ref({
   name: '',
   email: '',
   password: '',
-  language:''
+  language: i18n.locale // Initialize with current language
 });
 
 const verifyMailMessage = ref(false);
 
 function handleRegister() {
-  register(userData.value)
+  // Include the current language selection in the registration data
+  const registrationData = {
+    ...userData.value,
+    language: i18n.locale // Add current language to registration
+  };
+
+  register(registrationData)
       .then((data) => {
         verifyMailMessage.value = true;
       })
@@ -26,6 +33,17 @@ function handleRegister() {
         verifyMailMessage.value = false;
         showNotification(error);
       });
+}
+
+// Watch for language changes and update the form
+watch(() => i18n.locale, (newLocale) => {
+  userData.value.language = newLocale;
+});
+
+// Handle language change in registration form
+function handleLanguageChange(locale: 'nl' | 'en') {
+  i18n.setLocale(locale);
+  userData.value.language = locale;
 }
 </script>
 
@@ -79,6 +97,7 @@ function handleRegister() {
                     name="language"
                     value="nl"
                     v-model="userData.language"
+                    @change="handleLanguageChange('nl')"
                 />
                 <span>🇳🇱 {{ i18n.t('nav.dutch') }}</span>
               </label>
@@ -89,6 +108,7 @@ function handleRegister() {
                     name="language"
                     value="en"
                     v-model="userData.language"
+                    @change="handleLanguageChange('en')"
                 />
                 <span>🇺🇸 {{ i18n.t('nav.english') }}</span>
               </label>

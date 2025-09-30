@@ -3,7 +3,7 @@ import {useAuthStore} from "~/stores/auth";
 export function useAuth() {
     const authStore = useAuthStore();
 
-    async function register(userData: { name: string, email: string, password: string }) {
+    async function register(userData: { name: string, email: string, password: string, language: string }) {
         const registerResponse = await fetch('/api/user/register/', {
             method: 'POST',
             headers: {
@@ -20,6 +20,7 @@ export function useAuth() {
         if (!result.user) {
             throw new Error(result.error || 'Register error');
         }
+        authStore.setUser(result.user); // Update user state with returned data
 
         return result;
     }
