@@ -21,7 +21,29 @@
     "emailPlaceholder": "example@gmail.com",
     "loginBtn": "Login",
     "forgotPassword": "Forgot password?",
-    "createAccount": "Create new account"
+    "createAccount": "Create new account",
+    "registerTitle": "Register",
+    "registerBtn": "Register",
+    "name": "Name",
+    "verifyMailMessageTitle": "Verify your email",
+    "verifyMailMessageBody": "A verification email has been sent. Please check your inbox.",
+    "verifyEmailTitle": "Verify Email",
+    "verifyingEmail": "Verifying your email address...",
+    "emailVerifiedTitle": "Email successfully verified",
+    "emailVerifiedBody": "Your email has been verified. You can now log in to your account.",
+    "emailVerifyFailedTitle": "Email verification failed",
+    "emailVerifyFailedBody": "There was a problem verifying your email. Please try again or contact support.",
+    "unexpectedError": "An unexpected error occurred.",
+    "goToLogin": "Go to login",
+    "resetPasswordTitle": "Reset password",
+    "resetPasswordBtn": "Reset password",
+    "repeatPassword": "Repeat password",
+    "passwordUpdatedTitle": "Password updated",
+    "passwordUpdatedBody": "Your password has been updated. You can now log in.",
+    "sendBtn": "Send",
+    "alreadyHaveAccount": "Already have an account?",
+    "checkEmailTitle": "Check your email!",
+    "checkEmailBody": "If an account exists for the provided email address, we've sent you a link to reset your password. Check your inbox—and don't forget to check your spam or junk folder just in case."
   },
   "common": {
     "back": "Back",
@@ -53,5 +75,15 @@
   "items": {
     "addPlaceholder": "Enter new item",
     "pricePlaceholder": "€ price"
+  },
+  "cards": {
+    "available": "Available Cards",
+    "title": "Title",
+    "attachment": "Attachment",
+    "upload": "Upload",
+    "confirmDelete": "Do you want to delete this card?",
+    "deleteBtn": "Delete card",
+    "addBtn": "Add card",
+    "noCards": "You have not added any cards yet."
   }
 }

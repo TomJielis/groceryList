@@ -5,6 +5,7 @@ import {ref, onMounted, onBeforeUnmount, watch} from 'vue'
 import {useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
+import { useI18nStore } from '~/stores/i18n';
 
 const listStore = useListStore();
 await listStore.fetchLists()
@@ -27,6 +28,7 @@ const auth = useAuthStore()
 const list = useGroceryList()
 const {favorite, shareList, deleteList} = list
 const {showNotification} = useNotification();
+const i18n = useI18nStore();
 
 const openListForm = ref(false)
 const openDropdown = ref<number | null>(null)
@@ -58,7 +60,7 @@ watch(openDropdown, (val) => {
 
 
 async function confirmDelete(id: number) {
-  if (confirm('Weet je zeker dat je deze lijst wilt verwijderen?')) {
+  if (confirm(i18n.t('lists.confirmDelete'))) {
     deleteList(id).then(async () => {
       listStore.removeList(id);
     }).catch((error) => {
@@ -69,9 +71,9 @@ async function confirmDelete(id: number) {
 
 function shareListWithUser(id: number) {
   // You might want to show a modal here
-  const email = prompt('Voer een e-mailadres in om de lijst mee te delen:')
+  const email = prompt(i18n.t('lists.sharePrompt'))
   if (email) {
-    shareList(id, email).then(() => alert('Lijst is gedeeld!'))
+    shareList(id, email).then(() => alert(i18n.t('lists.shared')))
   }
 }
 
@@ -79,7 +81,7 @@ function makefavorite(id: number | null) {
   favorite(id)
       .then(() => {
         favorite(id);
-        alert(`Lijst als favoriet gemarkeerd!`)
+        alert(i18n.t('lists.favorited'))
       })
       .catch((error) => {
         showNotification(error);
@@ -118,7 +120,7 @@ function calculateProgress(listItem) {
 
 <template>
   <div class="max-w-8xl p-4">
-    <h1 class="text-xl font-bold mb-4 text-center">📋 Jouw boodschappenlijsten</h1>
+    <h1 class="text-xl font-bold mb-4 text-center">📋 {{ i18n.t('lists.title') }}</h1>
 
     <div v-if="!openListForm">
       <ul class="space-y-3">
@@ -151,21 +153,21 @@ function calculateProgress(listItem) {
                     class="block w-full text-left px-4 py-3 hover:bg-gray-100"
                     @click.stop="setFavoriteList(listItem.id)"
                 >
-                  {{ auth?.user?.favorite_list_id === listItem.id ? '❌ Verwijder favoriet' : '⭐ Markeer als favoriet' }}
+                  {{ auth?.user?.favorite_list_id === listItem.id ? `❌ ${i18n.t('lists.menu.removeFavorite')}` : `⭐ ${i18n.t('lists.menu.markFavorite')}` }}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
                     class="block w-full text-left px-4 py-3 hover:bg-gray-100"
                     @click.stop="shareListWithUser(listItem.id)"
                 >
-                  👥 Delen
+                  👥 {{ i18n.t('lists.menu.share') }}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
                     class="block w-full text-left px-4 py-3 text-red-600 hover:bg-red-100"
                     @click.stop="confirmDelete(listItem.id)"
                 >
-                  🗑️ Verwijder
+                  🗑️ {{ i18n.t('lists.menu.delete') }}
                 </button>
               </div>
             </div>
@@ -219,4 +221,3 @@ function calculateProgress(listItem) {
     </div>
   </div>
 </template>
-

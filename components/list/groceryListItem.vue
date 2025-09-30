@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18nStore } from '~/stores/i18n';
 
 const props = defineProps<{
   item: any,
@@ -12,6 +13,8 @@ const emit = defineEmits<{
   (e: 'check', item: any): void;
   (e: 'save', item: any): void;
 }>();
+
+const i18n = useI18nStore();
 
 const localItem = ref({ ...props.item });
 
@@ -45,7 +48,7 @@ watch(() => props.item, (newVal) => {
             v-model.number="localItem.unit_price"
             type="number"
             step="0.01"
-            placeholder="€ prijs"
+            :placeholder="i18n.t('items.pricePlaceholder')"
             class="border rounded px-2 py-1 w-24 text-right"
         />
       </div>
@@ -53,7 +56,7 @@ watch(() => props.item, (newVal) => {
           @click="emit('save', localItem)"
           class="self-end bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
       >
-        Opslaan
+        {{ i18n.t('common.save') }}
       </button>
     </div>
 

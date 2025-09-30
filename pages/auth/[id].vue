@@ -3,6 +3,9 @@
 import {ref} from "vue";
 import {useRoute} from "vue-router";
 import {useAuth} from "~/composables/useAuth";
+import { useI18nStore } from '~/stores/i18n';
+
+const i18n = useI18nStore();
 
 const form = ref({
   token: '',
@@ -10,8 +13,8 @@ const form = ref({
 
 const hasError = ref(false)
 const errorText = ref('')
-const title = ref('Verify Email');
-const body = ref('Verifying your email address...');
+const title = ref(i18n.t('auth.verifyEmailTitle'));
+const body = ref(i18n.t('auth.verifyingEmail'));
 
 const auth = useAuth();
 const route = useRoute();
@@ -19,14 +22,14 @@ const route = useRoute();
 form.value.token = route.params.id as string;
 
 
-auth.verifyEmail(form.value).then((data:any) => {
-  title.value = 'E-mail succesvol geverifieerd'
-  body.value = 'Je e-mail is succesvol geverifieerd. Je kunt nu inloggen op je account.\n'
+auth.verifyEmail(form.value.token).then((data:any) => {
+  title.value = i18n.t('auth.emailVerifiedTitle');
+  body.value = i18n.t('auth.emailVerifiedBody');
 }).catch((error) => {
-  title.value = 'E-mail verificatie mislukt'
-  body.value = 'Er was een probleem bij het verifiëren van je e-mail. Probeer het opnieuw of neem contact op met de ondersteuning.'
+  title.value = i18n.t('auth.emailVerifyFailedTitle');
+  body.value = i18n.t('auth.emailVerifyFailedBody');
   hasError.value = true;
-  errorText.value = error || 'Er is een onverwachte fout opgetreden.';
+  errorText.value = error || i18n.t('auth.unexpectedError');
   // Optionally, show an error message to the user
 });
 
@@ -53,7 +56,7 @@ auth.verifyEmail(form.value).then((data:any) => {
             to="/auth/login"
             class="mt-4 bg-green-500 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-green-600 transition"
         >
-          Ga naar inloggen
+          {{ i18n.t('auth.goToLogin') }}
         </NuxtLink>
       </div>
     </div>

@@ -5,6 +5,7 @@ import AddItemListForm from '~/components/list/AddItemListForm.vue';
 import GroceryListItem from '~/components/list/groceryListItem.vue';
 import { useGroceryList } from '~/composables/useGroceryList';
 import { useListStore } from '~/stores/lists';
+import { useI18nStore } from '~/stores/i18n';
 
 definePageMeta({
   middleware: 'auth',
@@ -13,6 +14,7 @@ definePageMeta({
 const listStore = useListStore();
 const route = useRoute();
 const listId = route.params.id as string;
+const i18n = useI18nStore();
 
 const showAddItem = ref(false);
 const showCheckedItems = ref(false);
@@ -83,7 +85,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-2xl font-bold">🛒 {{ list?.name }}</h1>
       <div class="text-lg font-bold">
-        Totaal: €{{
+        {{ i18n.t('list.total') }}: €{{
           uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
         }}
       </div>
@@ -108,7 +110,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             class="text-center text-gray-700 mt-4 cursor-pointer hover:underline"
             @click="showCheckedItems = !showCheckedItems"
         >
-          {{ showCheckedItems ? 'Verberg' : 'Weergeef' }} afgevinkte items ({{ checkedItems.length }})
+          {{ showCheckedItems ? i18n.t('list.hideChecked') : i18n.t('list.showChecked') }} {{ i18n.t('list.checkedItemsSuffix') }} ({{ checkedItems.length }})
         </p>
 
         <!-- CHECKED ITEMS -->

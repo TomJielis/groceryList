@@ -21,7 +21,29 @@
     "emailPlaceholder": "voorbeeld@gmail.com",
     "loginBtn": "Login",
     "forgotPassword": "Wachtwoord vergeten?",
-    "createAccount": "Nieuw account maken"
+    "createAccount": "Nieuw account maken",
+    "registerTitle": "Registreren",
+    "registerBtn": "Registreren",
+    "name": "Naam",
+    "verifyMailMessageTitle": "Verifieer je e-mail",
+    "verifyMailMessageBody": "Er is een verificatie-e-mail verzonden. Controleer je inbox.",
+    "verifyEmailTitle": "E-mail verifiëren",
+    "verifyingEmail": "Je e-mailadres wordt geverifieerd...",
+    "emailVerifiedTitle": "E-mail succesvol geverifieerd",
+    "emailVerifiedBody": "Je e-mail is succesvol geverifieerd. Je kunt nu inloggen op je account.",
+    "emailVerifyFailedTitle": "E-mail verificatie mislukt",
+    "emailVerifyFailedBody": "Er was een probleem bij het verifiëren van je e-mail. Probeer het opnieuw of neem contact op met de ondersteuning.",
+    "unexpectedError": "Er is een onverwachte fout opgetreden.",
+    "goToLogin": "Ga naar inloggen",
+    "resetPasswordTitle": "Wachtwoord resetten",
+    "resetPasswordBtn": "Wachtwoord resetten",
+    "repeatPassword": "Herhaal wachtwoord",
+    "passwordUpdatedTitle": "Wachtwoord bijgewerkt",
+    "passwordUpdatedBody": "Je wachtwoord is bijgewerkt. Je kunt nu inloggen.",
+    "sendBtn": "Verstuur",
+    "alreadyHaveAccount": "Heb je al een account?",
+    "checkEmailTitle": "Controleer je e-mail!",
+    "checkEmailBody": "Als er een account bestaat voor het opgegeven e-mailadres, hebben we je een link voor het opnieuw instellen van je wachtwoord gestuurd. Controleer je inbox — en vergeet niet om ook in je spam- of junkmap te kijken, voor het geval dat."
   },
   "common": {
     "back": "Terug",
@@ -53,5 +75,15 @@
   "items": {
     "addPlaceholder": "Nieuwe item invoeren",
     "pricePlaceholder": "€ prijs"
+  },
+  "cards": {
+    "available": "Beschikbare kaarten",
+    "title": "Titel",
+    "attachment": "Bijlage",
+    "upload": "Uploaden",
+    "confirmDelete": "Wil je deze kaart verwijderen?",
+    "deleteBtn": "Verwijder kaart",
+    "addBtn": "Kaart toevoegen",
+    "noCards": "Je hebt nog geen kaart toegevoegd."
   }
 }

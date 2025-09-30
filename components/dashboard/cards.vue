@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useCards } from '~/composables/useCards';
+import { useI18nStore } from '~/stores/i18n';
 
+const i18n = useI18nStore();
 const { getCards, cards, deleteCard } = useCards();
 const selectedCard = ref(null);
 const isModalOpen = ref(false);
@@ -11,7 +13,7 @@ onMounted(async () => {
 });
 
 function destroy(id: number) {
-  if (confirm('Do you want to delete this card?')) {
+  if (confirm(i18n.t('cards.confirmDelete'))) {
     deleteCard(id);
   }
 }
@@ -39,16 +41,16 @@ function closeModal() {
         <img :src="card.attachment" alt="Attachment" class="w-full h-auto mb-2 rounded cursor-pointer" @click="openModal(card)" />
       </div>
       <button class="mt-8 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" @click="destroy(card.id)">
-        Verwijder kaart
+        {{ i18n.t('cards.deleteBtn') }}
       </button>
     </div>
     <div
         class="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center text-center text-gray-500 border-dashed border-2 border-gray-300"
     >
-      <p class="mb-4" v-if="cards.length === 0">Je hebt nog geen kaart toegevoegd.</p>
+      <p class="mb-4" v-if="cards.length === 0">{{ i18n.t('cards.noCards') }}</p>
       <NuxtLink to="/cards/upload">
         <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-          Kaart toevoegen
+          {{ i18n.t('cards.addBtn') }}
         </button>
       </NuxtLink>
     </div>
