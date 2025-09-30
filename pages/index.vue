@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useGroceryList} from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
-import {ref, onMounted, onBeforeUnmount, watch} from 'vue'
+import {ref, watch, computed} from 'vue'
 import {useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";

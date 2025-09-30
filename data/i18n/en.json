@@ -18,6 +18,7 @@
     "loginTitle": "Login - Grocery List",
     "email": "Email",
     "password": "Password",
+    "passwordPlaceholder": "••••••••",
     "emailPlaceholder": "example@gmail.com",
     "loginBtn": "Login",
     "forgotPassword": "Forgot password?",

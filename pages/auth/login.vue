@@ -56,18 +56,18 @@ function handleLogin() {
               id="email"
               v-model="userData.email"
               class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-500 placeholder-gray-400"
-              :placeholder="t('auth.emailPlaceholder')"
+              :placeholder="i18n.t('auth.emailPlaceholder')"
               required
           />
         </div>
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">{{ t('auth.password') }}</label>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">{{ i18n.t('auth.password') }}</label>
           <input
               type="password"
               id="password"
               v-model="userData.password"
               class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-500 placeholder-gray-400"
-              placeholder="••••••••"
+              :placeholder="i18n.t('auth.passwordPlaceholder')"
               required
           />
         </div>

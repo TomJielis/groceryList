@@ -18,6 +18,7 @@
     "loginTitle": "Inloggen - Boodschappenlijstje",
     "email": "Email",
     "password": "Wachtwoord",
+    "passwordPlaceholder": "••••••••",
     "emailPlaceholder": "voorbeeld@gmail.com",
     "loginBtn": "Login",
     "forgotPassword": "Wachtwoord vergeten?",
