@@ -121,13 +121,12 @@
     "listCreateFailed": "Failed to create list",
     "listDeleteFailed": "Failed to delete list",
     "listShareFailed": "Failed to share list",
-    "listFavoriteFailed": "Failed to favorite list",
+    "listFavoriteFailed": "Failed to set list as favorite",
     "loginFailed": "Login failed",
     "registrationFailed": "Registration failed",
     "passwordResetFailed": "Failed to send password reset email",
     "unexpectedError": "An unexpected error occurred",
     "cardStoreFailed": "Failed to store card",
     "cardDeleteFailed": "Failed to delete card"
-
   }
 }

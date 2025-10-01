@@ -50,6 +50,7 @@ export function useGroceryList() {
             body: {id: listId, email: email}
         });
 
+        //fix error handling and response
     }
 
     async function favorite(id: number | null) {
@@ -84,6 +85,7 @@ export function useGroceryList() {
             }
         } catch (error) {
             console.error('Error creating list:', error);
+            throw error
         }
     }
 
@@ -107,6 +109,7 @@ export function useGroceryList() {
             }));
         } catch (error) {
             console.error('Error fetching items:', error);
+            throw error
         }
     }
 

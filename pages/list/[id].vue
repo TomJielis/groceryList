@@ -64,12 +64,13 @@ async function closeAddItemListForm() {
 }
 
 async function updateGroceryListItem(item: any) {
-  try {
-    updateItem(item);
+    updateItem(item).then(() => {
+          // Optionally show a success notification
+        })
+        .catch(() => {;
+      // Handle error, e.g., show notification
+    });
     items.value = items.value.map((i) => (i.id === item.id ? { ...i, ...item } : i));
-  } catch (error) {
-    console.error('Failed to update item:', error);
-  }
 }
 
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));

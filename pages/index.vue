@@ -140,8 +140,8 @@ function makefavorite(id: number | null) {
         favorite(id);
         showSuccess(i18n.t('lists.favorited'));
       })
-      .catch((error) => {
-        showNotification(error);
+      .catch(() => {
+        showNotification(i18n.t('errors.listFavoriteFailed'));
       });
 }
 

@@ -20,8 +20,8 @@ async function addList() {
         newList.value = '';
         emit('list-added');
       })
-      .catch((error) => {
-        showNotification(error);
+      .catch(() => {
+        showNotification(i18n.t('errors.listCreateFailed'));
       });
 }
 </script>
