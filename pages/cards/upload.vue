@@ -10,7 +10,6 @@ definePageMeta({
 });
 const {showNotification} = useNotification();
 const i18n = useI18nStore();
-const t = computed(() => i18n.t);
 
 const formData = ref({
   title: "",
@@ -46,7 +45,7 @@ function handleSubmit() {
       getCards();
       router.push('/cards/');
     }).catch(() => {
-      showNotification(t.value('errors.cardStoreFailed'));
+      showNotification(i18n.t('errors.cardStoreFailed'));
     });
 
 
