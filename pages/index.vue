@@ -176,9 +176,8 @@ function calculateProgress(listItem) {
 
 
 <template>
-  <div class="max-w-8xl p-4">
-    <h1 class="text-xl font-bold mb-4 text-center"> {{ i18n.t('lists.title') }}</h1>
-
+  <div class="max-w-2xl mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-6">🛒 {{ i18n.t('lists.title') }}</h1>
     <div v-if="!openListForm">
       <ul class="space-y-3">
         <li
