@@ -28,7 +28,7 @@ const deactivateConfirmText = ref('');
 
 async function handleProfileUpdate(userData: { name: string; email: string }) {
   try {
-    update(userData)
+    await update(userData)
 
     // For now, just update the store
     authStore.setUser({
