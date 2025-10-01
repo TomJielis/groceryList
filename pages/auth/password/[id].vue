@@ -6,7 +6,6 @@ import { useRoute } from 'vue-router';
 import {useNotification} from "~/composables/useNotification";
 import { useI18nStore } from '~/stores/i18n';
 
-
 const i18n = useI18nStore();
 const {showNotification} = useNotification();
 const route = useRoute();
@@ -26,8 +25,8 @@ function triggerNewPassword()
       .then(() => {
         passwordUpdated.value = true;
       })
-      .catch((error) => {
-        showNotification(error);
+      .catch(() => {
+        showNotification(i18n.t('errors.unexpectedError'));
       });
 }
 

@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import {useAuth} from "~/composables/useAuth";
-import {useRouter} from "vue-router";
-import {useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
 import { useI18nStore } from '~/stores/i18n';
 
 const i18n = useI18nStore();
 const {showNotification} = useNotification();
 const {resetPassword} = useAuth();
-const router = useRouter();
 const mailSent = ref(false);
 const userData = ref({
   email: '',
@@ -21,8 +18,8 @@ function handleResetPassword() {
       .then(() => {
         mailSent.value = true;
       })
-      .catch((error) => {
-        showNotification(error);
+      .catch(() => {
+        showNotification(i18n.t('errors.passwordResetFailed'));
       });
 }
 </script>

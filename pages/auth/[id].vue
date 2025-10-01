@@ -30,7 +30,6 @@ auth.verifyEmail(form.value.token).then((data:any) => {
   body.value = i18n.t('auth.emailVerifyFailedBody');
   hasError.value = true;
   errorText.value = error || i18n.t('auth.unexpectedError');
-  // Optionally, show an error message to the user
 });
 
 </script>
@@ -41,7 +40,6 @@ auth.verifyEmail(form.value.token).then((data:any) => {
       <div class="flex flex-col items-center space-y-4">
         <img
             src="/icons/groceryCart.png"
-            alt="Boodschappenlijst Logo"
             class="w-14 h-14"
         />
         <h1 class="text-2xl font-bold text-green-600">{{title}}</h1>

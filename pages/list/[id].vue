@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import {ref, computed} from 'vue';
+import {useRoute} from 'vue-router';
 import AddItemListForm from '~/components/list/AddItemListForm.vue';
 import GroceryListItem from '~/components/list/groceryListItem.vue';
-import { useGroceryList } from '~/composables/useGroceryList';
-import { useListStore } from '~/stores/lists';
-import { useI18nStore } from '~/stores/i18n';
+import {useGroceryList} from '~/composables/useGroceryList';
+import {useListStore} from '~/stores/lists';
+import {useI18nStore} from '~/stores/i18n';
 
 definePageMeta({
   middleware: 'auth',
@@ -64,13 +64,8 @@ async function closeAddItemListForm() {
 }
 
 async function updateGroceryListItem(item: any) {
-    updateItem(item).then(() => {
-          // Optionally show a success notification
-        })
-        .catch(() => {;
-      // Handle error, e.g., show notification
-    });
-    items.value = items.value.map((i) => (i.id === item.id ? { ...i, ...item } : i));
+  updateItem(item)
+  items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
 }
 
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
@@ -111,7 +106,8 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             class="text-center text-gray-700 mt-4 cursor-pointer hover:underline"
             @click="showCheckedItems = !showCheckedItems"
         >
-          {{ showCheckedItems ? i18n.t('list.hideChecked') : i18n.t('list.showChecked') }} {{ i18n.t('list.checkedItemsSuffix') }} ({{ checkedItems.length }})
+          {{ showCheckedItems ? i18n.t('list.hideChecked') : i18n.t('list.showChecked') }}
+          {{ i18n.t('list.checkedItemsSuffix') }} ({{ checkedItems.length }})
         </p>
 
         <!-- CHECKED ITEMS -->

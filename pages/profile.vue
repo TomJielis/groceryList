@@ -30,7 +30,6 @@ async function handleProfileUpdate(userData: { name: string; email: string }) {
   try {
     await update(userData)
 
-    // For now, just update the store
     authStore.setUser({
       ...authStore.user,
       name: userData.name,
@@ -43,7 +42,6 @@ async function handleProfileUpdate(userData: { name: string; email: string }) {
   }
 }
 
-// Language switching
 function handleLanguageChange(locale: 'nl' | 'en') {
   setLanguage(locale);
 
@@ -51,7 +49,6 @@ function handleLanguageChange(locale: 'nl' | 'en') {
   showSuccess(t.value('profile.languageChanged'));
 }
 
-// Account deactivation
 async function handleDeactivateAccount() {
   if (deactivateConfirmText.value !== 'DELETE') {
     showNotification(t.value('profile.deleteConfirmError'));

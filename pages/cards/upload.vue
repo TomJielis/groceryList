@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import { useCards } from "~/composables/useCards";
 import {useRouter} from "vue-router";
 import { useI18nStore } from '~/stores/i18n';
@@ -36,7 +36,7 @@ function handleSubmit() {
     storeCard({
       title: formData.value.title,
       attachment: base64,
-    }).then((data) => {
+    }).then(() => {
       formData.value = {
         title: "",
         attachment: null,

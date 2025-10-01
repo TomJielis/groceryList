@@ -5,8 +5,6 @@ import {useGroceryList} from '~/composables/useGroceryList';
 import {useSuggestionStore} from '~/stores/suggestions'
 import { useI18nStore } from '~/stores/i18n';
 
-import suggestionsData from '~/data/suggestions.json';
-
 const {
   addItem,
   items,

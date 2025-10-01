@@ -69,24 +69,13 @@ watch(openDropdown, (val) => {
   }
 })
 
-
-async function confirmDelete(id: number) {
-  if (confirm(i18n.t('lists.confirmDelete'))) {
-    deleteList(id).then(async () => {
-      listStore.removeList(id);
-    }).catch((error) => {
-      showNotification(error);
-    });
-  }
-}
-
 function shareListWithUser(id: number) {
   const list = listStore.lists.find((list: any) => list.id === id);
   shareListId.value = id;
   shareListName.value = list?.name || '';
   shareEmail.value = '';
   showShareModal.value = true;
-  openDropdown.value = null; // Close the dropdown
+  openDropdown.value = null;
 }
 
 function handleShareConfirm(email: string) {

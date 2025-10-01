@@ -6,10 +6,7 @@ import deleteModal from '~/components/deleteModal.vue';
 import {useNotification} from "~/composables/useNotification";
 
 const {showNotification} = useNotification();
-
-
 const i18n = useI18nStore();
-const t = computed(() => i18n.t);
 const {getCards, cards, deleteCard} = useCards();
 const selectedCard = ref(null);
 const isModalOpen = ref(false);

@@ -1,32 +1,29 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import {useAuth} from "~/composables/useAuth";
-import {useRouter} from "vue-router";
 import {useNotification} from "~/composables/useNotification";
 import { useI18nStore } from '~/stores/i18n';
 
 const i18n = useI18nStore();
 const { showNotification } = useNotification();
 const { register } = useAuth();
-const router = useRouter();
 const userData = ref({
   name: '',
   email: '',
   password: '',
-  language: i18n.locale // Initialize with current language
+  language: i18n.locale
 });
 
 const verifyMailMessage = ref(false);
 
 function handleRegister() {
-  // Include the current language selection in the registration data
   const registrationData = {
     ...userData.value,
-    language: i18n.locale // Add current language to registration
+    language: i18n.locale
   };
 
   register(registrationData)
-      .then((data) => {
+      .then(() => {
         verifyMailMessage.value = true;
       })
       .catch((error) => {
@@ -35,12 +32,10 @@ function handleRegister() {
       });
 }
 
-// Watch for language changes and update the form
 watch(() => i18n.locale, (newLocale) => {
   userData.value.language = newLocale;
 });
 
-// Handle language change in registration form
 function handleLanguageChange(locale: 'nl' | 'en') {
   i18n.setLocale(locale);
   userData.value.language = locale;
