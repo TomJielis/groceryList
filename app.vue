@@ -25,7 +25,7 @@ useHead(() => ({
 <template>
   <div class="min-h-screen flex flex-col overflow-x-hidden">
     <Navbar class="hidden md:block fixed top-0 left-0 right-0 z-50 h-12" />
-    <NotificationBar class="mt-12" />
+    <NotificationBar />
 
     <div class="flex-1 pt-0 md:pt-12 pb-16 md:pb-0">
       <nuxtPage />
