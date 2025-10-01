@@ -114,5 +114,17 @@
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Please type 'DELETE' to confirm account deletion",
     "accountDeactivated": "Account has been deactivated"
+  },
+  "errors": {
+    "profileUpdateFailed": "Failed to update profile",
+    "deactivateAccountFailed": "Failed to deactivate account",
+    "listCreateFailed": "Failed to create list",
+    "listDeleteFailed": "Failed to delete list",
+    "listShareFailed": "Failed to share list",
+    "listFavoriteFailed": "Failed to favorite list",
+    "loginFailed": "Login failed",
+    "registrationFailed": "Registration failed",
+    "passwordResetFailed": "Failed to send password reset email",
+    "unexpectedError": "An unexpected error occurred"
   }
 }

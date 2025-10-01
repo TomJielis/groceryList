@@ -114,5 +114,17 @@
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Type 'DELETE' om account verwijdering te bevestigen",
     "accountDeactivated": "Account is gedeactiveerd"
+  },
+  "errors": {
+    "profileUpdateFailed": "Profiel bijwerken mislukt",
+    "deactivateAccountFailed": "Account deactiveren mislukt",
+    "listCreateFailed": "Lijst aanmaken mislukt",
+    "listDeleteFailed": "Lijst verwijderen mislukt",
+    "listShareFailed": "Lijst delen mislukt",
+    "listFavoriteFailed": "Lijst favoriet maken mislukt",
+    "loginFailed": "Inloggen mislukt",
+    "registrationFailed": "Registratie mislukt",
+    "passwordResetFailed": "Wachtwoord reset e-mail versturen mislukt",
+    "unexpectedError": "Er is een onverwachte fout opgetreden"
   }
 }

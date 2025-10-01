@@ -39,7 +39,7 @@ async function handleProfileUpdate(userData: { name: string; email: string }) {
 
     showSuccess(t.value('profile.profileUpdated'));
   } catch (error) {
-    showNotification('Failed to update profile');
+    showNotification(t.value('errors.profileUpdateFailed'));
   }
 }
 
@@ -63,7 +63,7 @@ async function handleDeactivateAccount() {
     router.push('/auth/login');
     showSuccess(t.value('profile.accountDeactivated'));
   } catch (error) {
-    showNotification('Failed to deactivate account');
+    showNotification(t.value('errors.deactivateAccountFailed'));
   }
 }
 
