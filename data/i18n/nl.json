@@ -54,7 +54,7 @@
     "delete": "Verwijderen"
   },
   "lists": {
-    "title": "📋 Jouw boodschappenlijsten",
+    "title": "Jouw boodschappenlijsten",
     "confirmDelete": "Weet je zeker dat je deze lijst wilt verwijderen?",
     "deleteTitle": "Lijst Verwijderen",
     "deleteListName": "Lijst",
