@@ -127,6 +127,22 @@ export function useAuth() {
         return await upateLanguageResponse.json();
     }
 
+  async function update(userData: { name: string }) {
+    const updateResponse = await fetch('/api/user/update/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!updateResponse.ok) {
+      throw new Error(`Failed to login user: ${updateResponse.statusText}`);
+    }
+
+    return await updateResponse.json();
+  }
+
 
 
 
@@ -136,6 +152,7 @@ export function useAuth() {
         verifyEmail,
         resetPassword,
         setNewPassword,
-        setLanguage
+        setLanguage,
+        update
     }
 }

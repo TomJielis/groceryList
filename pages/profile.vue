@@ -15,7 +15,7 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const { setLanguage } = useAuth();
+const { setLanguage, update } = useAuth();
 
 const i18n = useI18nStore();
 const { showNotification, showSuccess } = useNotification();
@@ -28,11 +28,7 @@ const deactivateConfirmText = ref('');
 
 async function handleProfileUpdate(userData: { name: string; email: string }) {
   try {
-    // TODO: Add API call to update user profile
-    // const response = await $fetch('/api/user/update', {
-    //   method: 'PUT',
-    //   body: userData
-    // });
+    update(userData)
 
     // For now, just update the store
     authStore.setUser({

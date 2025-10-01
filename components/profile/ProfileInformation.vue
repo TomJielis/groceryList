@@ -85,7 +85,8 @@ function handleSubmit() {
           id="email"
           v-model="userData.email"
           type="email"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+          disabled
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-gray-200"
           required
         />
       </div>
