@@ -49,37 +49,40 @@ function closeModal() {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+  <div class="space-y-3">
     <div
         v-for="card in cards"
         :key="card.id"
-        class="bg-white rounded-lg shadow p-6 flex flex-col items-center"
+        class="bg-white rounded-xl shadow-sm p-4 transition hover:shadow-md"
     >
-      <h2 class="text-lg font-bold mb-2">{{ card.title }}</h2>
-      <div class="bg-gray-100 p-4 rounded-lg w-full">
-        <img :src="card.attachment" alt="Attachment" class="w-full h-auto mb-2 rounded cursor-pointer" @click="openModal(card)" />
+      <h2 class="text-base font-medium mb-3">{{ card.title }}</h2>
+      <div class="bg-gray-50 p-3 rounded-lg">
+        <img :src="card.attachment" alt="Attachment" class="w-full h-auto rounded cursor-pointer" @click="openModal(card)" />
       </div>
-      <button class="mt-8 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" @click="destroy(card.id)">
-        {{ i18n.t('cards.deleteBtn') }}
+      <button class="mt-3 w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 font-medium text-sm" @click="destroy(card.id)">
+        🗑️ {{ i18n.t('cards.deleteBtn') }}
       </button>
     </div>
+
     <div
-        class="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center text-center text-gray-500 border-dashed border-2 border-gray-300"
+        class="bg-white rounded-xl shadow-sm p-4 flex flex-col items-center justify-center text-center text-gray-500 border-dashed border-2 border-gray-300"
     >
-      <p class="mb-4" v-if="cards.length === 0">{{ i18n.t('cards.noCards') }}</p>
+      <p class="mb-3 text-sm" v-if="cards.length === 0">{{ i18n.t('cards.noCards') }}</p>
       <NuxtLink to="/cards/upload">
-        <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-          {{ i18n.t('cards.addBtn') }}
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 font-medium text-sm">
+          ➕ {{ i18n.t('cards.addBtn') }}
         </button>
       </NuxtLink>
     </div>
 
-    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="closeModal">
-      <div class="bg-white rounded-lg p-4 max-w-sm w-full relative" @click.stop>
-        <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="closeModal">
-          &#x2715;
+    <!-- Modal for image preview -->
+    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" @click="closeModal">
+      <div class="bg-white rounded-xl p-4 max-w-lg w-full relative" @click.stop>
+        <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100" @click="closeModal">
+          ✕
         </button>
-        <img :src="selectedCard?.attachment" alt="Attachment Preview" class="w-full h-auto rounded mb-4" />
+        <h3 class="text-lg font-medium mb-3 pr-8">{{ selectedCard?.title }}</h3>
+        <img :src="selectedCard?.attachment" alt="Attachment Preview" class="w-full h-auto rounded-lg" />
       </div>
     </div>
 
