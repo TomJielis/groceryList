@@ -125,6 +125,7 @@
     "loginFailed": "Inloggen mislukt",
     "registrationFailed": "Registratie mislukt",
     "passwordResetFailed": "Wachtwoord reset e-mail versturen mislukt",
-    "unexpectedError": "Er is een onverwachte fout opgetreden"
+    "unexpectedError": "Er is een onverwachte fout opgetreden",
+    "cardStoreFailed": "Kaart opslaan mislukt"
   }
 }

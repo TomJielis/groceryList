@@ -125,6 +125,8 @@
     "loginFailed": "Login failed",
     "registrationFailed": "Registration failed",
     "passwordResetFailed": "Failed to send password reset email",
-    "unexpectedError": "An unexpected error occurred"
+    "unexpectedError": "An unexpected error occurred",
+    "cardStoreFailed": "Failed to store card"
+
   }
 }

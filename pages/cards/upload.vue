@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import {computed, ref} from "vue";
 import { useCards } from "~/composables/useCards";
 import {useRouter} from "vue-router";
 import { useI18nStore } from '~/stores/i18n';
+import {useNotification} from "~/composables/useNotification";
 
 definePageMeta({
   middleware: 'auth',
 });
-
+const {showNotification} = useNotification();
 const i18n = useI18nStore();
+const t = computed(() => i18n.t);
 
 const formData = ref({
   title: "",
@@ -35,16 +37,19 @@ function handleSubmit() {
     storeCard({
       title: formData.value.title,
       attachment: base64,
+    }).then((data) => {
+      formData.value = {
+        title: "",
+        attachment: null,
+      };
+
+      getCards();
+      router.push('/cards/');
+    }).catch(() => {
+      showNotification(t.value('errors.cardStoreFailed'));
     });
 
-    // Reset form
-    formData.value = {
-      title: "",
-      attachment: null,
-    };
 
-    await getCards();
-    router.push('/cards/');
   };
   reader.readAsDataURL(formData.value.attachment);
 }
