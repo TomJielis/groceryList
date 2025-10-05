@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {ref, watch} from 'vue';
-import {useI18nStore} from '~/stores/i18n';
+import { ref, watch } from 'vue';
+import { useI18nStore } from '~/stores/i18n';
 
 const props = defineProps<{
   item: any,
@@ -16,68 +16,50 @@ const emit = defineEmits<{
 
 const i18n = useI18nStore();
 
-const localItem = ref({...props.item});
+const localItem = ref({ ...props.item });
 
 watch(() => props.item, (newVal) => {
-  localItem.value = {...newVal};
+  localItem.value = { ...newVal };
 });
-const units = ['g', 'kg', 'L', 'ml'];
 </script>
+
 <template>
   <div class="bg-white rounded-xl shadow-sm p-3 transition relative overflow-hidden">
-    <div v-if="isEditing" class="flex flex-col space-y-3">
+    <!-- Edit modus -->
+    <div v-if="isEditing" class="flex flex-col space-y-2">
       <input
           v-model="localItem.name"
           type="text"
-          placeholder="Naam"
           class="border rounded px-2 py-1 w-full"
       />
-
-      <div class="grid grid-cols-2 gap-1">
-        <div class="flex flex-col space-y-1">
-          <label class="text-sm text-gray-600">Hoeveelheid</label>
-          <input
-              v-model.number="localItem.quantity"
-              type="number"
-              min="0"
-              step="1"
-              placeholder="Bijv. 2"
-              class="border rounded px-2 py-1 text-right"
-          />
-        </div>
-
-        <div class="flex flex-col space-y-1">
-          <label class="text-sm text-gray-600">Prijs</label>
-          <input
-              v-model.number="localItem.unit_price"
-              type="number"
-              step="0.01"
-              placeholder="Bijv. 2,50"
-              class="border rounded px-2 py-1 text-right"
-          />
-        </div>
-      </div>
-      <div class="flex flex-wrap items-center gap-2 pt-1">
-        <template v-for="unit in units" :key="unit">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
           <button
-              class="px-3 py-1 text-sm border rounded-full"
-              :class="{
-              'bg-blue-500 text-white': localItem.unit === unit,
-              'bg-gray-100 text-gray-700 hover:bg-gray-200': localItem.unit !== unit
-            }"
-              @click="localItem.unit = localItem.unit === unit ? null : unit"
-          >
-            {{ unit }}
-          </button>
-        </template>
+              class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
+              @click="localItem.quantity = Math.max((localItem.quantity || 1) - 1, 1)"
+          >−</button>
+          <span class="text-sm font-semibold">{{ localItem.quantity || 1 }}</span>
+          <button
+              class="w-8 h-8 bg-gray-200 rounded-full font-bold hover:bg-gray-300"
+              @click="localItem.quantity = (localItem.quantity || 1) + 1"
+          >+</button>
+        </div>
+        <input
+            v-model.number="localItem.unit_price"
+            type="number"
+            step="0.01"
+            :placeholder="i18n.t('items.pricePlaceholder')"
+            class="border rounded px-2 py-1 w-24 text-right"
+        />
       </div>
       <button
           @click="emit('save', localItem)"
-          class="self-end bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 mt-2"
+          class="self-end bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
       >
         {{ i18n.t('common.save') }}
       </button>
     </div>
+
     <div v-else class="flex items-center justify-between">
       <input
           type="checkbox"
@@ -97,9 +79,7 @@ const units = ['g', 'kg', 'L', 'ml'];
           {{ item.name }}
         </span>
         <div class="flex items-center space-x-2 ml-4">
-          <span class="text-sm font-semibold">
-            {{ item.quantity || 1 }}<span v-if="item.unit"> {{ item.unit }}</span>
-          </span>
+          <span class="text-sm font-semibold">{{ item.quantity || 1 }}</span>
           <span class="text-sm text-gray-500">
             × €{{ item.unit_price?.toFixed(2) || '0.00' }}
           </span>
