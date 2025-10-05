@@ -35,24 +35,24 @@ const units = ['g', 'kg', 'L', 'ml'];
 
       <div class="grid grid-cols-2 gap-1">
         <div class="flex flex-col space-y-1">
-          <label class="text-sm text-gray-600">{{ i18n.t('grocery.quantity') }}</label>
+          <label class="text-sm text-gray-600">Hoeveelheid</label>
           <input
               v-model.number="localItem.quantity"
               type="number"
               min="0"
               step="1"
-              :placeholder="i18n.t('grocery.quantity_placeholder')"
+              placeholder="Bijv. 2"
               class="border rounded px-2 py-1 text-right"
           />
         </div>
 
         <div class="flex flex-col space-y-1">
-          <label class="text-sm text-gray-600">{{ i18n.t('grocery.price') }}</label>
+          <label class="text-sm text-gray-600">Prijs</label>
           <input
               v-model.number="localItem.unit_price"
               type="number"
               step="0.01"
-              :placeholder="i18n.t('grocery.price_placeholder')"
+              placeholder="Bijv. 2,50"
               class="border rounded px-2 py-1 text-right"
           />
         </div>

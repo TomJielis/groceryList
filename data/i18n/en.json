@@ -128,11 +128,5 @@
     "unexpectedError": "An unexpected error occurred",
     "cardStoreFailed": "Failed to store card",
     "cardDeleteFailed": "Failed to delete card"
-  },
-  "grocery": {
-    "quantity": "Quantity",
-    "quantity_placeholder": "e.g. 2",
-    "price": "Price",
-    "price_placeholder": "e.g. 2.50"
   }
 }
