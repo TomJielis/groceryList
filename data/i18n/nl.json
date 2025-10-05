@@ -128,5 +128,11 @@
     "unexpectedError": "Er is een onverwachte fout opgetreden",
     "cardStoreFailed": "Kaart opslaan mislukt",
     "cardDeleteFailed": "Kaart verwijderen mislukt"
+  },
+  "grocery": {
+    "quantity": "Hoeveelheid",
+    "quantity_placeholder": "Bijv. 2",
+    "price": "Prijs",
+    "price_placeholder": "Bijv. 2,50"
   }
 }
