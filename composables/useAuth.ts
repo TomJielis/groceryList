@@ -54,7 +54,7 @@ export function useAuth() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(token),
+            body: JSON.stringify({ token }),
         });
 
         if (!loginResponse.ok) {
