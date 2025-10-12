@@ -1,5 +1,5 @@
 import {setCookie} from 'h3'
-import {apiClient} from '~/server/api/utils/apiClient'
+import {apiClient} from '../utils/apiClient'
 import type {TUser} from '~/types/TUser'
 
 type LoginResponse<T> = {

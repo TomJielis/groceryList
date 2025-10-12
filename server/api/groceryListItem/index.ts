@@ -1,5 +1,5 @@
 import { getCookie } from 'h3'
-import {apiClient} from "~/server/api/utils/apiClient";
+import {apiClient} from "../utils/apiClient";
 import {TGroceryListItem} from "~/types/TGroceryListItem";
 
 export default defineEventHandler(async (event) => {

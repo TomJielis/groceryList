@@ -1,4 +1,4 @@
-import {apiClient} from '~/server/api/utils/apiClient'
+import {apiClient} from "../utils/apiClient"
 import {setCookie} from "h3";
 import type {TUser} from "~/types/TUser";
 

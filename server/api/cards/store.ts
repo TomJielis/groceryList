@@ -1,6 +1,6 @@
 // server/api/cards/store.ts
 import { readBody, getCookie } from 'h3'
-import { apiClient } from '~/server/api/utils/apiClient'
+import { apiClient } from '../utils/apiClient'
 
 interface CardInput {
     title: string

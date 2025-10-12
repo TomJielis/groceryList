@@ -1,5 +1,5 @@
 import { getCookie } from 'h3'
-import { apiClient } from '~/server/api/utils/apiClient'
+import { apiClient } from '../utils/apiClient'
 
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'token')

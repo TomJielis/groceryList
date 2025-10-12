@@ -1,3 +1,4 @@
+import { defineNuxtConfig } from 'nuxt/config'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 export default defineNuxtConfig({
@@ -24,5 +25,8 @@ export default defineNuxtConfig({
       url: process.env.API_URL || '0.0.0.0:8000',
       basePath: process.env.API_BASE_PATH || '/api',
     },
+  },
+  nitro: {
+    serverDir: 'server/nuxt-api',
   },
 })

@@ -1,4 +1,4 @@
-import {apiClient} from '~/server/api/utils/apiClient'
+import {apiClient} from "../utils/apiClient";
 
 type resetPasswordResponse<T> = {
     url: string;
