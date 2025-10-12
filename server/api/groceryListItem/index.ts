@@ -14,5 +14,7 @@ export default defineEventHandler(async (event) => {
             body: { listId:listId },
         }, token);
 
+    console.log(response);
+
     return response as unknown as TGroceryListItem[];
 });
