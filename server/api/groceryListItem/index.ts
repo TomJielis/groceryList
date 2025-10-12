@@ -16,5 +16,5 @@ export default defineEventHandler(async (event) => {
 
     console.log(response);
 
-    return response as unknown as TGroceryListItem[];
+    return response;
 });
