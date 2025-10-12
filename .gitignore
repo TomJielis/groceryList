@@ -5,4 +5,3 @@ bun.lock
 package-lock.json
 .nuxt
 .output
-vendor/
