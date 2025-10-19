@@ -79,7 +79,15 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
   >
 
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl font-bold">🛒 {{ list?.name }}</h1>
+      <div class="flex items-center gap-2">
+        <NuxtLink
+            :to="`/list/upload-receipt`"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition"
+        >
+          📷 Kassabon uploaden
+        </NuxtLink>
+        <h1 class="text-2xl font-bold ml-2">🛒 {{ list?.name }}</h1>
+      </div>
       <div class="text-lg font-bold">
         {{ i18n.t('list.total') }}: €{{
           uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
