@@ -47,12 +47,12 @@ function handleSubmit() {
 
 <template>
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light">{{ i18n.t('profile.info') }}</h2>
+      <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light">{{ i18n.t('profile.information') }}</h2>
       <button
         @click="toggleEdit"
         class="px-4 py-2 rounded-xl bg-accent text-white font-semibold shadow hover:bg-accent-dark transition border border-accent/80 focus:ring-2 focus:ring-accent"
       >
-        {{ isEditing ? i18n.t('common.cancel') : i18n.t('common.edit') }}
+        {{ isEditing ? i18n.t('common.cancel') : i18n.t('profile.edit') }}
       </button>
     </div>
     <form v-if="isEditing" @submit.prevent="handleSubmit" class="flex flex-col gap-4">
