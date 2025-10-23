@@ -46,56 +46,45 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div class="bg-white rounded-xl shadow-sm p-6">
+  <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-semibold">{{ i18n.t('profile.information') }}</h2>
+      <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light">{{ i18n.t('profile.info') }}</h2>
       <button
         @click="toggleEdit"
-        class="text-blue-500 hover:text-blue-700"
+        class="px-4 py-2 rounded-xl bg-accent text-white font-semibold shadow hover:bg-accent-dark transition border border-accent/80 focus:ring-2 focus:ring-accent"
       >
-        {{ isEditing ? i18n.t('common.cancel') : i18n.t('profile.edit') }}
+        {{ isEditing ? i18n.t('common.cancel') : i18n.t('common.edit') }}
       </button>
     </div>
-
-    <div v-if="!isEditing" class="space-y-3">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">{{ i18n.t('auth.name') }}</label>
-        <p class="text-gray-900">{{ user?.name }}</p>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">{{ i18n.t('auth.email') }}</label>
-        <p class="text-gray-900">{{ user?.email }}</p>
-      </div>
-    </div>
-
-    <form v-else @submit.prevent="handleSubmit" class="space-y-4">
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">{{ i18n.t('auth.name') }}</label>
-        <input
-          id="name"
-          v-model="userData.name"
-          type="text"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-          required
-        />
-      </div>
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">{{ i18n.t('auth.email') }}</label>
-        <input
-          id="email"
-          v-model="userData.email"
-          type="email"
-          disabled
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-gray-200"
-          required
-        />
-      </div>
+    <form v-if="isEditing" @submit.prevent="handleSubmit" class="flex flex-col gap-4">
+      <input
+        v-model="userData.name"
+        type="text"
+        :placeholder="i18n.t('profile.name')"
+        class="w-full px-4 py-3 rounded-xl border border-border-light dark:border-border-dark bg-white/80 dark:bg-slate-900/80 shadow focus:ring-2 focus:ring-accent focus:border-accent text-base transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+      />
+      <input
+        v-model="userData.email"
+        type="email"
+        :placeholder="i18n.t('profile.email')"
+        class="w-full px-4 py-3 rounded-xl border border-border-light dark:border-border-dark bg-white/80 dark:bg-slate-900/80 shadow focus:ring-2 focus:ring-accent focus:border-accent text-base transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+      />
       <button
         type="submit"
-        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+        class="w-full py-3 rounded-xl bg-accent text-white font-semibold shadow hover:bg-accent-dark transition border border-accent/80 focus:ring-2 focus:ring-accent"
       >
-        {{ i18n.t('profile.saveChanges') }}
+        {{ i18n.t('common.save') }}
       </button>
     </form>
+    <div v-else class="flex flex-col gap-2">
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-slate-700 dark:text-slate-100">{{ i18n.t('profile.name') }}:</span>
+        <span class="text-slate-600 dark:text-slate-300">{{ userData.name }}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-slate-700 dark:text-slate-100">{{ i18n.t('profile.email') }}:</span>
+        <span class="text-slate-600 dark:text-slate-300">{{ userData.email }}</span>
+      </div>
+    </div>
   </div>
 </template>

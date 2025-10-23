@@ -54,47 +54,45 @@ function closeModal() {
 </script>
 
 <template>
-  <div class="space-y-3">
+  <div class="space-y-6">
     <div
         v-for="card in cards"
         :key="card.id"
-        class="bg-white rounded-xl shadow-sm p-4 transition hover:shadow-md"
+        class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 transition hover:shadow-2xl hover:border-accent/60 border border-border-light dark:border-border-dark flex flex-col gap-3"
     >
-      <h2 class="text-base font-medium mb-3">{{ card.title }}</h2>
-      <div class="bg-gray-50 p-3 rounded-lg">
-        <img :src="card.attachment" alt="Attachment" class="w-full h-auto rounded cursor-pointer"
-             @click="openModal(card)"/>
+      <h2 class="text-lg font-bold mb-2 text-primary-dark dark:text-accent-light">{{ card.title }}</h2>
+      <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-xl flex items-center justify-center">
+        <img :src="card.attachment" alt="Attachment" class="w-full h-auto rounded-xl cursor-pointer shadow-md hover:shadow-xl transition" @click="openModal(card)"/>
       </div>
       <button
-          class="mt-3 w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 font-medium text-sm"
+          class="mt-3 w-full px-4 py-2 bg-error hover:bg-error/90 text-white rounded-xl shadow-md font-semibold transition active:scale-95 border border-error/80 focus:ring-2 focus:ring-error"
           @click="destroy(card.id)">
         🗑️ {{ i18n.t('cards.deleteBtn') }}
       </button>
     </div>
 
     <div
-        class="bg-white rounded-xl shadow-sm p-4 flex flex-col items-center justify-center text-center text-gray-500 border-dashed border-2 border-gray-300"
+        class="bg-white/80 dark:bg-slate-900/80 rounded-2xl shadow-xl p-6 flex flex-col items-center justify-center text-center text-slate-400 dark:text-slate-500 border-dashed border-2 border-border-light dark:border-border-dark"
     >
-      <p class="mb-3 text-sm" v-if="cards.length === 0">{{ i18n.t('cards.noCards') }}</p>
+      <p class="mb-3 text-base" v-if="cards.length === 0">{{ i18n.t('cards.noCards') }}</p>
       <NuxtLink to="/cards/upload">
         <button
-            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 font-medium text-sm">
+            class="px-5 py-3 bg-accent text-white rounded-xl shadow-md hover:bg-accent-dark active:scale-95 transition border border-accent/80 font-semibold text-base focus:ring-2 focus:ring-accent">
           ➕ {{ i18n.t('cards.addBtn') }}
         </button>
       </NuxtLink>
     </div>
 
     <!-- Modal for image preview -->
-    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-         @click="closeModal">
-      <div class="bg-white rounded-xl p-4 max-w-lg w-full relative" @click.stop>
+    <div v-if="isModalOpen" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur" @click="closeModal">
+      <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl p-6 max-w-lg w-full relative shadow-2xl border border-border-light dark:border-border-dark" @click.stop>
         <button
-            class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
+            class="absolute top-2 right-2 text-slate-400 hover:text-accent w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent/10 transition"
             @click="closeModal">
           ✕
         </button>
-        <h3 class="text-lg font-medium mb-3 pr-8">{{ selectedCard?.title }}</h3>
-        <img :src="selectedCard?.attachment" alt="Attachment Preview" class="w-full h-auto rounded-lg"/>
+        <h3 class="text-lg font-bold mb-4 pr-10 text-primary-dark dark:text-accent-light">{{ selectedCard?.title }}</h3>
+        <img :src="selectedCard?.attachment" alt="Attachment Preview" class="w-full h-auto rounded-xl shadow-md"/>
       </div>
     </div>
 

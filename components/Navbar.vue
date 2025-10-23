@@ -8,17 +8,26 @@ const i18n = useI18nStore();
 const t = computed(() => i18n.t);
 </script>
 <template>
-  <nav class="bg-green-500 text-white p-1">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold"><nuxtLink to="/">{{ t('nav.brand') }}</nuxtLink></h1>
-      <div class="flex items-center space-x-4">
-        <ul class="flex space-x-4">
-          <nuxtLink v-if="authStore.user" to="/cards/" replace class="hover:underline">{{ t('nav.cards') }}</nuxtLink>
-          <nuxtLink v-if="!authStore.user" to="/auth/login" replace class="hover:underline">{{ t('nav.login') }}</nuxtLink>
-          <nuxtLink v-if="!authStore.user" to="/auth/register" replace class="hover:underline">{{ t('nav.register') }}</nuxtLink>
-          <nuxtLink v-if="authStore.user" to="/profile" class="hover:underline">{{ t('nav.profile') }}</nuxtLink>
-        </ul>
-      </div>
+  <nav class="w-full bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark shadow-2xl rounded-b-3xl backdrop-blur-lg transition-colors">
+    <div class="max-w-3xl mx-auto flex justify-between items-center h-16 px-6">
+      <h1 class="text-2xl font-extrabold tracking-tight text-primary-dark dark:text-accent-light flex items-center gap-3">
+        <span class="text-3xl">🛒</span>
+        <nuxtLink to="/" class="hover:text-accent transition-colors duration-200">{{ t('nav.brand') }}</nuxtLink>
+      </h1>
+      <ul class="flex items-center gap-6">
+        <li v-if="authStore.user">
+          <nuxtLink to="/cards/" replace class="text-primary-dark dark:text-accent-light hover:text-accent dark:hover:text-accent font-medium transition-colors duration-200">{{ t('nav.cards') }}</nuxtLink>
+        </li>
+        <li v-if="!authStore.user">
+          <nuxtLink to="/auth/login" replace class="text-primary-dark dark:text-accent-light hover:text-accent dark:hover:text-accent font-medium transition-colors duration-200">{{ t('nav.login') }}</nuxtLink>
+        </li>
+        <li v-if="!authStore.user">
+          <nuxtLink to="/auth/register" replace class="text-primary-dark dark:text-accent-light hover:text-accent dark:hover:text-accent font-medium transition-colors duration-200">{{ t('nav.register') }}</nuxtLink>
+        </li>
+        <li v-if="authStore.user">
+          <nuxtLink to="/profile" class="text-primary-dark dark:text-accent-light hover:text-accent dark:hover:text-accent font-medium transition-colors duration-200">{{ t('nav.profile') }}</nuxtLink>
+        </li>
+      </ul>
     </div>
   </nav>
 </template>
