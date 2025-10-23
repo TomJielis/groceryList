@@ -76,49 +76,26 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>
   <div
-      class="max-w-8xl p-4 overflow-y-auto"
       @touchstart="handleTouchStart"
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
   >
-
-    <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl font-bold">🛒 {{ list?.name }}</h1>
-      <div class="text-lg font-bold">
-        {{ i18n.t('list.total') }}: €{{
-          uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
-        }}
+    <div
+      v-if="!showAddItem"
+    >
+      <div class="flex justify-between items-center mb-4 w-full">
+        <h1 class="text-2xl font-bold">🛒 {{ list?.name }}</h1>
+        <div class="text-lg font-bold">
+          {{ i18n.t('list.total') }}: €{{
+            uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
+          }}
+        </div>
       </div>
-    </div>
-    <div v-if="!showAddItem">
-      <!-- UNCHECKED ITEMS -->
-      <ul class="space-y-3 mb-20">
-        <transition-group name="fade" tag="ul" class="space-y-3 mb-10">
-          <GroceryListItem
-              v-for="item in uncheckedItems"
-              :key="item.id"
-              :item="item"
-              :isEditing="editingItemId === item.id"
-              @edit="editingItemId = $event"
-              @check="checked"
-              @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
-          />
-        </transition-group>
-
-        <p
-            v-if="checkedItems.length"
-            class="text-center text-gray-700 mt-4 cursor-pointer hover:underline"
-            @click="showCheckedItems = !showCheckedItems"
-        >
-          {{ showCheckedItems ? i18n.t('list.hideChecked') : i18n.t('list.showChecked') }}
-          {{ i18n.t('list.checkedItemsSuffix') }} ({{ checkedItems.length }})
-        </p>
-
-        <!-- CHECKED ITEMS -->
-        <ul v-if="showCheckedItems" class="space-y-3 mt-4">
-          <transition-group name="fade" tag="ul" class="space-y-3 mb-20">
+      <div class="flex-1 min-h-0 flex flex-col overflow-y-auto">
+        <ul class="space-y-3 mb-28">
+          <transition-group name="fade" tag="ul" class="space-y-3 mb-10">
             <GroceryListItem
-                v-for="item in checkedItems"
+                v-for="item in uncheckedItems"
                 :key="item.id"
                 :item="item"
                 :isEditing="editingItemId === item.id"
@@ -127,17 +104,40 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
                 @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
             />
           </transition-group>
-        </ul>
-      </ul>
-      <button
-          class="fixed right-4 bottom-24 md:bottom-4 z-50 bg-blue-500 text-white rounded-full w-16 h-16 shadow-lg"
-          @click="showAddItem = true"
-      >
-        ➕
-      </button>
-    </div>
 
-    <div v-else>
+          <p
+              v-if="checkedItems.length"
+              class="text-center text-gray-700 mt-4 cursor-pointer hover:underline"
+              @click="showCheckedItems = !showCheckedItems"
+          >
+            {{ showCheckedItems ? i18n.t('list.hideChecked') : i18n.t('list.showChecked') }}
+            {{ i18n.t('list.checkedItemsSuffix') }} ({{ checkedItems.length }})
+          </p>
+
+          <!-- CHECKED ITEMS -->
+          <ul v-if="showCheckedItems" class="space-y-3 mt-4">
+            <transition-group name="fade" tag="ul" class="space-y-3 mb-20">
+              <GroceryListItem
+                  v-for="item in checkedItems"
+                  :key="item.id"
+                  :item="item"
+                  :isEditing="editingItemId === item.id"
+                  @edit="editingItemId = $event"
+                  @check="checked"
+                  @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+              />
+            </transition-group>
+          </ul>
+        </ul>
+        <button
+            class="mt-4 self-end z-20 bg-blue-500 text-white rounded-full w-16 h-16 shadow-lg"
+            @click="showAddItem = true"
+        >
+          ➕
+        </button>
+      </div>
+    </div>
+    <div v-else class="w-full max-w-2xl rounded-3xl bg-white/80 dark:bg-slate-900/80 shadow-2xl border border-slate-100 dark:border-slate-700 p-6 md:p-10 flex flex-col h-[calc(100dvh-7rem)] max-h-[calc(100dvh-7rem)]">
       <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm"/>
     </div>
   </div>

@@ -54,7 +54,7 @@ function closeModal() {
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="flex-1 min-h-0 flex flex-col overflow-y-auto space-y-6">
     <div
         v-for="card in cards"
         :key="card.id"
