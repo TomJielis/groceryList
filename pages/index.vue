@@ -189,12 +189,10 @@ function calculateProgress(listItem) {
             class="cursor-pointer bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-3 sm:p-5 active:shadow-2xl border border-border-light dark:border-border-dark transition relative hover:shadow-2xl hover:border-accent/60 group w-full"
         >
           <div class="flex items-start justify-between w-full">
-            <div>
              <span class="text-base sm:text-lg font-semibold break-words whitespace-normal">
-                {{ listItem.name }}
+                <h2>{{ listItem.name }}</h2>
                 <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-yellow-500">⭐</span>
             </span>
-            </div>
             <div class="relative ml-2">
               <button
                   class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent/10 text-accent active:bg-accent/20 transition border border-accent/30 focus:ring-2 focus:ring-accent"
