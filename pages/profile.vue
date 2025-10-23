@@ -80,20 +80,20 @@ function handleLogout() {
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto p-4">
+  <div class=" flex flex-col items-center justify-center p-4">
     <h1 class="text-2xl font-bold mb-6">👤 {{ i18n.t('profile.title') }}</h1>
-    <div class="mb-6">
+    <div class="mb-6 w-full max-w-xl bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 flex flex-col border border-border-light dark:border-border-dark transition hover:shadow-2xl hover:border-accent/60">
       <ProfileInformation
         :user="authStore.user"
         @update="handleProfileUpdate"
       />
     </div>
 
-    <div class="mb-6">
+    <div class="mb-6 w-full max-w-xl bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 flex flex-col border border-border-light dark:border-border-dark transition hover:shadow-2xl hover:border-accent/60">
       <LanguageSettings @language-change="handleLanguageChange" />
     </div>
 
-    <div class="mb-6">
+    <div class="mb-6 w-full max-w-xl bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 flex flex-col border border-border-light dark:border-border-dark transition hover:shadow-2xl hover:border-accent/60">
       <AccountActions
         @logout="handleLogout"
         @deactivate-account="openDeactivateModal"

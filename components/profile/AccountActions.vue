@@ -18,7 +18,6 @@ function handleDeactivateAccount() {
 </script>
 
 <template>
-  <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
     <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light mb-4">{{ i18n.t('profile.accountActions') }}</h2>
     <button
       @click="handleLogout"
@@ -32,5 +31,4 @@ function handleDeactivateAccount() {
     >
       ⚠️ {{ i18n.t('profile.deactivateAccount') }}
     </button>
-  </div>
 </template>

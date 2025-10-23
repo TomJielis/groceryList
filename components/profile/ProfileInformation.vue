@@ -46,7 +46,6 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light">{{ i18n.t('profile.info') }}</h2>
       <button
@@ -86,5 +85,4 @@ function handleSubmit() {
         <span class="text-slate-600 dark:text-slate-300">{{ userData.email }}</span>
       </div>
     </div>
-  </div>
 </template>

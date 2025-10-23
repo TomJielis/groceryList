@@ -13,7 +13,6 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 </script>
 
 <template>
-  <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
     <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light mb-4">{{ i18n.t('profile.language') }}</h2>
     <div class="space-y-3">
       <label class="flex items-center gap-3 cursor-pointer">
@@ -35,5 +34,4 @@ function handleLanguageChange(locale: 'nl' | 'en') {
         <span class="text-base text-slate-700 dark:text-slate-100 font-medium">🇺🇸 {{ i18n.t('nav.english') }}</span>
       </label>
     </div>
-  </div>
 </template>
