@@ -179,18 +179,18 @@ function calculateProgress(listItem) {
 
 <template>
   <div class="h-full flex flex-col items-center justify-center w-full max-w-full px-1 sm:px-4">
-    <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light">🛒 {{ i18n.t('lists.title') }}</h1>
+    <h1 class="sticky top-0 z-20 bg-white/90 dark:bg-slate-900/90 text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light backdrop-blur">🛒 {{ i18n.t('lists.title') }}</h1>
     <div v-if="!openListForm" class="flex-1 min-h-0 flex flex-col w-full">
       <ul class="space-y-5 w-full">
         <li
             v-for="listItem in sortedLists"
             :key="listItem.id"
             @click="$router.push(`/list/${listItem.id}`)"
-            class="cursor-pointer bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 active:shadow-2xl border border-border-light dark:border-border-dark transition relative hover:shadow-2xl hover:border-accent/60 group"
+            class="cursor-pointer bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-3 sm:p-5 active:shadow-2xl border border-border-light dark:border-border-dark transition relative hover:shadow-2xl hover:border-accent/60 group w-full"
         >
-          <div class="flex items-start justify-between ">
+          <div class="flex items-start justify-between w-full">
             <div>
-             <span class="text-base font-medium break-words whitespace-normal">
+             <span class="text-base sm:text-lg font-semibold break-words whitespace-normal">
                 {{ listItem.name }}
                 <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-yellow-500">⭐</span>
             </span>

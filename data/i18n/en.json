@@ -100,6 +100,8 @@
   },
   "profile": {
     "title": "Profile",
+    "name": "Name",
+    "email": "Email",
     "information": "Profile Information",
     "edit": "Edit",
     "saveChanges": "Save Changes",
