@@ -30,7 +30,11 @@ const {
   checked,
 } = useGroceryList();
 
-await fetchItems(listId);
+onMounted(async () => {
+  if (listId && !isNaN(Number(listId))) {
+    await fetchItems(Number(listId));
+  }
+});
 
 const uncheckedItems = computed(() => items.value.filter((item: any) => !item.checked));
 const checkedItems = computed(() => items.value.filter((item: any) => item.checked));
