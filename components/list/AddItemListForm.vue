@@ -48,32 +48,32 @@ const filteredSuggestions = computed(() => {
 fetchItems(listId)
 </script>
 <template>
-  <div class="flex-auto overflow-y-auto p-4 pb-20 md:pb-4 h-[80vh]">
+  <div class="flex-auto overflow-y-auto px-1 pb-20 md:pb-4 h-[80vh] w-full max-w-full">
     <div class="items-center flex-col">
       <input
           type="text"
           v-model="newItem"
           :placeholder="i18n.t('items.addPlaceholder')"
-          class="w-full mb-4 px-5 py-3 rounded-2xl border border-border-light dark:border-border-dark bg-white/80 dark:bg-slate-900/80 shadow-xl focus:ring-2 focus:ring-accent focus:border-accent text-base sm:text-lg md:text-xl transition-colors placeholder-slate-400 dark:placeholder-slate-500"
+          class="w-full mb-4 px-3 py-3 rounded-2xl border border-border-light dark:border-border-dark bg-white/80 dark:bg-slate-900/80 shadow-xl focus:ring-2 focus:ring-accent focus:border-accent text-base sm:text-lg md:text-xl transition-colors placeholder-slate-400 dark:placeholder-slate-500"
       />
-      <ul class="space-y-4">
+      <ul class="space-y-3">
         <li
             v-for="item in filteredSuggestions"
             :key="item.name"
-            class="flex items-center justify-between bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-4 md:p-5 border border-border-light dark:border-border-dark transition hover:shadow-2xl hover:border-accent/60"
+            class="flex items-center justify-between bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-2 sm:p-3 md:p-5 border border-border-light dark:border-border-dark transition hover:shadow-2xl hover:border-accent/60 w-full max-w-full"
         >
           <div class="flex items-center justify-between w-full">
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
               <button @click="addItemToList(item.name)"
                       :class="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? 'text-success' : 'text-accent'"
-                      class="w-9 h-9 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition text-xl font-bold shadow-sm border border-transparent focus:ring-2 focus:ring-accent">
+                      class="w-9 h-9 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition text-xl font-bold shadow-sm border border-transparent focus:ring-2 focus:ring-accent flex-shrink-0">
                 {{
                   items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? '✔️' : '➕'
                 }}
               </button>
-              <span class="text-base md:text-lg font-medium text-slate-800 dark:text-slate-100">{{ item.name }}</span>
+              <span class="text-base md:text-lg font-medium text-slate-800 dark:text-slate-100 truncate overflow-hidden text-ellipsis flex-1 min-w-0">{{ item.name }}</span>
             </div>
-            <div class="flex items-center space-x-2"
+            <div class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0"
                  v-if="items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())">
               <button
                   class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-slate-200 dark:bg-slate-700 rounded-full text-base sm:text-lg font-bold hover:bg-accent/20 text-slate-700 dark:text-slate-100 transition border border-border-light dark:border-border-dark"

@@ -55,11 +55,10 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-6">🃏 {{ i18n.t('cards.upload') }}</h1>
-
-    <div class="rounded-xl shadow-sm p-4">
-      <form @submit.prevent="handleSubmit" class="space-y-4">
+  <div class="h-full flex flex-col items-center justify-center w-full max-w-full px-1 sm:px-4">
+    <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light">🎫 {{ i18n.t('cards.upload') }}</h1>
+    <form @submit.prevent="handleSubmit" class="w-full max-w-xl bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 flex flex-col border border-border-light dark:border-border-dark">
+      <div class="space-y-4">
         <div>
           <label for="title" class="block text-sm font-medium text-gray-700 mb-1">{{ i18n.t('cards.title') }}</label>
           <input
@@ -86,18 +85,7 @@ function handleSubmit() {
         >
           📤 {{ i18n.t('cards.upload') }}
         </button>
-      </form>
-    </div>
-
-    <div class="mt-4">
-      <div class="fixed left-0 w-full mt-6 space-y-3 p-4 bottom-20 md:bottom-3 z-50">
-        <button
-          class="w-full py-3 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition"
-          @click="router.push('/cards/')"
-        >
-          ← {{ i18n.t('common.back') }}
-        </button>
       </div>
-    </div>
+    </form>
   </div>
 </template>

@@ -178,103 +178,103 @@ function calculateProgress(listItem) {
 
 
 <template>
-  <div class="h-full flex flex-col items-center justify-center max-w-8xl p-4">
+  <div class="h-full flex flex-col items-center justify-center w-full max-w-full px-1 sm:px-4">
     <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light">🛒 {{ i18n.t('lists.title') }}</h1>
-      <div v-if="!openListForm" class="flex-1 min-h-0 flex flex-col">
-        <ul class="space-y-5">
-          <li
-              v-for="listItem in sortedLists"
-              :key="listItem.id"
-              @click="$router.push(`/list/${listItem.id}`)"
-              class="cursor-pointer bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 active:shadow-2xl border border-border-light dark:border-border-dark transition relative hover:shadow-2xl hover:border-accent/60 group"
-          >
-            <div class="flex items-start justify-between ">
-              <div>
-               <span class="text-base font-medium break-words whitespace-normal">
-                  {{ listItem.name }}
-                  <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-yellow-500">⭐</span>
-              </span>
-              </div>
-              <div class="relative ml-2">
-                <button
-                    class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent/10 text-accent active:bg-accent/20 transition border border-accent/30 focus:ring-2 focus:ring-accent"
-                    @click.stop="toggleDropdown(listItem.id)"
-                >
-                  ⋮
-                </button>
-                <div
-                    v-if="openDropdown === listItem.id"
-                    class="dropdown-menu absolute right-0 top-0 z-[99999] w-44 bg-white dark:bg-slate-900 border border-accent/30 dark:border-accent/40 rounded-xl shadow-2xl py-2 flex flex-col gap-1"
-                    style="transform: translateY(40px);"
-                >
-                  <button
-                      class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
-                      @click.stop="setFavoriteList(listItem.id)"
-                  >
-                    {{ auth?.user?.favorite_list_id === listItem.id ? `❌ ${i18n.t('lists.menu.removeFavorite')}` : `⭐ ${i18n.t('lists.menu.markFavorite')}` }}
-                  </button>
-                  <button
-                      v-if="listItem.created_by.id == auth.user.id"
-                      class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
-                      @click.stop="shareListWithUser(listItem.id)"
-                  >
-                    👥 {{ i18n.t('lists.menu.share') }}
-                  </button>
-                  <button
-                      v-if="listItem.created_by.id == auth.user.id"
-                      class="block w-full text-left px-4 py-3 rounded-lg text-error hover:bg-error/10 dark:hover:bg-error/20 transition font-semibold"
-                      @click.stop="deleteListItem(listItem.id)"
-                  >
-                    🗑️ {{ i18n.t('lists.menu.delete') }}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="mt-3 flex items-center space-x-2">
-              <div class="flex-1 h-2 bg-accent/10 dark:bg-accent/20 rounded-full overflow-hidden">
-                <div
-                    class="h-full bg-accent rounded-full transition-all duration-300"
-                    :style="{ width: `${calculateProgress(listItem)}%` }"
-                ></div>
-              </div>
-              <div class="text-sm text-gray-600 dark:text-slate-300 min-w-fit">
-                {{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }}
-              </div>
-            </div>
-            <div
-                v-if="listItem.grocery_list_invites && listItem.grocery_list_invites.length > 0"
-                class="flex items-center mt-4 space-x-[-8px]"
-            >
-              <span
-                  v-for="invite in listItem.grocery_list_invites"
-                  :key="invite.user.id"
-                  class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 text-sm font-bold text-white shadow-md ring-2 ring-accent/30 dark:ring-accent/60"
-                  :style="{ backgroundColor: stringToColor(invite.user.name) }"
-                  :title="invite.user.name"
-              >
-                {{ invite.user.name.charAt(0).toUpperCase() }}
-              </span>
-              <span
-                  class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 text-sm font-bold text-white shadow-md ring-2 ring-primary/30 dark:ring-accent/60"
-                  :style="{ backgroundColor: stringToColor(listItem.created_by.name) }"
-                  :title="listItem.created_by.name"
-              >
-                {{ listItem.created_by.name.charAt(0).toUpperCase() }}
-              </span>
-            </div>
-          </li>
-        </ul>
-        <button
-            v-if="$route.path === '/'"
-            class="fixed bottom-24 right-6 z-40 bg-gradient-to-br from-indigo-500 to-sky-400 hover:from-indigo-600 hover:to-sky-500 text-white rounded-full shadow-2xl w-16 h-16 flex items-center justify-center text-4xl transition md:hidden border-4 border-white dark:border-slate-800 ring-2 ring-indigo-300 dark:ring-indigo-800"
-          @click="openListForm = true"
+    <div v-if="!openListForm" class="flex-1 min-h-0 flex flex-col w-full">
+      <ul class="space-y-5 w-full">
+        <li
+            v-for="listItem in sortedLists"
+            :key="listItem.id"
+            @click="$router.push(`/list/${listItem.id}`)"
+            class="cursor-pointer bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 active:shadow-2xl border border-border-light dark:border-border-dark transition relative hover:shadow-2xl hover:border-accent/60 group"
         >
-          <span class="pb-1">+</span>
-        </button>
-      </div>
-      <div v-else class="flex-1 min-h-0 overflow-y-auto">
-        <ListForm @close="handleList"/>
-      </div>
+          <div class="flex items-start justify-between ">
+            <div>
+             <span class="text-base font-medium break-words whitespace-normal">
+                {{ listItem.name }}
+                <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-yellow-500">⭐</span>
+            </span>
+            </div>
+            <div class="relative ml-2">
+              <button
+                  class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent/10 text-accent active:bg-accent/20 transition border border-accent/30 focus:ring-2 focus:ring-accent"
+                  @click.stop="toggleDropdown(listItem.id)"
+              >
+                ⋮
+              </button>
+              <div
+                  v-if="openDropdown === listItem.id"
+                  class="dropdown-menu absolute right-0 top-0 z-[99999] w-44 bg-white dark:bg-slate-900 border border-accent/30 dark:border-accent/40 rounded-xl shadow-2xl py-2 flex flex-col gap-1"
+                  style="transform: translateY(40px);"
+              >
+                <button
+                    class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
+                    @click.stop="setFavoriteList(listItem.id)"
+                >
+                  {{ auth?.user?.favorite_list_id === listItem.id ? `❌ ${i18n.t('lists.menu.removeFavorite')}` : `⭐ ${i18n.t('lists.menu.markFavorite')}` }}
+                </button>
+                <button
+                    v-if="listItem.created_by.id == auth.user.id"
+                    class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
+                    @click.stop="shareListWithUser(listItem.id)"
+                >
+                  👥 {{ i18n.t('lists.menu.share') }}
+                </button>
+                <button
+                    v-if="listItem.created_by.id == auth.user.id"
+                    class="block w-full text-left px-4 py-3 rounded-lg text-error hover:bg-error/10 dark:hover:bg-error/20 transition font-semibold"
+                    @click.stop="deleteListItem(listItem.id)"
+                >
+                  🗑️ {{ i18n.t('lists.menu.delete') }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 flex items-center space-x-2">
+            <div class="flex-1 h-2 bg-accent/10 dark:bg-accent/20 rounded-full overflow-hidden">
+              <div
+                  class="h-full bg-accent rounded-full transition-all duration-300"
+                  :style="{ width: `${calculateProgress(listItem)}%` }"
+              ></div>
+            </div>
+            <div class="text-sm text-gray-600 dark:text-slate-300 min-w-fit">
+              {{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }}
+            </div>
+          </div>
+          <div
+              v-if="listItem.grocery_list_invites && listItem.grocery_list_invites.length > 0"
+              class="flex items-center mt-4 space-x-[-8px]"
+          >
+            <span
+                v-for="invite in listItem.grocery_list_invites"
+                :key="invite.user.id"
+                class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 text-sm font-bold text-white shadow-md ring-2 ring-accent/30 dark:ring-accent/60"
+                :style="{ backgroundColor: stringToColor(invite.user.name) }"
+                :title="invite.user.name"
+            >
+              {{ invite.user.name.charAt(0).toUpperCase() }}
+            </span>
+            <span
+                class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 text-sm font-bold text-white shadow-md ring-2 ring-primary/30 dark:ring-accent/60"
+                :style="{ backgroundColor: stringToColor(listItem.created_by.name) }"
+                :title="listItem.created_by.name"
+            >
+              {{ listItem.created_by.name.charAt(0).toUpperCase() }}
+            </span>
+          </div>
+        </li>
+      </ul>
+      <button
+          v-if="$route.path === '/'"
+          class="fixed bottom-24 right-6 z-40 bg-gradient-to-br from-indigo-500 to-sky-400 hover:from-indigo-600 hover:to-sky-500 text-white rounded-full shadow-2xl w-16 h-16 flex items-center justify-center text-4xl transition md:hidden border-4 border-white dark:border-slate-800 ring-2 ring-indigo-300 dark:ring-indigo-800"
+        @click="openListForm = true"
+      >
+        <span class="pb-1">+</span>
+      </button>
+    </div>
+    <div v-else class="flex-1 min-h-0 overflow-y-auto">
+      <ListForm @close="handleList"/>
+    </div>
     <ShareListModal
         :is-visible="showShareModal"
         v-model:email="shareEmail"

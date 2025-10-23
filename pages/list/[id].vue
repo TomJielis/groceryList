@@ -79,6 +79,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
       @touchstart="handleTouchStart"
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
+      class="w-full max-w-full px-1 sm:px-4"
   >
     <div
       v-if="!showAddItem"
@@ -91,8 +92,8 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           }}
         </div>
       </div>
-      <div class="flex-1 min-h-0 flex flex-col overflow-y-auto">
-        <ul class="space-y-3 mb-28">
+      <div class="flex-1 min-h-0 flex flex-col overflow-y-auto w-full">
+        <ul class="space-y-3 mb-28 w-full">
           <transition-group name="fade" tag="ul" class="space-y-3 mb-10">
             <GroceryListItem
                 v-for="item in uncheckedItems"

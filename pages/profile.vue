@@ -80,8 +80,8 @@ function handleLogout() {
 </script>
 
 <template>
-  <div class=" flex flex-col items-center justify-center p-4">
-    <h1 class="text-2xl font-bold mb-6">👤 {{ i18n.t('profile.title') }}</h1>
+  <div class="flex flex-col items-center justify-center w-full max-w-full px-1 sm:px-4">
+  <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light">👤 {{ i18n.t('profile.title') }}</h1>
     <div class="mb-6 w-full max-w-xl bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 flex flex-col border border-border-light dark:border-border-dark transition hover:shadow-2xl hover:border-accent/60">
       <ProfileInformation
         :user="authStore.user"
