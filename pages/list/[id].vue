@@ -138,7 +138,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         </button>
       </div>
     </div>
-    <div v-else class="w-full max-w-2xl rounded-3xl bg-white/80 dark:bg-slate-900/80 shadow-2xl border border-slate-100 dark:border-slate-700 p-6 md:p-10 flex flex-col h-[calc(100dvh-7rem)] max-h-[calc(100dvh-7rem)]">
+    <div v-else>
       <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm"/>
     </div>
   </div>
