@@ -18,7 +18,7 @@ export default defineNuxtConfig({
             link: [
                 {
                     rel: 'manifest',
-                    href: '/manifest.json?v=1.0.5'
+                    href: '/manifest.json'
                 } as any
             ],
         }

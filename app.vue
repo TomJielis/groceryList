@@ -10,7 +10,7 @@ const t = computed(() => i18n.t)
 
 useHead(() => ({
   link: [
-    { rel: 'manifest', href: '/manifest.json?v=1.0.5' }
+    { rel: 'manifest', href: '/manifest.json' }
   ],
   title: t.value('app.title'),
   meta: [
