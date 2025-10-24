@@ -1,6 +1,7 @@
 {
   "name": "Boodschappenlijst",
   "dependencies": {
+    "@nuxtjs/sitemap": "^7.4.7",
     "nuxt": "^3.17.6",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",
