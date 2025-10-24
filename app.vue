@@ -29,7 +29,7 @@ useHead(() => ({
     <NotificationBar />
 
     <!-- Main content -->
-    <main class="flex flex-col items-center justify-center flex-1 overflow-y-auto pt-4 md:pt-20 pb-4 md:pb-8 px-2 md:px-0 h-[calc(100dvh-4rem-4rem)] max-h-[calc(100dvh-4rem-4rem)]">
+    <main class="flex flex-col items-center justify-center flex-1 overflow-y-auto pt-4 md:pt-20 pb-4 md:pb-8 px-2 md:px-0 h-[calc(100dvh-2rem-3rem)] max-h-[calc(100dvh-2rem-3rem)]">
       <div class="w-full max-w-2xl rounded-3xl bg-white/80 dark:bg-slate-900/80 shadow-2xl border border-slate-100 dark:border-slate-700 p-6 md:p-10 mt-2 md:mt-0 flex flex-col flex-1 min-h-0 overflow-y-auto">
         <nuxtPage />
       </div>
