@@ -62,4 +62,9 @@ body {
 #app, #__nuxt {
   height: 100%;
 }
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
 </style>
