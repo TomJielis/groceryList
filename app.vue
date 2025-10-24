@@ -10,20 +10,24 @@ const t = computed(() => i18n.t)
 
 useHead(() => ({
   link: [
-    { rel: 'manifest', href: '/manifest.json' }
+    { rel: 'manifest', href: '/manifest.json?v=1.0.5' }
   ],
   title: t.value('app.title'),
   meta: [
     {
       name: 'description',
       content: t.value('app.metaDescription')
+    },
+    {
+      name: 'theme-color',
+      content: '#f0f7fa'
     }
   ]
 }))
 </script>
 
 <template>
-  <div class="flex flex-col h-screen w-full bg-gradient-to-br from-sky-50 via-blue-100 to-indigo-200 dark:from-slate-800 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 font-inter relative transition-colors">
+  <div class="flex flex-col min-h-screen w-full bg-gradient-to-br from-sky-50 via-blue-100 to-indigo-200 dark:from-slate-800 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 font-inter relative transition-colors">
     <!-- Navbar -->
     <Navbar class="hidden md:block fixed top-0 left-0 right-0 z-50 h-16 shadow-xl border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg" />
     <NotificationBar />
