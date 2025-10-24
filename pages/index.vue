@@ -179,7 +179,7 @@ function calculateProgress(listItem) {
 
 <template>
   <div class="h-full flex flex-col items-center justify-center w-full max-w-full px-1 sm:px-4">
-    <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light">🎫 {{ i18n.t('lists.title') }}</h1>
+    <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light">🛒 {{ i18n.t('lists.title') }}</h1>
     <div v-if="!openListForm" class="flex-1 min-h-0 flex flex-col w-full">
       <ul class="space-y-5 w-full">
         <li
@@ -271,7 +271,7 @@ function calculateProgress(listItem) {
       </button>
     </div>
     <div v-else class="flex-1 min-h-0 overflow-y-auto">
-      <ListForm @close="handleList"/>
+      <ListForm @list-added="handleList" @close="openListForm = false" />
     </div>
     <ShareListModal
         :is-visible="showShareModal"
