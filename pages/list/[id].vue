@@ -84,7 +84,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
     <div
       v-if="!showAddItem"
     >
-      <div class="flex justify-between items-center mb-4 w-full sticky top-0 z-20 bg-white/90 dark:bg-slate-900/90 backdrop-blur">
+      <div class="flex justify-between items-center mb-4 w-full top-0 z-20 bg-white/90 dark:bg-slate-900/90 backdrop-blur">
         <h1 class="text-2xl font-bold">🛒 {{ list?.name }}</h1>
         <div class="text-lg font-bold">
           {{ i18n.t('list.total') }}: €{{
