@@ -166,14 +166,14 @@ function calculateProgress(listItem) {
 
 <template>
   <div class="max-w-2xl mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-6">🛒 {{ i18n.t('lists.title') }}</h1>
+    <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light">🛒 {{ i18n.t('lists.title') }}</h1>
     <div v-if="!openListForm">
-      <ul class="space-y-3">
+      <ul class="space-y-5">
         <li
             v-for="listItem in sortedLists"
             :key="listItem.id"
             @click="$router.push(`/list/${listItem.id}`)"
-            class="cursor-pointer bg-white rounded-xl shadow-sm p-4 active:shadow-md transition relative"
+            class="cursor-pointer bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 active:shadow-2xl border border-border-light dark:border-border-dark transition relative hover:shadow-2xl hover:border-accent/60 group"
         >
           <div class="flex items-start justify-between ">
             <div>
@@ -184,33 +184,31 @@ function calculateProgress(listItem) {
             </div>
             <div class="relative ml-2">
               <button
-                  class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-600 active:bg-gray-200"
-                  @click.stop="toggleDropdown(listItem.id)"
+                  class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent/10 text-accent active:bg-accent/20 transition border border-accent/30 focus:ring-2 focus:ring-accent"                  @click.stop="toggleDropdown(listItem.id)"
               >
                 ⋮
               </button>
 
               <div
                   v-if="openDropdown === listItem.id"
-                  class="dropdown-menu absolute right-0 top-12 z-20 w-40 bg-white border rounded-xl shadow-lg"
+                  class="dropdown-menu absolute right-0 top-0 z-[99999] w-44 bg-white dark:bg-slate-900 border border-accent/30 dark:border-accent/40 rounded-xl shadow-2xl py-2 flex flex-col gap-1"
               >
                 <button
-                    class="block w-full text-left px-4 py-3 hover:bg-gray-100"
+                    class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
                     @click.stop="setFavoriteList(listItem.id)"
                 >
                   {{ auth?.user?.favorite_list_id === listItem.id ? `❌ ${i18n.t('lists.menu.removeFavorite')}` : `⭐ ${i18n.t('lists.menu.markFavorite')}` }}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
-                    class="block w-full text-left px-4 py-3 hover:bg-gray-100"
+                    class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
                     @click.stop="shareListWithUser(listItem.id)"
                 >
                   👥 {{ i18n.t('lists.menu.share') }}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
-                    class="block w-full text-left px-4 py-3 text-red-600 hover:bg-red-100"
-                    @click.stop="deleteListItem(listItem.id)"
+                    class="block w-full text-left px-4 py-3 rounded-lg text-error hover:bg-error/10 dark:hover:bg-error/20 transition font-semibold"                    @click.stop="deleteListItem(listItem.id)"
                 >
                   🗑️ {{ i18n.t('lists.menu.delete') }}
                 </button>

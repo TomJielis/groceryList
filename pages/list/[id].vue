@@ -20,8 +20,6 @@ const showAddItem = ref(false);
 const showCheckedItems = ref(false);
 const editingItemId = ref<number | null>(null);
 
-const pullToRefresh = ref(false);
-const startY = ref(0);
 
 const {
   items,
@@ -39,23 +37,6 @@ onMounted(async () => {
 const uncheckedItems = computed(() => items.value.filter((item: any) => !item.checked));
 const checkedItems = computed(() => items.value.filter((item: any) => item.checked));
 
-function handleTouchStart(event: TouchEvent) {
-  startY.value = event.touches[0].clientY;
-}
-
-function handleTouchMove(event: TouchEvent) {
-  const currentY = event.touches[0].clientY;
-  if (currentY - startY.value > 50) {
-    pullToRefresh.value = true;
-  }
-}
-
-async function handleTouchEnd() {
-  if (pullToRefresh.value) {
-    pullToRefresh.value = false;
-    await fetchItems(listId);
-  }
-}
 
 function handleItemAdded() {
   showAddItem.value = false;
@@ -77,9 +58,6 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 <template>
   <div
       class="max-w-8xl p-4 overflow-y-auto"
-      @touchstart="handleTouchStart"
-      @touchmove="handleTouchMove"
-      @touchend="handleTouchEnd"
   >
 
     <div class="flex justify-between items-center mb-4">

@@ -7,17 +7,24 @@ const {message, visible, type} = useNotification();
 <template>
   <div
       v-if="message"
-      class="fixed transform text-white p-4 text-center py-3 px-6 shadow-lg transition-transform flex items-center justify-between w-full z-50"
+      class="fixed top-0 left-0 right-0 z-50 w-full flex items-center justify-center transition-transform"
       :class="[
-        'top-0 rounded-b-lg md:rounded-none',
-        { 'translate-y-full': !visible, 'translate-y-0': visible },
-        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+        { 'translate-y-full': !visible, 'translate-y-0': visible }
       ]"
   >
-    <div class="flex items-center justify-center w-full">
-      <span v-if="type === 'success'" class="mr-2">✅</span>
-      <span v-else class="mr-2">❌</span>
-      <span class="flex-1">{{ message }}</span>
+    <div
+        class="flex items-center gap-2 px-6 py-3 rounded-b-2xl shadow-2xl font-semibold text-base md:text-lg backdrop-blur-lg border border-border-light dark:border-border-dark"
+        :class="[
+        type === 'success' ? 'bg-success/90 text-white' : '',
+        type === 'error' ? 'bg-error/90 text-white' : '',
+        type === 'success' ? 'dark:bg-success/90' : '',
+        type === 'error' ? 'dark:bg-error/90' : '',
+        'max-w-xl w-full justify-center',
+      ]"
+    >
+      <span v-if="type === 'success'" class="text-xl">✅</span>
+      <span v-else class="text-xl">❌</span>
+      <span class="flex-1 text-center">{{ message }}</span>
     </div>
   </div>
 </template>
@@ -26,10 +33,12 @@ const {message, visible, type} = useNotification();
 .translate-y-full {
   transform: translateY(-100%);
 }
+
 .translate-y-0 {
   transform: translateY(0);
 }
+
 .transition-transform {
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
 }
 </style>
