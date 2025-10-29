@@ -31,7 +31,7 @@ async function addList() {
         type="text"
         v-model="newList"
         :placeholder="i18n.t('lists.form.placeholder')"
-        class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base"
+        class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2  border-border-light dark:border-border-dark focus:ring-blue-400 focus:border-blue-400 text-base placeholder-slate-400 dark:placeholder-slate-500 bg-white/80 dark:bg-slate-900/80"
     />
     <button
         class="w-full py-3 rounded-xl bg-blue-500 text-white font-semibold text-base shadow-md hover:bg-blue-600 active:scale-[0.98] transition"
