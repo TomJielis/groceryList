@@ -73,7 +73,8 @@
     },
     "form": {
       "placeholder": "Nieuwe lijst invoeren",
-      "createBtn": "Lijst maken"
+      "createBtn": "Lijst maken",
+      "name": "Naam"
     }
   },
   "list": {

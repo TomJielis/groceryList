@@ -73,7 +73,8 @@
     },
     "form": {
       "placeholder": "Enter new list",
-      "createBtn": "Create list"
+      "createBtn": "Create list",
+      "name": "Name"
     }
   },
   "list": {
