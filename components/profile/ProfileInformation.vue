@@ -57,12 +57,14 @@ function handleSubmit() {
       </button>
     </div>
     <form v-if="isEditing" @submit.prevent="handleSubmit" class="flex flex-col gap-4">
+      <label class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('profile.form.name') }}</label>
       <input
           v-model="userData.name"
           type="text"
           :placeholder="i18n.t('profile.name')"
           class="w-full px-4 py-3 rounded-xl border border-border-light dark:border-border-dark bg-white/80 dark:bg-slate-900/80 shadow focus:ring-2 focus:ring-accent focus:border-accent text-base transition-colors placeholder-slate-400 dark:placeholder-slate-500"
       />
+      <label  class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('profile.form.email') }}</label>
       <input
           v-model="userData.email"
           type="email"

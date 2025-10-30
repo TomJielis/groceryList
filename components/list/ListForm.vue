@@ -27,7 +27,7 @@ async function addList() {
 </script>
 <template>
   <div class="mt-6 max-w-md mx-auto px-4">
-    <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('lists.form.name') }}</label>
+    <label class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('lists.form.name') }}</label>
     <input
         type="text"
         v-model="newList"

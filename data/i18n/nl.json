@@ -114,7 +114,11 @@
     "deactivateAccountConfirm": "Type 'DELETE' om te bevestigen:",
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Type 'DELETE' om account verwijdering te bevestigen",
-    "accountDeactivated": "Account is gedeactiveerd"
+    "accountDeactivated": "Account is gedeactiveerd",
+    "form": {
+      "name": "Naam",
+      "email": "E-mail"
+    }
   },
   "errors": {
     "profileUpdateFailed": "Profiel bijwerken mislukt",

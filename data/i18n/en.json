@@ -114,7 +114,11 @@
     "deactivateAccountConfirm": "Please type 'DELETE' to confirm:",
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Please type 'DELETE' to confirm account deletion",
-    "accountDeactivated": "Account has been deactivated"
+    "accountDeactivated": "Account has been deactivated",
+    "form": {
+      "name": "Name",
+      "email": "Email"
+    }
   },
   "errors": {
     "profileUpdateFailed": "Failed to update profile",
