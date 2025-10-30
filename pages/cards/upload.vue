@@ -56,7 +56,7 @@ function handleSubmit() {
 
 <template>
   <div class="max-w-2xl mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-6">🃏 {{ i18n.t('cards.upload') }}</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center">🃏 {{ i18n.t('cards.upload') }}</h1>
 
     <div class="rounded-xl shadow-sm p-4">
       <form @submit.prevent="handleSubmit" class="space-y-4">

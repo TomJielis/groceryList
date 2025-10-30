@@ -81,7 +81,7 @@ function handleLogout() {
 
 <template>
   <div class="max-w-2xl mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-6">👤 {{ i18n.t('profile.title') }}</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center">👤 {{ i18n.t('profile.title') }}</h1>
     <div class="mb-6">
       <ProfileInformation
         :user="authStore.user"

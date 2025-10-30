@@ -61,7 +61,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
   >
 
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl font-bold">🛒 {{ list?.name }}</h1>
+      <h1 class="text-2xl font-bold text-center">🛒 {{ list?.name }}</h1>
       <div class="text-lg font-bold">
         {{ i18n.t('list.total') }}: €{{
           uncheckedItems.reduce((total, item) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
