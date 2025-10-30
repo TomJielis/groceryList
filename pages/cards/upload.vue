@@ -61,7 +61,7 @@ function handleSubmit() {
     <div class="rounded-xl shadow-sm p-4">
       <form @submit.prevent="handleSubmit" class="space-y-4">
         <div>
-          <label for="title" class="block text-sm font-medium text-gray-700 mb-1">{{ i18n.t('cards.title') }}</label>
+          <label  class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('cards.title') }}</label>
           <input
               v-model="formData.title"
               type="text"
@@ -71,7 +71,7 @@ function handleSubmit() {
           />
         </div>
         <div>
-          <label for="attachment" class="block text-sm font-medium text-gray-700 mb-1">{{ i18n.t('cards.attachment') }}</label>
+          <label  class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('cards.attachment') }}</label>
           <input
               @change="handleFileChange"
               type="file"
