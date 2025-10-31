@@ -3,12 +3,13 @@ import {ref, defineEmits} from "vue";
 import {useGroceryList} from "~/composables/useGroceryList";
 import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
-import { useI18nStore } from '~/stores/i18n';
+import {useI18nStore} from '~/stores/i18n';
+import formInput from "~/components/form/formInput.vue"
 
 const listStore = useListStore();
 const {showNotification} = useNotification();
 const emit = defineEmits(['list-added', 'close']);
-const { createList } = useGroceryList();
+const {createList} = useGroceryList();
 const i18n = useI18nStore();
 
 let newList = ref('');
@@ -27,12 +28,10 @@ async function addList() {
 </script>
 <template>
   <div class="mt-6 max-w-md mx-auto px-4">
-    <label class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('lists.form.name') }}</label>
-    <input
-        type="text"
+    <formInput
         v-model="newList"
+        :label="i18n.t('lists.form.name')"
         :placeholder="i18n.t('lists.form.placeholder')"
-        class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2  border-border-light dark:border-border-dark focus:ring-blue-400 focus:border-blue-400 text-base placeholder-slate-400 dark:placeholder-slate-500 bg-white/80 dark:bg-slate-900/80"
     />
     <button
         class="w-full py-3 rounded-xl bg-blue-500 text-white font-semibold text-base shadow-md hover:bg-blue-600 active:scale-[0.98] transition"

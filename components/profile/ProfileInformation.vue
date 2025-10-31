@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useI18nStore } from '~/stores/i18n';
+import formInput from "~/components/form/formInput.vue"
 
 const props = defineProps<{
   user: {
@@ -57,19 +58,15 @@ function handleSubmit() {
       </button>
     </div>
     <form v-if="isEditing" @submit.prevent="handleSubmit" class="flex flex-col gap-4">
-      <label class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('profile.form.name') }}</label>
-      <input
+      <formInput
           v-model="userData.name"
-          type="text"
+          :label="i18n.t('profile.form.name')"
           :placeholder="i18n.t('profile.name')"
-          class="w-full px-4 py-3 rounded-xl border border-border-light dark:border-border-dark bg-white/80 dark:bg-slate-900/80 shadow focus:ring-2 focus:ring-accent focus:border-accent text-base transition-colors placeholder-slate-400 dark:placeholder-slate-500"
       />
-      <label  class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('profile.form.email') }}</label>
-      <input
+      <formInput
           v-model="userData.email"
-          type="email"
+          :label="i18n.t('profile.form.email')"
           :placeholder="i18n.t('profile.email')"
-          class="w-full px-4 py-3 rounded-xl border border-border-light dark:border-border-dark bg-white/80 dark:bg-slate-900/80 shadow focus:ring-2 focus:ring-accent focus:border-accent text-base transition-colors placeholder-slate-400 dark:placeholder-slate-500"
       />
       <button
         type="submit"

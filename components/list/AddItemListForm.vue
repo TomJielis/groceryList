@@ -4,6 +4,7 @@ import {useRoute} from 'vue-router';
 import {useGroceryList} from '~/composables/useGroceryList';
 import {useSuggestionStore} from '~/stores/suggestions'
 import { useI18nStore } from '~/stores/i18n';
+import formInput from "~/components/form/formInput.vue"
 
 const {
   addItem,
@@ -50,11 +51,9 @@ fetchItems(listId)
 <template>
   <div class="flex-auto overflow-y-auto p-4 pb-20 md:pb-4 h-[80vh]">
     <div class="items-center flex-col">
-      <input
-          type="text"
+      <formInput
           v-model="newItem"
           :placeholder="i18n.t('items.addPlaceholder')"
-          class="w-full mb-4 px-5 py-3 rounded-2xl border border-border-light dark:border-border-dark bg-white/80 dark:bg-slate-900/80 shadow-xl focus:ring-2 focus:ring-accent focus:border-accent text-base sm:text-lg md:text-xl transition-colors placeholder-slate-400 dark:placeholder-slate-500"
       />
       <ul class="space-y-4">
         <li

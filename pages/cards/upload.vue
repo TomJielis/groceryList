@@ -4,6 +4,7 @@ import { useCards } from "~/composables/useCards";
 import {useRouter} from "vue-router";
 import { useI18nStore } from '~/stores/i18n';
 import {useNotification} from "~/composables/useNotification";
+import formInput from "~/components/form/formInput.vue"
 
 definePageMeta({
   middleware: 'auth',
@@ -61,13 +62,10 @@ function handleSubmit() {
     <div class="rounded-xl shadow-sm p-4">
       <form @submit.prevent="handleSubmit" class="space-y-4">
         <div>
-          <label  class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('cards.title') }}</label>
-          <input
+          <formInput
               v-model="formData.title"
-              type="text"
-              id="title"
-              required
-              class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2  border-border-light dark:border-border-dark focus:ring-blue-400 focus:border-blue-400 text-base placeholder-slate-400 dark:placeholder-slate-500 bg-white/80 dark:bg-slate-900/80"
+              :label="i18n.t('cards.title')"
+              :placeholder="i18n.t('cards.title')"
           />
         </div>
         <div>
