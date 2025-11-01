@@ -27,7 +27,7 @@ useHead(() => ({
     <NotificationBar />
 
     <div
-        class="flex-1 overflow-y-auto md:pt-12 pb-16 md:pb-0 bg-white/80 dark:bg-slate-900/80 shadow-2xl border border-slate-100 dark:border-slate-700"
+        class="mb-24 flex-1 overflow-y-auto md:pt-12 pb-16 md:pb-0 bg-white/80 dark:bg-slate-900/80 shadow-2xl border border-slate-100 dark:border-slate-700"
         style="height: calc(100vh - var(--navbar-height, 0px) - var(--bottombar-height, 0px));"
     >
       <nuxt-page />

@@ -1,5 +1,4 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 export default defineNuxtConfig({
   app: {
