@@ -123,7 +123,7 @@ function closeDeleteModal() {
   deleteListName.value = '';
 }
 
-function makefavorite(id: number | null) {
+function makeFavorite(id: number | null) {
   favorite(id)
       .then(() => {
         favorite(id);
@@ -136,7 +136,7 @@ function makefavorite(id: number | null) {
 
 function setFavoriteList(id: number) {
   let listId = auth?.user?.favorite_list_id == id ? null : id;
-  makefavorite(listId)
+  makeFavorite(listId)
   openDropdown.value = null; // Close the submenu
   const data = auth.user;
   if (data) {
