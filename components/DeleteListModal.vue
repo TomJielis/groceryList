@@ -24,6 +24,7 @@ function handleConfirm() {
 </script>
 
 <template>
+  <!-- TODO: refactor this file, so i can sent the translation tags from the parent component -->
   <div v-if="isVisible" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur">
     <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl p-6 max-w-md w-full shadow-2xl border border-border-light dark:border-border-dark">
       <h3 class="text-lg font-bold text-error mb-4 flex items-center gap-2">
@@ -39,6 +40,7 @@ function handleConfirm() {
         {{ itemType === 'list' ? i18n.t('lists.confirmDelete') : i18n.t('cards.confirmDelete') }}
       </p>
 
+      <!-- TODO: add those buttons as a component. since they are being used on multiple places with the same styling -->
       <div class="flex space-x-3">
         <button
             @click="handleClose"
