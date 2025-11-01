@@ -5,6 +5,7 @@ import {useRouter} from "vue-router";
 import { useI18nStore } from '~/stores/i18n';
 import {useNotification} from "~/composables/useNotification";
 import formInput from "~/components/form/formInput.vue"
+import backButton from "~/components/form/backButton.vue"
 
 definePageMeta({
   middleware: 'auth',
@@ -87,15 +88,10 @@ function handleSubmit() {
       </form>
     </div>
 
-    <div class="mt-4">
-      <div class="fixed left-0 w-full mt-6 space-y-3 p-4 bottom-20 md:bottom-3 z-50">
-        <button
-          class="w-full py-3 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition"
-          @click="router.push('/cards/')"
-        >
-          ← {{ i18n.t('common.back') }}
-        </button>
-      </div>
-    </div>
+    <backButton
+        :label="i18n.t('common.back')"
+        @click="router.push('/cards/')"
+        @close="router.push('/cards/')"
+    />
   </div>
 </template>
