@@ -67,7 +67,7 @@ function closeModal() {
              @click="openModal(card)"/>
       </div>
       <button
-          class="mt-3 w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 font-medium text-sm"
+          class="mt-3 w-full px-4 py-2 bg-red-500 rounded-lg hover:bg-red-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 font-medium text-sm"
           @click="destroy(card.id)">
         🗑️ {{ i18n.t('cards.deleteBtn') }}
       </button>

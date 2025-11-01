@@ -3,7 +3,7 @@ import NotificationBar from '~/components/NotificationBar.vue';
 import Navbar from '~/components/Navbar.vue';
 import BottomBar from '~/components/BottomBar.vue';
 import { useI18nStore } from "~/stores/i18n";
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 
 const i18n = useI18nStore()
 const t = computed(() => i18n.t)

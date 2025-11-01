@@ -34,7 +34,7 @@ async function addList() {
         :placeholder="i18n.t('lists.form.placeholder')"
     />
     <button
-        class="w-full py-3 rounded-xl bg-blue-500 text-white font-semibold text-base shadow-md hover:bg-blue-600 active:scale-[0.98] transition"
+        class="w-full py-3 rounded-xl bg-blue-500 font-semibold text-base shadow-md hover:bg-blue-600 active:scale-[0.98] transition"
         @click="addList"
     >
       ➕ {{ i18n.t('lists.form.createBtn') }}

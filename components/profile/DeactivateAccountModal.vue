@@ -54,7 +54,7 @@ function updateConfirmText(event: Event) {
         <button
           @click="handleConfirm"
           :disabled="confirmText !== 'DELETE'"
-          class="flex-1 bg-error text-white py-2 px-4 rounded-xl hover:bg-error/90 transition shadow border border-error/80 font-semibold focus:ring-2 focus:ring-error"        >
+          class="flex-1 bg-error py-2 px-4 rounded-xl hover:bg-error/90 transition shadow border border-error/80 font-semibold focus:ring-2 focus:ring-error"        >
           {{ i18n.t('profile.deactivateAccount') }}
         </button>
       </div>

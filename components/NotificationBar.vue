@@ -15,10 +15,11 @@ const {message, visible, type} = useNotification();
     <div
         class="flex items-center gap-2 px-6 py-3 rounded-b-2xl shadow-2xl font-semibold text-base md:text-lg backdrop-blur-lg border border-border-light dark:border-border-dark"
         :class="[
-        type === 'success' ? 'bg-success/90 text-white' : '',
-        type === 'error' ? 'bg-error/90 text-white' : '',
-        type === 'success' ? 'dark:bg-success/90' : '',
-        type === 'error' ? 'dark:bg-error/90' : '',
+       type === 'success' ? 'bg-success' : '',
+       type === 'error' ? 'bg-error' : '',
+       type === 'success' ? 'dark:bg-success/90' : '',
+       type === 'error' ? 'dark:bg-error/90' : '',
+
         'max-w-xl w-full justify-center',
       ]"
     >
@@ -39,6 +40,6 @@ const {message, visible, type} = useNotification();
 }
 
 .transition-transform {
-  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  transition: transform 0.3s cubic-bezier(.4, 0, .2, 1);
 }
 </style>

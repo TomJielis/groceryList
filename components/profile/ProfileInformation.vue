@@ -52,7 +52,7 @@ function handleSubmit() {
       <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light">{{ i18n.t('profile.information') }}</h2>
       <button
         @click="toggleEdit"
-        class="px-4 py-2 rounded-xl bg-accent text-white font-semibold shadow hover:bg-accent-dark transition border border-accent/80 focus:ring-2 focus:ring-accent"
+        class="px-4 py-2 rounded-xl bg-accent font-semibold shadow hover:bg-accent-dark transition border border-accent/80 focus:ring-2 focus:ring-accent"
       >
         {{ isEditing ? i18n.t('common.cancel') : i18n.t('profile.edit') }}
       </button>
@@ -70,7 +70,7 @@ function handleSubmit() {
       />
       <button
         type="submit"
-        class="w-full py-3 rounded-xl bg-accent text-white font-semibold shadow hover:bg-accent-dark transition border border-accent/80 focus:ring-2 focus:ring-accent"
+        class="w-full py-3 rounded-xl bg-accent  font-semibold shadow hover:bg-accent-dark transition border border-accent/80 focus:ring-2 focus:ring-accent"
       >
         {{ i18n.t('profile.saveChanges') }}
       </button>

@@ -45,7 +45,7 @@ function handleResetPassword() {
           </div>
           <button
               type="submit"
-              class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 font-semibold"
+              class="w-full bg-green-500 py-3 rounded-lg hover:bg-green-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 font-semibold"
           >
             {{ i18n.t('auth.sendBtn') }}
           </button>

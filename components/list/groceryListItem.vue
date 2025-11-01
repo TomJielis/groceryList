@@ -54,7 +54,7 @@ watch(() => props.item, (newVal) => {
       </div>
       <button
           @click="emit('save', localItem)"
-          class="self-end bg-accent text-white px-6 py-2 rounded-xl hover:bg-accent-dark shadow-md font-semibold transition border border-accent/80 focus:ring-2 focus:ring-accent"
+          class="self-end bg-accent px-6 py-2 rounded-xl hover:bg-accent-dark shadow-md font-semibold transition border border-accent/80 focus:ring-2 focus:ring-accent"
       >
         {{ i18n.t('common.save') }}
       </button>

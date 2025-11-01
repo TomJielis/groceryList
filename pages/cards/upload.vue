@@ -80,7 +80,7 @@ function handleSubmit() {
         </div>
         <button
           type="submit"
-          class="w-full bg-blue-500 text-white py-3 rounded-xl hover:bg-blue-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 font-semibold"
+          class="w-full bg-blue-500 py-3 rounded-xl hover:bg-blue-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 font-semibold"
         >
           📤 {{ i18n.t('cards.upload') }}
         </button>

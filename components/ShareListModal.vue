@@ -64,7 +64,7 @@ function isValidEmail(email: string): boolean {
         <button
           @click="handleConfirm"
           :disabled="!isValidEmail(email)"
-          class="flex-1 bg-accent text-white py-2 px-4 rounded-xl hover:bg-accent-dark transition shadow border border-accent/80 font-semibold focus:ring-2 focus:ring-accent disabled:opacity-60 disabled:cursor-not-allowed"
+          class="flex-1 bg-accent py-2 px-4 rounded-xl hover:bg-accent-dark transition shadow border border-accent/80 font-semibold focus:ring-2 focus:ring-accent disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {{ i18n.t('lists.shareBtn') }}
         </button>

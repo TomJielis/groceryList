@@ -50,7 +50,7 @@ function handleConfirm() {
         </button>
         <button
             @click="handleConfirm"
-            class="flex-1 bg-error text-white py-2 px-4 rounded-xl hover:bg-error/90 transition shadow border border-error/80 font-semibold focus:ring-2 focus:ring-error"        >
+            class="flex-1 bg-error  py-2 px-4 rounded-xl hover:bg-error/90 transition shadow border border-error/80 font-semibold focus:ring-2 focus:ring-error"        >
           {{ itemType === 'list' ? i18n.t('lists.deleteBtn') : i18n.t('cards.deleteBtn') }}
         </button>
       </div>

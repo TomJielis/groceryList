@@ -8,7 +8,7 @@ const i18n = useI18nStore();
 const t = computed(() => i18n.t);
 </script>
 <template>
-  <nav class="bg-green-500 text-white p-1">
+  <nav class="bg-green-500 p-1">
     <div class="container mx-auto flex justify-between items-center">
       <h1 class="text-xl font-bold"><nuxtLink to="/">{{ t('nav.brand') }}</nuxtLink></h1>
       <div class="flex items-center space-x-4">
