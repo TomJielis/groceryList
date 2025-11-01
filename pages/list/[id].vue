@@ -6,6 +6,8 @@ import GroceryListItem from '~/components/list/groceryListItem.vue';
 import {useGroceryList} from '~/composables/useGroceryList';
 import {useListStore} from '~/stores/lists';
 import {useI18nStore} from '~/stores/i18n';
+import AddButton from "~/components/form/addButton.vue";
+
 
 definePageMeta({
   middleware: 'auth',
@@ -56,11 +58,9 @@ async function updateGroceryListItem(item: any) {
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>
-  <div
-      class="max-w-8xl p-4 overflow-y-auto"
-  >
+  <div class="max-w-2xl mx-auto p-4">
 
-    <div class="flex justify-between items-center mb-4">
+  <div class="flex justify-between items-center mb-4">
       <h1 class="text-2xl font-bold text-center">🛒 {{ list?.name }}</h1>
       <div class="text-lg font-bold">
         {{ i18n.t('list.total') }}: €{{
@@ -107,14 +107,8 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           </transition-group>
         </ul>
       </ul>
-      <button
-        class="fixed bottom-24 right-6 z-40 bg-gradient-to-br from-indigo-500 to-sky-400 hover:from-indigo-600 hover:to-sky-500  rounded-full shadow-2xl w-16 h-16 flex items-center justify-center text-4xl transition md:hidden border-4 border-white dark:border-slate-800 ring-2 ring-indigo-300 dark:ring-indigo-800"
-          @click="showAddItem = true"
-      >
-        <span class="pb-1">+</span>
-      </button>
+      <AddButton  @click="showAddItem = true"/>
     </div>
-
     <div v-else>
       <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm"/>
     </div>

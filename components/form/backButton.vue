@@ -19,7 +19,6 @@ const labelText = computed(() => props.label || i18n.t('common.back'))
 
 function onClick(e: MouseEvent) {
   emit('click', e)
-  // keep legacy 'close' event for existing listeners
   emit('close')
 }
 </script>
