@@ -7,7 +7,6 @@ import { computed } from 'vue'
 
 const i18n = useI18nStore()
 const t = computed(() => i18n.t)
-
 useHead(() => ({
   link: [
     { rel: 'manifest', href: '/manifest.json' }
