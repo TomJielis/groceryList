@@ -22,7 +22,7 @@ useHead(() => ({
 }))
 </script>
 <template>
-  <div class="min-h-screen flex flex-col overflow-x-hidden bg-gradient-to-br from-sky-50 via-blue-100 to-indigo-200 dark:from-slate-800 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 font-inter flex flex-col relative transition-colors">
+  <div class="min-h-screen overflow-x-hidden bg-gradient-to-br from-sky-50 via-blue-100 to-indigo-200 dark:from-slate-800 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 font-inter flex flex-col relative transition-colors">
     <Navbar class="hidden md:block fixed top-0 left-0 right-0 z-50 h-12 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg"  />
 
     <NotificationBar />
@@ -43,5 +43,6 @@ html,
 body {
   overflow-x: hidden;
   height: 100%;
+  background-color: #0f172a;
 }
 </style>
