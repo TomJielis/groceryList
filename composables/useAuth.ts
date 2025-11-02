@@ -143,6 +143,22 @@ export function useAuth() {
     return await updateResponse.json();
   }
 
+    async function deactivate() {
+        const updateResponse = await fetch('/api/user/deactivate/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!updateResponse.ok) {
+            throw new Error(`Failed to login user: ${updateResponse.statusText}`);
+        }
+
+        return await updateResponse.json();
+    }
+
+
 
 
 
@@ -153,6 +169,7 @@ export function useAuth() {
         resetPassword,
         setNewPassword,
         setLanguage,
-        update
+        update,
+        deactivate
     }
 }

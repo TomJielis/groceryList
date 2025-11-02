@@ -15,7 +15,7 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const { setLanguage, update } = useAuth();
+const { setLanguage, update, deactivate } = useAuth();
 
 const i18n = useI18nStore();
 const { showNotification, showSuccess } = useNotification();
@@ -56,6 +56,7 @@ async function handleDeactivateAccount() {
   }
 
   try {
+    deactivate();
     authStore.clearAuth();
     router.push('/auth/login');
     showSuccess(t.value('profile.accountDeactivated'));
