@@ -50,7 +50,7 @@ const filteredSuggestions = computed(() => {
 fetchItems(listId)
 </script>
 <template>
-  <div class="flex-auto overflow-y-auto p-4 md:pb-4 mt-4 mb-10">
+  <div class="flex-auto overflow-y-auto p-4 md:pb-4 mt-4 mb-20">
     <div class="items-center flex-col">
       <formInput
           v-model="newItem"
