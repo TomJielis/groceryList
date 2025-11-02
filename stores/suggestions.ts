@@ -3,6 +3,7 @@ import {defineStore} from 'pinia'
 import grocerySuggestions from '~/data/suggestions.json';
 import {useGroceryList} from "~/composables/useGroceryList";
 import {useI18nStore} from "~/stores/i18n";
+import {useAuthStore} from "~/stores/auth";
 const { items, fetchItems } = useGroceryList();
 
 export const useSuggestionStore = defineStore('suggestions', {
@@ -14,8 +15,9 @@ export const useSuggestionStore = defineStore('suggestions', {
 
     getters: {
         combinedSuggestions(state) {
+            const auth = useAuthStore();
             const i18n = useI18nStore();
-            const lang = i18n.locale;
+            const lang = auth.user?.language || i18n.locale;
 
             const defaultMapped = state.defaultSuggestions.map(item => ({
                 name: lang === 'nl' ? item.name_nl : item.name_en
