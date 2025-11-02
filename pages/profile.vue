@@ -46,6 +46,11 @@ function handleLanguageChange(locale: 'nl' | 'en') {
   setLanguage(locale);
 
   i18n.setLocale(locale);
+
+  if (authStore.user) {
+    authStore.setLanguage(locale);
+  }
+
   showSuccess(t.value('profile.languageChanged'));
 }
 

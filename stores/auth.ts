@@ -9,6 +9,11 @@ export const useAuthStore = defineStore('auth', {
     setUser(user: any) {
       this.user = user;
     },
+    setLanguage(language: string) {
+        if (this.user) {
+            this.user.language = language;
+        }
+    },
     setToken(token: string) {
       this.token = token;
     },
