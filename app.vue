@@ -45,7 +45,7 @@ onMounted(() => {
     <NotificationBar/>
 
     <div
-        class="scrollable-content mb-24 flex-1 overflow-y-auto md:pt-12 pb-16 md:pb-0 bg-white/80 dark:bg-slate-900/80 shadow-2xl border border-slate-100 dark:border-slate-700"
+        class="scrollable-content flex-1 overflow-y-auto md:pt-12 pb-16 md:pb-0 bg-white/80 dark:bg-slate-900/80 shadow-2xl border border-slate-100 dark:border-slate-700"
     >
       <nuxt-page/>
     </div>
