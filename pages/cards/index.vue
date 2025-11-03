@@ -15,7 +15,3 @@ const i18n = useI18nStore();
     <cardsComponent/>
   </div>
 </template>
-
-<style scoped>
-
-</style>

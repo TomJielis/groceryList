@@ -101,9 +101,3 @@ function toggleLanguage() {
     </div>
   </div>
 </template>
-
-<style scoped>
-body {
-  font-family: 'Inter', sans-serif;
-}
-</style>

@@ -22,8 +22,3 @@ const emit = defineEmits<{
       class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2  border-border-light dark:border-border-dark focus:ring-blue-400 focus:border-blue-400 text-base placeholder-slate-400 dark:placeholder-slate-500 bg-white/80 dark:bg-slate-900/80"
   />
 </template>
-
-
-<style scoped>
-
-</style>

@@ -35,7 +35,3 @@ function onClick(e: MouseEvent) {
     </button>
   </div>
 </template>
-
-<style scoped>
-
-</style>
