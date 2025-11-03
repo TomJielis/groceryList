@@ -43,7 +43,7 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 </script>
 
 <template>
-  <div class="h-[90vh] flex items-center justify-center px-4">
+  <div class="h-[90dvh] flex items-center justify-center px-4">
     <div class="bg-white/90 dark:bg-slate-900/90 p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-border-light dark:border-border-dark">
       <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-primary-dark dark:text-accent-light">
       📝 {{ i18n.t('auth.registerTitle') }}

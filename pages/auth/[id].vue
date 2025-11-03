@@ -35,7 +35,7 @@ auth.verifyEmail(form.value.token).then((data:any) => {
 </script>
 
 <template>
-  <div class="h-[90vh] bg-[#f1fdf3] flex items-center justify-center px-4 text-center">
+  <div class="h-[90dvh] bg-[#f1fdf3] flex items-center justify-center px-4 text-center">
     <div class="max-w-md w-full bg-white shadow-xl rounded-xl p-8">
       <div class="flex flex-col items-center space-y-4">
         <img

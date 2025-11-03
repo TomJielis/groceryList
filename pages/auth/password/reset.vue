@@ -25,7 +25,7 @@ function handleResetPassword() {
 </script>
 
 <template>
-  <div class="h-[90vh] flex items-center justify-center px-4">
+  <div class="h-[90dvh] flex items-center justify-center px-4">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
       <div v-if="!mailSent">
         <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-gray-900">

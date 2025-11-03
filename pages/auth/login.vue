@@ -43,16 +43,14 @@ function handleLogin() {
     });
 }
 
-// Function to toggle language for non-logged-in users
 function toggleLanguage() {
   const newLocale = i18n.locale === 'en' ? 'nl' : 'en';
   i18n.setLocale(newLocale);
 }
 </script>
 
-
 <template>
-  <div class="flex items-center justify-center px-4 h-[90vh]">
+  <div class="h-[90dvh] flex items-center justify-center px-4">
     <div class="bg-white/90 dark:bg-slate-900/90 p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-border-light dark:border-border-dark">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl sm:text-3xl font-extrabold text-primary-dark dark:text-accent-light">🛒 {{ t('nav.login') }}</h2>
