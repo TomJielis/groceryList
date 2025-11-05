@@ -75,7 +75,10 @@
       "placeholder": "Enter new list",
       "createBtn": "Create list",
       "name": "Name"
-    }
+    },
+    "pending-lists": "Pending invitations",
+    "invitations": "invitations",
+    "invited": "Invited"
   },
   "list": {
     "total": "Total",

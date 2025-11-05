@@ -75,7 +75,10 @@
       "placeholder": "Nieuwe lijst invoeren",
       "createBtn": "Lijst maken",
       "name": "Naam"
-    }
+    },
+    "pending-lists": "Uitnodigingen in afwachting",
+    "invitations": "uitnodigingen",
+    "invited": "Uitgenodigd"
   },
   "list": {
     "total": "Totaal",
