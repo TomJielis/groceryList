@@ -19,6 +19,21 @@ export function useGroceryList() {
         }
     }
 
+    async function fetchPendingLists() {
+        try {
+            const response = await fetch('/api/groceryList/pending');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch lists: ${response.statusText}`);
+            }
+            let listResult = (await response.json()).data;
+            lists.value = listResult.map(item => ({
+                ...item,
+            }));
+        } catch (error) {
+            console.error('Error fetching lists:', error);
+        }
+    }
+
     async function createList(name: string) {
         const response = await fetch('/api/groceryList/store', {
             method: 'POST',
@@ -199,6 +214,7 @@ export function useGroceryList() {
         items,
         lists,
         fetchLists,
+        fetchPendingLists,
         favorite,
         createList,
         shareList,

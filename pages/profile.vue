@@ -9,6 +9,7 @@ import LanguageSettings from '~/components/profile/LanguageSettings.vue';
 import AccountActions from '~/components/profile/AccountActions.vue';
 import DeactivateAccountModal from '~/components/profile/DeactivateAccountModal.vue';
 import {useAuth} from "~/composables/useAuth";
+import PendingLists from "~/components/profile/PendingLists.vue";
 
 definePageMeta({
   middleware: 'auth',
@@ -92,6 +93,11 @@ function handleLogout() {
       <ProfileInformation
         :user="authStore.user"
         @update="handleProfileUpdate"
+      />
+    </div>
+
+    <div class="mb-6">
+      <PendingLists
       />
     </div>
 
