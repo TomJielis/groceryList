@@ -1,11 +1,30 @@
 <script setup lang="ts">
-
+import { ref } from 'vue';
 import {useGroceryList} from "~/composables/useGroceryList";
 import {useI18nStore} from "~/stores/i18n";
+import type { TGroceryList } from '@/types/TGroceryList';
 
 const i18n = useI18nStore();
+const pendingLists = ref<TGroceryList[]>([]);
 
-const pendingLists = await useGroceryList().fetchPendingLists();
+useGroceryList().fetchPendingLists().then(lists => {
+  pendingLists.value = lists || [];
+});
+
+const { updatePendingListStatus } = useGroceryList();
+
+async function handleAction(id: number, status: 'accepted' | 'declined') {
+  await updatePendingListStatus(id, status);
+  pendingLists.value = pendingLists.value.filter(list => list.id !== id);
+}
+
+function getCreatorName(list: TGroceryList): string {
+  if (list.created_by && typeof list.created_by === 'object' && 'name' in list.created_by) {
+    // @ts-ignore
+    return list.created_by.name;
+  }
+  return 'Unknown';
+}
 
 </script>
 
@@ -31,16 +50,13 @@ const pendingLists = await useGroceryList().fetchPendingLists();
               <span v-if="pendingLists.length === 1" class="inline-block px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-bold">{{ i18n.t('lists.invited') }}</span>
               {{ list.name }}
             </span>
-            <div v-if="list.created_by && typeof list.created_by === 'object' && list.created_by.name" class="text-sm text-gray-500 mt-1">
-              Creator: {{ list.created_by.name }}
-            </div>
-            <div v-else class="text-sm text-gray-500 mt-1">
-              Creator: Unknown
+            <div class="text-sm text-gray-500 mt-1">
+              Creator: {{ getCreatorName(list) }}
             </div>
           </div>
           <div class="flex gap-2 mt-2 md:mt-0">
-            <button class="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow font-semibold">Approve</button>
-            <button class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow font-semibold">Decline</button>
+            <button class="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow font-semibold" @click="handleAction(list.id, 'accepted')">{{ i18n.t('lists.approve') }}</button>
+            <button class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow font-semibold" @click="handleAction(list.id, 'declined')">{{ i18n.t('lists.decline') }}</button>
           </div>
         </div>
       </li>

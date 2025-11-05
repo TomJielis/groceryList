@@ -78,7 +78,9 @@
     },
     "pending-lists": "Uitnodigingen in afwachting",
     "invitations": "uitnodigingen",
-    "invited": "Uitgenodigd"
+    "invited": "Uitgenodigd",
+    "approve": "Goedkeuren",
+    "decline": "Afwijzen"
   },
   "list": {
     "total": "Totaal",

@@ -208,6 +208,13 @@ export function useGroceryList() {
         });
     }
 
+    async function updatePendingListStatus(id: number, status: 'accepted' | 'declined'): Promise<any> {
+        return await $fetch('/api/groceryList/pending/action', {
+            method: 'POST',
+            body: { id, status }
+        });
+    }
+
     return {
         items,
         lists,
@@ -223,6 +230,7 @@ export function useGroceryList() {
         checked,
         clearItem,
         increaseItems,
-        decreaseItems
+        decreaseItems,
+        updatePendingListStatus,
     }
 }

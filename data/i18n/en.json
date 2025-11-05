@@ -78,7 +78,9 @@
     },
     "pending-lists": "Pending invitations",
     "invitations": "invitations",
-    "invited": "Invited"
+    "invited": "Invited",
+    "approve": "Approve",
+    "decline": "Decline"
   },
   "list": {
     "total": "Total",
