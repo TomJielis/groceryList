@@ -97,8 +97,7 @@ function handleLogout() {
     </div>
 
     <div class="mb-6">
-      <PendingLists
-      />
+      <PendingLists />
     </div>
 
     <div class="mb-6">
