@@ -1,46 +1,44 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useGroceryList } from '~/composables/useGroceryList';
-import type { TGroceryList } from '@/types/TGroceryList';
-import { useI18nStore } from '~/stores/i18n';
 
-const { fetchPendingLists } = useGroceryList();
+import {useGroceryList} from "~/composables/useGroceryList";
+import {useI18nStore} from "~/stores/i18n";
+
 const i18n = useI18nStore();
-const pendingLists = ref<TGroceryList[]>([]);
-const loading = ref(true);
 
-onMounted(async () => {
-  const result = await fetchPendingLists();
-  pendingLists.value = result || [];
-  loading.value = false;
-});
+const pendingLists = await useGroceryList().fetchPendingLists();
+
 </script>
 
 <template>
-  <div class="flex flex-col gap-6 mt-4">
-    <div v-if="loading" class="text-center text-slate-500 dark:text-slate-400 py-8">
-      {{ i18n.t('common.loading') }}
+  <div
+      class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light">{{ i18n.t('lists.pending-lists') }}</h2>
     </div>
-    <template v-else>
-      <div v-if="pendingLists.length === 0" class="text-center text-slate-500 dark:text-slate-400 py-8">
-        {{ i18n.t('lists.noPending') }}
-      </div>
-      <ul v-else class="space-y-4">
-        <li v-for="list in pendingLists" :key="list.id"
-            class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-4 md:p-5 border border-border-light dark:border-border-dark transition hover:shadow-2xl hover:border-accent/60 flex flex-col">
-          <div class="flex items-center justify-between">
-            <span class="text-base md:text-lg font-medium text-slate-800 dark:text-slate-100">{{ list.name }}</span>
-            <span class="text-sm text-slate-500 dark:text-slate-400">{{ i18n.t('lists.pending') }}</span>
+    <ul class="space-y-5">
+      <li
+          v-for="list in pendingLists"
+          :key="list.id"
+          class="p-5 border-b border-border-light"
+      >
+        <div class="flex items-start justify-between">
+          <div>
+            <span class="text-base font-medium break-words whitespace-normal">
+              {{ list.name }}
+            </span>
+            <div v-if="list.created_by" class="text-sm text-gray-500 mt-1">
+              Creator: {{ list.created_by.name || 'Unknown' }}
+            </div>
+            <div v-if="list.title" class="text-sm text-gray-500 mt-1">
+            </div>
           </div>
-          <div class="flex items-center justify-end mt-2">
-            <button class="px-4 py-2 rounded-xl bg-accent text-white font-semibold shadow-md hover:bg-accent-dark transition border border-accent/80 focus:ring-2 focus:ring-accent">
-              {{ i18n.t('lists.remind') }}
+          <div class="flex gap-2">
+            <button class="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition">Approve
             </button>
+            <button class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition">Decline</button>
           </div>
-        </li>
-      </ul>
-    </template>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
-
-

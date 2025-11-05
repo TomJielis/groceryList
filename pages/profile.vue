@@ -9,7 +9,7 @@ import LanguageSettings from '~/components/profile/LanguageSettings.vue';
 import AccountActions from '~/components/profile/AccountActions.vue';
 import DeactivateAccountModal from '~/components/profile/DeactivateAccountModal.vue';
 import {useAuth} from "~/composables/useAuth";
-import PendingLists from "~/components/profile/PendingLists.vue";
+import PendingLists from "~/components/list/PendingGroceryList.vue";
 
 definePageMeta({
   middleware: 'auth',
