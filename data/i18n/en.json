@@ -65,6 +65,8 @@
     "shareBtn": "Share",
     "shared": "List has been shared!",
     "favorited": "List marked as favorite!",
+    "approvedMessage": "List has been added to your lists.",
+    "declinedMessage": "List invitation has been declined.",
     "menu": {
       "removeFavorite": "Remove favorite",
       "markFavorite": "Mark as favorite",
@@ -80,7 +82,8 @@
     "invitations": "invitations",
     "invited": "Invited",
     "approve": "Approve",
-    "decline": "Decline"
+    "decline": "Decline",
+    "noPending": "No pending invitations"
   },
   "list": {
     "total": "Total",

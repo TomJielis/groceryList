@@ -80,7 +80,10 @@
     "invitations": "uitnodigingen",
     "invited": "Uitgenodigd",
     "approve": "Goedkeuren",
-    "decline": "Afwijzen"
+    "decline": "Afwijzen",
+    "noPending": "Geen uitnodigingen in afwachting",
+    "approvedMessage": "Lijst is toegevoegd aan je lijsten.",
+    "declinedMessage": "Uitnodiging voor lijst is afgewezen."
   },
   "list": {
     "total": "Totaal",

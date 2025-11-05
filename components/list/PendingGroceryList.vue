@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import {useGroceryList} from "~/composables/useGroceryList";
 import {useI18nStore} from "~/stores/i18n";
+import { useNotification } from '~/composables/useNotification';
 import type { TGroceryList } from '@/types/TGroceryList';
 
 const i18n = useI18nStore();
@@ -12,10 +13,16 @@ useGroceryList().fetchPendingLists().then(lists => {
 });
 
 const { updatePendingListStatus } = useGroceryList();
+const notification = useNotification();
 
 async function handleAction(id: number, status: 'accepted' | 'declined') {
   await updatePendingListStatus(id, status);
   pendingLists.value = pendingLists.value.filter(list => list.id !== id);
+  if (status === 'accepted') {
+    notification.showSuccess(i18n.t('lists.approvedMessage'));
+  } else {
+    notification.showSuccess(i18n.t('lists.declinedMessage'));
+  }
 }
 
 function getCreatorName(list: TGroceryList): string {
@@ -29,7 +36,7 @@ function getCreatorName(list: TGroceryList): string {
 </script>
 
 <template>
-  <div
+  <div v-if="pendingLists && pendingLists.length > 0"
       class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light">{{ i18n.t('lists.pending-lists') }}</h2>
