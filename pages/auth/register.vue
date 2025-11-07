@@ -3,13 +3,18 @@ import { ref, watch } from 'vue';
 import {useAuth} from "~/composables/useAuth";
 import {useNotification} from "~/composables/useNotification";
 import { useI18nStore } from '~/stores/i18n';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const i18n = useI18nStore();
 const { showNotification } = useNotification();
 const { register } = useAuth();
+
+const emailFromUrl = route.query.email as string | undefined;
+
 const userData = ref({
   name: '',
-  email: '',
+  email: emailFromUrl ? emailFromUrl : '',
   password: '',
   language: i18n.locale
 });
