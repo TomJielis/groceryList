@@ -84,7 +84,8 @@
     "invited": "Invited",
     "approve": "Approve",
     "decline": "Decline",
-    "noPending": "No pending invitations"
+    "noPending": "No pending invitations",
+    "created_by": "Created by:"
   },
   "list": {
     "total": "Total",

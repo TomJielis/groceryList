@@ -54,11 +54,11 @@ function getCreatorName(list: TGroceryList): string {
         <div class="flex items-start">
           <div class="flex-1">
             <span class="text-base font-medium break-words whitespace-normal flex items-center gap-2">
-              <span v-if="pendingLists.length === 1" class="inline-block px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-bold">{{ i18n.t('lists.invited') }}</span>
+              <span v-if="pendingLists.length === 1" class="inline-block  py-1 bg-accent/10 text-accent rounded-full text-xs font-bold">{{ i18n.t('lists.invited') }}</span>
               {{ list.name }}
             </span>
             <div class="text-sm text-gray-500 mt-1">
-              Creator: {{ getCreatorName(list) }}
+              {{ i18n.t('lists.created_by') }}: {{ getCreatorName(list) }}
             </div>
           </div>
         </div>

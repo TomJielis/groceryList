@@ -84,7 +84,8 @@
     "decline": "Afwijzen",
     "noPending": "Geen uitnodigingen in afwachting",
     "approvedMessage": "Lijst is toegevoegd aan je lijsten.",
-    "declinedMessage": "Uitnodiging voor lijst is afgewezen."
+    "declinedMessage": "Uitnodiging voor lijst is afgewezen.",
+    "created_by": "Aangemaakt door:"
   },
   "list": {
     "total": "Totaal",
