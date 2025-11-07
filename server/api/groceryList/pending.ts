@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`, // Assuming token is stored in context
+                'Authorization': `Bearer ${token}`,
             },
         });
 
