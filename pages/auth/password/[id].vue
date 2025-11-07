@@ -33,7 +33,7 @@ function triggerNewPassword()
 </script>
 
 <template>
-  <div class="min-h-[90dvh] bg-slate-100 dark:bg-slate-900 flex items-center justify-center px-4 text-center">
+  <div class="min-h-[90dvh] bg-slate-100 dark:bg-slate-900 flex items-center justify-center px-4 r">
     <div class="max-w-md w-full bg-white/90 dark:bg-slate-900/90 shadow-xl rounded-2xl p-8 border border-border-light dark:border-border-dark transition">
       <div class="flex flex-col items-center space-y-4">
       <div v-if="!passwordUpdated">
