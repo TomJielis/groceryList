@@ -60,6 +60,7 @@
     "deleteListName": "Lijst",
     "deleteBtn": "Verwijderen",
     "sharePrompt": "Voer een e-mailadres in om de lijst mee te delen:",
+    "shareEmailPlaceholder": "E-mail adres",
     "shareTitle": "Lijst Delen",
     "shareListName": "Lijst",
     "shareBtn": "Delen",

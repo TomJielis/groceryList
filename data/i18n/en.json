@@ -60,6 +60,7 @@
     "deleteListName": "List",
     "deleteBtn": "Delete",
     "sharePrompt": "Enter an email address to share the list with:",
+    "shareEmailPlaceholder": "Email address",
     "shareTitle": "Share List",
     "shareListName": "List",
     "shareBtn": "Share",
