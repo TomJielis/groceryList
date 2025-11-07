@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'token')
     const config = useRuntimeConfig();
     const baseUrl = config.api.url + config.api.basePath;
-    const response = await fetch(baseUrl + '/grocery-list/index',
+    const response = await fetch(baseUrl + '/grocery-list/pending',
         {
             method: 'GET',
             headers: {

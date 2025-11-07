@@ -75,7 +75,15 @@
       "placeholder": "Nieuwe lijst invoeren",
       "createBtn": "Lijst maken",
       "name": "Naam"
-    }
+    },
+    "pending-lists": "Uitnodigingen in afwachting",
+    "invitations": "uitnodigingen",
+    "invited": "Uitgenodigd",
+    "approve": "Goedkeuren",
+    "decline": "Afwijzen",
+    "noPending": "Geen uitnodigingen in afwachting",
+    "approvedMessage": "Lijst is toegevoegd aan je lijsten.",
+    "declinedMessage": "Uitnodiging voor lijst is afgewezen."
   },
   "list": {
     "total": "Totaal",

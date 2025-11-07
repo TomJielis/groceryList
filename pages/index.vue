@@ -146,6 +146,11 @@ function setFavoriteList(id: number) {
 }
 
 function stringToColor(str) {
+
+  if(!str){
+    return 'hsl(0, 0%, 80%)';
+  }
+
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -232,12 +237,10 @@ function calculateProgress(listItem) {
           >
             <span
                 v-for="invite in listItem.grocery_list_invites"
-                :key="invite.user.id"
                 class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
-                :style="{ backgroundColor: stringToColor(invite.user.name) }"
-                :title="invite.user.name"
+                :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
             >
-              {{ invite.user.name.charAt(0).toUpperCase() }}
+              {{ invite.user?.name.charAt(0).toUpperCase() ?? '?'}}
             </span>
             <span
                 class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
