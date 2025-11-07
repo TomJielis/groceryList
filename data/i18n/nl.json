@@ -78,8 +78,9 @@
       "name": "Naam"
     },
     "pending-lists": "Uitnodigingen in afwachting",
+    "pending-list": "Uitnodiging in afwachting",
     "invitations": "uitnodigingen",
-    "invited": "Uitgenodigd",
+    "name": "Naam",
     "approve": "Goedkeuren",
     "decline": "Afwijzen",
     "noPending": "Geen uitnodigingen in afwachting",

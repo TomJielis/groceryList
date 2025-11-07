@@ -80,8 +80,9 @@
       "name": "Name"
     },
     "pending-lists": "Pending invitations",
+    "pending-list": "Pending invitation",
     "invitations": "invitations",
-    "invited": "Invited",
+    "name": "Name",
     "approve": "Approve",
     "decline": "Decline",
     "noPending": "No pending invitations",
