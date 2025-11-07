@@ -5,6 +5,7 @@ const props = defineProps<{
   modelValue: string;
   placeholder: string;
   label?: string;
+  inputType: 'text' | 'password' | 'email';
 }>();
 
 const emit = defineEmits<{
@@ -15,7 +16,7 @@ const emit = defineEmits<{
 <template>
   <label v-if="label" class="block text-sm font-medium mb-1">{{ label }}</label>
   <input
-      type="text"
+      :type="inputType"
       :value="modelValue"
       @input="emit('update:modelValue', $event.target.value)"
       :placeholder="placeholder"
