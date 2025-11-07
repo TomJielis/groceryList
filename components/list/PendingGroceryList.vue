@@ -49,10 +49,10 @@ function getCreatorName(list: TGroceryList): string {
       <li
           v-for="list in pendingLists"
           :key="list.id"
-          class="p-5 border-b border-border-light bg-white/95 dark:bg-slate-900/95 rounded-xl transition hover:shadow-lg hover:border-accent/60 flex flex-col animate-fade-in"
+          class="border-b border-border-light bg-white/95 dark:bg-slate-900/95 rounded-xl transition hover:shadow-lg hover:border-accent/60 flex flex-col animate-fade-in"
       >
-        <div class="flex items-start justify-between">
-          <div>
+        <div class="flex items-start">
+          <div class="flex-1">
             <span class="text-base font-medium break-words whitespace-normal flex items-center gap-2">
               <span v-if="pendingLists.length === 1" class="inline-block px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-bold">{{ i18n.t('lists.invited') }}</span>
               {{ list.name }}
@@ -61,10 +61,10 @@ function getCreatorName(list: TGroceryList): string {
               Creator: {{ getCreatorName(list) }}
             </div>
           </div>
-          <div class="flex flex-col gap-y-2 md:flex-row md:gap-x-2 mt-2 md:mt-0 w-full md:w-auto">
-            <button class="w-full md:w-auto px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow font-semibold" @click="handleAction(list.id, 'accepted')">{{ i18n.t('lists.approve') }}</button>
-            <button class="w-full md:w-auto px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow font-semibold" @click="handleAction(list.id, 'declined')">{{ i18n.t('lists.decline') }}</button>
-          </div>
+        </div>
+        <div class="flex flex-col gap-y-2 w-full mt-4">
+          <button class="w-full px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow font-semibold" @click="handleAction(list.id, 'accepted')">{{ i18n.t('lists.approve') }}</button>
+          <button class="w-full px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow font-semibold" @click="handleAction(list.id, 'declined')">{{ i18n.t('lists.decline') }}</button>
         </div>
       </li>
     </ul>
