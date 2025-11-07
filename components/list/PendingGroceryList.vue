@@ -61,9 +61,9 @@ function getCreatorName(list: TGroceryList): string {
               Creator: {{ getCreatorName(list) }}
             </div>
           </div>
-          <div class="flex gap-2 mt-2 md:mt-0">
-            <button class="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow font-semibold" @click="handleAction(list.id, 'accepted')">{{ i18n.t('lists.approve') }}</button>
-            <button class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow font-semibold" @click="handleAction(list.id, 'declined')">{{ i18n.t('lists.decline') }}</button>
+          <div class="flex flex-col gap-y-2 md:flex-row md:gap-x-2 mt-2 md:mt-0 w-full md:w-auto">
+            <button class="w-full md:w-auto px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow font-semibold" @click="handleAction(list.id, 'accepted')">{{ i18n.t('lists.approve') }}</button>
+            <button class="w-full md:w-auto px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow font-semibold" @click="handleAction(list.id, 'declined')">{{ i18n.t('lists.decline') }}</button>
           </div>
         </div>
       </li>
