@@ -44,7 +44,7 @@ function getCreatorName(list: TGroceryList): string {
     <div v-if="!pendingLists || pendingLists.length === 0" class="text-center text-gray-500 py-8">
       {{ i18n.t('lists.noPending') }}
     </div>
-    <ul v-else class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <ul v-else class="grid gap-6 sm:grid-cols-1">
       <li
           v-for="list in pendingLists"
           :key="list.id"
