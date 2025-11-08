@@ -70,7 +70,8 @@
       "removeFavorite": "Verwijder favoriet",
       "markFavorite": "Markeer als favoriet",
       "share": "Delen",
-      "delete": "Verwijder"
+      "delete": "Verwijder",
+      "leave": "Verlaat lijst"
     },
     "form": {
       "placeholder": "Nieuwe lijst invoeren",

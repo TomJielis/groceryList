@@ -72,7 +72,8 @@
       "removeFavorite": "Remove favorite",
       "markFavorite": "Mark as favorite",
       "share": "Share",
-      "delete": "Delete"
+      "delete": "Delete",
+      "leave": "Leave list"
     },
     "form": {
       "placeholder": "Enter new list",

@@ -212,11 +212,10 @@ function calculateProgress(listItem) {
                   👥 {{ i18n.t('lists.menu.share') }}
                 </button>
                 <button
-                    v-if="listItem.created_by.id == auth.user.id"
                     class="block w-full text-left px-4 py-3 rounded-lg text-error hover:bg-error/10 dark:hover:bg-error/20 transition font-semibold"
                     @click.stop="deleteListItem(listItem.id)"
                 >
-                  🗑️ {{ i18n.t('lists.menu.delete') }}
+                  🗑️ {{ listItem.created_by.id == auth.user.id ?  i18n.t('lists.menu.delete') : i18n.t('lists.menu.leave') }}
                 </button>
               </div>
             </div>
@@ -269,7 +268,6 @@ function calculateProgress(listItem) {
         @confirm="handleShareConfirm"
     />
 
-    <!-- Delete List Modal -->
     <deleteModal
         :is-visible="showDeleteModal"
         :title="i18n.t('lists.deleteTitle')"
