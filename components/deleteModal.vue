@@ -25,10 +25,12 @@ const isDeleteEnabled = computed(() => {
 });
 
 function handleClose() {
+  confirmText.value = '';
   emit('close');
 }
 
 function handleConfirm() {
+  confirmText.value = '';
   emit('confirm');
 }
 
