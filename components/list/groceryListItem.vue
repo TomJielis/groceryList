@@ -21,6 +21,12 @@ const localItem = ref({ ...props.item });
 watch(() => props.item, (newVal) => {
   localItem.value = { ...newVal };
 });
+
+const handleUnitPriceInput = (e: Event) => {
+  const val = (e.target as HTMLInputElement).value.replace(',', '.');
+  const num = parseFloat(val);
+  localItem.value.unit_price = isNaN(num) ? undefined : num;
+};
 </script>
 
 <template>
@@ -46,8 +52,8 @@ watch(() => props.item, (newVal) => {
         </div>
         <input
             v-model.number="localItem.unit_price"
-            type="number"
-            step="0.01"
+            @input="handleUnitPriceInput"
+            type="text"
             :placeholder="i18n.t('items.pricePlaceholder')"
             class="border border-border-light dark:border-border-dark rounded-xl px-3 py-2 w-24 text-right bg-white/80 dark:bg-slate-900/80 shadow focus:ring-2 focus:ring-accent focus:border-accent text-base transition-colors placeholder-slate-400 dark:placeholder-slate-500"
         />
@@ -66,7 +72,7 @@ watch(() => props.item, (newVal) => {
           class="h-6 w-6 text-success rounded border border-border-light dark:border-border-dark focus:ring-2 focus:ring-success/60 transition flex-shrink-0 mr-3"
           :checked="item.checked"
           @click.stop
-          @change="emit('check', { ...item, checked: $event.target.checked })"
+          @change="(e) => { const target = e.target as HTMLInputElement | null; if (target) emit('check', { ...item, checked: target.checked }); }"
       />
       <div
           class="flex flex-1 items-center justify-between cursor-pointer"
