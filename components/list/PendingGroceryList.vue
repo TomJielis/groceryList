@@ -1,23 +1,25 @@
 <script setup lang="ts">
-import {ref} from 'vue';
-import {useGroceryList} from "~/composables/useGroceryList";
-import {useI18nStore} from "~/stores/i18n";
-import {useNotification} from '~/composables/useNotification';
-import type {TGroceryList} from '@/types/TGroceryList';
+import { computed, onMounted } from 'vue';
+import { useListStore } from '~/stores/lists';
+import { useI18nStore } from "~/stores/i18n";
+import { useNotification } from '~/composables/useNotification';
+import type { TGroceryList } from '@/types/TGroceryList';
+import { useGroceryList } from "~/composables/useGroceryList";
 
 const i18n = useI18nStore();
-const pendingLists = ref<TGroceryList[]>([]);
+const listStore = useListStore();
+const notification = useNotification();
+const { updatePendingListStatus } = useGroceryList();
 
-useGroceryList().fetchPendingLists().then(lists => {
-  pendingLists.value = lists || [];
+onMounted(() => {
+  listStore.fetchPendingLists();
 });
 
-const {updatePendingListStatus} = useGroceryList();
-const notification = useNotification();
+const pendingLists = computed(() => listStore.pendingLists);
 
 async function handleAction(id: number, status: 'accepted' | 'declined') {
   await updatePendingListStatus(id, status);
-  pendingLists.value = pendingLists.value.filter(list => list.id !== id);
+  listStore.removePendingList(id);
   if (status === 'accepted') {
     notification.showSuccess(i18n.t('lists.approvedMessage'));
   } else {
@@ -32,7 +34,6 @@ function getCreatorName(list: TGroceryList): string {
   }
   return 'Unknown';
 }
-
 </script>
 
 <template>

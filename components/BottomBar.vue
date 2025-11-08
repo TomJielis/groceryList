@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth";
 import { useI18nStore } from "~/stores/i18n";
-import { computed, ref, onMounted } from 'vue';
-import { useGroceryList } from "~/composables/useGroceryList";
+import { computed, onMounted } from 'vue';
+import { useListStore } from '~/stores/lists';
 
 const authStore = useAuthStore();
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
+const listStore = useListStore();
 
-const lists = ref([]);
-const pendingCount = computed(() => lists.value.length);
+const pendingCount = computed(() => listStore.pendingLists.length);
 
-onMounted(async () => {
-  const result = await useGroceryList().fetchPendingLists();
-  lists.value = result || [];
+onMounted(() => {
+  // Only fetch if not already loaded (optional, for optimization)
+  if (listStore.pendingLists.length === 0) {
+    listStore.fetchPendingLists();
+  }
 });
 </script>
 
