@@ -71,7 +71,8 @@
       "markFavorite": "Markeer als favoriet",
       "share": "Delen",
       "delete": "Verwijder",
-      "leave": "Verlaat lijst"
+      "leave": "Verlaat lijst",
+      "settings": "Instellingen"
     },
     "form": {
       "placeholder": "Nieuwe lijst invoeren",

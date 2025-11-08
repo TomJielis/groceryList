@@ -166,6 +166,13 @@ function calculateProgress(listItem) {
   return Math.round((checked / total) * 100);
 }
 
+const editListId = ref<number | null>(null)
+function openListSettings(id: number) {
+  editListId.value = id;
+  openListForm.value = true;
+  openDropdown.value = null;
+}
+
 </script>
 
 
@@ -203,6 +210,13 @@ function calculateProgress(listItem) {
                     @click.stop="setFavoriteList(listItem.id)"
                 >
                   {{ auth?.user?.favorite_list_id === listItem.id ? `❌ ${i18n.t('lists.menu.removeFavorite')}` : `⭐ ${i18n.t('lists.menu.markFavorite')}` }}
+                </button>
+                <button
+                    v-if="listItem.created_by.id == auth.user.id"
+                    class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
+                    @click.stop="openListSettings(listItem.id)"
+                >
+                  ⚙️ {{ i18n.t('lists.menu.settings') || 'Settings' }}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
@@ -256,8 +270,11 @@ function calculateProgress(listItem) {
       <addButton @click="openListForm = true" />
     </div>
 
+<!--    <div v-else>-->
+<!--      <ListForm @list-added="handleList" @close="openListForm = false"/>-->
+<!--    </div>-->
     <div v-else>
-      <ListForm @list-added="handleList" @close="openListForm = false"/>
+      <ListForm :list-id="editListId" @list-added="handleList" @close="() => { openListForm = false; editListId = null }"/>
     </div>
 
     <ShareListModal
