@@ -73,7 +73,8 @@
       "markFavorite": "Mark as favorite",
       "share": "Share",
       "delete": "Delete",
-      "leave": "Leave list"
+      "leave": "Leave list",
+      "settings": "Settings"
     },
     "form": {
       "placeholder": "Enter new list",

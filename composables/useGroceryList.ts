@@ -215,6 +215,24 @@ export function useGroceryList() {
         });
     }
 
+    async function updateList(id: number, name: string): Promise<any> {
+        const response = await fetch('/api/groceryList/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({id, name}),
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to update list: ${response.statusText}`);
+        }
+        const data = await response.json();
+        if (!data.data) {
+            throw new Error(`Failed to update list: ${response.statusText}`);
+        }
+        return data;
+    }
+
     return {
         items,
         lists,
@@ -232,5 +250,6 @@ export function useGroceryList() {
         increaseItems,
         decreaseItems,
         updatePendingListStatus,
+        updateList,
     }
 }
