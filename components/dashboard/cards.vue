@@ -97,6 +97,7 @@ function closeModal() {
         :content="i18n.t('cards.confirmDelete')"
         :item-name="deleteCardName"
         :delete-button-text="i18n.t('cards.deleteBtn')"
+        :withValidation="true"
         @close="closeDeleteModal"
         @confirm="handleDeleteConfirm"
     />
