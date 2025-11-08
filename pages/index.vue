@@ -213,7 +213,8 @@ function calculateProgress(listItem) {
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
-                    class="block w-full text-left px-4 py-3 rounded-lg text-error hover:bg-error/10 dark:hover:bg-error/20 transition font-semibold"                    @click.stop="deleteListItem(listItem.id)"
+                    class="block w-full text-left px-4 py-3 rounded-lg text-error hover:bg-error/10 dark:hover:bg-error/20 transition font-semibold"
+                    @click.stop="deleteListItem(listItem.id)"
                 >
                   🗑️ {{ i18n.t('lists.menu.delete') }}
                 </button>
@@ -275,6 +276,7 @@ function calculateProgress(listItem) {
         :content="i18n.t('lists.confirmDelete')"
         :item-name="deleteListName"
         :delete-button-text="i18n.t('lists.deleteBtn')"
+        :withValidation="true"
         @close="closeDeleteModal"
         @confirm="handleDeleteConfirm"
     />

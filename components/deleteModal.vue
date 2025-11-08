@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
+import { ref, computed } from 'vue';
 
 const props = defineProps<{
   isVisible: boolean;
@@ -7,6 +8,7 @@ const props = defineProps<{
   content: string;
   itemName?: string;
   deleteButtonText?: string;
+  withValidation?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -16,6 +18,12 @@ const emit = defineEmits<{
 
 const i18n = useI18nStore();
 
+const confirmText = ref('');
+const isDeleteEnabled = computed(() => {
+  if (!props.withValidation) return true;
+  return confirmText.value.trim() === props.itemName;
+});
+
 function handleClose() {
   emit('close');
 }
@@ -23,6 +31,7 @@ function handleClose() {
 function handleConfirm() {
   emit('confirm');
 }
+
 </script>
 
 <template>
@@ -40,6 +49,17 @@ function handleConfirm() {
         {{ content }}
       </p>
 
+      <div v-if="withValidation">
+        <p class="mb-2 text-sm text-error font-medium">
+          {{ i18n.t('deleteModal.typeListNameToDelete') }} "{{ itemName }}"
+        </p>
+        <formInput
+          v-model="confirmText"
+          :inputType="'text'"
+          :placeholder="itemName || i18n.t('deleteModal.typeDELETE')"
+        />
+      </div>
+
       <div class="flex space-x-3">
         <button
           @click="handleClose"
@@ -49,7 +69,12 @@ function handleConfirm() {
         </button>
         <button
           @click="handleConfirm"
-          class="flex-1 bg-error py-2 px-4 rounded-xl hover:bg-error/90 transition shadow border border-error/80 font-semibold focus:ring-2 focus:ring-error"
+          :disabled="!isDeleteEnabled"
+          class="flex-1 py-2 px-4 rounded-xl transition shadow border font-semibold focus:ring-2 focus:ring-error"
+          :class="{
+            'bg-error text-white hover:bg-error/90 border-error/80': isDeleteEnabled,
+            'bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed': !isDeleteEnabled
+          }"
         >
           {{ deleteButtonText || i18n.t('common.delete') }}
         </button>

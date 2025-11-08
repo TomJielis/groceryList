@@ -86,7 +86,8 @@ fetchItems(listId)
 
               <button
                   v-if="items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())"
-                  class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-slate-200 dark:bg-slate-700 rounded-full text-base sm:text-lg font-bold hover:bg-accent/20 text-slate-700 dark:text-slate-100 transition border border-border-light dark:border-border-dark"                  @click="increaseItems(items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()))"
+                  class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-slate-200 dark:bg-slate-700 rounded-full text-base sm:text-lg font-bold hover:bg-accent/20 text-slate-700 dark:text-slate-100 transition border border-border-light dark:border-border-dark"
+                  @click="increaseItems(items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()))"
               >+
               </button>
             </div>

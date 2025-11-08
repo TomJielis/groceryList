@@ -144,5 +144,9 @@
     "unexpectedError": "An unexpected error occurred",
     "cardStoreFailed": "Failed to store card",
     "cardDeleteFailed": "Failed to delete card"
+  },
+  "deleteModal": {
+    "typeListNameToDelete": "To confirm, type the name of the list:",
+    "typeDELETE": "Type DELETE"
   }
 }
