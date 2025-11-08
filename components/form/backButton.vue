@@ -24,14 +24,16 @@ function onClick(e: MouseEvent) {
 </script>
 
 <template>
-  <div class="fixed left-0 w-full mt-6 space-y-3 p-4 bottom-20 md:bottom-3 z-50">
-    <button
-      :type="props.type"
-      :aria-label="ariaLabel || labelText"
-      class="w-full py-3 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition"
-      @click="onClick"
-    >
-      <slot>{{ labelText }}</slot>
-    </button>
+  <div class="fixed left-0 mt-6 space-y-3 p-4 bottom-20 md:bottom-3 z-50 flex justify-center w-full">
+    <div class="w-full max-w-md">
+      <button
+        :type="props.type"
+        :aria-label="ariaLabel || labelText"
+        class="py-3 px-6 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition w-full"
+        @click="onClick"
+      >
+        <slot>{{ labelText }}</slot>
+      </button>
+    </div>
   </div>
 </template>
