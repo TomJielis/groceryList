@@ -269,10 +269,6 @@ function openListSettings(id: number) {
       </ul>
       <addButton @click="openListForm = true" />
     </div>
-
-<!--    <div v-else>-->
-<!--      <ListForm @list-added="handleList" @close="openListForm = false"/>-->
-<!--    </div>-->
     <div v-else>
       <ListForm :list-id="editListId" @list-added="handleList" @close="() => { openListForm = false; editListId = null }"/>
     </div>
