@@ -6,7 +6,7 @@ export type Locale = 'nl' | 'en'
 
 export const useI18nStore = defineStore('i18n', {
   state: () => ({
-    locale: 'nl' as Locale,
+    locale: 'en' as Locale,
   }),
   getters: {
     t: (state) => {
