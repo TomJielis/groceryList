@@ -74,11 +74,12 @@
       "share": "Share",
       "delete": "Delete",
       "leave": "Leave list",
-      "settings": "Settings"
+      "edit": "Edit"
     },
     "form": {
       "placeholder": "Enter new list",
       "createBtn": "Create list",
+      "updateBtn": "Update list",
       "name": "Name"
     },
     "pending-lists": "Pending invitations",
@@ -150,5 +151,47 @@
   "deleteModal": {
     "typeListNameToDelete": "To confirm, type the name of the list:",
     "typeDELETE": "Type DELETE"
+  },
+  "register": {
+    "acceptTerms": "I agree with the <a href='/terms' target='_blank'>Terms of Use & Privacy Policy</a>."
+  },
+  "terms": {
+    "title": "Terms of Use & Privacy Policy – Grocery List",
+    "lastUpdated": "Last updated: {date}",
+    "about": "1. About this application",
+    "aboutText": "This application (‘Grocery List’) is a personal web application that allows users to create, view, share, edit, and delete grocery lists. The application is developed for personal use and is intended to make managing groceries more organized.",
+    "admin": "2. Application administrator",
+    "adminText": "The application is managed by the developer of Grocery List (‘Administrator’). For questions, you can contact the email address listed in the application.",
+    "privacy": "Privacy Policy",
+    "dataCollected": "3. What data is collected",
+    "dataCollectedText": "When creating an account, the following personal data is stored:",
+    "dataCollectedList": ["Name", "Email address", "Password (securely hashed with a cryptographic hash)"],
+    "dataCollectedExtra": "In addition, the following data you add yourself is stored in the application:",
+    "dataCollectedExtraList": ["Grocery lists (and shared lists)", "Products you add yourself", "Photos you upload (optional)"],
+    "purpose": "4. Purpose of data processing",
+    "purposeList": ["To allow users to log in securely via Laravel Sanctum", "To correctly assign shared lists to the right users", "To ensure the functionality of the grocery list works correctly", "To display notifications within the app", "No data is sold, shared, or forwarded to third parties."],
+    "security": "5. Data security",
+    "securityList": ["Passwords are never stored in plain text, but securely hashed using Laravel’s built-in hashing mechanism (bcrypt/argon2).", "Data traffic between frontend (Nuxt) and backend (Laravel Sanctum API) is encrypted via HTTPS.", "Only authorized users have access to their own data.", "Uploads (such as photos) are securely stored and are only visible to users who have access to the corresponding list."] ,
+    "photos": "6. Responsibility for photos",
+    "photosText": "Users are responsible for the content of the photos they upload. It is not allowed to upload photos that:",
+    "photosList": ["are copyright protected without permission", "are offensive, insulting, or discriminatory", "contain personal data of others without their consent"],
+    "photosNote": "The Administrator reserves the right to remove content in case of abuse.",
+    "sharing": "7. Sharing lists",
+    "sharingText": "The application allows you to share lists with other registered users. Only users explicitly added by you will have access to that list. You can stop sharing or delete the list at any time.",
+    "retention": "8. Retention period and deletion of data",
+    "retentionList": ["Users can delete their account and all associated data at any time.", "After deletion, all data (lists, products, photos, and shared data) is permanently removed from the database.", "Only emails already sent via the administrator’s Gmail account cannot be deleted, as they are outside the application."] ,
+    "cookies": "9. Cookies and local storage",
+    "cookiesText": "The application only uses technical cookies or localStorage to retain session information (such as authentication via Sanctum or preferences). No tracking or advertising cookies are used.",
+    "rights": "10. Your rights",
+    "rightsList": ["Request access to your stored data", "Correct or delete your data", "Terminate your account. For questions, you can contact the administrator via the contact address in the application."] ,
+    "changes": "11. Changes",
+    "changesText": "The administrator may change these terms and privacy policy when the operation of the application changes. For important changes, you will be informed within the application and can accept the new terms again.",
+    "usage": "Terms of Use",
+    "usageTitle": "12. Use of the application",
+    "usageList": ["You may only use the application for personal, non-commercial use.", "You are responsible for the content you add.", "The administrator is not liable for data loss, malfunctions, or misuse of login details by third parties."] ,
+    "acceptance": "13. Acceptance",
+    "acceptanceList": ["By creating an account or logging in, you declare that you:", "have read these Terms of Use and Privacy Policy,", "agree to them, and", "are over 16 years old (or have permission from a parent/guardian)."],
+    "law": "14. Applicable law",
+    "lawText": "These terms are governed by Dutch law."
   }
 }

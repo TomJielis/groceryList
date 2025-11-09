@@ -9,11 +9,19 @@ type RegisterResponse<T> = {
 
 export default defineEventHandler(async (event) => {
     let body = await readBody(event);
-    const {name, email, password, language} = body;
+    const config = useRuntimeConfig()
+    const {name, email, password, language, acceptedTerms} = body;
 
     const response: RegisterResponse<any> = await apiClient('/register', {
         method: 'POST',
-        body: {name, email, password, language},
+        body: {
+            name,
+            email,
+            password,
+            language,
+            acceptedTerms,
+            acceptedTermsVersion: config.public.termsVersion,
+        },
     }, undefined)
 
     if (!response.user) {

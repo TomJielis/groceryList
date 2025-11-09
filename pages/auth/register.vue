@@ -16,7 +16,8 @@ const userData = ref({
   name: '',
   email: emailFromUrl ? emailFromUrl : '',
   password: '',
-  language: i18n.locale
+  language: i18n.locale,
+  acceptedTerms: false,
 });
 
 const verifyMailMessage = ref(false);
@@ -133,6 +134,10 @@ function handleLanguageChange(locale: 'nl' | 'en') {
               </label>
             </div>
           </div>
+          <label class="flex items-center gap-2">
+            <input type="checkbox" v-model="userData.acceptedTerms" required />
+            <span v-html="i18n.t('register.acceptTerms')"></span>
+          </label>
           <button type="submit"
                   class="w-full bg-accent text-white py-3 rounded-xl hover:bg-accent-dark active:scale-95 transition font-semibold shadow border border-accent/80 focus:ring-2 focus:ring-accent">
             {{ i18n.t('auth.registerBtn') }}
