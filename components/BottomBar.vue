@@ -58,7 +58,7 @@ onMounted(() => {
       </span>
     </nuxtLink>
     <!-- Language Switcher -->
-    <div class="flex flex-col items-center justify-center text-center flex-1 relative">
+    <div v-if="!authStore.user" class="flex flex-col items-center justify-center text-center flex-1 relative">
       <button @click="showLang = !showLang" class="flex flex-col items-center justify-center py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
         <span class="text-2xl">🌐</span>
         <span class="text-xs font-medium">{{ i18n.locale.toUpperCase() }}</span>

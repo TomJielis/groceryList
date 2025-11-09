@@ -49,9 +49,9 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 </script>
 
 <template>
-  <div class="h-[90dvh] flex items-center justify-center px-4">
+  <div class="min-h-[calc(100dvh-0px)] w-full flex items-center justify-center px-4 pt-8 md:pt-24 pb-28 md:pb-16">
     <div
-        class="bg-white/90 dark:bg-slate-900/90 p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-border-light dark:border-border-dark">
+        class="bg-white/90 dark:bg-slate-900/90 p-8 md:p-10 rounded-2xl shadow-2xl w-full max-w-md border border-border-light dark:border-border-dark backdrop-blur-sm">
       <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-primary-dark dark:text-accent-light">
         📝 {{ i18n.t('auth.registerTitle') }}
       </h2>
