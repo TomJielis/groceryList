@@ -23,7 +23,7 @@ function setLocale(locale: 'nl' | 'en') {
   <nav class="fixed top-0 left-0 right-0 z-50 h-16 shadow-xl border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
       <div class="flex items-center h-full w-full">
-        <nuxt-link to="/" class="font-bold text-xl text-primary-dark dark:text-accent-light flex-shrink-0">
+        <nuxt-link class="font-bold text-xl text-primary-dark dark:text-accent-light flex-shrink-0">
           {{ t('nav.brand') }}
         </nuxt-link>
         <div class="hidden md:flex items-center space-x-4 ml-auto">
