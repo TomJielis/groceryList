@@ -216,7 +216,7 @@ function openListSettings(id: number) {
                     class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
                     @click.stop="openListSettings(listItem.id)"
                 >
-                  ⚙️ {{ i18n.t('lists.menu.settings') || 'Settings' }}
+                  ⚙️ {{ i18n.t('lists.menu.edit')}}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
