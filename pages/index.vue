@@ -136,6 +136,46 @@ onMounted(() => {
       </div>
     </section>
 
+    <!-- Cross platform & PWA section -->
+    <section class="px-4 md:px-10 lg:px-16 xl:px-24 pb-8">
+      <div class="rounded-3xl bg-white/80 dark:bg-slate-900/70 backdrop-blur shadow-xl p-10 space-y-10 border border-border-light dark:border-border-dark">
+        <div class="text-center space-y-4">
+          <h2 class="text-3xl font-bold text-primary-dark dark:text-accent-light">{{ t('info.crossPlatformTitle') }}</h2>
+          <p class="text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">{{ t('info.crossPlatformIntro') }}</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-slate-800 dark:to-slate-900">
+            <div class="text-3xl">💻</div>
+            <h3 class="font-semibold text-lg">Desktop</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Optimal layout vanaf grotere schermbreedtes met snelle toegang tot je lijsten.</p>
+          </div>
+          <div class="flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-slate-800 dark:to-slate-900">
+            <div class="text-3xl">📱</div>
+            <h3 class="font-semibold text-lg">Mobiel</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Geoptimaliseerde touch‑interface met een onderste navigatiebalk.</p>
+          </div>
+          <div class="flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-slate-800 dark:to-slate-900">
+            <div class="text-3xl">🧩</div>
+            <h3 class="font-semibold text-lg">Tablet</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Meer ruimte voor lijsten en items in één overzicht.</p>
+          </div>
+          <div class="flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-slate-800 dark:to-slate-900 md:col-span-2 lg:col-span-3">
+            <div class="flex items-center gap-3">
+              <span class="text-3xl">🌐</span>
+              <h3 class="font-semibold text-xl">{{ t('info.pwaTitle') }}</h3>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 leading-relaxed">{{ t('info.pwaIntro') }}</p>
+            <ul class="list-disc ml-6 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+              <li>{{ t('info.pwaDesktop') }}</li>
+              <li>{{ t('info.pwaAndroid') }}</li>
+              <li>{{ t('info.pwaIOS') }}</li>
+              <li>{{ t('info.pwaUpdates') }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Call to action -->
     <section class="px-4 md:px-10 lg:px-16 xl:px-24 pb-24">
       <div class="bg-gradient-to-br from-indigo-600 via-blue-600 to-sky-500 rounded-3xl p-[3px] shadow-2xl">

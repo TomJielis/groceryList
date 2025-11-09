@@ -8,11 +8,6 @@ const i18n = useI18nStore();
 const t = computed(() => i18n.t);
 
 const languageDropdownOpen = ref(false);
-const mounted = ref(false);
-
-onMounted(() => {
-  mounted.value = true;
-});
 
 function setLocale(locale: 'nl' | 'en') {
   i18n.setLocale(locale);

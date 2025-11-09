@@ -221,6 +221,14 @@
     "screenItemsCheckedTitle": "Checked items visible",
     "screenItemsCheckedText": "Track what’s already in the basket without losing context.",
     "screenAddItemsTitle": "Adding items",
-    "screenAddItemsText": "Quickly add products thanks to smart suggestions and streamlined fields."
+    "screenAddItemsText": "Quickly add products thanks to smart suggestions and streamlined fields.",
+    "crossPlatformTitle": "Works Everywhere",
+    "crossPlatformIntro": "Use Grocery List on PC, laptop, tablet (iPad) and phone. The responsive design adapts automatically.",
+    "pwaTitle": "Install as a PWA (Web App)",
+    "pwaIntro": "You can install the app so it behaves like a native app – with a shortcut and fullscreen feel.",
+    "pwaDesktop": "Desktop (Chrome / Edge / Brave): Click the install icon (📥) near the address bar or use the ⋮ menu > Install.",
+    "pwaAndroid": "Android (Chrome): Open the site, use the ⋮ menu > 'Add to Home screen' or the install banner.",
+    "pwaIOS": "iOS (Safari): Tap the Share icon (⬆️) > 'Add to Home Screen'.",
+    "pwaUpdates": "Updates load automatically – no need to reinstall."
   }
 }
