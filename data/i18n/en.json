@@ -158,6 +158,7 @@
   "terms": {
     "title": "Terms of Use & Privacy Policy – Grocery List",
     "lastUpdated": "Last updated: {date}",
+    "version": "Last version: {version}",
     "about": "1. About this application",
     "aboutText": "This application (‘Grocery List’) is a personal web application that allows users to create, view, share, edit, and delete grocery lists. The application is developed for personal use and is intended to make managing groceries more organized.",
     "admin": "2. Application administrator",

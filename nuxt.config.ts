@@ -26,6 +26,7 @@ export default defineNuxtConfig({
     },
     public: {
         termsVersion: '1.0',
+        lastUpdatedTerms: '09-11-2025 15:15',
     },
   },
   nitro: {

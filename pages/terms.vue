@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
 import BackButton from "~/components/form/backButton.vue";
+const config = useRuntimeConfig()
+
 const i18n = useI18nStore();
-const today = new Date().toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' });
 </script>
 
 <template>
   <div class="max-w-2xl mx-auto p-4">
     <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
       <h1 class="text-2xl font-bold text-primary-dark dark:text-accent-light mb-2">{{ i18n.t('terms.title') }}</h1>
-      <div class="text-sm text-slate-500 mb-4">{{ i18n.t('terms.lastUpdated').replace('{date}', today) }}</div>
+      <div class="text-sm text-slate-500 mb-4">{{ i18n.t('terms.version').replace('{version}', config.public.termsVersion) }}</div>
+      <div class="text-sm text-slate-500 mb-4">{{ i18n.t('terms.lastUpdated').replace('{date}', config.public.lastUpdatedTerms) }}</div>
       <h2 class="text-lg font-semibold text-accent mt-4 mb-1">{{ i18n.t('terms.about') }}</h2>
       <p>{{ i18n.t('terms.aboutText') }}</p>
       <h2 class="text-lg font-semibold text-accent mt-4 mb-1">{{ i18n.t('terms.admin') }}</h2>

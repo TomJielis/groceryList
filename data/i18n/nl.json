@@ -157,6 +157,7 @@
   },
   "terms": {
     "title": "Algemene Voorwaarden & Privacyverklaring – Boodschappenlijst",
+    "version": "Recente versie: {version}",
     "lastUpdated": "Laatst bijgewerkt: {date}",
     "about": "1. Over deze applicatie",
     "aboutText": "Deze applicatie (‘Boodschappenlijst’) is een persoonlijke webapplicatie waarmee gebruikers boodschappenlijsten kunnen aanmaken, bekijken, delen, bewerken en verwijderen. De applicatie is ontwikkeld voor eigen gebruik en bedoeld om het beheren van boodschappen overzichtelijker te maken.",
