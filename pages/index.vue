@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
@@ -32,57 +32,130 @@ const features = [
     text: 'info.feature5Text',
   },
 ];
+
+definePageMeta({ layout: 'info' });
+
+const screenshotBlocks = [
+  {
+    img: '/info-screenshots/list-page.png',
+    alt: 'Overzicht van alle lijsten',
+    titleKey: 'info.screenListPageTitle',
+    textKey: 'info.screenListPageText'
+  },
+  {
+    img: '/info-screenshots/grocerylist-items-open.png',
+    alt: 'Open lijst met items',
+    titleKey: 'info.screenItemsOpenTitle',
+    textKey: 'info.screenItemsOpenText'
+  },
+  {
+    img: '/info-screenshots/grocerylist-items-open-and-checked.png',
+    alt: 'Lijst met afgevinkte en open items',
+    titleKey: 'info.screenItemsCheckedTitle',
+    textKey: 'info.screenItemsCheckedText'
+  },
+  {
+    img: '/info-screenshots/add-items-to-groceryList.png',
+    alt: 'Items toevoegen aan een lijst',
+    titleKey: 'info.screenAddItemsTitle',
+    textKey: 'info.screenAddItemsText'
+  }
+];
+
+onMounted(() => {
+  // Simple fade-in for images after mount
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.info-img').forEach(el => el.classList.add('loaded'))
+  });
+});
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
-    <header class="text-center my-8 md:my-12">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-primary-dark dark:text-accent-light mb-3">
+  <div class="w-full">
+    <header class="text-center py-12 md:py-20 px-4">
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-500 bg-clip-text text-transparent">
         {{ t('info.title') }}
       </h1>
-      <p class="text-lg md:text-xl text-slate-600 dark:text-slate-300">
+      <p class="mt-6 text-lg md:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
         {{ t('info.subtitle') }}
       </p>
     </header>
 
-    <main>
-      <section id="features" class="my-12">
-        <h2 class="text-3xl font-bold text-center mb-8 text-primary-dark dark:text-accent-light">
-          {{ t('info.featuresTitle') }}
-        </h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          <div
-            v-for="feature in features"
-            :key="feature.title"
-            class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition hover:shadow-2xl hover:border-accent/60"
-          >
-            <div class="flex items-center gap-4 mb-4">
-              <span class="text-4xl">{{ feature.icon }}</span>
-              <h3 class="text-xl font-bold text-primary-dark dark:text-accent-light">
-                {{ t(feature.title) }}
-              </h3>
-            </div>
-            <p class="text-slate-600 dark:text-slate-400">
-              {{ t(feature.text) }}
-            </p>
+    <!-- Feature highlights -->
+    <section class="px-4 md:px-10 lg:px-16 xl:px-24 py-10 bg-white/70 dark:bg-slate-900/60 backdrop-blur rounded-t-[3rem] shadow-inner">
+      <h2 class="text-3xl font-bold text-center mb-12 text-primary-dark dark:text-accent-light">{{ t('info.featuresTitle') }}</h2>
+      <div class="grid lg:grid-cols-2 gap-12">
+        <div
+          v-for="feature in features"
+          :key="feature.title"
+          class="flex gap-6 group"
+        >
+          <div class="shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-sky-500 flex items-center justify-center text-3xl shadow-lg group-hover:scale-105 transition-transform">
+            {{ feature.icon }}
+          </div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold mb-2 text-primary-dark dark:text-accent-light">{{ t(feature.title) }}</h3>
+            <p class="text-slate-600 dark:text-slate-400 leading-relaxed">{{ t(feature.text) }}</p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="cta" class="text-center my-12">
-        <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-8 border border-border-light dark:border-border-dark">
-          <h2 class="text-3xl font-bold mb-4 text-primary-dark dark:text-accent-light">
+    <!-- Screenshots paired layout -->
+    <section class="px-4 md:px-10 lg:px-16 xl:px-24 py-20 space-y-16">
+      <h2 class="text-3xl font-bold text-center mb-4 text-primary-dark dark:text-accent-light">{{ t('info.screensTitle') }}</h2>
+      <p class="text-center text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed">{{ t('info.screensIntro') }}</p>
+
+      <div
+        v-for="(block, idx) in screenshotBlocks"
+        :key="block.titleKey"
+        class="flex flex-col lg:flex-row gap-10 items-start lg:items-center screenshot-row"
+        :class="{ 'lg:flex-row-reverse': idx % 2 === 1 }"
+      >
+        <figure class="flex-1 lg:flex-[1.35] relative group">
+          <div class="rounded-3xl overflow-hidden shadow-2xl ring-1 ring-slate-200/60 dark:ring-slate-700/50 bg-white/90 dark:bg-slate-900/80 transition-transform duration-500 group-hover:scale-[1.02]">
+            <img
+              :src="block.img"
+              :alt="block.alt"
+              loading="lazy"
+              width="1600"
+              height="900"
+              class="info-img w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
+            />
+          </div>
+          <figcaption class="sr-only">{{ t(block.titleKey) }}</figcaption>
+          <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-slate-900/30 to-transparent opacity-0 group-hover:opacity-50 transition"></div>
+        </figure>
+        <div class="flex-1 lg:flex-[0.65] max-w-2xl">
+          <h3 class="text-2xl font-bold mb-4 text-primary-dark dark:text-accent-light flex items-center gap-2">
+            <span class="inline-block w-12 h-1 rounded-full bg-gradient-to-r from-indigo-500 to-sky-500"></span>
+            {{ t(block.titleKey) }}
+          </h3>
+          <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">{{ t(block.textKey) }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to action -->
+    <section class="px-4 md:px-10 lg:px-16 xl:px-24 pb-24">
+      <div class="bg-gradient-to-br from-indigo-600 via-blue-600 to-sky-500 rounded-3xl p-[3px] shadow-2xl">
+        <div class="rounded-[2.4rem] bg-white/90 dark:bg-slate-900/90 p-10 text-center">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
             {{ t('info.ctaTitle') }}
           </h2>
           <nuxt-link
             to="/auth/register"
-            class="inline-block bg-accent text-white py-3 px-8 rounded-xl hover:bg-accent-dark active:scale-95 transition font-semibold shadow-lg border border-accent/80 focus:ring-2 focus:ring-accent"
+            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg transition focus:ring-4 focus:ring-indigo-400/40"
           >
-            {{ t('info.ctaButton') }}
+            <span>🚀</span>{{ t('info.ctaButton') }}
           </nuxt-link>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
   </div>
 </template>
 
+<style scoped>
+.info-img.loaded { opacity: 1; }
+.screenshot-row { scroll-margin-top: 5rem; }
+</style>

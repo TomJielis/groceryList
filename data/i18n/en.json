@@ -211,6 +211,16 @@
     "feature5Title": "Everything on Your Account",
     "feature5Text": "All your lists, products, and cards are securely stored on your personal account. Available anytime, anywhere.",
     "ctaTitle": "Ready to get started?",
-    "ctaButton": "Create a free account"
+    "ctaButton": "Create a free account",
+    "screensTitle": "A glimpse inside the app",
+    "screensIntro": "Here's how it looks while managing lists, adding products and checking items off.",
+    "screenListPageTitle": "Your lists overview",
+    "screenListPageText": "Manage all your lists, mark favorites and share with others.",
+    "screenItemsOpenTitle": "Items inside a list",
+    "screenItemsOpenText": "See at a glance what still needs to be bought.",
+    "screenItemsCheckedTitle": "Checked items visible",
+    "screenItemsCheckedText": "Track what’s already in the basket without losing context.",
+    "screenAddItemsTitle": "Adding items",
+    "screenAddItemsText": "Quickly add products thanks to smart suggestions and streamlined fields."
   }
 }

@@ -211,6 +211,16 @@
     "feature5Title": "Alles op Jouw Account",
     "feature5Text": "Al je lijsten, producten en kaarten worden veilig opgeslagen op jouw persoonlijke account. Altijd en overal beschikbaar.",
     "ctaTitle": "Klaar om te beginnen?",
-    "ctaButton": "Maak een gratis account"
+    "ctaButton": "Maak een gratis account",
+    "screensTitle": "Een kijkje in de app",
+    "screensIntro": "Zo ziet het er uit wanneer je lijsten beheert, producten toevoegt en items afvinkt.",
+    "screenListPageTitle": "Overzicht van je lijsten",
+    "screenListPageText": "Beheer al je lijsten, markeer favorieten en deel met anderen.",
+    "screenItemsOpenTitle": "Items in een lijst",
+    "screenItemsOpenText": "Bekijk in één oogopslag wat er nog nodig is.",
+    "screenItemsCheckedTitle": "Afgevinkte items zichtbaar",
+    "screenItemsCheckedText": "Houd bij wat al in het mandje ligt zonder overzicht te verliezen.",
+    "screenAddItemsTitle": "Items toevoegen",
+    "screenAddItemsText": "Voeg snel producten toe dankzij suggesties en automatische velden."
   }
 }
