@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
+import BackButton from "~/components/form/backButton.vue";
 const i18n = useI18nStore();
 const today = new Date().toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' });
 </script>
@@ -84,6 +85,10 @@ const today = new Date().toLocaleDateString('nl-NL', { year: 'numeric', month: '
       <p>{{ i18n.t('terms.lawText') }}</p>
     </div>
   </div>
+  <backButton
+    :label="(i18n.t('common.back'))"
+    @click="$router.back()"
+  />
 </template>
 
 <style scoped>
