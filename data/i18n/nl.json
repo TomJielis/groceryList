@@ -150,5 +150,47 @@
   "deleteModal": {
     "typeListNameToDelete": "Ter bevestiging, typ de naam van de lijst:",
     "typeDELETE": "Type DELETE"
+  },
+  "register": {
+    "acceptTerms": "Ik ga akkoord met de <a href='/terms' target='_blank'>Gebruiksvoorwaarden & Privacyverklaring</a>."
+  },
+  "terms": {
+    "title": "Algemene Voorwaarden & Privacyverklaring – Boodschappenlijst",
+    "lastUpdated": "Laatst bijgewerkt: {date}",
+    "about": "1. Over deze applicatie",
+    "aboutText": "Deze applicatie (‘Boodschappenlijst’) is een persoonlijke webapplicatie waarmee gebruikers boodschappenlijsten kunnen aanmaken, bekijken, delen, bewerken en verwijderen. De applicatie is ontwikkeld voor eigen gebruik en bedoeld om het beheren van boodschappen overzichtelijker te maken.",
+    "admin": "2. Beheerder van de applicatie",
+    "adminText": "De applicatie wordt beheerd door de ontwikkelaar van Boodschappenlijst (‘Beheerder’). Voor vragen kun je contact opnemen via het e-mailadres dat vermeld staat in de applicatie.",
+    "privacy": "Privacyverklaring",
+    "dataCollected": "3. Welke gegevens worden verzameld",
+    "dataCollectedText": "Bij het aanmaken van een account worden de volgende persoonsgegevens opgeslagen:",
+    "dataCollectedList": ["Naam", "E-mailadres", "Wachtwoord (veilig versleuteld met een cryptografische hash)"],
+    "dataCollectedExtra": "Daarnaast worden binnen de applicatie gegevens opgeslagen die je zelf toevoegt:",
+    "dataCollectedExtraList": ["Boodschappenlijsten (en gedeelde lijsten)", "Producten die je zelf toevoegt", "Foto’s die je uploadt (optioneel)"],
+    "purpose": "4. Doel van de gegevensverwerking",
+    "purposeList": ["Gebruikers veilig te kunnen laten inloggen via Laravel Sanctum", "Gedeelde lijsten correct toe te wijzen aan de juiste gebruikers", "De functionaliteit van de boodschappenlijst correct te laten werken", "Meldingen en notificaties te kunnen tonen binnen de app", "Er worden geen gegevens verkocht, gedeeld of doorgestuurd naar derden."],
+    "security": "5. Beveiliging van gegevens",
+    "securityList": ["Wachtwoorden worden nooit in platte tekst opgeslagen, maar veilig gehasht via Laravel’s ingebouwde hashingmechanisme (bcrypt/argon2).", "Dataverkeer tussen frontend (Nuxt) en backend (Laravel Sanctum API) wordt versleuteld via HTTPS.", "Alleen geautoriseerde gebruikers krijgen toegang tot hun eigen data.", "Uploads (zoals foto’s) worden beveiligd opgeslagen en zijn alleen zichtbaar voor gebruikers die toegang hebben tot de bijbehorende lijst."] ,
+    "photos": "6. Verantwoordelijkheid bij foto’s",
+    "photosText": "Gebruikers zijn zelf verantwoordelijk voor de inhoud van de foto’s die zij uploaden. Het is niet toegestaan om foto’s te uploaden die:",
+    "photosList": ["auteursrechtelijk beschermd zijn zonder toestemming", "aanstootgevend, beledigend of discriminerend zijn", "persoonsgegevens van anderen bevatten zonder hun toestemming"],
+    "photosNote": "De Beheerder behoudt zich het recht voor om bij misbruik content te verwijderen.",
+    "sharing": "7. Delen van lijsten",
+    "sharingText": "De applicatie maakt het mogelijk om lijsten te delen met andere geregistreerde gebruikers. Alleen gebruikers die expliciet door jou zijn toegevoegd, krijgen toegang tot die lijst. Je kunt op elk moment het delen stopzetten of de lijst verwijderen.",
+    "retention": "8. Bewaartermijn en verwijdering van gegevens",
+    "retentionList": ["Gebruikers kunnen hun account en alle bijbehorende data op elk moment verwijderen.", "Na verwijdering worden alle gegevens (lijsten, producten, foto’s en gedeelde data) permanent verwijderd uit de database.", "Alleen e-mails die reeds verzonden zijn via het Gmail-account van de beheerder kunnen niet worden verwijderd, omdat deze zich buiten de applicatie bevinden."] ,
+    "cookies": "9. Cookies en lokale opslag",
+    "cookiesText": "De applicatie gebruikt uitsluitend technische cookies of localStorage voor het behouden van sessie-informatie (zoals authenticatie via Sanctum of voorkeuren). Er worden geen tracking- of advertentiecookies gebruikt.",
+    "rights": "10. Jouw rechten",
+    "rightsList": ["Inzage te vragen in jouw opgeslagen gegevens", "Je gegevens te corrigeren of verwijderen", "Je account te beëindigen. Voor vragen kun je contact opnemen met de beheerder via het contactadres in de applicatie."] ,
+    "changes": "11. Wijzigingen",
+    "changesText": "De beheerder kan deze voorwaarden en privacyverklaring wijzigen wanneer de werking van de applicatie verandert. Bij belangrijke aanpassingen word je binnen de applicatie geïnformeerd en kun je de nieuwe voorwaarden opnieuw accepteren.",
+    "usage": "Gebruiksvoorwaarden",
+    "usageTitle": "12. Gebruik van de applicatie",
+    "usageList": ["Je mag de applicatie alleen gebruiken voor persoonlijk, niet-commercieel gebruik.", "Je bent verantwoordelijk voor de inhoud die je toevoegt.", "De beheerder is niet aansprakelijk voor verlies van data, storingen of misbruik van inloggegevens door derden."] ,
+    "acceptance": "13. Acceptatie",
+    "acceptanceList": ["Door een account aan te maken of in te loggen verklaar je dat je:", "deze Algemene Voorwaarden en Privacyverklaring hebt gelezen,", "ermee akkoord gaat, en", "ouder bent dan 16 jaar (of toestemming hebt van een ouder/verzorger)."],
+    "law": "14. Toepasselijk recht",
+    "lawText": "Op deze voorwaarden is het Nederlands recht van toepassing."
   }
 }
