@@ -3,7 +3,7 @@ import {useAuthStore} from "~/stores/auth";
 export function useAuth() {
     const authStore = useAuthStore();
 
-    async function register(userData: { name: string, email: string, password: string, language: string }) {
+    async function register(userData: { name: string, email: string, password: string, language: string, acceptedTerms: boolean }) {
         const registerResponse = await fetch('/api/user/register/', {
             method: 'POST',
             headers: {
