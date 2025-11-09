@@ -79,6 +79,7 @@
     "form": {
       "placeholder": "Enter new list",
       "createBtn": "Create list",
+      "updateBtn": "Update list",
       "name": "Name"
     },
     "pending-lists": "Pending invitations",

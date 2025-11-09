@@ -77,6 +77,7 @@
     "form": {
       "placeholder": "Nieuwe lijst invoeren",
       "createBtn": "Lijst maken",
+      "updateBtn": "Lijst updaten",
       "name": "Naam"
     },
     "pending-lists": "Uitnodigingen in afwachting",
