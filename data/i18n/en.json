@@ -13,7 +13,8 @@
     "lists": "Lists",
     "language": "Language",
     "dutch": "Dutch",
-    "english": "English"
+    "english": "English",
+    "info": "Information"
   },
   "auth": {
     "loginTitle": "Login - Grocery List",
@@ -194,5 +195,22 @@
     "acceptanceList": ["By creating an account or logging in, you declare that you:", "have read these Terms of Use and Privacy Policy,", "agree to them, and", "are over 16 years old (or have permission from a parent/guardian)."],
     "law": "14. Applicable law",
     "lawText": "These terms are governed by Dutch law."
+  },
+  "info": {
+    "title": "Welcome to Grocery List!",
+    "subtitle": "Your smart assistant for all your groceries.",
+    "featuresTitle": "Discover the features",
+    "feature1Title": "Create & Manage Lists",
+    "feature1Text": "Create an unlimited number of grocery lists for any occasion. Add infinite products and keep everything organized in one place.",
+    "feature2Title": "Share with Family & Friends",
+    "feature2Text": "Easily share your lists with others. Collaborate in real-time and see instantly which groceries are already in the basket. Perfect for households!",
+    "feature3Title": "Convenient Cards",
+    "feature3Text": "Add your loyalty cards, receipts, or other important cards to the app. This way, you have everything at hand and never miss out again.",
+    "feature4Title": "Smart Suggestions",
+    "feature4Text": "The app learns from your habits and provides smart suggestions for products you frequently buy. You'll never forget anything again.",
+    "feature5Title": "Everything on Your Account",
+    "feature5Text": "All your lists, products, and cards are securely stored on your personal account. Available anytime, anywhere.",
+    "ctaTitle": "Ready to get started?",
+    "ctaButton": "Create a free account"
   }
 }

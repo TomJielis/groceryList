@@ -36,7 +36,7 @@ function handleLogin() {
       authStore.setToken(data.token);
       i18n.setLocale(data.user.language || 'nl');
 
-      router.push('/');
+      router.push('/dashboard');
     })
     .catch((error) => {
       showNotification(error);
