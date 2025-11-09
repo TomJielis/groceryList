@@ -19,34 +19,38 @@ onMounted(() => {
 });
 </script>
 
-
 <template>
-  <nav class="fixed bottom-0 left-0 right-0  flex justify-around items-center p-3 shadow-md md:hidden h-20">
-    <nuxtLink v-if="authStore.user" to="/" class="text-center flex-1">
-      <span class="text-sm">{{ t('nav.lists') }}</span>
+  <nav class="fixed bottom-0 left-0 right-0 flex justify-around items-center p-3 shadow-md md:hidden h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-slate-200 dark:border-slate-700">
+    <nuxtLink  v-if="!authStore.user" to="/" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+      <span class="text-2xl">ℹ️</span>
+      <span class="text-xs font-medium">{{ t('nav.info') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="authStore.user" to="/cards/" class="text-center flex-1">
-      <span class="text-sm">{{ t('nav.cards') }}</span>
+    <nuxtLink v-if="authStore.user" to="/dashboard" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+      <span class="text-2xl">📝</span>
+      <span class="text-xs font-medium">{{ t('nav.lists') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="!authStore.user" to="/auth/login" class="text-center flex-1">
-      <span class="text-sm">{{ t('nav.login') }}</span>
+    <nuxtLink v-if="authStore.user" to="/cards" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+      <span class="text-2xl">💳</span>
+      <span class="text-xs font-medium">{{ t('nav.cards') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="!authStore.user" to="/auth/register" class="text-center flex-1">
-      <span class="text-sm">{{ t('nav.register') }}</span>
+    <nuxtLink v-if="!authStore.user" to="/auth/login" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+      <span class="text-2xl">🚪</span>
+      <span class="text-xs font-medium">{{ t('nav.login') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="authStore.user" to="/profile" class="text-center flex-1 relative">
-      <span class="inline-flex items-center gap-1">
-        <span class="text-sm">{{ t('nav.profile') }}</span>
-        <span
-            v-if="pendingCount > 0"
-            class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold ml-1 mb-5"
-            style="position: static;"
-        >
-          {{ pendingCount }}
-        </span>
+    <nuxtLink v-if="!authStore.user" to="/auth/register" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+      <span class="text-2xl">📝</span>
+      <span class="text-xs font-medium">{{ t('nav.register') }}</span>
+    </nuxtLink>
+    <nuxtLink v-if="authStore.user" to="/profile" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors relative">
+      <span class="text-2xl">👤</span>
+      <span class="text-xs font-medium">{{ t('nav.profile') }}</span>
+      <span
+        v-if="pendingCount > 0"
+        class="absolute top-1 right-5 bg-red-500 text-white text-[10px] leading-none rounded-full px-1.5 py-0.5 font-bold shadow"
+      >
+        {{ pendingCount }}
       </span>
     </nuxtLink>
-
   </nav>
 </template>
 

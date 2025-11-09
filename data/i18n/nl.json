@@ -13,7 +13,8 @@
     "lists": "Lijsten",
     "language": "Taal",
     "dutch": "Nederlands",
-    "english": "Engels"
+    "english": "Engels",
+    "info": "Informatie"
   },
   "auth": {
     "loginTitle": "Inloggen - Boodschappenlijstje",
@@ -194,5 +195,40 @@
     "acceptanceList": ["Door een account aan te maken of in te loggen verklaar je dat je:", "deze Algemene Voorwaarden en Privacyverklaring hebt gelezen,", "ermee akkoord gaat, en", "ouder bent dan 16 jaar (of toestemming hebt van een ouder/verzorger)."],
     "law": "14. Toepasselijk recht",
     "lawText": "Op deze voorwaarden is het Nederlands recht van toepassing."
+  },
+  "info": {
+    "title": "Welkom bij Boodschappenlijst!",
+    "subtitle": "Jouw slimme hulp voor al je boodschappen.",
+    "featuresTitle": "Ontdek de functies",
+    "feature1Title": "Maak & Beheer Lijsten",
+    "feature1Text": "Creëer een onbeperkt aantal boodschappenlijsten voor elke gelegenheid. Voeg oneindig veel producten toe en houd alles overzichtelijk op één plek.",
+    "feature2Title": "Deel met Familie & Vrienden",
+    "feature2Text": "Deel je lijsten eenvoudig met anderen. Werk samen in realtime en zie direct welke boodschappen al in het mandje liggen. Perfect voor huishoudens!",
+    "feature3Title": "Handige Kaarten",
+    "feature3Text": "Voeg je klantenkaarten, bonnetjes of andere belangrijke pasjes toe aan de app. Zo heb je alles bij de hand en grijp je nooit meer mis.",
+    "feature4Title": "Slimme Suggesties",
+    "feature4Text": "De app leert van je gewoontes en doet slimme suggesties voor producten die je vaak koopt. Zo vergeet je nooit meer iets.",
+    "feature5Title": "Alles op Jouw Account",
+    "feature5Text": "Al je lijsten, producten en kaarten worden veilig opgeslagen op jouw persoonlijke account. Altijd en overal beschikbaar.",
+    "ctaTitle": "Klaar om te beginnen?",
+    "ctaButton": "Maak een gratis account",
+    "screensTitle": "Een kijkje in de app",
+    "screensIntro": "Zo ziet het er uit wanneer je lijsten beheert, producten toevoegt en items afvinkt.",
+    "screenListPageTitle": "Overzicht van je lijsten",
+    "screenListPageText": "Beheer al je lijsten, markeer favorieten en deel met anderen.",
+    "screenItemsOpenTitle": "Items in een lijst",
+    "screenItemsOpenText": "Bekijk in één oogopslag wat er nog nodig is.",
+    "screenItemsCheckedTitle": "Afgevinkte items zichtbaar",
+    "screenItemsCheckedText": "Houd bij wat al in het mandje ligt zonder overzicht te verliezen.",
+    "screenAddItemsTitle": "Items toevoegen",
+    "screenAddItemsText": "Voeg snel producten toe dankzij suggesties en automatische velden.",
+    "crossPlatformTitle": "Werkt overal",
+    "crossPlatformIntro": "Gebruik Boodschappenlijst op PC, laptop, tablet (iPad) en telefoon. Dankzij het responsive ontwerp past alles zich automatisch aan.",
+    "pwaTitle": "Installeren als PWA (Web App)",
+    "pwaIntro": "Je kunt de app installeren zodat hij als een echte native app voelt, inclusief snelkoppeling en fullscreen ervaring.",
+    "pwaDesktop": "Desktop (Chrome / Edge / Brave): Klik op het installatie‑pictogram (📥) rechts van de adresbalk of via het menu ⋮ > Installeren.",
+    "pwaAndroid": "Android (Chrome): Open de site, kies in het menu ⋮ > 'Toevoegen aan startscherm' of gebruik de installatiebanner.",
+    "pwaIOS": "iOS (Safari): Tik op het Deel‑icoon (⬆️) > 'Zet op Beginscherm'.",
+    "pwaUpdates": "Updates worden automatisch geladen – je hoeft niets opnieuw te installeren."
   }
 }

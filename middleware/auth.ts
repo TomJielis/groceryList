@@ -1,10 +1,20 @@
 import { useAuthStore } from '@/stores/auth'
 
-export default defineNuxtRouteMiddleware((to, from) => {
-    if (process.server) return // 💡 middleware mag niets doen op de server
+export default defineNuxtRouteMiddleware((to) => {
+  if (process.server) {
+    // Laat SSR altijd de huidige pagina renderen; auth wordt pas client-side gevalideerd
+    return;
+  }
+  const authStore = useAuthStore();
 
-    const authStore = useAuthStore()
-    if (!authStore.token) {
-        return navigateTo('/auth/login')
-    }
-})
+  if (to.path === '/' && authStore.user) {
+    return navigateTo('/dashboard');
+  }
+
+  const protectedPaths = ['/dashboard', '/cards', '/profile', '/list'];
+  const requiresAuth = (to.meta as any)?.requiresAuth || protectedPaths.some(p => to.path === p || to.path.startsWith(p + '/'));
+
+  if (requiresAuth && !authStore.user) {
+    return navigateTo('/');
+  }
+});
