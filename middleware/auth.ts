@@ -2,7 +2,6 @@ import { useAuthStore } from '@/stores/auth'
 
 export default defineNuxtRouteMiddleware((to) => {
   if (process.server) {
-    // Laat SSR altijd de huidige pagina renderen; auth wordt pas client-side gevalideerd
     return;
   }
   const authStore = useAuthStore();
