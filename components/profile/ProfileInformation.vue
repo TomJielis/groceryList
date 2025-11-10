@@ -67,6 +67,7 @@ function handleSubmit() {
           v-model="userData.email"
           :label="i18n.t('profile.form.email')"
           :placeholder="i18n.t('profile.email')"
+          :disabled="true"
       />
       <button
         type="submit"
