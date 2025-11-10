@@ -146,18 +146,18 @@ onMounted(() => {
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div class="flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-slate-800 dark:to-slate-900">
             <div class="text-3xl">💻</div>
-            <h3 class="font-semibold text-lg">Desktop</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-400">Optimal layout vanaf grotere schermbreedtes met snelle toegang tot je lijsten.</p>
+            <h3 class="font-semibold text-lg">{{ t('info.desktopTitle') }}</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">{{ t('info.desktopText') }}</p>
           </div>
           <div class="flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-slate-800 dark:to-slate-900">
             <div class="text-3xl">📱</div>
-            <h3 class="font-semibold text-lg">Mobiel</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-400">Geoptimaliseerde touch‑interface met een onderste navigatiebalk.</p>
+            <h3 class="font-semibold text-lg">{{ t('info.mobileTitle') }}</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">{{ t('info.mobileText') }}</p>
           </div>
           <div class="flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-slate-800 dark:to-slate-900">
             <div class="text-3xl">🧩</div>
-            <h3 class="font-semibold text-lg">Tablet</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-400">Meer ruimte voor lijsten en items in één overzicht.</p>
+            <h3 class="font-semibold text-lg">{{ t('info.tabletTitle') }}</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">{{ t('info.tabletText') }}</p>
           </div>
           <div class="flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-indigo-50 to-sky-50 dark:from-slate-800 dark:to-slate-900 md:col-span-2 lg:col-span-3">
             <div class="flex items-center gap-3">

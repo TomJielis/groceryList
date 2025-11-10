@@ -229,6 +229,12 @@
     "pwaDesktop": "Desktop (Chrome / Edge / Brave): Klik op het installatie‑pictogram (📥) rechts van de adresbalk of via het menu ⋮ > Installeren.",
     "pwaAndroid": "Android (Chrome): Open de site, kies in het menu ⋮ > 'Toevoegen aan startscherm' of gebruik de installatiebanner.",
     "pwaIOS": "iOS (Safari): Tik op het Deel‑icoon (⬆️) > 'Zet op Beginscherm'.",
-    "pwaUpdates": "Updates worden automatisch geladen – je hoeft niets opnieuw te installeren."
+    "pwaUpdates": "Updates worden automatisch geladen – je hoeft niets opnieuw te installeren.",
+    "desktopTitle": "Desktop",
+    "desktopText": "Optimale lay-out vanaf grotere schermen met snelle toegang tot je lijsten.",
+    "mobileTitle": "Mobiel",
+    "mobileText": "Geoptimaliseerde touch-interface met een onderste navigatiebalk.",
+    "tabletTitle": "Tablet",
+    "tabletText": "Meer ruimte voor lijsten en items in één overzicht."
   }
 }

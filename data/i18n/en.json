@@ -229,6 +229,12 @@
     "pwaDesktop": "Desktop (Chrome / Edge / Brave): Click the install icon (📥) near the address bar or use the ⋮ menu > Install.",
     "pwaAndroid": "Android (Chrome): Open the site, use the ⋮ menu > 'Add to Home screen' or the install banner.",
     "pwaIOS": "iOS (Safari): Tap the Share icon (⬆️) > 'Add to Home Screen'.",
-    "pwaUpdates": "Updates load automatically – no need to reinstall."
+    "pwaUpdates": "Updates load automatically – no need to reinstall.",
+    "desktopTitle": "Desktop",
+    "desktopText": "Optimal layout for larger screens with quick access to your lists.",
+    "mobileTitle": "Mobile",
+    "mobileText": "Optimized touch interface with a bottom navigation bar.",
+    "tabletTitle": "Tablet",
+    "tabletText": "More space for lists and items in one overview."
   }
 }
