@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import {useAuthStore} from "~/stores/auth";
 import { useI18nStore } from "~/stores/i18n";
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const authStore = useAuthStore();
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
+const route = useRoute();
 
 const languageDropdownOpen = ref(false);
 
 function setLocale(locale: 'nl' | 'en') {
   i18n.setLocale(locale);
   languageDropdownOpen.value = false;
+}
+
+function isActiveTab(path: string) {
+  if (path === '/') return route.path === '/';
+  return route.path.startsWith(path);
 }
 </script>
 <template>
@@ -22,12 +29,12 @@ function setLocale(locale: 'nl' | 'en') {
           {{ t('nav.brand') }}
         </nuxt-link>
         <div class="hidden md:flex items-center space-x-4 ml-auto">
-          <nuxt-link to="/information" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.info') }}</nuxt-link>
-          <nuxt-link v-if="authStore.user" to="/" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.lists') }}</nuxt-link>
-          <nuxt-link v-if="authStore.user" to="/cards" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.cards') }}</nuxt-link>
-          <nuxt-link v-if="!authStore.user" to="/auth/login" replace class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.login') }}</nuxt-link>
-          <nuxt-link v-if="!authStore.user" to="/auth/register" replace class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.register') }}</nuxt-link>
-          <nuxt-link v-if="authStore.user" to="/profile" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.profile') }}</nuxt-link>
+          <nuxt-link to="/information" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-200 dark:bg-slate-700': isActiveTab('/information') }">{{ t('nav.info') }}</nuxt-link>
+          <nuxt-link v-if="authStore.user" to="/" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-200 dark:bg-slate-700': isActiveTab('/') }">{{ t('nav.lists') }}</nuxt-link>
+          <nuxt-link v-if="authStore.user" to="/cards" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-200 dark:bg-slate-700': isActiveTab('/cards') }">{{ t('nav.cards') }}</nuxt-link>
+          <nuxt-link v-if="!authStore.user" to="/auth/login" replace class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-200 dark:bg-slate-700': isActiveTab('/auth/login') }">{{ t('nav.login') }}</nuxt-link>
+          <nuxt-link v-if="!authStore.user" to="/auth/register" replace class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-200 dark:bg-slate-700': isActiveTab('/auth/register') }">{{ t('nav.register') }}</nuxt-link>
+          <nuxt-link v-if="authStore.user" to="/profile" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-200 dark:bg-slate-700': isActiveTab('/profile') }">{{ t('nav.profile') }}</nuxt-link>
           <div class="relative">
             <button @click="languageDropdownOpen = !languageDropdownOpen" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-1">
               <span>🌐</span>
