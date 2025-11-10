@@ -136,7 +136,7 @@ function handleLanguageChange(locale: 'nl' | 'en') {
           </div>
           <label class="flex items-center gap-2">
             <input type="checkbox" v-model="userData.acceptedTerms" required />
-            <span v-html="i18n.t('register.acceptTerms')"></span>
+            <span class="accept-terms-link" v-html="i18n.t('register.acceptTerms')"></span>
           </label>
           <button type="submit"
                   class="w-full bg-accent text-white py-3 rounded-xl hover:bg-accent-dark active:scale-95 transition font-semibold shadow border border-accent/80 focus:ring-2 focus:ring-accent">
@@ -155,3 +155,15 @@ function handleLanguageChange(locale: 'nl' | 'en') {
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.accept-terms-link) a {
+  color: #fff !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+:deep(.accept-terms-link) a:hover {
+  color: var(--color-accent, #6366f1) !important;
+}
+</style>

@@ -154,7 +154,7 @@
     "typeDELETE": "Type DELETE"
   },
   "register": {
-    "acceptTerms": "I agree with the <a href='/terms' target='_blank'>Terms of Use & Privacy Policy</a>."
+    "acceptTerms": "I agree with the <span class='text-white underline underline-offset-2 hover:text-accent transition'><a href='/terms' target='_blank'>Terms of Use & Privacy Policy</a></span>."
   },
   "terms": {
     "title": "Terms of Use & Privacy Policy – Grocery List",
