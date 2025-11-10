@@ -139,8 +139,7 @@ onMounted(() => {
     </section>
 
     <!-- Cross platform & PWA section -->
-    <section class="px-4 md:px-10 lg:px-16 xl:px-24 pb-8">
-      <div class="rounded-3xl bg-white/80 dark:bg-slate-900/70 backdrop-blur shadow-xl p-10 space-y-10 border border-border-light dark:border-border-dark">
+    <section class="px-4 md:px-10 lg:px-16 xl:px-24 py-20 space-y-16">
         <div class="text-center space-y-4">
           <h2 class="text-3xl font-bold text-primary-dark dark:text-accent-light">{{ t('info.crossPlatformTitle') }}</h2>
           <p class="text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">{{ t('info.crossPlatformIntro') }}</p>
@@ -175,7 +174,6 @@ onMounted(() => {
             </ul>
           </div>
         </div>
-      </div>
     </section>
 
     <!-- Call to action -->
