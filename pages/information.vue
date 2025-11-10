@@ -64,8 +64,35 @@ const screenshotBlocks = [
   }
 ];
 
+const phoneScreenshotBlocks = [
+  {
+    img: '/info-screenshots-mobile/groceryList.png',
+    titleKey: 'info.mobileScreenLists',
+    altKey: 'info.mobileScreenLists'
+  },
+  {
+    img: '/info-screenshots-mobile/GroceryListItems.png',
+    titleKey: 'info.mobileScreenItems',
+    altKey: 'info.mobileScreenItems'
+  },
+  {
+    img: '/info-screenshots-mobile/GroceryListAddItemsToList.png',
+    titleKey: 'info.screenAddItemsTitle',
+    altKey: 'info.screenAddItemsTitle'
+  },
+  {
+    img: '/info-screenshots-mobile/Cards.png',
+    titleKey: 'info.mobileScreenCards',
+    altKey: 'info.mobileScreenCards'
+  },
+  {
+    img: '/info-screenshots-mobile/profile.png',
+    titleKey: 'info.mobileScreenProfile',
+    altKey: 'info.mobileScreenProfile'
+  }
+];
+
 onMounted(() => {
-  // Simple fade-in for images after mount
   requestAnimationFrame(() => {
     document.querySelectorAll('.info-img').forEach(el => el.classList.add('loaded'))
   });
@@ -83,7 +110,6 @@ onMounted(() => {
       </p>
     </header>
 
-    <!-- Feature highlights -->
     <section class="px-4 md:px-10 lg:px-16 xl:px-24 py-10 bg-white/70 dark:bg-slate-900/60 backdrop-blur rounded-t-[3rem] shadow-inner">
       <h2 class="text-3xl font-bold text-center mb-12 text-primary-dark dark:text-accent-light">{{ t('info.featuresTitle') }}</h2>
       <div class="grid lg:grid-cols-2 gap-12">
@@ -103,7 +129,6 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- Screenshots paired layout -->
     <section class="px-4 md:px-10 lg:px-16 xl:px-24 py-20 space-y-16">
       <h2 class="text-3xl font-bold text-center mb-4 text-primary-dark dark:text-accent-light">{{ t('info.screensTitle') }}</h2>
       <p class="text-center text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed">{{ t('info.screensIntro') }}</p>
@@ -138,7 +163,24 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- Cross platform & PWA section -->
+    <section class="px-4 md:px-10 lg:px-16 xl:px-24 py-12">
+      <h2 class="text-3xl font-bold text-center mb-4 text-primary-dark dark:text-accent-light">{{ t('info.screenMobileTitle') }}</h2>
+      <p class="text-center text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed mb-12">{{ t('info.screenMobileText') }}</p>
+      <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 place-items-center">
+        <div
+          v-for="m in phoneScreenshotBlocks"
+          :key="m.img"
+          class="group flex flex-col items-center gap-4 w-full max-w-[220px]"
+        >
+          <div class="relative w-full rounded-3xl overflow-hidden shadow-2xl ring-1 ring-slate-200/70 dark:ring-slate-700/60 bg-white/90 dark:bg-slate-900/80 backdrop-blur-sm transition-transform duration-500 group-hover:scale-105">
+            <img :src="m.img" :alt="t(m.altKey)" class="info-img w-full aspect-[9/19] object-contain p-2 opacity-0 transition-opacity duration-700" loading="lazy" />
+            <div class="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-40 bg-gradient-to-br from-indigo-500/10 via-sky-500/10 to-transparent transition" />
+          </div>
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300 text-center">{{ t(m.titleKey) }}</span>
+        </div>
+      </div>
+    </section>
+
     <section class="px-4 md:px-10 lg:px-16 xl:px-24 py-20 space-y-16">
         <div class="text-center space-y-4">
           <h2 class="text-3xl font-bold text-primary-dark dark:text-accent-light">{{ t('info.crossPlatformTitle') }}</h2>
@@ -176,7 +218,6 @@ onMounted(() => {
         </div>
     </section>
 
-    <!-- Call to action -->
     <section class="px-4 md:px-10 lg:px-16 xl:px-24 pb-24" v-if="!auth.user">
       <div class="bg-gradient-to-br from-indigo-600 via-blue-600 to-sky-500 rounded-3xl p-[3px] shadow-2xl">
         <div class="rounded-[2.4rem] bg-white/90 dark:bg-slate-900/90 p-10 text-center">
@@ -196,6 +237,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.info-img { opacity: 0; }
 .info-img.loaded { opacity: 1; }
 .screenshot-row { scroll-margin-top: 5rem; }
 </style>
