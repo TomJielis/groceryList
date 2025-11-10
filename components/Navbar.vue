@@ -22,8 +22,8 @@ function setLocale(locale: 'nl' | 'en') {
           {{ t('nav.brand') }}
         </nuxt-link>
         <div class="hidden md:flex items-center space-x-4 ml-auto">
-          <nuxt-link to="/" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.info') }}</nuxt-link>
-          <nuxt-link v-if="authStore.user" to="/dashboard" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.lists') }}</nuxt-link>
+          <nuxt-link to="/information" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.info') }}</nuxt-link>
+          <nuxt-link v-if="authStore.user" to="/" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.lists') }}</nuxt-link>
           <nuxt-link v-if="authStore.user" to="/cards" class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.cards') }}</nuxt-link>
           <nuxt-link v-if="!authStore.user" to="/auth/login" replace class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.login') }}</nuxt-link>
           <nuxt-link v-if="!authStore.user" to="/auth/register" replace class="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">{{ t('nav.register') }}</nuxt-link>

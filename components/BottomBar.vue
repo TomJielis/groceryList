@@ -27,11 +27,11 @@ onMounted(() => {
 
 <template>
   <nav class="fixed bottom-0 left-0 right-0 flex justify-around items-center p-3 shadow-md md:hidden h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-slate-200 dark:border-slate-700">
-    <nuxtLink to="/" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+    <nuxtLink to="/information" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
       <span class="text-2xl">ℹ️</span>
       <span class="text-xs font-medium">{{ t('nav.info') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="authStore.user" to="/dashboard" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+    <nuxtLink v-if="authStore.user" to="/" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
       <span class="text-2xl">📝</span>
       <span class="text-xs font-medium">{{ t('nav.lists') }}</span>
     </nuxtLink>

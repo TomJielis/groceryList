@@ -1,19 +1,11 @@
 import { useAuthStore } from '@/stores/auth'
 
-export default defineNuxtRouteMiddleware((to) => {
-  if (process.server) {
-    return;
-  }
-  const authStore = useAuthStore();
+export default defineNuxtRouteMiddleware((to, from) => {
+  if (process.server) return;
 
-  if (to.path === '/' && authStore.user) {
-    return navigateTo('/dashboard');
-  }
+  const authStore = useAuthStore()
 
-  const protectedPaths = ['/dashboard', '/cards', '/profile', '/list'];
-  const requiresAuth = (to.meta as any)?.requiresAuth || protectedPaths.some(p => to.path === p || to.path.startsWith(p + '/'));
-
-  if (requiresAuth && !authStore.user) {
-    return navigateTo('/');
+  if (!authStore.token) {
+    return navigateTo('/information')
   }
-});
+})
