@@ -4,6 +4,8 @@ import { computed, onMounted } from 'vue';
 
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
+import {useAuthStore} from "~/stores/auth";
+const auth = useAuthStore()
 
 const features = [
   {
@@ -177,7 +179,7 @@ onMounted(() => {
     </section>
 
     <!-- Call to action -->
-    <section class="px-4 md:px-10 lg:px-16 xl:px-24 pb-24">
+    <section class="px-4 md:px-10 lg:px-16 xl:px-24 pb-24" v-if="!auth.user">
       <div class="bg-gradient-to-br from-indigo-600 via-blue-600 to-sky-500 rounded-3xl p-[3px] shadow-2xl">
         <div class="rounded-[2.4rem] bg-white/90 dark:bg-slate-900/90 p-10 text-center">
           <h2 class="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
