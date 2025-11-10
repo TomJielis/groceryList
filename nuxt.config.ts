@@ -25,8 +25,8 @@ export default defineNuxtConfig({
       basePath: process.env.API_BASE_PATH || '/api',
     },
     public: {
-        termsVersion: '1.0',
-        lastUpdatedTerms: '09-11-2025 15:15',
+        termsVersion: '1.1',
+        lastUpdatedTerms: '10-11-2025 22:35',
     },
   },
   nitro: {
