@@ -257,7 +257,6 @@ const i18n = useI18nStore();
       </section>
     </div>
   </div>
-  <BackButton :label="i18n.t('common.back')" @click="$router.back()" />
 </template>
 
 <style scoped>
