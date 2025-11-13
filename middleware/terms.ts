@@ -6,13 +6,12 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const authStore = useAuthStore()
     const user = authStore.user;
     const config = useRuntimeConfig();
-
-    if (user && !user.acceptedTerms) {
+    if (user && !user.accepted_terms) {
         return navigateTo('/terms/approve');
     }
 
-    if (user && user.acceptedTerms) {
-        const acceptedVersion = user.acceptedTermsVersion || '1.0';
+    if (user && user.accepted_terms) {
+        const acceptedVersion = user.accepted_terms_version || '1.0';
         const currentVersion = config.public.termsVersion;
         if (acceptedVersion !== currentVersion) {
             return navigateTo('/terms/approve');

@@ -1,9 +1,20 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
-import BackButton from "~/components/form/backButton.vue";
-const config = useRuntimeConfig()
+import { useRouter } from 'vue-router';
+import {useAuth} from "~/composables/useAuth";
+
+const auth = useAuth();
+const router = useRouter();
+
+const approveTerms = async () => {
+  await auth.approveTerms();
+  router.push('/');
+};
+
 
 const i18n = useI18nStore();
+
+
 </script>
 
 <template>
@@ -14,6 +25,14 @@ const i18n = useI18nStore();
       <hr class="my-4 border-slate-200 dark:border-slate-700" />
     </div>
   </div>
+
+  <button
+      type="submit"
+      @click="approveTerms"
+      class="w-full bg-green-500 py-3 rounded-lg hover:bg-green-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 font-semibold"
+  >
+    {{ i18n.t('approve meuk') }}
+  </button>
 </template>
 
 <style scoped>

@@ -174,10 +174,6 @@ export function useAuth() {
         return await updateResponse.json();
     }
 
-
-
-
-
     return {
         login,
         register,
@@ -186,6 +182,7 @@ export function useAuth() {
         setNewPassword,
         setLanguage,
         update,
-        deactivate
+        deactivate,
+        approveTerms
     }
 }
