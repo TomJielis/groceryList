@@ -67,6 +67,11 @@
     "shareBtn": "Delen",
     "shared": "Lijst is gedeeld!",
     "favorited": "Lijst als favoriet gemarkeerd!",
+    "emptyState": {
+      "title": "Nog geen lijsten",
+      "message": "Begin met het maken van je eerste boodschappenlijst. Klik op de + knop hieronder om er een toe te voegen!",
+      "hint": "Druk op het + icoon"
+    },
     "menu": {
       "removeFavorite": "Verwijder favoriet",
       "markFavorite": "Markeer als favoriet",
@@ -100,7 +105,11 @@
   },
   "items": {
     "addPlaceholder": "Nieuwe item invoeren",
-    "pricePlaceholder": "€ prijs"
+    "pricePlaceholder": "€ prijs",
+    "emptyState": {
+      "title": "Nog geen items",
+      "message": "Begin met het toevoegen van items aan je boodschappenlijst. Klik op de + knop hieronder om je eerste item toe te voegen!"
+    }
   },
   "cards": {
     "available": "Beschikbare kaarten",

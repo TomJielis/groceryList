@@ -181,7 +181,18 @@ function openListSettings(id: number) {
   <div class="max-w-2xl mx-auto p-4">
     <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light text-center">🛒 {{ i18n.t('lists.title') }}</h1>
     <div v-if="!openListForm">
-      <ul class="space-y-5">
+      <div v-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-16 px-4 pt-60">
+        <div class="text-8xl mb-6 opacity-50">🛒</div>
+        <h2 class="text-2xl font-bold mb-2 text-primary-dark dark:text-accent-light text-center">
+          {{ i18n.t('lists.emptyState.title') }}
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 text-center mb-8 max-w-md">
+          {{ i18n.t('lists.emptyState.message') }}
+        </p>
+      </div>
+
+      <!-- Lists -->
+      <ul v-else class="space-y-5">
         <li
             v-for="listItem in sortedLists"
             :key="listItem.id"

@@ -69,6 +69,11 @@
     "favorited": "List marked as favorite!",
     "approvedMessage": "List has been added to your lists.",
     "declinedMessage": "List invitation has been declined.",
+    "emptyState": {
+      "title": "No Lists Yet",
+      "message": "Get started by creating your first grocery list. Click the + button below to add one!",
+      "hint": "Press the + icon"
+    },
     "menu": {
       "removeFavorite": "Remove favorite",
       "markFavorite": "Mark as favorite",
@@ -100,7 +105,11 @@
   },
   "items": {
     "addPlaceholder": "Enter new item",
-    "pricePlaceholder": "€ price"
+    "pricePlaceholder": "€ price",
+    "emptyState": {
+      "title": "No Items Yet",
+      "message": "Start adding items to your grocery list. Click the + button below to add your first item!"
+    }
   },
   "cards": {
     "available": "Available Cards",

@@ -68,6 +68,15 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         }}
       </div>
     </div>
+    <div v-if="items.length === 0" class="flex flex-col items-center justify-center py-16 px-4 pt-60">
+      <div class="text-8xl mb-6 opacity-50">📝</div>
+      <h2 class="text-2xl font-bold mb-2 text-primary-dark dark:text-accent-light text-center">
+        {{ i18n.t('items.emptyState.title') }}
+      </h2>
+      <p class="text-slate-600 dark:text-slate-400 text-center mb-8 max-w-md">
+        {{ i18n.t('items.emptyState.message') }}
+      </p>
+    </div>
     <div v-if="!showAddItem">
       <!-- UNCHECKED ITEMS -->
       <ul class="space-y-3 mb-20">
