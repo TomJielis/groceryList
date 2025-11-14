@@ -20,7 +20,6 @@ export function useAuth() {
         if (!result.user) {
             throw new Error(result.error || 'Register error');
         }
-        authStore.setUser(result.user); // Update user state with returned data
 
         return result;
     }
