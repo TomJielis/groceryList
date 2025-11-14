@@ -55,6 +55,7 @@ async function updateGroceryListItem(item: any) {
   items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
 }
 
+console.log(listStore.lists);
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>

@@ -3,14 +3,18 @@ import {useGroceryList} from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
 import ShareListModal from '~/components/ShareListModal.vue';
 import deleteModal from '~/components/deleteModal.vue';
-import {ref, watch, computed} from 'vue'
+import {ref, watch, computed, onMounted} from 'vue'
 import {useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
 import { useI18nStore } from '~/stores/i18n';
 import addButton from "~/components/form/addButton.vue"
 const listStore = useListStore();
-await listStore.fetchLists()
+
+// Fetch lists on mount, this allows persisted state to load first
+onMounted(async () => {
+  await listStore.fetchLists()
+})
 
 const sortedLists = computed(() => {
   return [...listStore.lists].sort((a, b) => {

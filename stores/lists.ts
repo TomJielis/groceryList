@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia';
 import type { TGroceryList } from '~/types/TGroceryList';
-import { useGroceryList } from "~/composables/useGroceryList";
 
-const { fetchLists, lists, fetchPendingLists } = useGroceryList();
 export const useListStore = defineStore('list', {
   state: () => ({
     lists: [] as TGroceryList[],
@@ -22,9 +20,19 @@ export const useListStore = defineStore('list', {
       this.lists = [];
     },
     async fetchLists() {
-      await fetchLists();
-      // @ts-ignore
-      this.setList(lists);
+      try {
+        const response = await fetch('/api/groceryList/');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch lists: ${response.statusText}`);
+        }
+        const result = await response.json();
+        const listResult: TGroceryList[] = result.data;
+        this.setList(listResult.map((item: TGroceryList) => ({
+          ...item,
+        })));
+      } catch (error) {
+        console.error('Error fetching lists:', error);
+      }
     },
     setPendingLists(pending: TGroceryList[]) {
       this.pendingLists = pending;
@@ -39,8 +47,17 @@ export const useListStore = defineStore('list', {
       this.pendingLists = [];
     },
     async fetchPendingLists() {
-      const result = await fetchPendingLists();
-      this.setPendingLists(result || []);
+      try {
+        const response = await fetch('/api/groceryList/pending');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch lists: ${response.statusText}`);
+        }
+        const result = await response.json();
+        const pendingLists = result.data ? result.data as TGroceryList[] : result as TGroceryList[];
+        this.setPendingLists(pendingLists || []);
+      } catch (error) {
+        console.error('Error fetching pending lists:', error);
+      }
     }
   },
   persist: true,
