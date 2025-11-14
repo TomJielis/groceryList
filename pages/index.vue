@@ -184,18 +184,18 @@ function openListSettings(id: number) {
 <template>
   <div class="max-w-2xl mx-auto p-4">
     <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light text-center">🛒 {{ i18n.t('lists.title') }}</h1>
-    <div v-if="!openListForm">
-      <div v-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-16 px-4 pt-60">
+    <div v-if="!openListForm" class="flex-1 flex flex-col">
+      <div v-if="sortedLists.length === 0" class="flex flex-1 flex-col items-center justify-center px-4 py-40 text-center">
         <div class="text-8xl mb-6 opacity-50">🛒</div>
-        <h2 class="text-2xl font-bold mb-2 text-primary-dark dark:text-accent-light text-center">
+        <h2 class="text-2xl font-bold mb-2 text-primary-dark dark:text-accent-light">
           {{ i18n.t('lists.emptyState.title') }}
         </h2>
-        <p class="text-slate-600 dark:text-slate-400 text-center mb-8 max-w-md">
+        <p class="text-slate-600 dark:text-slate-400 mb-8 max-w-md">
           {{ i18n.t('lists.emptyState.message') }}
         </p>
+        <addButton @click="openListForm = true" />
       </div>
 
-      <!-- Lists -->
       <ul v-else class="space-y-5">
         <li
             v-for="listItem in sortedLists"
@@ -205,14 +205,15 @@ function openListSettings(id: number) {
         >
           <div class="flex items-start justify-between ">
             <div>
-             <span class="text-base font-medium break-words whitespace-normal">
-                {{ listItem.name }}
-                <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-yellow-500">⭐</span>
-            </span>
+          <span class="text-base font-medium break-words whitespace-normal">
+            {{ listItem.name }}
+            <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-yellow-500">⭐</span>
+          </span>
             </div>
             <div class="relative ml-2">
               <button
-                  class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent/10 text-accent active:bg-accent/20 transition border border-accent/30 focus:ring-2 focus:ring-accent"                  @click.stop="toggleDropdown(listItem.id)"
+                  class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent/10 text-accent active:bg-accent/20 transition border border-accent/30 focus:ring-2 focus:ring-accent"
+                  @click.stop="toggleDropdown(listItem.id)"
               >
                 ⋮
               </button>
@@ -225,7 +226,9 @@ function openListSettings(id: number) {
                     class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
                     @click.stop="setFavoriteList(listItem.id)"
                 >
-                  {{ auth?.user?.favorite_list_id === listItem.id ? `❌ ${i18n.t('lists.menu.removeFavorite')}` : `⭐ ${i18n.t('lists.menu.markFavorite')}` }}
+                  {{ auth?.user?.favorite_list_id === listItem.id
+                    ? `❌ ${i18n.t('lists.menu.removeFavorite')}`
+                    : `⭐ ${i18n.t('lists.menu.markFavorite')}` }}
                 </button>
                 <button
                     v-if="listItem.created_by.id == auth.user.id"
@@ -265,26 +268,26 @@ function openListSettings(id: number) {
               v-if="listItem.grocery_list_invites && listItem.grocery_list_invites.length > 0"
               class="flex items-center mt-3 space-x-[-8px]"
           >
-            <span
-                v-for="invite in listItem.grocery_list_invites"
-                class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
-                :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
-            >
-              {{ invite.user?.name.charAt(0).toUpperCase() ?? '?'}}
-            </span>
+        <span
+            v-for="invite in listItem.grocery_list_invites"
+            class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
+            :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
+        >
+          {{ invite.user?.name.charAt(0).toUpperCase() ?? '?' }}
+        </span>
             <span
                 class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
                 :style="{ backgroundColor: stringToColor(listItem.created_by.name) }"
                 :title="listItem.created_by.name"
             >
-              {{ listItem.created_by.name.charAt(0).toUpperCase() }}
-            </span>
-
+          {{ listItem.created_by.name.charAt(0).toUpperCase() }}
+        </span>
           </div>
         </li>
       </ul>
-      <addButton @click="openListForm = true" />
+      <addButton v-if="sortedLists.length" @click="openListForm = true" />
     </div>
+
     <div v-else>
       <ListForm :list-id="editListId" @list-added="handleList" @close="() => { openListForm = false; editListId = null }"/>
     </div>
