@@ -23,7 +23,7 @@ const sortedLists = computed(() => {
 });
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth', 'terms'],
   requiresAuth: true,
 })
 

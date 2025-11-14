@@ -127,7 +127,23 @@ export function useAuth() {
         return await upateLanguageResponse.json();
     }
 
-  async function update(userData: { name: string }) {
+    async function approveTerms() {
+        const result = await fetch('/api/user/approveTerms/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!result.ok) {
+            throw new Error(`Failed to login user: ${result.statusText}`);
+        }
+
+        return await result.json();
+    }
+
+
+    async function update(userData: { name: string }) {
     const updateResponse = await fetch('/api/user/update/', {
       method: 'POST',
       headers: {
@@ -158,10 +174,6 @@ export function useAuth() {
         return await updateResponse.json();
     }
 
-
-
-
-
     return {
         login,
         register,
@@ -170,6 +182,7 @@ export function useAuth() {
         setNewPassword,
         setLanguage,
         update,
-        deactivate
+        deactivate,
+        approveTerms
     }
 }

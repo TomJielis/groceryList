@@ -3,7 +3,7 @@ import cardsComponent from "~/components/dashboard/cards.vue";
 import { useI18nStore } from '~/stores/i18n';
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth', 'terms'],
 });
 
 const i18n = useI18nStore();

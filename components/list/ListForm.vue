@@ -7,6 +7,11 @@ import {useI18nStore} from '~/stores/i18n';
 import formInput from "~/components/form/formInput.vue"
 import backButton from "~/components/form/backButton.vue"
 
+definePageMeta({
+  middleware: ['auth', 'terms'],
+});
+
+
 const listStore = useListStore();
 const {showNotification} = useNotification();
 const emit = defineEmits(['list-added', 'close']);

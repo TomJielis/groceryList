@@ -10,7 +10,7 @@ import AddButton from "~/components/form/addButton.vue";
 
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth', 'terms'],
 });
 
 const listStore = useListStore();

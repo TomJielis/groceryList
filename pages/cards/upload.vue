@@ -8,7 +8,7 @@ import formInput from "~/components/form/formInput.vue"
 import backButton from "~/components/form/backButton.vue"
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth', 'terms'],
 });
 const {showNotification} = useNotification();
 const i18n = useI18nStore();

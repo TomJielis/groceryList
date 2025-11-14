@@ -12,7 +12,7 @@ import {useAuth} from "~/composables/useAuth";
 import PendingLists from "~/components/list/PendingGroceryList.vue";
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth', 'terms'],
 });
 
 const authStore = useAuthStore();
