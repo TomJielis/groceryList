@@ -55,6 +55,7 @@ function handleConfirm() {
         <p class="mb-2 text-sm text-error font-medium">
           {{ i18n.t('deleteModal.typeListNameToDelete') }} "{{ itemName }}"
         </p>
+
         <formInput
           v-model="confirmText"
           :inputType="'text'"

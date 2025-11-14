@@ -95,7 +95,11 @@
     "approve": "Approve",
     "decline": "Decline",
     "noPending": "No pending invitations",
-    "created_by": "Created by:"
+    "created_by": "Created by:",
+    "sharedUsersTitle": "Shared with",
+    "sharedUsersNone": "Not shared with anyone yet",
+    "sharedUserRemoved": "User removed from list",
+    "delete-shared-user-body": "Are you sure you want to remove access for this user?"
   },
   "list": {
     "total": "Total",
@@ -156,7 +160,8 @@
     "passwordResetFailed": "Failed to send password reset email",
     "unexpectedError": "An unexpected error occurred",
     "cardStoreFailed": "Failed to store card",
-    "cardDeleteFailed": "Failed to delete card"
+    "cardDeleteFailed": "Failed to delete card",
+    "listUnshareFailed": "Failed to remove user from list"
   },
   "deleteModal": {
     "typeListNameToDelete": "To confirm, type the name of the list:",

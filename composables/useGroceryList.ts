@@ -65,6 +65,17 @@ export function useGroceryList() {
         });
     }
 
+    async function unshareList(listId: number, userId: number): Promise<void> {
+        // Endpoint to remove a shared user (invite) from a list
+        await $fetch('/api/groceryList/unshare', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: { id: listId, userId: userId }
+        });
+    }
+
     async function favorite(id: number | null): Promise<void> {
         const response = await fetch('/api/groceryList/favorite', {
             method: 'POST',
@@ -241,6 +252,7 @@ export function useGroceryList() {
         favorite,
         createList,
         shareList,
+        unshareList,
         deleteList,
         fetchItems,
         addItem,
