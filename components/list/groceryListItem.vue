@@ -2,6 +2,11 @@
 import { ref, watch } from 'vue';
 import { useI18nStore } from '~/stores/i18n';
 
+definePageMeta({
+  middleware: ['auth', 'terms'],
+});
+
+
 const props = defineProps<{
   item: any,
   isEditing: boolean,

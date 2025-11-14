@@ -6,6 +6,11 @@ import { useNotification } from '~/composables/useNotification';
 import type { TGroceryList } from '@/types/TGroceryList';
 import { useGroceryList } from "~/composables/useGroceryList";
 
+definePageMeta({
+  middleware: ['auth', 'terms'],
+});
+
+
 const i18n = useI18nStore();
 const listStore = useListStore();
 const notification = useNotification();

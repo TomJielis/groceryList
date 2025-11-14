@@ -2,12 +2,15 @@
 import { useI18nStore } from '~/stores/i18n';
 import { useRouter } from 'vue-router';
 import {useAuth} from "~/composables/useAuth";
+import {useAuthStore} from "~/stores/auth";
 
+const authStore = useAuthStore();
 const auth = useAuth();
 const router = useRouter();
 
 const approveTerms = async () => {
-  await auth.approveTerms();
+  const user = await auth.approveTerms();
+  authStore.setUser(user)
   router.push('/');
 };
 
