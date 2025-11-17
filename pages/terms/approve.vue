@@ -12,8 +12,12 @@ const i18n = useI18nStore()
 const router = useRouter()
 const acceptedTerms = ref(false)
 
-const user = await useAuth().me();
-useAuthStore().setUser(user);
+onMounted(async () => {
+  try {
+    const user = await auth.me()
+    if (user) authStore.setUser(user)
+  } catch {}
+})
 
 const approveTerms = async () => {
   const user = await auth.approveTerms();
