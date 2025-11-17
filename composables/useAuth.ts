@@ -173,6 +173,21 @@ export function useAuth() {
         return await updateResponse.json();
     }
 
+    async function me(){
+        const updateResponse = await fetch('/api/user/me/', {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!updateResponse.ok) {
+            throw new Error(`Failed to login user: ${updateResponse.statusText}`);
+        }
+
+        return await updateResponse.json();
+    }
+
     return {
         login,
         register,
@@ -182,6 +197,7 @@ export function useAuth() {
         setLanguage,
         update,
         deactivate,
-        approveTerms
+        approveTerms,
+        me
     }
 }

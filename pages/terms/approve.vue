@@ -12,6 +12,9 @@ const i18n = useI18nStore()
 const router = useRouter()
 const acceptedTerms = ref(false)
 
+const user = await useAuth().me();
+useAuthStore().setUser(user);
+
 const approveTerms = async () => {
   const user = await auth.approveTerms();
   authStore.setUser(user)
