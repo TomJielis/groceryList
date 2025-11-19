@@ -38,5 +38,20 @@ export function useReceiptUpload() {
     }
   }
 
-  return { uploadReceipt };
+  async function updateItemsFromReceipt(newProductMappings:any, oldProductMappings:any) {
+      const response = await fetch('/api/receipt/map-products', {
+          method: 'POST',
+          body: JSON.stringify({
+              new_products: newProductMappings,
+              updated_products: oldProductMappings
+          }),
+      });
+      if (!response.ok) {
+          throw new Error('Upload mislukt');
+      }
+      showSuccess('Kassabon succesvol geüpload!');
+      return await response.json();
+  }
+
+  return { uploadReceipt, updateItemsFromReceipt };
 }

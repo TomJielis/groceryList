@@ -1,3 +1,169 @@
+<script setup lang="ts">
+import {ref, onMounted} from 'vue'
+import {useReceiptUpload} from '~/composables/useReceiptUpload';
+import {useGroceryList} from '~/composables/useGroceryList';
+import type {TGroceryListItem} from '~/types/TGroceryListItem';
+
+const selectedFile = ref<File | null>(null)
+const loading = ref(false)
+const error = ref('')
+const success = ref(false)
+const showMappingInterface = ref(false)
+const savingMappings = ref(false)
+
+const {uploadReceipt, updateItemsFromReceipt} = useReceiptUpload();
+const {items, fetchItems} = useGroceryList();
+
+type MappedNewProduct = {
+  receiptProduct: any;
+  mappedToItemId: number | null; // null = nieuw product aanmaken
+  mappedToItemName: string;
+  unitPrice: number;
+}
+
+type UpdatedProduct = {
+  name: string;
+  old_price?: number;
+  new_price: number;
+  unit_price: number;
+  quantity?: number;
+  action: string;
+  shouldUpdate: boolean;
+}
+
+const newProducts = ref<MappedNewProduct[]>([])
+const updatedProducts = ref<UpdatedProduct[]>([])
+
+onMounted(async () => {
+  await fetchItems(null)
+})
+
+function findBestMatch(receiptProductName: string): TGroceryListItem | null {
+  const normalizedName = receiptProductName.toLowerCase().trim()
+
+  let match = items.value.find(item =>
+      item.name.toLowerCase().trim() === normalizedName
+  )
+  if (match) return match
+
+  match = items.value.find(item =>
+      item.name.toLowerCase().includes(normalizedName) ||
+      normalizedName.includes(item.name.toLowerCase())
+  )
+  if (match) return match
+
+  const firstWord = normalizedName.split(' ')[0]
+  match = items.value.find(item =>
+      item.name.toLowerCase().startsWith(firstWord)
+  )
+
+  return match || null
+}
+
+function onFileChange(e: Event) {
+  const files = (e.target as HTMLInputElement).files
+  if (files && files.length > 0) {
+    selectedFile.value = files[0]
+    error.value = ''
+    success.value = false
+    showMappingInterface.value = false
+  }
+}
+
+async function handleUpload() {
+  if (!selectedFile.value) return
+  loading.value = true
+  error.value = ''
+  success.value = false
+  showMappingInterface.value = false
+
+  try {
+    const response = await uploadReceipt(selectedFile.value)
+    success.value = true
+
+    if (response.new_products && response.new_products.length > 0) {
+      newProducts.value = response.new_products.map((product: any) => {
+        const bestMatch = findBestMatch(product.name)
+        return {
+          receiptProduct: product,
+          mappedToItemId: bestMatch?.id || null,
+          mappedToItemName: bestMatch?.name || product.name,
+          unitPrice: product.unit_price
+        }
+      })
+    } else {
+      newProducts.value = []
+    }
+
+    if (response.products && response.products.length > 0) {
+      updatedProducts.value = response.products.map((item: any) => ({
+        ...item,
+        shouldUpdate: true
+      }))
+    } else {
+      updatedProducts.value = []
+    }
+
+    if (newProducts.value.length > 0 || updatedProducts.value.length > 0) {
+      showMappingInterface.value = true
+    }
+
+    selectedFile.value = null
+  } catch (e: any) {
+    error.value = e.message || 'Er is iets misgegaan bij het uploaden. Probeer het opnieuw.'
+  } finally {
+    loading.value = false
+  }
+}
+
+async function saveMappings() {
+  savingMappings.value = true
+  error.value = ''
+
+  try {
+    const newProductMappings = newProducts.value.map(mp => ({
+      receipt_product_name: mp.receiptProduct.name,
+      mapped_item_id: mp.mappedToItemId,
+      mapped_item_name: mp.mappedToItemName,
+      unit_price: mp.unitPrice,
+      is_new: mp.mappedToItemId === null
+    }))
+
+    const productUpdates = updatedProducts.value
+        .filter(up => up.shouldUpdate)
+        .map(up => ({
+          name: up.name,
+          old_price: up.old_price,
+          new_price: up.new_price || up.unit_price,
+          action: up.action
+        }))
+
+    await $fetch('/api/receipt/map-products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: {
+        new_products: newProductMappings,
+        updated_products: productUpdates
+      }
+    })
+
+    //
+    // // Success! Reset de interface
+    // showMappingInterface.value = false
+    // newProducts.value = []
+    // updatedProducts.value = []
+    // success.value = true
+    // error.value = ''
+
+  } catch (e: any) {
+    error.value = e.message || 'Er is iets misgegaan bij het opslaan. Probeer het opnieuw.'
+  } finally {
+    savingMappings.value = false
+  }
+}
+</script>
 <template>
   <div class="max-w-2xl mx-auto p-4">
     <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light text-center">📄 Kassabon uploaden</h1>
@@ -215,184 +381,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import {ref, onMounted} from 'vue'
-import {useReceiptUpload} from '~/composables/useReceiptUpload';
-import {useGroceryList} from '~/composables/useGroceryList';
-import type {TGroceryListItem} from '~/types/TGroceryListItem';
-
-const selectedFile = ref<File | null>(null)
-const loading = ref(false)
-const error = ref('')
-const success = ref(false)
-const showMappingInterface = ref(false)
-const savingMappings = ref(false)
-
-const {uploadReceipt} = useReceiptUpload();
-const {items, fetchItems} = useGroceryList();
-
-// Type voor nieuwe producten (uit products array)
-type MappedNewProduct = {
-  receiptProduct: any;
-  mappedToItemId: number | null; // null = nieuw product aanmaken
-  mappedToItemName: string;
-  unitPrice: number;
-}
-
-// Type voor bestaande producten (uit updated_items array)
-type UpdatedProduct = {
-  name: string;
-  old_price?: number;
-  new_price: number;
-  unit_price: number;
-  quantity?: number;
-  action: string;
-  shouldUpdate: boolean; // User kan kiezen of ze deze willen updaten
-}
-
-const newProducts = ref<MappedNewProduct[]>([])
-const updatedProducts = ref<UpdatedProduct[]>([])
-
-// Laad bestaande grocery list items bij opstart
-onMounted(async () => {
-  await fetchItems(null) // Haal alle items op
-})
-
-// Zoek functie voor fuzzy matching
-function findBestMatch(receiptProductName: string): TGroceryListItem | null {
-  const normalizedName = receiptProductName.toLowerCase().trim()
-
-  // Exacte match
-  let match = items.value.find(item =>
-    item.name.toLowerCase().trim() === normalizedName
-  )
-  if (match) return match
-
-  // Gedeeltelijke match (bevat)
-  match = items.value.find(item =>
-    item.name.toLowerCase().includes(normalizedName) ||
-    normalizedName.includes(item.name.toLowerCase())
-  )
-  if (match) return match
-
-  // Eerste woord match
-  const firstWord = normalizedName.split(' ')[0]
-  match = items.value.find(item =>
-    item.name.toLowerCase().startsWith(firstWord)
-  )
-
-  return match || null
-}
-
-function onFileChange(e: Event) {
-  const files = (e.target as HTMLInputElement).files
-  if (files && files.length > 0) {
-    selectedFile.value = files[0]
-    error.value = ''
-    success.value = false
-    showMappingInterface.value = false
-  }
-}
-
-async function handleUpload() {
-  if (!selectedFile.value) return
-  loading.value = true
-  error.value = ''
-  success.value = false
-  showMappingInterface.value = false
-
-  try {
-    const response = await uploadReceipt(selectedFile.value)
-    success.value = true
-
-    // Verwerk nieuwe producten (new_products array)
-    if (response.new_products && response.new_products.length > 0) {
-      newProducts.value = response.new_products.map((product: any) => {
-        const bestMatch = findBestMatch(product.name)
-        return {
-          receiptProduct: product,
-          mappedToItemId: bestMatch?.id || null,
-          mappedToItemName: bestMatch?.name || product.name,
-          unitPrice: product.unit_price
-        }
-      })
-    } else {
-      newProducts.value = []
-    }
-
-    // Verwerk bestaande items met updates (products array)
-    if (response.products && response.products.length > 0) {
-      updatedProducts.value = response.products.map((item: any) => ({
-        ...item,
-        shouldUpdate: true // Standaard aan, user kan uitvinken
-      }))
-    } else {
-      updatedProducts.value = []
-    }
-
-    // Toon mapping interface als er iets te mappen is
-    if (newProducts.value.length > 0 || updatedProducts.value.length > 0) {
-      showMappingInterface.value = true
-    }
-
-    selectedFile.value = null
-  } catch (e: any) {
-    error.value = e.message || 'Er is iets misgegaan bij het uploaden. Probeer het opnieuw.'
-  } finally {
-    loading.value = false
-  }
-}
-
-async function saveMappings() {
-  savingMappings.value = true
-  error.value = ''
-
-  try {
-    // Nieuwe producten mappings
-    const newProductMappings = newProducts.value.map(mp => ({
-      receipt_product_name: mp.receiptProduct.name,
-      mapped_item_id: mp.mappedToItemId,
-      mapped_item_name: mp.mappedToItemName,
-      unit_price: mp.unitPrice,
-      is_new: mp.mappedToItemId === null
-    }))
-
-    // Updates voor bestaande producten (alleen degene die shouldUpdate = true hebben)
-    const productUpdates = updatedProducts.value
-      .filter(up => up.shouldUpdate)
-      .map(up => ({
-        name: up.name,
-        old_price: up.old_price,
-        new_price: up.new_price || up.unit_price,
-        action: up.action
-      }))
-
-    await $fetch('/api/receipt/map-products', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        new_products: newProductMappings,
-        updated_products: productUpdates
-      })
-    })
-
-    // Success! Reset de interface
-    showMappingInterface.value = false
-    newProducts.value = []
-    updatedProducts.value = []
-    success.value = true
-    error.value = ''
-
-  } catch (e: any) {
-    error.value = e.message || 'Er is iets misgegaan bij het opslaan. Probeer het opnieuw.'
-  } finally {
-    savingMappings.value = false
-  }
-}
-</script>
-
-<style scoped>
-</style>
