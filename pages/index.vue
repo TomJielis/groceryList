@@ -245,6 +245,12 @@ function openListSettings(id: number) {
                   👥 {{ i18n.t('lists.menu.share') }}
                 </button>
                 <button
+                    class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
+                    @click.stop="$router.push(`/list/upload-receipt?listId=${listItem.id}`)"
+                >
+                  📄 Kassabon uploaden
+                </button>
+                <button
                     class="block w-full text-left px-4 py-3 rounded-lg text-error hover:bg-error/10 dark:hover:bg-error/20 transition font-semibold"
                     @click.stop="deleteListItem(listItem.id)"
                 >

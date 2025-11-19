@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const { new_products, updated_products } = body || {};
+  const { new_products, updated_products, list_id } = body || {};
 
   console.log('[map-products] Raw body:', body);
   console.log('[map-products] new_products:', Array.isArray(new_products) ? new_products.length : new_products);
@@ -35,6 +35,7 @@ export default defineEventHandler(async (event) => {
     const response = await $fetch(mapProductsUrl, {
       method: 'POST',
       body: {
+        list_id: list_id,
         new_products: Array.isArray(new_products) ? new_products : [],
         updated_products: Array.isArray(updated_products) ? updated_products : []
       },

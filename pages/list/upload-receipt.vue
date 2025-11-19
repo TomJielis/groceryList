@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import {ref, onMounted} from 'vue'
+import {ref, onMounted, computed} from 'vue'
 import {useReceiptUpload} from '~/composables/useReceiptUpload';
 import {useGroceryList} from '~/composables/useGroceryList';
 import type {TGroceryListItem} from '~/types/TGroceryListItem';
+import { useRoute } from 'vue-router'
 
 const selectedFile = ref<File | null>(null)
 const loading = ref(false)
@@ -11,31 +12,43 @@ const success = ref(false)
 const showMappingInterface = ref(false)
 const savingMappings = ref(false)
 
-const {uploadReceipt, updateItemsFromReceipt} = useReceiptUpload();
+const {uploadReceipt} = useReceiptUpload();
 const {items, fetchItems} = useGroceryList();
 
 type MappedNewProduct = {
   receiptProduct: any;
-  mappedToItemId: number | null; // null = nieuw product aanmaken
+  mappedToItemId: number | null;
   mappedToItemName: string;
   unitPrice: number;
 }
 
-type UpdatedProduct = {
+type ProductItem = {
   name: string;
   old_price?: number;
-  new_price: number;
+  new_price?: number;
   unit_price: number;
   quantity?: number;
-  action: string;
+  action: 'create' | 'update';
   shouldUpdate: boolean;
 }
 
 const newProducts = ref<MappedNewProduct[]>([])
-const updatedProducts = ref<UpdatedProduct[]>([])
+const allProducts = ref<ProductItem[]>([])
+
+// Computed properties voor filtering
+const createProducts = computed(() => allProducts.value.filter(p => p.action === 'create'))
+const updateProducts = computed(() => allProducts.value.filter(p => p.action === 'update'))
+
+const route = useRoute();
+const listId = ref<number | null>(null);
 
 onMounted(async () => {
-  await fetchItems(null)
+  // Lees listId uit query parameter
+  const queryListId = route.query.listId;
+  if (queryListId) {
+    listId.value = Number(queryListId);
+  }
+  await fetchItems(listId.value)
 })
 
 function findBestMatch(receiptProductName: string): TGroceryListItem | null {
@@ -72,6 +85,10 @@ function onFileChange(e: Event) {
 
 async function handleUpload() {
   if (!selectedFile.value) return
+  if (!listId.value) {
+    error.value = 'Geen lijst geselecteerd.';
+    return;
+  }
   loading.value = true
   error.value = ''
   success.value = false
@@ -81,30 +98,54 @@ async function handleUpload() {
     const response = await uploadReceipt(selectedFile.value)
     success.value = true
 
+    const allReceivedProducts: ProductItem[] = [];
+
     if (response.new_products && response.new_products.length > 0) {
-      newProducts.value = response.new_products.map((product: any) => {
+      response.new_products.forEach((product: any) => {
+        allReceivedProducts.push({
+          name: product.name,
+          unit_price: product.unit_price,
+          new_price: product.unit_price,
+          quantity: product.quantity,
+          action: product.action || 'create',
+          shouldUpdate: true
+        });
+      });
+    }
+
+    // Voeg products toe (deze kunnen zowel 'create' als 'update' zijn)
+    if (response.products && response.products.length > 0) {
+      response.products.forEach((item: any) => {
+        allReceivedProducts.push({
+          name: item.name,
+          old_price: item.old_price,
+          new_price: item.new_price,
+          unit_price: item.unit_price || item.new_price,
+          quantity: item.quantity,
+          action: item.action,
+          shouldUpdate: true
+        });
+      });
+    }
+
+    // Sla alle producten op
+    allProducts.value = allReceivedProducts;
+
+    // Voor producten met action 'create' die nog niet gematcht zijn,
+    // maak mapping entries voor handmatige koppeling
+    newProducts.value = allReceivedProducts
+      .filter(p => p.action === 'create')
+      .map((product: any) => {
         const bestMatch = findBestMatch(product.name)
         return {
           receiptProduct: product,
           mappedToItemId: bestMatch?.id || null,
           mappedToItemName: bestMatch?.name || product.name,
-          unitPrice: product.unit_price
+          unitPrice: product.unit_price || product.new_price
         }
-      })
-    } else {
-      newProducts.value = []
-    }
+      });
 
-    if (response.products && response.products.length > 0) {
-      updatedProducts.value = response.products.map((item: any) => ({
-        ...item,
-        shouldUpdate: true
-      }))
-    } else {
-      updatedProducts.value = []
-    }
-
-    if (newProducts.value.length > 0 || updatedProducts.value.length > 0) {
+    if (allProducts.value.length > 0) {
       showMappingInterface.value = true
     }
 
@@ -117,6 +158,10 @@ async function handleUpload() {
 }
 
 async function saveMappings() {
+  if (!listId.value) {
+    error.value = 'Geen lijst geselecteerd.';
+    return;
+  }
   savingMappings.value = true
   error.value = ''
 
@@ -129,8 +174,9 @@ async function saveMappings() {
       is_new: mp.mappedToItemId === null
     }))
 
-    const productUpdates = updatedProducts.value
-        .filter(up => up.shouldUpdate)
+    // Filter producten met action 'update' die shouldUpdate === true hebben
+    const productUpdates = allProducts.value
+        .filter(p => p.action === 'update' && p.shouldUpdate)
         .map(up => ({
           name: up.name,
           old_price: up.old_price,
@@ -144,18 +190,18 @@ async function saveMappings() {
         'Content-Type': 'application/json',
       },
       body: {
+        list_id: listId.value,
         new_products: newProductMappings,
         updated_products: productUpdates
       }
     })
 
-    //
-    // // Success! Reset de interface
-    // showMappingInterface.value = false
-    // newProducts.value = []
-    // updatedProducts.value = []
-    // success.value = true
-    // error.value = ''
+    // Success! Reset de interface
+    showMappingInterface.value = false
+    newProducts.value = []
+    allProducts.value = []
+    success.value = true
+    error.value = ''
 
   } catch (e: any) {
     error.value = e.message || 'Er is iets misgegaan bij het opslaan. Probeer het opnieuw.'
@@ -286,9 +332,9 @@ async function saveMappings() {
       </div>
 
       <!-- Bestaande producten met updates sectie -->
-      <div v-if="updatedProducts.length > 0" class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 border border-border-light dark:border-border-dark">
+      <div v-if="updateProducts.length > 0" class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 border border-border-light dark:border-border-dark">
         <h2 class="text-xl font-bold mb-4 text-primary-dark dark:text-accent-light">
-          🔄 Gevonden producten ({{ updatedProducts.length }})
+          🔄 Gevonden producten ({{ updateProducts.length }})
         </h2>
         <p class="text-slate-600 dark:text-slate-400 mb-6">
           Deze producten zijn al bekend. Je kunt kiezen welke prijzen je wilt bijwerken.
@@ -296,7 +342,7 @@ async function saveMappings() {
 
         <div class="space-y-4">
           <div
-              v-for="(updated, index) in updatedProducts"
+              v-for="(updated, index) in updateProducts"
               :key="index"
               class="bg-blue-500/5 dark:bg-blue-500/10 rounded-xl p-4 border border-blue-500/30"
           >
@@ -310,11 +356,7 @@ async function saveMappings() {
                 <h3 class="font-semibold text-slate-800 dark:text-slate-200 mb-1">
                   {{ updated.name }}
                 </h3>
-                <div v-if="updated.action === 'create'" class="text-sm text-slate-600 dark:text-slate-400">
-                  Nieuw product gevonden: <strong>€{{ (updated.new_price || updated.unit_price).toFixed(2) }}</strong>
-                  <span v-if="updated.quantity"> × {{ updated.quantity }}</span>
-                </div>
-                <div v-else class="text-sm text-slate-600 dark:text-slate-400">
+                <div class="text-sm text-slate-600 dark:text-slate-400">
                   Prijs wijziging:
                   <span class="line-through text-slate-500">€{{ updated.old_price?.toFixed(2) }}</span>
                   →
@@ -353,14 +395,14 @@ async function saveMappings() {
           <div class="flex justify-between text-sm pt-2 border-t border-slate-200 dark:border-slate-700">
             <span class="text-slate-600 dark:text-slate-400">Automatisch herkend:</span>
             <span class="font-semibold text-blue-600 dark:text-blue-400">
-              {{ updatedProducts.length }} ({{ updatedProducts.filter(u => u.shouldUpdate).length }} bijwerken)
+              {{ updateProducts.length }} ({{ updateProducts.filter(u => u.shouldUpdate).length }} bijwerken)
             </span>
           </div>
         </div>
 
         <div class="flex gap-3">
           <button
-              @click="showMappingInterface = false; newProducts = []; updatedProducts = []"
+              @click="showMappingInterface = false; newProducts = []; allProducts = []"
               class="flex-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 font-bold py-3 px-4 rounded-xl transition shadow-lg hover:shadow-xl active:shadow-md"
           >
             Annuleren
@@ -381,3 +423,4 @@ async function saveMappings() {
     </div>
   </div>
 </template>
+

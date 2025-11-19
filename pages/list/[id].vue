@@ -64,7 +64,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
       <h1 class="text-2xl font-bold text-center">🛒 {{ list?.name }}</h1>
       <div class="flex items-center gap-2">
         <NuxtLink
-            :to="`/list/upload-receipt`"
+            :to="`/list/upload-receipt?listId=${listId}`"
             class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition"
         >
           📷 Kassabon uploaden
