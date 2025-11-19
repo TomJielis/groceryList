@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useI18nStore } from '~/stores/i18n';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -8,6 +9,17 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     setUser(user: any) {
       this.user = user;
+      const i18n = useI18nStore();
+      if (user?.language) {
+        i18n.setLocale(user.language === 'nl' ? 'nl' : 'en');
+      }
+    },
+    setLanguage(language: string) {
+      if (this.user) {
+        this.user.language = language;
+        const i18n = useI18nStore();
+        i18n.setLocale(language === 'nl' ? 'nl' : 'en');
+      }
     },
     setToken(token: string) {
       this.token = token;
@@ -15,6 +27,8 @@ export const useAuthStore = defineStore('auth', {
     clearAuth() {
       this.user = null;
       this.token = null;
+      const i18n = useI18nStore();
+      i18n.setLocale('en'); // reset to English when logged out
     },
   },
   persist: true,

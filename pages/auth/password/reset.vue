@@ -2,7 +2,7 @@
 import {ref} from 'vue';
 import {useAuth} from "~/composables/useAuth";
 import {useNotification} from "~/composables/useNotification";
-import { useI18nStore } from '~/stores/i18n';
+import {useI18nStore} from '~/stores/i18n';
 
 const i18n = useI18nStore();
 const {showNotification} = useNotification();
@@ -25,40 +25,39 @@ function handleResetPassword() {
 </script>
 
 <template>
-  <div class="h-[90vh] flex items-center justify-center px-4">
-    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-sm">
+  <div class="min-h-[90dvh] bg-slate-100 dark:bg-slate-900 flex items-center justify-center px-4 ">
+    <div
+        class="max-w-md w-full bg-white/90 dark:bg-slate-900/90 shadow-xl rounded-2xl p-8 border border-border-light dark:border-border-dark transition">
       <div v-if="!mailSent">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-gray-900">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-6 ">
           📝 {{ i18n.t('auth.resetPasswordTitle') }}
         </h2>
         <form @submit.prevent="handleResetPassword" class="space-y-5">
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">{{ i18n.t('auth.email') }}</label>
-            <input
-                type="email"
-                id="email"
-                v-model="userData.email"
-                class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-500 placeholder-gray-400"
-                :placeholder="i18n.t('auth.emailPlaceholder')"
-                required
-            />
+            <formInput :label="i18n.t('auth.email')"
+                       :inputType="'email'"
+                       v-model="userData.email"
+                       :placeholder="i18n.t('auth.emailPlaceholder')"
+                       required />
           </div>
           <button
               type="submit"
-              class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 font-semibold"
+              class="w-full bg-green-500 py-3 rounded-lg hover:bg-green-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 font-semibold"
           >
             {{ i18n.t('auth.sendBtn') }}
           </button>
         </form>
         <p class="text-sm text-center text-gray-600 mt-6">
-          <nuxtLink to="/auth/login" class="text-green-500 hover:underline font-medium">{{ i18n.t('auth.alreadyHaveAccount') }}</nuxtLink>
+          <nuxtLink to="/auth/login" class="text-green-500 hover:underline font-medium">
+            {{ i18n.t('auth.alreadyHaveAccount') }}
+          </nuxtLink>
         </p>
       </div>
       <div v-else class="text-center space-y-4">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900">
+        <h2 class="text-2xl sm:text-3xl font-extrabold ">
           📝 {{ i18n.t('auth.checkEmailTitle') }}
         </h2>
-        <p class="text-sm text-gray-700">
+        <p class="text-sm ">
           {{ i18n.t('auth.checkEmailBody') }}
         </p>
       </div>

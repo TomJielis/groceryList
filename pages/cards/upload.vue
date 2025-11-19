@@ -4,9 +4,11 @@ import { useCards } from "~/composables/useCards";
 import {useRouter} from "vue-router";
 import { useI18nStore } from '~/stores/i18n';
 import {useNotification} from "~/composables/useNotification";
+import formInput from "~/components/form/formInput.vue"
+import backButton from "~/components/form/backButton.vue"
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth', 'terms'],
 });
 const {showNotification} = useNotification();
 const i18n = useI18nStore();
@@ -56,48 +58,40 @@ function handleSubmit() {
 
 <template>
   <div class="max-w-2xl mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-6">🃏 {{ i18n.t('cards.upload') }}</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center">🃏 {{ i18n.t('cards.upload') }}</h1>
 
     <div class="rounded-xl shadow-sm p-4">
       <form @submit.prevent="handleSubmit" class="space-y-4">
         <div>
-          <label for="title" class="block text-sm font-medium text-gray-700 mb-1">{{ i18n.t('cards.title') }}</label>
-          <input
+          <formInput
               v-model="formData.title"
-              type="text"
-              id="title"
-              required
-              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base"
+              :label="i18n.t('cards.title')"
+              :placeholder="i18n.t('cards.title')"
           />
         </div>
         <div>
-          <label for="attachment" class="block text-sm font-medium text-gray-700 mb-1">{{ i18n.t('cards.attachment') }}</label>
+          <label  class="block text-sm font-medium text-slate-700 dark:text-slate-100 mb-1">{{ i18n.t('cards.attachment') }}</label>
           <input
               @change="handleFileChange"
               type="file"
               id="attachment"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+              class="w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2  border-border-light dark:border-border-dark focus:ring-blue-400 focus:border-blue-400 text-base placeholder-slate-400 dark:placeholder-slate-500 bg-white/80 dark:bg-slate-900/80"
           />
         </div>
         <button
           type="submit"
-          class="w-full bg-blue-500 text-white py-3 rounded-xl hover:bg-blue-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 font-semibold"
+          class="w-full bg-blue-500 py-3 rounded-xl hover:bg-blue-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 font-semibold"
         >
           📤 {{ i18n.t('cards.upload') }}
         </button>
       </form>
     </div>
 
-    <div class="mt-4">
-      <div class="fixed left-0 w-full mt-6 space-y-3 p-4 bottom-20 md:bottom-3 z-50">
-        <button
-          class="w-full py-3 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition"
-          @click="router.push('/cards/')"
-        >
-          ← {{ i18n.t('common.back') }}
-        </button>
-      </div>
-    </div>
+    <backButton
+        :label="i18n.t('common.back')"
+        @click="router.push('/cards/')"
+        @close="router.push('/cards/')"
+    />
   </div>
 </template>

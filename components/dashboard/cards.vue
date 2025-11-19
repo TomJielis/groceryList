@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useCards} from '~/composables/useCards';
 import {useI18nStore} from '~/stores/i18n';
 import deleteModal from '~/components/deleteModal.vue';
 import {useNotification} from "~/composables/useNotification";
+import AddButton from "~/components/form/addButton.vue";
 
 const {showNotification} = useNotification();
 const i18n = useI18nStore();
@@ -54,35 +55,26 @@ function closeModal() {
 </script>
 
 <template>
-  <div class="space-y-3">
+  <div class="flex-1 min-h-0 flex flex-col overflow-y-auto space-y-6">
     <div
         v-for="card in cards"
         :key="card.id"
-        class="bg-white rounded-xl shadow-sm p-4 transition hover:shadow-md"
+        class="cursor-pointer bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 active:shadow-2xl border border-border-light dark:border-border-dark transition relative hover:shadow-2xl hover:border-accent/60 group"
     >
-      <h2 class="text-base font-medium mb-3">{{ card.title }}</h2>
+      <h2 class="text-base font-medium mb-3 text-center">{{ card.title }}</h2>
       <div class="bg-gray-50 p-3 rounded-lg">
         <img :src="card.attachment" alt="Attachment" class="w-full h-auto rounded cursor-pointer"
              @click="openModal(card)"/>
       </div>
       <button
-          class="mt-3 w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 font-medium text-sm"
+          class="mt-3 w-full px-4 py-2 bg-red-500 rounded-lg hover:bg-red-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 font-medium text-sm"
           @click="destroy(card.id)">
         🗑️ {{ i18n.t('cards.deleteBtn') }}
       </button>
     </div>
-
-    <div
-        class="bg-white rounded-xl shadow-sm p-4 flex flex-col items-center justify-center text-center text-gray-500 border-dashed border-2 border-gray-300"
-    >
-      <p class="mb-3 text-sm" v-if="cards.length === 0">{{ i18n.t('cards.noCards') }}</p>
-      <NuxtLink to="/cards/upload">
-        <button
-            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 active:scale-95 transition transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 font-medium text-sm">
-          ➕ {{ i18n.t('cards.addBtn') }}
-        </button>
-      </NuxtLink>
-    </div>
+    <nuxtLink to="/cards/upload">
+      <addButton/>
+    </nuxtLink>
 
     <!-- Modal for image preview -->
     <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
@@ -105,6 +97,7 @@ function closeModal() {
         :content="i18n.t('cards.confirmDelete')"
         :item-name="deleteCardName"
         :delete-button-text="i18n.t('cards.deleteBtn')"
+        :withValidation="true"
         @close="closeDeleteModal"
         @confirm="handleDeleteConfirm"
     />

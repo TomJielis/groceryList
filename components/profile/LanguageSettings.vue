@@ -13,26 +13,26 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 </script>
 
 <template>
-  <div class="bg-white rounded-xl shadow-sm p-6">
-    <h2 class="text-lg font-semibold mb-4">{{ i18n.t('profile.language') }}</h2>
+  <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
+    <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light mb-4">{{ i18n.t('profile.language') }}</h2>
     <div class="space-y-3">
-      <label class="flex items-center">
+      <label class="flex items-center gap-3 cursor-pointer">
         <input
           type="radio"
           :checked="i18n.locale === 'nl'"
           @change="handleLanguageChange('nl')"
-          class="mr-3"
+          class="accent-accent w-5 h-5 rounded-full border border-border-light dark:border-border-dark focus:ring-2 focus:ring-accent"
         />
-        <span>🇳🇱 {{ i18n.t('nav.dutch') }}</span>
+        <span class="text-base text-slate-700 dark:text-slate-100 font-medium">🇳🇱 {{ i18n.t('nav.dutch') }}</span>
       </label>
-      <label class="flex items-center">
+      <label class="flex items-center gap-3 cursor-pointer">
         <input
           type="radio"
           :checked="i18n.locale === 'en'"
           @change="handleLanguageChange('en')"
-          class="mr-3"
+          class="accent-accent w-5 h-5 rounded-full border border-border-light dark:border-border-dark focus:ring-2 focus:ring-accent"
         />
-        <span>🇺🇸 {{ i18n.t('nav.english') }}</span>
+        <span class="text-base text-slate-700 dark:text-slate-100 font-medium">🇺🇸 {{ i18n.t('nav.english') }}</span>
       </label>
     </div>
   </div>

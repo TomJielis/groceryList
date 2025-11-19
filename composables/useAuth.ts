@@ -3,7 +3,7 @@ import {useAuthStore} from "~/stores/auth";
 export function useAuth() {
     const authStore = useAuthStore();
 
-    async function register(userData: { name: string, email: string, password: string, language: string }) {
+    async function register(userData: { name: string, email: string, password: string, language: string, acceptedTerms: boolean }) {
         const registerResponse = await fetch('/api/user/register/', {
             method: 'POST',
             headers: {
@@ -20,7 +20,6 @@ export function useAuth() {
         if (!result.user) {
             throw new Error(result.error || 'Register error');
         }
-        authStore.setUser(result.user); // Update user state with returned data
 
         return result;
     }
@@ -127,7 +126,23 @@ export function useAuth() {
         return await upateLanguageResponse.json();
     }
 
-  async function update(userData: { name: string }) {
+    async function approveTerms() {
+        const result = await fetch('/api/user/approveTerms/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!result.ok) {
+            throw new Error(`Failed to login user: ${result.statusText}`);
+        }
+
+        return await result.json();
+    }
+
+
+    async function update(userData: { name: string }) {
     const updateResponse = await fetch('/api/user/update/', {
       method: 'POST',
       headers: {
@@ -143,8 +158,35 @@ export function useAuth() {
     return await updateResponse.json();
   }
 
+    async function deactivate() {
+        const updateResponse = await fetch('/api/user/deactivate/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
+        if (!updateResponse.ok) {
+            throw new Error(`Failed to login user: ${updateResponse.statusText}`);
+        }
 
+        return await updateResponse.json();
+    }
+
+    async function me(){
+        const updateResponse = await fetch('/api/user/me/', {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!updateResponse.ok) {
+            throw new Error(`Failed to login user: ${updateResponse.statusText}`);
+        }
+
+        return await updateResponse.json();
+    }
 
     return {
         login,
@@ -153,6 +195,9 @@ export function useAuth() {
         resetPassword,
         setNewPassword,
         setLanguage,
-        update
+        update,
+        deactivate,
+        approveTerms,
+        me
     }
 }
