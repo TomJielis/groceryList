@@ -9,6 +9,8 @@ import {useI18nStore} from '~/stores/i18n';
 import AddButton from "~/components/form/addButton.vue";
 import BackButton from "~/components/form/backButton.vue";
 import {useRouter} from "#vue-router";
+import Loader from '~/components/Loader.vue';
+
 
 definePageMeta({
   middleware: ['auth', 'terms'],
@@ -17,6 +19,7 @@ definePageMeta({
 const listStore = useListStore();
 const route = useRoute();
 const router = useRouter();
+const loading = ref(true);
 
 const listId = route.params.id as string;
 const i18n = useI18nStore();
@@ -35,7 +38,9 @@ const {
 
 onMounted(async () => {
   if (listId && !isNaN(Number(listId))) {
+    loading.value = true;
     await fetchItems(Number(listId));
+    loading.value = false;
   }
 });
 
@@ -71,8 +76,8 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         }}
       </div>
     </div>
-
-    <div v-if="items.length === 0 && !showAddItem" class="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center">
+    <Loader v-if="loading" />
+    <div v-else-if="items.length === 0 && !showAddItem" class="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center">
       <div class="text-8xl mb-6 opacity-50">📝</div>
       <h2 class="text-2xl font-bold mb-2 text-primary-dark dark:text-accent-light">
         {{ i18n.t('items.emptyState.title') }}
