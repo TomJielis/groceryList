@@ -5,6 +5,7 @@ import {useI18nStore} from '~/stores/i18n';
 import deleteModal from '~/components/deleteModal.vue';
 import {useNotification} from "~/composables/useNotification";
 import AddButton from "~/components/form/addButton.vue";
+import Loader from "~/components/Loader.vue";
 
 const {showNotification} = useNotification();
 const i18n = useI18nStore();
@@ -15,9 +16,12 @@ const isModalOpen = ref(false);
 const showDeleteModal = ref(false);
 const deleteCardId = ref<number | null>(null);
 const deleteCardName = ref('');
+const loading = ref(true);
 
 onMounted(async () => {
+  loading.value = true;
   await getCards();
+  loading.value = false;
 });
 
 function destroy(id: number) {
@@ -56,7 +60,9 @@ function closeModal() {
 
 <template>
   <div class="flex-1 min-h-0 flex flex-col overflow-y-auto space-y-6">
+    <Loader v-if="loading" />
     <div
+        v-else
         v-for="card in cards"
         :key="card.id"
         class="cursor-pointer bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 active:shadow-2xl border border-border-light dark:border-border-dark transition relative hover:shadow-2xl hover:border-accent/60 group"

@@ -7,8 +7,6 @@ import {useGroceryList} from '~/composables/useGroceryList';
 import {useListStore} from '~/stores/lists';
 import {useI18nStore} from '~/stores/i18n';
 import AddButton from "~/components/form/addButton.vue";
-import BackButton from "~/components/form/backButton.vue";
-import {useRouter} from "#vue-router";
 import Loader from '~/components/Loader.vue';
 
 
@@ -18,7 +16,6 @@ definePageMeta({
 
 const listStore = useListStore();
 const route = useRoute();
-const router = useRouter();
 const loading = ref(true);
 
 const listId = route.params.id as string;
