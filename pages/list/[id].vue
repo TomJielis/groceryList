@@ -7,7 +7,8 @@ import {useGroceryList} from '~/composables/useGroceryList';
 import {useListStore} from '~/stores/lists';
 import {useI18nStore} from '~/stores/i18n';
 import AddButton from "~/components/form/addButton.vue";
-
+import BackButton from "~/components/form/backButton.vue";
+import {useRouter} from "#vue-router";
 
 definePageMeta({
   middleware: ['auth', 'terms'],
@@ -15,6 +16,8 @@ definePageMeta({
 
 const listStore = useListStore();
 const route = useRoute();
+const router = useRouter();
+
 const listId = route.params.id as string;
 const i18n = useI18nStore();
 
@@ -119,6 +122,9 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           </ul>
         </ul>
         <AddButton @click="showAddItem = true" />
+        <backButton
+          @click="router.push('/')"
+        />
       </div>
       <div v-else>
         <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
