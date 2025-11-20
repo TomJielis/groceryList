@@ -168,7 +168,7 @@
     "typeDELETE": "Type DELETE"
   },
   "register": {
-    "acceptTerms": "Ik ga akkoord met de <span class='text-white underline underline-offset-2 hover:text-accent transition'><a href='/terms' target='_blank'>Gebruiksvoorwaarden & Privacyverklaring</a></span>."
+    "acceptTerms": "Ik ga akkoord met de <span class='underline underline-offset-2 hover:text-accent transition'><a href='/terms' target='_blank'>Gebruiksvoorwaarden & Privacyverklaring</a></span>."
   },
   "terms": {
     "title": "Algemene Voorwaarden & Privacyverklaring – Grocery List",
