@@ -77,7 +77,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
       </div>
     </div>
     <Loader v-if="loading" />
-    <div v-if="!loading && items.length === 0 && !showAddItem" class="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center">
+    <div v-else-if="items.length === 0 && !showAddItem" class="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center">
       <div class="text-8xl mb-6 opacity-50">📝</div>
       <h2 class="text-2xl font-bold mb-2 text-primary-dark dark:text-accent-light">
         {{ i18n.t('items.emptyState.title') }}
