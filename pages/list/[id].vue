@@ -127,9 +127,6 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           </ul>
         </ul>
         <AddButton @click="showAddItem = true" />
-        <backButton
-          @click="router.push('/')"
-        />
       </div>
       <div v-else>
         <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
