@@ -52,8 +52,35 @@ const filteredSuggestions = computed(() => {
   const suggestions = suggestionStore.combinedSuggestions.filter(item =>
       item.name.toLowerCase().includes(newItem.value.toLowerCase())
   );
-  const isDuplicate = suggestions.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
-  return newItem.value && !isDuplicate ? [{name: newItem.value, checked: false}, ...suggestions] : suggestions;
+
+  // sorting items on unchecked status, list membership and created_at
+  const sorted = suggestions.sort((a, b) => {
+    const aInList = items.value.find(listItem => listItem.name.toLowerCase() === a.name.toLowerCase());
+    const bInList = items.value.find(listItem => listItem.name.toLowerCase() === b.name.toLowerCase());
+
+    // check if items are checked
+    const aChecked = !!aInList?.checked;
+    const bChecked = !!bInList?.checked;
+
+    // non checked items will show up first
+    if (!aChecked && bChecked) return -1;
+    if (aChecked && !bChecked) return 1;
+
+    // if checked/unchecked is sorted, sort on created_at if both in list
+    if (aInList && bInList) {
+      return new Date(bInList.created_at).getTime() - new Date(aInList.created_at).getTime();
+    }
+
+    // Items in list show up first before the suggestions
+    if (aInList) return -1;
+    if (bInList) return 1;
+
+    // Not in the list, show old alphabetically
+    return 0;
+  });
+
+  const isDuplicate = sorted.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
+  return newItem.value && !isDuplicate ? [{name: newItem.value, checked: false}, ...sorted] : sorted;
 });
 
 fetchItems(listId)
