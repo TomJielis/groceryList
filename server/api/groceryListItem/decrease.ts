@@ -6,12 +6,11 @@ export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'token')
 
     const body = await readBody(event)
-    const {id, amount} = body
+    const {id} = body
     try {
         const response = await apiClient('/grocery-list-item/' + id + '/decrease',
             {
                 method: 'POST',
-                body: { amount: amount },
             }, token);
 
         return response;

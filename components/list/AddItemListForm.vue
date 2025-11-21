@@ -45,13 +45,16 @@ async function addItemToList(itemName: string) {
 
   await addItem(name, listId);
 
+  await fetchItems(listId);
 
   newItem.value = '';
 }
 
 const filteredSuggestions = computed(() => {
+  // Get all item names from the current list
   const allItemsFromList = items.value.map(item => ({ name: item.name }));
 
+  // Combine and deduplicate suggestions
   const allSuggestions = [...suggestionStore.combinedSuggestions, ...allItemsFromList];
   const seen = new Set<string>();
   const uniqueSuggestions = allSuggestions.filter(item => {
@@ -74,7 +77,7 @@ const filteredSuggestions = computed(() => {
     const aUnchecked = aInList && !aInList.checked;
     const bUnchecked = bInList && !bInList.checked;
 
-    // Unchecked items in list will be shown first
+    // Unchecked items in list komen eerst
     if (aUnchecked && !bUnchecked) return -1;
     if (!aUnchecked && bUnchecked) return 1;
 
@@ -83,7 +86,7 @@ const filteredSuggestions = computed(() => {
       return new Date(bInList.created_at).getTime() - new Date(aInList.created_at).getTime();
     }
 
-    // the rest sorted alphabetically
+    // De rest (checked items of items niet in lijst) alfabetisch sorteren
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
   });
 
@@ -111,7 +114,7 @@ const filteredSuggestions = computed(() => {
                       :class="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? 'text-success' : 'text-accent'"
                       class="w-9 h-9 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition text-xl font-bold shadow-sm border border-transparent focus:ring-2 focus:ring-accent">
                 {{
-                  items.filter(i => !i.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? '✔️' : '➕'
+                  items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()) ? '✔️' : '➕'
                 }}
               </button>
               <span class="text-base md:text-lg font-medium text-slate-800 dark:text-slate-100">{{ item.name }}</span>
@@ -120,7 +123,7 @@ const filteredSuggestions = computed(() => {
                  v-if="items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())">
               <button
                   class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-slate-200 dark:bg-slate-700 rounded-full text-base sm:text-lg font-bold hover:bg-accent/20 text-slate-700 dark:text-slate-100 transition border border-border-light dark:border-border-dark"
-                  @click="decreaseItems(items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())!)"
+                  @click="decreaseItems(items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()))"
               >−
               </button>
               <span class="text-base font-semibold min-w-[24px] text-center text-slate-800 dark:text-slate-100">
@@ -128,8 +131,9 @@ const filteredSuggestions = computed(() => {
                 </span>
 
               <button
+                  v-if="items.filter(item => !item.checked).some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())"
                   class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-slate-200 dark:bg-slate-700 rounded-full text-base sm:text-lg font-bold hover:bg-accent/20 text-slate-700 dark:text-slate-100 transition border border-border-light dark:border-border-dark"
-                  @click="increaseItems(items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())!)"
+                  @click="increaseItems(items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()))"
               >+
               </button>
             </div>

@@ -57,22 +57,25 @@ const checkedItems = computed(() =>
 
 function handleItemAdded() {
   showAddItem.value = false;
-  fetchItems(Number(listId));
+  fetchItems(Number(listId)); // ensure numeric id
 }
 
 async function closeAddItemListForm() {
   showAddItem.value = false;
-  await fetchItems(Number(listId));
+  await fetchItems(Number(listId)); // ensure numeric id
 }
 
 async function updateGroceryListItem(item: any) {
   if (item.quantity === 0) {
+    // use the decreaseItem function to remove it from the list without losing the price.
     decreaseItems(item);
   } else {
     updateItem(item);
+    items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
   }
 }
 
+console.log(listStore.lists);
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>
