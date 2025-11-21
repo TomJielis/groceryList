@@ -42,8 +42,18 @@ onMounted(async () => {
   }
 });
 
-const uncheckedItems = computed(() => items.value.filter((item: any) => !item.checked));
-const checkedItems = computed(() => items.value.filter((item: any) => item.checked));
+
+const uncheckedItems = computed(() =>
+    items.value
+        .filter((item: any) => !item.checked)
+        .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+);
+
+const checkedItems = computed(() =>
+    items.value
+        .filter((item: any) => item.checked)
+        .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+);
 
 function handleItemAdded() {
   showAddItem.value = false;
