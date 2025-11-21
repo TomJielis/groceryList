@@ -67,10 +67,12 @@ async function closeAddItemListForm() {
 
 async function updateGroceryListItem(item: any) {
   if (item.quantity === 0) {
-    // use the decreaseItem function to remove it from the list without losing the price.
-    decreaseItems(item);
+    // Remove item from array first for animation
+    items.value = items.value.filter((i) => i.id !== item.id);
+    // Now call decreaseItems to update backend
+    await decreaseItems(item);
   } else {
-    updateItem(item);
+    await updateItem(item);
     items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
   }
 }
@@ -150,5 +152,14 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 <style scoped>
 @supports (height: 100dvh) {
   .min-h-screen { min-height: 100dvh; }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+.fade-leave-from, .fade-enter-to {
+  opacity: 1;
 }
 </style>
