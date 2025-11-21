@@ -31,6 +31,7 @@ const {
   fetchItems,
   updateItem,
   checked,
+  decreaseItems,
 } = useGroceryList();
 
 onMounted(async () => {
@@ -44,7 +45,6 @@ onMounted(async () => {
 const uncheckedItems = computed(() => items.value.filter((item: any) => !item.checked));
 const checkedItems = computed(() => items.value.filter((item: any) => item.checked));
 
-
 function handleItemAdded() {
   showAddItem.value = false;
   fetchItems(Number(listId)); // ensure numeric id
@@ -56,8 +56,13 @@ async function closeAddItemListForm() {
 }
 
 async function updateGroceryListItem(item: any) {
-  updateItem(item)
-  items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
+  if (item.quantity === 0) {
+    // use the decreaseItem function to remove it from the list without losing the price.
+    decreaseItems(item);
+  } else {
+    updateItem(item);
+    items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
+  }
 }
 
 console.log(listStore.lists);

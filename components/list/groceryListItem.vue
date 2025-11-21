@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useI18nStore } from '~/stores/i18n';
+import { useGroceryList } from '~/composables/useGroceryList';
 
 definePageMeta({
   middleware: ['auth', 'terms'],
@@ -17,10 +18,12 @@ const emit = defineEmits<{
   (e: 'edit', id: number): void;
   (e: 'check', item: any): void;
   (e: 'save', item: any): void;
+  (e: 'delete', item: any): void;
 }>();
 
 const i18n = useI18nStore();
-
+const { decreaseItems, fetchItems } = useGroceryList();
+await fetchItems();
 const localItem = ref({ ...props.item });
 
 watch(() => props.item, (newVal) => {
@@ -31,6 +34,15 @@ const handleUnitPriceInput = (e: Event) => {
   const val = (e.target as HTMLInputElement).value.replace(',', '.');
   const num = parseFloat(val);
   localItem.value.unit_price = isNaN(num) ? undefined : num;
+};
+
+const handleSave = () => {
+  // If quantity is 0, delete the item instead of saving
+  if (localItem.value.quantity < 1) {
+    decreaseItems(localItem.value);
+  }
+    emit('save', localItem.value);
+
 };
 </script>
 
@@ -46,12 +58,12 @@ const handleUnitPriceInput = (e: Event) => {
         <div class="flex items-center space-x-2">
           <button
               class="w-9 h-9 bg-slate-200 dark:bg-slate-700 rounded-full font-bold hover:bg-accent/20 text-slate-700 dark:text-slate-100 border border-border-light dark:border-border-dark transition flex items-center justify-center text-xl"
-              @click="localItem.quantity = Math.max((localItem.quantity || 1) - 1, 1)"
+              @click="localItem.quantity = Math.max((localItem.quantity || 1) - 1, 0)"
           >−</button>
-          <span class="text-base font-semibold">{{ localItem.quantity || 1 }}</span>
+          <span class="text-base font-semibold">{{ localItem.quantity || 0 }}</span>
           <button
               class="w-9 h-9 bg-slate-200 dark:bg-slate-700 rounded-full font-bold hover:bg-accent/20 text-slate-700 dark:text-slate-100 border border-border-light dark:border-border-dark transition flex items-center justify-center text-xl"
-              @click="localItem.quantity = (localItem.quantity || 1) + 1"
+              @click="localItem.quantity = (localItem.quantity || 0) + 1"
           >+</button>
         </div>
         <input
@@ -63,10 +75,10 @@ const handleUnitPriceInput = (e: Event) => {
         />
       </div>
       <button
-          @click="emit('save', localItem)"
+          @click="handleSave"
           class="self-end bg-accent px-6 py-2 rounded-xl hover:bg-accent-dark shadow-md font-semibold transition border border-accent/80 focus:ring-2 focus:ring-accent"
       >
-        {{ i18n.t('common.save') }}
+        {{ localItem.quantity === 0 ? i18n.t('common.delete') : i18n.t('common.save') }}
       </button>
     </div>
 
