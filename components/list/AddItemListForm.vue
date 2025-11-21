@@ -51,10 +51,10 @@ async function addItemToList(itemName: string) {
 }
 
 const filteredSuggestions = computed(() => {
-  // Voeg alle items uit de huidige lijst toe aan de suggesties
+  // Get all item names from the current list
   const allItemsFromList = items.value.map(item => ({ name: item.name }));
 
-  // Combineer suggesties met items uit de lijst en verwijder duplicaten
+  // Combine and deduplicate suggestions
   const allSuggestions = [...suggestionStore.combinedSuggestions, ...allItemsFromList];
   const seen = new Set<string>();
   const uniqueSuggestions = allSuggestions.filter(item => {
@@ -68,7 +68,7 @@ const filteredSuggestions = computed(() => {
       item.name.toLowerCase().includes(newItem.value.toLowerCase())
   );
 
-  // Sorteer: eerst unchecked items uit de lijst (meest recent), daarna rest alfabetisch
+  // sort suggestions: unchecked items in list first (by created_at desc), then checked items and items not in list alphabetically
   const sorted = suggestions.sort((a, b) => {
     const aInList = items.value.find(listItem => listItem.name.toLowerCase() === a.name.toLowerCase());
     const bInList = items.value.find(listItem => listItem.name.toLowerCase() === b.name.toLowerCase());
@@ -81,7 +81,7 @@ const filteredSuggestions = computed(() => {
     if (aUnchecked && !bUnchecked) return -1;
     if (!aUnchecked && bUnchecked) return 1;
 
-    // Als beide unchecked zijn, sorteer op created_at (meest recent eerst)
+    // if both are unchecked, sort by created_at descending
     if (aUnchecked && bUnchecked) {
       return new Date(bInList.created_at).getTime() - new Date(aInList.created_at).getTime();
     }
