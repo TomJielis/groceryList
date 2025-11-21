@@ -66,30 +66,26 @@ const filteredSuggestions = computed(() => {
       item.name.toLowerCase().includes(newItem.value.toLowerCase())
   );
 
-  // sorting items on unchecked status, list membership and created_at
+  // Sorteer: eerst unchecked items uit de lijst (meest recent), daarna rest alfabetisch
   const sorted = suggestions.sort((a, b) => {
     const aInList = items.value.find(listItem => listItem.name.toLowerCase() === a.name.toLowerCase());
     const bInList = items.value.find(listItem => listItem.name.toLowerCase() === b.name.toLowerCase());
 
-    // check if items are checked
-    const aChecked = !!aInList?.checked;
-    const bChecked = !!bInList?.checked;
+    // Check if items are unchecked (not checked)
+    const aUnchecked = aInList && !aInList.checked;
+    const bUnchecked = bInList && !bInList.checked;
 
-    // non checked items will show up first
-    if (!aChecked && bChecked) return -1;
-    if (aChecked && !bChecked) return 1;
+    // Unchecked items in list komen eerst
+    if (aUnchecked && !bUnchecked) return -1;
+    if (!aUnchecked && bUnchecked) return 1;
 
-    // if checked/unchecked is sorted, sort on created_at if both in list
-    if (aInList && bInList) {
+    // Als beide unchecked zijn, sorteer op created_at (meest recent eerst)
+    if (aUnchecked && bUnchecked) {
       return new Date(bInList.created_at).getTime() - new Date(aInList.created_at).getTime();
     }
 
-    // Items in list show up first before the suggestions
-    if (aInList) return -1;
-    if (bInList) return 1;
-
-    // Not in the list, show old alphabetically
-    return 0;
+    // De rest (checked items of items niet in lijst) alfabetisch sorteren
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
   });
 
   const isDuplicate = sorted.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
