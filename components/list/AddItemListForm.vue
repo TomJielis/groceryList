@@ -25,13 +25,15 @@ const emit = defineEmits(['item-added', 'close']);
 const suggestionStore = useSuggestionStore()
 const i18n = useI18nStore();
 
-onMounted(() => {
-  loading.value = true;
-  suggestionStore.fetchSuggestions()
-  loading.value = false;
-})
 const route = useRoute();
 const listId = parseInt(route.params.id as string)
+
+onMounted(async () => {
+  loading.value = true;
+  await fetchItems(listId);
+  await suggestionStore.fetchSuggestions();
+  loading.value = false;
+})
 
 const newItem = ref('');
 const loading = ref(true);
@@ -91,8 +93,6 @@ const filteredSuggestions = computed(() => {
   const isDuplicate = sorted.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
   return newItem.value && !isDuplicate ? [{name: newItem.value, checked: false}, ...sorted] : sorted;
 });
-
-fetchItems(listId)
 </script>
 <template>
   <div class="flex-auto overflow-y-auto p-4 md:pb-4 mt-4 mb-20">
