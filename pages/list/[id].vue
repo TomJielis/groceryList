@@ -47,25 +47,22 @@ const checkedItems = computed(() => items.value.filter((item: any) => item.check
 
 function handleItemAdded() {
   showAddItem.value = false;
-  fetchItems(Number(listId)); // ensure numeric id
+  fetchItems(Number(listId));
 }
 
 async function closeAddItemListForm() {
   showAddItem.value = false;
-  await fetchItems(Number(listId)); // ensure numeric id
+  await fetchItems(Number(listId));
 }
 
 async function updateGroceryListItem(item: any) {
   if (item.quantity === 0) {
-    // use the decreaseItem function to remove it from the list without losing the price.
     decreaseItems(item);
   } else {
     updateItem(item);
-    items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
   }
 }
 
-console.log(listStore.lists);
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>

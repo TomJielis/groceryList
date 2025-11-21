@@ -2,9 +2,10 @@ import {ref} from 'vue'
 import type { TGroceryList } from '@/types/TGroceryList'
 import type { TGroceryListItem } from '@/types/TGroceryListItem'
 
+const items = ref<TGroceryListItem[]>([]);
+const lists = ref<TGroceryList[]>([]);
+
 export function useGroceryList() {
-    let items = ref<TGroceryListItem[]>([]);
-    let lists = ref<TGroceryList[]>([]);
 
     async function fetchLists() {
         try {
@@ -143,12 +144,16 @@ export function useGroceryList() {
             },
             body: {name: item, quantity: 1, listId: listId},
         }) as {data: TGroceryListItem};
+
         const newItem = response.data as TGroceryListItem;
+
+        newItem.quantity = newItem.quantity || 1;
+
         items.value = [...items.value, newItem];
     }
 
     function clearItem(item: TGroceryListItem): void {
-        items.value = items.value.filter((i: TGroceryListItem) => i.name !== item.name)
+        items.value = items.value.filter((i: TGroceryListItem) => i.id !== item.id)
         let route = '/api/groceryListItem/delete'
         $fetch(route, {
             method: 'DELETE',
@@ -169,13 +174,16 @@ export function useGroceryList() {
             body: { id: updatedItem.id, checked: updatedItem.checked }
         });
 
-        // Force reactivity
         items.value = items.value.map((item: TGroceryListItem) =>
-            item.id === updatedItem.id ? Object.assign({}, item, { checked: updatedItem.checked }) : item
+            item.id === updatedItem.id ? { ...item, checked: updatedItem.checked } : item
         );
     }
 
     function updateItem(item: TGroceryListItem): void {
+        items.value = items.value.map((i: TGroceryListItem) =>
+            i.id === item.id ? { ...i, ...item } : i
+        );
+
         let route = '/api/groceryListItem/update'
         $fetch(route, {
             method: 'POST',
@@ -188,8 +196,17 @@ export function useGroceryList() {
 
     function increaseItems(item: TGroceryListItem): void {
         const foundItem = items.value.find((i: TGroceryListItem) => i.id === item.id)
-        if (!foundItem) return;
-        foundItem.quantity += 1
+        if (!foundItem) {
+            console.log('increaseItems: item not found', item.id);
+            return;
+        }
+
+        const newQuantity = foundItem.quantity + 1;
+
+        items.value = items.value.map((i: TGroceryListItem) =>
+            i.id === item.id ? { ...i, quantity: newQuantity } : i
+        );
+
         let route = '/api/groceryListItem/increase'
         $fetch(route, {
             method: 'POST',
@@ -204,10 +221,14 @@ export function useGroceryList() {
         const foundItem = items.value.find((i: TGroceryListItem) => i.id === item.id)
         if (!foundItem) return;
 
-        foundItem.quantity -= 1
+        const newQuantity = foundItem.quantity - 1;
 
-        if (foundItem.quantity < 1) {
-            items.value = items.value.filter((i: TGroceryListItem) => i.name !== item.name)
+        if (newQuantity < 1) {
+            items.value = items.value.filter((i: TGroceryListItem) => i.id !== item.id)
+        } else {
+            items.value = items.value.map((i: TGroceryListItem) =>
+                i.id === item.id ? { ...i, quantity: newQuantity } : i
+            );
         }
 
         let route = '/api/groceryListItem/decrease'
@@ -216,7 +237,7 @@ export function useGroceryList() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: {id: item.id}
+            body: {id: item.id, amount:newQuantity}
         });
     }
 
