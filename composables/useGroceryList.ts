@@ -203,11 +203,12 @@ export function useGroceryList() {
     function decreaseItems(item: TGroceryListItem): void {
         const foundItem = items.value.find((i: TGroceryListItem) => i.id === item.id)
         if (!foundItem) return;
-        if (foundItem.quantity === 1) {
-            clearItem(item)
-            return
-        }
+
         foundItem.quantity -= 1
+
+        if (foundItem.quantity < 1) {
+            items.value = items.value.filter((i: TGroceryListItem) => i.name !== item.name)
+        }
 
         let route = '/api/groceryListItem/decrease'
         $fetch(route, {
