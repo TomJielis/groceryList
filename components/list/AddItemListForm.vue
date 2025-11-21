@@ -26,12 +26,15 @@ const suggestionStore = useSuggestionStore()
 const i18n = useI18nStore();
 
 onMounted(() => {
+  loading.value = true;
   suggestionStore.fetchSuggestions()
+  loading.value = false;
 })
 const route = useRoute();
 const listId = parseInt(route.params.id as string)
 
 const newItem = ref('');
+const loading = ref(true);
 
 
 async function addItemToList(itemName: string) {
@@ -62,7 +65,8 @@ fetchItems(listId)
           v-model="newItem"
           :placeholder="i18n.t('items.addPlaceholder')"
       />
-      <ul class="space-y-4">
+      <loader v-if="loading" />
+      <ul class="space-y-4" v-else>
         <li
             v-for="item in filteredSuggestions"
             :key="item.name"
