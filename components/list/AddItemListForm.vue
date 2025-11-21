@@ -49,7 +49,20 @@ async function addItemToList(itemName: string) {
 }
 
 const filteredSuggestions = computed(() => {
-  const suggestions = suggestionStore.combinedSuggestions.filter(item =>
+  // Voeg alle items uit de huidige lijst toe aan de suggesties
+  const allItemsFromList = items.value.map(item => ({ name: item.name }));
+
+  // Combineer suggesties met items uit de lijst en verwijder duplicaten
+  const allSuggestions = [...suggestionStore.combinedSuggestions, ...allItemsFromList];
+  const seen = new Set<string>();
+  const uniqueSuggestions = allSuggestions.filter(item => {
+    const lower = item.name.toLowerCase();
+    if (seen.has(lower)) return false;
+    seen.add(lower);
+    return true;
+  });
+
+  const suggestions = uniqueSuggestions.filter(item =>
       item.name.toLowerCase().includes(newItem.value.toLowerCase())
   );
 
