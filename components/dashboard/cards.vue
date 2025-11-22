@@ -83,16 +83,18 @@ function closeModal() {
     </nuxtLink>
 
     <!-- Modal for image preview -->
-    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4"
          @click="closeModal">
-      <div class="bg-white rounded-xl p-4 max-w-lg w-full relative" @click.stop>
+      <div class="bg-white dark:bg-slate-800 rounded-xl p-3 md:p-4 w-full md:max-w-lg md:w-full relative max-h-[95vh] overflow-auto" @click.stop>
         <button
-            class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
+            class="absolute top-2 right-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 z-10 bg-white dark:bg-slate-800 shadow-md"
             @click="closeModal">
           ✕
         </button>
-        <h3 class="text-lg font-medium mb-3 pr-8">{{ selectedCard?.title }}</h3>
-        <img :src="selectedCard?.attachment" alt="Attachment Preview" class="w-full h-auto rounded-lg"/>
+        <h3 class="text-base md:text-lg font-medium mb-2 md:mb-3 pr-8 text-slate-900 dark:text-slate-100">{{ selectedCard?.title }}</h3>
+        <div class="w-full overflow-x-auto">
+          <img :src="selectedCard?.attachment" alt="Attachment Preview" class="w-full h-auto rounded-lg object-contain max-h-[80vh] md:max-h-[70vh]"/>
+        </div>
       </div>
     </div>
 
