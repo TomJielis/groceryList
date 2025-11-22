@@ -9,11 +9,14 @@ import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
 import { useI18nStore } from '~/stores/i18n';
 import addButton from "~/components/form/addButton.vue"
-const listStore = useListStore();
+import Loader from '~/components/Loader.vue';
 
-// Fetch lists on mount, this allows persisted state to load first
+const listStore = useListStore();
+const loading = ref(true);
 onMounted(async () => {
+  loading.value = true;
   await listStore.fetchLists()
+  loading.value = false;
 })
 
 const sortedLists = computed(() => {
@@ -185,7 +188,8 @@ function openListSettings(id: number) {
   <div class="max-w-2xl mx-auto p-4">
     <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light text-center">🛒 {{ i18n.t('lists.title') }}</h1>
     <div v-if="!openListForm" class="flex-1 flex flex-col">
-      <div v-if="sortedLists.length === 0" class="flex flex-1 flex-col items-center justify-center px-4 py-40 text-center">
+      <Loader v-if="loading" />
+      <div v-else-if="sortedLists.length === 0" class="flex flex-1 flex-col items-center justify-center px-4 py-40 text-center">
         <div class="text-8xl mb-6 opacity-50">🛒</div>
         <h2 class="text-2xl font-bold mb-2 text-primary-dark dark:text-accent-light">
           {{ i18n.t('lists.emptyState.title') }}

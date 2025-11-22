@@ -25,13 +25,18 @@ const emit = defineEmits(['item-added', 'close']);
 const suggestionStore = useSuggestionStore()
 const i18n = useI18nStore();
 
-onMounted(() => {
-  suggestionStore.fetchSuggestions()
-})
 const route = useRoute();
 const listId = parseInt(route.params.id as string)
 
+onMounted(async () => {
+  loading.value = true;
+  await fetchItems(listId);
+  await suggestionStore.fetchSuggestions();
+  loading.value = false;
+})
+
 const newItem = ref('');
+const loading = ref(true);
 
 
 async function addItemToList(itemName: string) {
@@ -40,20 +45,53 @@ async function addItemToList(itemName: string) {
 
   await addItem(name, listId);
 
-  await fetchItems(listId);
 
   newItem.value = '';
 }
 
 const filteredSuggestions = computed(() => {
-  const suggestions = suggestionStore.combinedSuggestions.filter(item =>
+  // Get all item names from the current list
+  const allItemsFromList = items.value.map(item => ({ name: item.name }));
+
+  // Combine and deduplicate suggestions
+  const allSuggestions = [...suggestionStore.combinedSuggestions, ...allItemsFromList];
+  const seen = new Set<string>();
+  const uniqueSuggestions = allSuggestions.filter(item => {
+    const lower = item.name.toLowerCase();
+    if (seen.has(lower)) return false;
+    seen.add(lower);
+    return true;
+  });
+
+  const suggestions = uniqueSuggestions.filter(item =>
       item.name.toLowerCase().includes(newItem.value.toLowerCase())
   );
-  const isDuplicate = suggestions.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
-  return newItem.value && !isDuplicate ? [{name: newItem.value, checked: false}, ...suggestions] : suggestions;
-});
 
-fetchItems(listId)
+  // sort suggestions: unchecked items in list first (by created_at desc), then checked items and items not in list alphabetically
+  const sorted = suggestions.sort((a, b) => {
+    const aInList = items.value.find(listItem => listItem.name.toLowerCase() === a.name.toLowerCase());
+    const bInList = items.value.find(listItem => listItem.name.toLowerCase() === b.name.toLowerCase());
+
+    // Check if items are unchecked (not checked)
+    const aUnchecked = aInList && !aInList.checked;
+    const bUnchecked = bInList && !bInList.checked;
+
+    // Unchecked items in list will be shown first
+    if (aUnchecked && !bUnchecked) return -1;
+    if (!aUnchecked && bUnchecked) return 1;
+
+    // if both are unchecked, sort by created_at descending
+    if (aUnchecked && bUnchecked) {
+      return new Date(bInList.created_at).getTime() - new Date(aInList.created_at).getTime();
+    }
+
+    // De rest (checked items of items niet in lijst) alfabetisch sorteren
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+  });
+
+  const isDuplicate = sorted.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
+  return newItem.value && !isDuplicate ? [{name: newItem.value, checked: false}, ...sorted] : sorted;
+});
 </script>
 <template>
   <div class="flex-auto overflow-y-auto p-4 md:pb-4 mt-4 mb-20">
@@ -62,7 +100,8 @@ fetchItems(listId)
           v-model="newItem"
           :placeholder="i18n.t('items.addPlaceholder')"
       />
-      <ul class="space-y-4">
+      <loader v-if="loading" />
+      <ul class="space-y-4" v-else>
         <li
             v-for="item in filteredSuggestions"
             :key="item.name"

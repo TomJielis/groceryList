@@ -7,6 +7,7 @@ import {useGroceryList} from '~/composables/useGroceryList';
 import {useListStore} from '~/stores/lists';
 import {useI18nStore} from '~/stores/i18n';
 import AddButton from "~/components/form/addButton.vue";
+import Loader from '~/components/Loader.vue';
 
 
 definePageMeta({
@@ -15,6 +16,8 @@ definePageMeta({
 
 const listStore = useListStore();
 const route = useRoute();
+const loading = ref(true);
+
 const listId = route.params.id as string;
 const i18n = useI18nStore();
 
@@ -28,17 +31,30 @@ const {
   fetchItems,
   updateItem,
   checked,
+  decreaseItems,
+  totalPrice,
 } = useGroceryList();
 
 onMounted(async () => {
   if (listId && !isNaN(Number(listId))) {
+    loading.value = true;
     await fetchItems(Number(listId));
+    loading.value = false;
   }
 });
 
-const uncheckedItems = computed(() => items.value.filter((item: any) => !item.checked));
-const checkedItems = computed(() => items.value.filter((item: any) => item.checked));
 
+const uncheckedItems = computed(() =>
+    items.value
+        .filter((item: any) => !item.checked)
+        .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+);
+
+const checkedItems = computed(() =>
+    items.value
+        .filter((item: any) => item.checked)
+        .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+);
 
 function handleItemAdded() {
   showAddItem.value = false;
@@ -51,8 +67,12 @@ async function closeAddItemListForm() {
 }
 
 async function updateGroceryListItem(item: any) {
-  updateItem(item)
-  items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
+  if (item.quantity === 0) {
+    // Call decreaseItems to update backend and remove from state
+    await decreaseItems(item);
+  } else {
+    await updateItem(item);
+  }
 }
 
 console.log(listStore.lists);
@@ -71,13 +91,11 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         </NuxtLink>
       </div>
       <div class="text-lg font-bold">
-        {{ i18n.t('list.total') }}: €{{
-          uncheckedItems.reduce((total, item: any) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
-        }}
+        {{ i18n.t('list.total') }}: €{{ totalPrice.toFixed(2) }}
       </div>
     </div>
-
-    <div v-if="items.length === 0 && !showAddItem" class="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center">
+    <Loader v-if="loading" />
+    <div v-else-if="items.length === 0 && !showAddItem" class="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center">
       <div class="text-8xl mb-6 opacity-50">📝</div>
       <h2 class="text-2xl font-bold mb-2 text-primary-dark dark:text-accent-light">
         {{ i18n.t('items.emptyState.title') }}
@@ -138,5 +156,14 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 <style scoped>
 @supports (height: 100dvh) {
   .min-h-screen { min-height: 100dvh; }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+.fade-leave-from, .fade-enter-to {
+  opacity: 1;
 }
 </style>

@@ -66,6 +66,8 @@
     "shareListName": "Lijst",
     "shareBtn": "Delen",
     "shared": "Lijst is gedeeld!",
+    "updated": "Lijst is geupdate!",
+    "created": "Lijst is aangemaakt!",
     "delete-shared-user-body": "Weet je zeker dat je deze gebruiker wilt verwijderen?",
     "favorited": "Lijst als favoriet gemarkeerd!",
     "emptyState": {
@@ -168,7 +170,7 @@
     "typeDELETE": "Type DELETE"
   },
   "register": {
-    "acceptTerms": "Ik ga akkoord met de <span class='text-white underline underline-offset-2 hover:text-accent transition'><a href='/terms' target='_blank'>Gebruiksvoorwaarden & Privacyverklaring</a></span>."
+    "acceptTerms": "Ik ga akkoord met de <span class='underline underline-offset-2 hover:text-accent transition'><a href='/terms' target='_blank'>Gebruiksvoorwaarden & Privacyverklaring</a></span>."
   },
   "terms": {
     "title": "Algemene Voorwaarden & Privacyverklaring – Grocery List",

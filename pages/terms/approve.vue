@@ -43,7 +43,7 @@ const approveTerms = async () => {
         <button
             @click="approveTerms"
             type="submit"
-            class="w-full bg-accent text-white py-3 rounded-xl hover:bg-accent-dark active:scale-95 transition font-semibold shadow border border-accent/80 focus:ring-2 focus:ring-accent"
+            class="w-full bg-accent py-3 rounded-xl hover:bg-accent-dark active:scale-95 transition font-semibold shadow border border-accent/80 focus:ring-2 focus:ring-accent"
             :disabled="!acceptedTerms"
         >
           {{ i18n.t('termsApproval.approveBtn', 'Approve and Continue') }}
@@ -55,7 +55,6 @@ const approveTerms = async () => {
 
 <style scoped>
 :deep(.accept-terms-link) a {
-  color: #fff !important;
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.2s;

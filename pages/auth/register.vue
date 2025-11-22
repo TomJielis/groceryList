@@ -158,7 +158,6 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 
 <style scoped>
 :deep(.accept-terms-link) a {
-  color: #fff !important;
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.2s;
