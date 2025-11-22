@@ -76,7 +76,7 @@ const filteredSuggestions = computed(() => {
     const aUnchecked = aInList && !aInList.checked;
     const bUnchecked = bInList && !bInList.checked;
 
-    // Unchecked items in list komen eerst
+    // Unchecked items in list will be shown first
     if (aUnchecked && !bUnchecked) return -1;
     if (!aUnchecked && bUnchecked) return 1;
 

@@ -46,7 +46,7 @@ function initial(name?: string) {
           </div>
           <button
             v-if="invite.user?.id !== auth.user.id"
-            class="px-3 py-2 rounded-lg bg-error text-white text-[11px] font-semibold hover:bg-error/90 active:scale-[0.97] transition shadow"
+            class="px-3 py-2 rounded-lg bg-error text-[11px] font-semibold hover:bg-error/90 active:scale-[0.97] transition shadow"
             @click.prevent.stop="emit('remove', invite)"
           >
             {{ i18n.t('common.delete') }}
