@@ -17,7 +17,7 @@ definePageMeta({
 
 
 const listStore = useListStore();
-const {showNotification} = useNotification();
+const {showNotification, showSuccess} = useNotification();
 const emit = defineEmits(['list-added', 'close']);
 const {createList, updateList, unshareList} = useGroceryList();
 const i18n = useI18nStore();
@@ -48,6 +48,7 @@ async function addList() {
       .then(() => {
         listStore.fetchLists();
         newList.value = '';
+        showSuccess(i18n.t('lists.created'));
         emit('list-added');
       })
       .catch(() => {
@@ -61,6 +62,7 @@ async function updateListName() {
     .then(() => {
       listStore.fetchLists();
       emit('list-added');
+      showSuccess(i18n.t('lists.updated'));
     })
     .catch(() => {
       showNotification(i18n.t('errors.listCreateFailed'));

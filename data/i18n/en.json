@@ -66,6 +66,8 @@
     "shareListName": "List",
     "shareBtn": "Share",
     "shared": "List has been shared!",
+    "updated": "List is updated!",
+    "created": "List is created!",
     "favorited": "List marked as favorite!",
     "approvedMessage": "List has been added to your lists.",
     "declinedMessage": "List invitation has been declined.",
