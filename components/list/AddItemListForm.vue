@@ -45,7 +45,6 @@ async function addItemToList(itemName: string) {
 
   await addItem(name, listId);
 
-  await fetchItems(listId);
 
   newItem.value = '';
 }

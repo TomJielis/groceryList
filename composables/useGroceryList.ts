@@ -1,10 +1,29 @@
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 import type { TGroceryList } from '@/types/TGroceryList'
 import type { TGroceryListItem } from '@/types/TGroceryListItem'
 
+// Shared state across all instances
+// Store items per list ID to prevent conflicts when switching lists
+const itemsByListId = ref<Map<number, TGroceryListItem[]>>(new Map());
+const lists = ref<TGroceryList[]>([]);
+const currentListId = ref<number | null>(null);
+
 export function useGroceryList() {
-    let items = ref<TGroceryListItem[]>([]);
-    let lists = ref<TGroceryList[]>([]);
+
+    // Computed items for the current list
+    const items = computed(() => {
+        if (currentListId.value === null) return [];
+        return itemsByListId.value.get(currentListId.value) || [];
+    });
+
+    // Computed total price for unchecked items in the current list
+    const totalPrice = computed(() => {
+        return items.value
+            .filter((item: TGroceryListItem) => !item.checked)
+            .reduce((total: number, item: TGroceryListItem) => {
+                return total + ((item.unit_price || 0) * (item.quantity || 1));
+            }, 0);
+    });
 
     async function fetchLists() {
         try {
@@ -125,10 +144,16 @@ export function useGroceryList() {
                 throw new Error(`Failed to fetch items: ${response.statusText}`);
             }
             let listItems: TGroceryListItem[] = (await response.json()).data;
-            items.value = listItems.map((item: TGroceryListItem) => ({
+            const processedItems = listItems.map((item: TGroceryListItem) => ({
                 ...item,
                 quantity: item.quantity || 1
             }));
+
+            // Store items for this specific list
+            if (listId !== null) {
+                currentListId.value = listId;
+                itemsByListId.value.set(listId, processedItems);
+            }
         } catch (error) {
             console.error('Error fetching items:', error);
             throw error
@@ -144,11 +169,21 @@ export function useGroceryList() {
             body: {name: item, quantity: 1, listId: listId},
         }) as {data: TGroceryListItem};
         const newItem = response.data as TGroceryListItem;
-        items.value = [...items.value, newItem];
+
+        // Add to the specific list's items
+        const currentItems = itemsByListId.value.get(listId) || [];
+        itemsByListId.value.set(listId, [...currentItems, newItem]);
     }
 
     function clearItem(item: TGroceryListItem): void {
-        items.value = items.value.filter((i: TGroceryListItem) => i.name !== item.name)
+        if (currentListId.value === null) return;
+
+        const currentItems = itemsByListId.value.get(currentListId.value) || [];
+        itemsByListId.value.set(
+            currentListId.value,
+            currentItems.filter((i: TGroceryListItem) => i.name !== item.name)
+        );
+
         let route = '/api/groceryListItem/delete'
         $fetch(route, {
             method: 'DELETE',
@@ -169,13 +204,30 @@ export function useGroceryList() {
             body: { id: updatedItem.id, checked: updatedItem.checked }
         });
 
-        // Force reactivity
-        items.value = items.value.map((item: TGroceryListItem) =>
-            item.id === updatedItem.id ? Object.assign({}, item, { checked: updatedItem.checked }) : item
+        if (currentListId.value === null) return;
+
+        // Update the item in the Map
+        const currentItems = itemsByListId.value.get(currentListId.value) || [];
+        itemsByListId.value.set(
+            currentListId.value,
+            currentItems.map((item: TGroceryListItem) =>
+                item.id === updatedItem.id ? Object.assign({}, item, { checked: updatedItem.checked }) : item
+            )
         );
     }
 
     function updateItem(item: TGroceryListItem): void {
+        if (currentListId.value === null) return;
+
+        // Update the item in the Map
+        const currentItems = itemsByListId.value.get(currentListId.value) || [];
+        itemsByListId.value.set(
+            currentListId.value,
+            currentItems.map((i: TGroceryListItem) =>
+                i.id === item.id ? { ...i, ...item } : i
+            )
+        );
+
         let route = '/api/groceryListItem/update'
         $fetch(route, {
             method: 'POST',
@@ -187,9 +239,20 @@ export function useGroceryList() {
     }
 
     function increaseItems(item: TGroceryListItem): void {
-        const foundItem = items.value.find((i: TGroceryListItem) => i.id === item.id)
+        if (currentListId.value === null) return;
+
+        const currentItems = itemsByListId.value.get(currentListId.value) || [];
+        const foundItem = currentItems.find((i: TGroceryListItem) => i.id === item.id);
         if (!foundItem) return;
-        foundItem.quantity += 1
+
+        // Update the item quantity in the Map
+        itemsByListId.value.set(
+            currentListId.value,
+            currentItems.map((i: TGroceryListItem) =>
+                i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+            )
+        );
+
         let route = '/api/groceryListItem/increase'
         $fetch(route, {
             method: 'POST',
@@ -201,13 +264,28 @@ export function useGroceryList() {
     }
 
     function decreaseItems(item: TGroceryListItem): void {
-        const foundItem = items.value.find((i: TGroceryListItem) => i.id === item.id)
+        if (currentListId.value === null) return;
+
+        const currentItems = itemsByListId.value.get(currentListId.value) || [];
+        const foundItem = currentItems.find((i: TGroceryListItem) => i.id === item.id);
         if (!foundItem) return;
 
-        foundItem.quantity -= 1
+        const newQuantity = foundItem.quantity - 1;
 
-        if (foundItem.quantity < 1) {
-            items.value = items.value.filter((i: TGroceryListItem) => i.name !== item.name)
+        if (newQuantity < 1) {
+            // Remove item from the Map
+            itemsByListId.value.set(
+                currentListId.value,
+                currentItems.filter((i: TGroceryListItem) => i.id !== item.id)
+            );
+        } else {
+            // Update quantity in the Map
+            itemsByListId.value.set(
+                currentListId.value,
+                currentItems.map((i: TGroceryListItem) =>
+                    i.id === item.id ? { ...i, quantity: newQuantity } : i
+                )
+            );
         }
 
         let route = '/api/groceryListItem/decrease'
@@ -248,6 +326,7 @@ export function useGroceryList() {
     return {
         items,
         lists,
+        totalPrice,
         fetchLists,
         fetchPendingLists,
         favorite,

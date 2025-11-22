@@ -32,6 +32,7 @@ const {
   updateItem,
   checked,
   decreaseItems,
+  totalPrice,
 } = useGroceryList();
 
 onMounted(async () => {
@@ -67,13 +68,10 @@ async function closeAddItemListForm() {
 
 async function updateGroceryListItem(item: any) {
   if (item.quantity === 0) {
-    // Remove item from array first for animation
-    items.value = items.value.filter((i) => i.id !== item.id);
-    // Now call decreaseItems to update backend
+    // Call decreaseItems to update backend and remove from state
     await decreaseItems(item);
   } else {
     await updateItem(item);
-    items.value = items.value.map((i) => (i.id === item.id ? {...i, ...item} : i));
   }
 }
 
@@ -85,9 +83,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
     <div class="flex justify-between items-center mb-6 flex-none">
       <h1 class="text-2xl font-bold text-center">🛒 {{ list?.name }}</h1>
       <div class="text-lg font-bold">
-        {{ i18n.t('list.total') }}: €{{
-          uncheckedItems.reduce((total, item: any) => total + ((item.unit_price || 0) * (item.quantity || 1)), 0).toFixed(2)
-        }}
+        {{ i18n.t('list.total') }}: €{{ totalPrice.toFixed(2) }}
       </div>
     </div>
     <Loader v-if="loading" />
