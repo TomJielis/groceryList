@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
         body: {email},
     }, undefined);
 
-    console.log(response);
     return {
         success: true,
     };

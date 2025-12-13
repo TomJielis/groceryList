@@ -20,7 +20,12 @@ const loading = ref(true);
 
 onMounted(async () => {
   loading.value = true;
-  await getCards();
+  try {
+    await getCards();
+  } catch (error) {
+    // Errors are handled by the global error interceptor
+    loading.value = false;
+  }
   loading.value = false;
 });
 

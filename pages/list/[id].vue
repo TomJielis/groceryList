@@ -38,7 +38,12 @@ const {
 onMounted(async () => {
   if (listId && !isNaN(Number(listId))) {
     loading.value = true;
-    await fetchItems(Number(listId));
+    try {
+      await fetchItems(Number(listId));
+    } catch (error) {
+      // Errors are handled by the global error interceptor
+      loading.value = false;
+    }
     loading.value = false;
   }
 });
@@ -75,7 +80,6 @@ async function updateGroceryListItem(item: any) {
   }
 }
 
-console.log(listStore.lists);
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>
