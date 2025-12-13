@@ -15,7 +15,12 @@ const listStore = useListStore();
 const loading = ref(true);
 onMounted(async () => {
   loading.value = true;
-  await listStore.fetchLists()
+  try {
+    await listStore.fetchLists();
+  } catch (error) {
+    // Errors are handled by the global error interceptor
+    loading.value = false;
+  }
   loading.value = false;
 })
 

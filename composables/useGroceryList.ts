@@ -74,42 +74,57 @@ export function useGroceryList() {
     }
 
     async function shareList(listId: number, email: string): Promise<void> {
-        let route = '/api/groceryList/share'
-        await $fetch(route, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: {id: listId, email: email}
-        });
+        try {
+            let route = '/api/groceryList/share'
+            await $fetch(route, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: {id: listId, email: email}
+            });
+        } catch (error) {
+            console.error('Error sharing list:', error);
+            throw error;
+        }
     }
 
     async function unshareList(listId: number, userId: number): Promise<void> {
-        // Endpoint to remove a shared user (invite) from a list
-        await $fetch('/api/groceryList/unshare', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: { id: listId, userId: userId }
-        });
+        try {
+            // Endpoint to remove a shared user (invite) from a list
+            await $fetch('/api/groceryList/unshare', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: { id: listId, userId: userId }
+            });
+        } catch (error) {
+            console.error('Error unsharing list:', error);
+            throw error;
+        }
     }
 
     async function favorite(id: number | null): Promise<void> {
-        const response = await fetch('/api/groceryList/favorite', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({id}),
-        });
-        if (!response.ok) {
-            throw new Error(`Failed to create list: ${response.statusText}`);
-        }
+        try {
+            const response = await fetch('/api/groceryList/favorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({id}),
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to create list: ${response.statusText}`);
+            }
 
-        const data = await response.json();
-        if (!data.message) {
-            throw new Error(`Failed to create list: ${response.statusText}`);
+            const data = await response.json();
+            if (!data.message) {
+                throw new Error(`Failed to create list: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error favoriting list:', error);
+            throw error;
         }
     }
 
@@ -156,23 +171,26 @@ export function useGroceryList() {
             }
         } catch (error) {
             console.error('Error fetching items:', error);
-            throw error
         }
     }
 
     async function addItem(item: string, listId: number): Promise<void> {
-        const response = await $fetch('/api/groceryListItem/store', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: {name: item, quantity: 1, listId: listId},
-        }) as {data: TGroceryListItem};
-        const newItem = response.data as TGroceryListItem;
+        try {
+            const response = await $fetch('/api/groceryListItem/store', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: {name: item, quantity: 1, listId: listId},
+            }) as {data: TGroceryListItem};
+            const newItem = response.data as TGroceryListItem;
 
-        // Add to the specific list's items
-        const currentItems = itemsByListId.value.get(listId) || [];
-        itemsByListId.value.set(listId, [...currentItems, newItem]);
+            // Add to the specific list's items
+            const currentItems = itemsByListId.value.get(listId) || [];
+            itemsByListId.value.set(listId, [...currentItems, newItem]);
+        } catch (error) {
+            console.error('Error adding item:', error);
+        }
     }
 
     function clearItem(item: TGroceryListItem): void {
@@ -299,28 +317,38 @@ export function useGroceryList() {
     }
 
     async function updatePendingListStatus(id: number, status: 'accepted' | 'declined'): Promise<any> {
-        return await $fetch('/api/groceryList/pending/action', {
-            method: 'POST',
-            body: { id, status }
-        });
+        try {
+            return await $fetch('/api/groceryList/pending/action', {
+                method: 'POST',
+                body: { id, status }
+            });
+        } catch (error) {
+            console.error('Error updating pending list status:', error);
+            throw error;
+        }
     }
 
     async function updateList(id: number, name: string): Promise<any> {
-        const response = await fetch('/api/groceryList/update', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({id, name}),
-        });
-        if (!response.ok) {
-            throw new Error(`Failed to update list: ${response.statusText}`);
+        try {
+            const response = await fetch('/api/groceryList/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({id, name}),
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to update list: ${response.statusText}`);
+            }
+            const data = await response.json();
+            if (!data.data) {
+                throw new Error(`Failed to update list: ${response.statusText}`);
+            }
+            return data;
+        } catch (error) {
+            console.error('Error updating list:', error);
+            throw error;
         }
-        const data = await response.json();
-        if (!data.data) {
-            throw new Error(`Failed to update list: ${response.statusText}`);
-        }
-        return data;
     }
 
     return {
