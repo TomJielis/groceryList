@@ -80,7 +80,6 @@ async function updateGroceryListItem(item: any) {
   }
 }
 
-console.log(listStore.lists);
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>

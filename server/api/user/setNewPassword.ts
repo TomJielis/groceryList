@@ -12,7 +12,6 @@ export default defineEventHandler(async (event) => {
         body: {email, password, repeatPassword, token},
     }, undefined);
 
-    console.log(response);
     return {
         success: true,
     };

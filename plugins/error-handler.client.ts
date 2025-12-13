@@ -8,8 +8,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   global.fetch = (async (resource: any, config: any = {}) => {
     try {
       const response = await originalGlobalFetch(resource, config);
-        console.log(response.status);
-      // Check for 401 status
+      // Check for 401 status - handle immediately
       if (response.status === 401) {
         handleUnauthorized();
         return response;
@@ -26,7 +25,8 @@ export default defineNuxtPlugin((nuxtApp) => {
           if (data.message?.includes('Unauthorized') ||
               data.error?.includes('Unauthorized') ||
               JSON.stringify(data).includes('Unauthorized')) {
-            handleUnauthorized();
+              handleUnauthorized();
+            // Don't return, the page will redirect
           }
         } catch (parseError) {
           // If we can't parse the response, just continue
