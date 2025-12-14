@@ -159,7 +159,7 @@ const handleSave = () => {
               class="text-base font-semibold transition-colors"
               :class="item.checked
                 ? 'line-through text-slate-400 dark:text-slate-500'
-                : 'text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400'"
+                : 'text-slate-900 dark:text-white'"
             >
               {{ item.name }}
             </h3>
