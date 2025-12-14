@@ -211,9 +211,11 @@
     "approveBtn": "Approve and Continue"
   },
   "info": {
+    "badge": "Grocery List App",
     "title": "Welcome to Grocery List!",
     "subtitle": "Your smart assistant for all your groceries.",
     "featuresTitle": "Discover the features",
+    "featuresSubtitle": "Discover everything you can do with our app",
     "feature1Title": "Create & Manage Lists",
     "feature1Text": "Create an unlimited number of grocery lists for any occasion. Add infinite products and keep everything organized in one place.",
     "feature2Title": "Share with Family & Friends",

@@ -206,9 +206,11 @@
     "lastUpdated": "Laatst bijgewerkt: {date}"
   },
   "info": {
+    "badge": "Boodschappenlijst App",
     "title": "Welkom bij Boodschappenlijst!",
     "subtitle": "Jouw slimme hulp voor al je boodschappen.",
     "featuresTitle": "Ontdek de functies",
+    "featuresSubtitle": "Ontdek wat je allemaal kunt met onze app",
     "feature1Title": "Maak & Beheer Lijsten",
     "feature1Text": "Creëer een onbeperkt aantal boodschappenlijsten voor elke gelegenheid. Voeg oneindig veel producten toe en houd alles overzichtelijk op één plek.",
     "feature2Title": "Deel met Familie & Vrienden",
