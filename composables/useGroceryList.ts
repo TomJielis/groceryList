@@ -8,6 +8,17 @@ const itemsByListId = ref<Map<number, TGroceryListItem[]>>(new Map());
 const lists = ref<TGroceryList[]>([]);
 const currentListId = ref<number | null>(null);
 
+/**
+ * Helper function to notify other users via Socket.io
+ * Only works on client-side and when currentListId is set
+ */
+function notifyOtherUsers(listId: number | null, item: any): void {
+    if (process.client && listId !== null) {
+        const { notifyItemUpdate } = useSocket();
+        notifyItemUpdate(listId, item);
+    }
+}
+
 export function useGroceryList() {
 
     // Computed items for the current list
@@ -188,43 +199,50 @@ export function useGroceryList() {
             // Add to the specific list's items
             const currentItems = itemsByListId.value.get(listId) || [];
             itemsByListId.value.set(listId, [...currentItems, newItem]);
+
+            // Notify other users via Socket.io
+            notifyOtherUsers(listId, newItem);
         } catch (error) {
             console.error('Error adding item:', error);
         }
     }
 
-    function clearItem(item: TGroceryListItem): void {
+    async function clearItem(item: TGroceryListItem): Promise<void> {
         if (currentListId.value === null) return;
 
+        // Remove from UI immediately
         const currentItems = itemsByListId.value.get(currentListId.value) || [];
         itemsByListId.value.set(
             currentListId.value,
-            currentItems.filter((i: TGroceryListItem) => i.name !== item.name)
+            currentItems.filter((i: TGroceryListItem) => i.id !== item.id)
         );
 
-        let route = '/api/groceryListItem/delete'
-        $fetch(route, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: {id: item.id}
-        });
+        try {
+            let route = '/api/groceryListItem/delete'
+            await $fetch(route, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: {id: item.id}
+            });
+
+            // Notify other users via Socket.io AFTER successful API call
+            notifyOtherUsers(currentListId.value, {...item, deleted: true});
+        } catch (error) {
+            console.error('Error deleting item:', error);
+            // Revert on error
+            itemsByListId.value.set(
+                currentListId.value,
+                [...currentItems]
+            );
+        }
     }
 
-    function checked(updatedItem: TGroceryListItem): void {
-        let route = '/api/groceryListItem/checked';
-        $fetch(route, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: { id: updatedItem.id, checked: updatedItem.checked }
-        });
-
+    async function checked(updatedItem: TGroceryListItem): Promise<void> {
         if (currentListId.value === null) return;
 
-        // Update the item in the Map
+        // Update the item in the Map FIRST for immediate UI feedback
         const currentItems = itemsByListId.value.get(currentListId.value) || [];
         itemsByListId.value.set(
             currentListId.value,
@@ -232,12 +250,36 @@ export function useGroceryList() {
                 item.id === updatedItem.id ? Object.assign({}, item, { checked: updatedItem.checked }) : item
             )
         );
+
+        // Then update on server
+        try {
+            let route = '/api/groceryListItem/checked';
+            await $fetch(route, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: { id: updatedItem.id, checked: updatedItem.checked }
+            });
+
+            // Notify other users via Socket.io AFTER successful API call
+            notifyOtherUsers(currentListId.value, updatedItem);
+        } catch (error) {
+            console.error('Error updating checked status:', error);
+            // Revert the optimistic update on error
+            itemsByListId.value.set(
+                currentListId.value,
+                currentItems.map((item: TGroceryListItem) =>
+                    item.id === updatedItem.id ? Object.assign({}, item, { checked: !updatedItem.checked }) : item
+                )
+            );
+        }
     }
 
-    function updateItem(item: TGroceryListItem): void {
+    async function updateItem(item: TGroceryListItem): Promise<void> {
         if (currentListId.value === null) return;
 
-        // Update the item in the Map
+        // Update the item in the Map FIRST for immediate UI feedback
         const currentItems = itemsByListId.value.get(currentListId.value) || [];
         itemsByListId.value.set(
             currentListId.value,
@@ -246,24 +288,31 @@ export function useGroceryList() {
             )
         );
 
-        let route = '/api/groceryListItem/update'
-        $fetch(route, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: {item}
-        });
+        try {
+            let route = '/api/groceryListItem/update'
+            await $fetch(route, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: {item}
+            });
+
+            // Notify other users via Socket.io AFTER successful API call
+            notifyOtherUsers(currentListId.value, item);
+        } catch (error) {
+            console.error('Error updating item:', error);
+        }
     }
 
-    function increaseItems(item: TGroceryListItem): void {
+    async function increaseItems(item: TGroceryListItem): Promise<void> {
         if (currentListId.value === null) return;
 
         const currentItems = itemsByListId.value.get(currentListId.value) || [];
         const foundItem = currentItems.find((i: TGroceryListItem) => i.id === item.id);
         if (!foundItem) return;
 
-        // Update the item quantity in the Map
+        // Update the item quantity in the Map FIRST for immediate UI feedback
         itemsByListId.value.set(
             currentListId.value,
             currentItems.map((i: TGroceryListItem) =>
@@ -271,17 +320,24 @@ export function useGroceryList() {
             )
         );
 
-        let route = '/api/groceryListItem/increase'
-        $fetch(route, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: {id: item.id}
-        });
+        try {
+            let route = '/api/groceryListItem/increase'
+            await $fetch(route, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: {id: item.id}
+            });
+
+            // Notify other users via Socket.io AFTER successful API call
+            notifyOtherUsers(currentListId.value, {...item, quantity: item.quantity + 1});
+        } catch (error) {
+            console.error('Error increasing item quantity:', error);
+        }
     }
 
-    function decreaseItems(item: TGroceryListItem): void {
+    async function decreaseItems(item: TGroceryListItem): Promise<void> {
         if (currentListId.value === null) return;
 
         const currentItems = itemsByListId.value.get(currentListId.value) || [];
@@ -290,6 +346,7 @@ export function useGroceryList() {
 
         const newQuantity = foundItem.quantity - 1;
 
+        // Update UI immediately
         if (newQuantity < 1) {
             // Remove item from the Map
             itemsByListId.value.set(
@@ -306,14 +363,24 @@ export function useGroceryList() {
             );
         }
 
-        let route = '/api/groceryListItem/decrease'
-        $fetch(route, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: {id: item.id}
-        });
+        try {
+            let route = '/api/groceryListItem/decrease'
+            await $fetch(route, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: {id: item.id}
+            });
+
+            // Notify other users via Socket.io AFTER successful API call
+            const notificationData = newQuantity < 1
+                ? {...item, deleted: true}
+                : {...item, quantity: newQuantity};
+            notifyOtherUsers(currentListId.value, notificationData);
+        } catch (error) {
+            console.error('Error decreasing item quantity:', error);
+        }
     }
 
     async function updatePendingListStatus(id: number, status: 'accepted' | 'declined'): Promise<any> {
