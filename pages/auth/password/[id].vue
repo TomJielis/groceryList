@@ -33,7 +33,7 @@ function triggerNewPassword()
 </script>
 
 <template>
-  <div class="fixed inset-0 md:pt-16 flex items-start justify-center bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 px-4 pt-4 pb-24 md:pt-8 md:pb-8 overflow-y-auto">
+  <div class="fixed inset-0 flex items-start justify-center bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 px-4 pt-4 pb-24 md:pt-16 md:pb-8 overflow-y-auto">
     <div class="w-full max-w-md my-4 md:my-8">
       <!-- Card -->
       <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
