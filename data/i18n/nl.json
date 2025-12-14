@@ -133,6 +133,7 @@
     "pricePlaceholder": "€ prijs",
     "addNew": "Items toevoegen",
     "suggestions": "suggesties",
+    "total": "Totaal",
     "emptyState": {
       "title": "Nog geen items",
       "message": "Begin met het toevoegen van items aan je boodschappenlijst. Klik op de + knop hieronder om je eerste item toe te voegen!"
@@ -165,7 +166,7 @@
     "languageChanged": "Taal succesvol gewijzigd",
     "emailLocked": "Email kan niet worden gewijzigd",
     "accountActions": "Account Acties",
-    "dangerZone": "Gevarenzone",
+    "dangerZone": "Gevaarlijke acties",
     "deactivateAccount": "Account Deactiveren",
     "deactivateAccountTitle": "Account Deactiveren",
     "deactivateAccountWarning": "Deze actie kan niet ongedaan worden gemaakt. Je account en alle gegevens worden permanent verwijderd.",
