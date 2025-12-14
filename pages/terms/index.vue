@@ -6,25 +6,62 @@ const config = useRuntimeConfig()
 const i18n = useI18nStore();
 </script>
 
+<style scoped>
+section p,
+section ul {
+  @apply text-slate-700 dark:text-slate-300;
+}
+
+section h2 {
+  @apply text-xl font-bold text-slate-900 dark:text-white mb-3;
+}
+
+section h3 {
+  @apply text-lg font-semibold text-slate-800 dark:text-slate-200 mt-4 mb-2;
+}
+
+section h4 {
+  @apply text-base font-semibold text-slate-800 dark:text-slate-200 mt-3 mb-2;
+}
+
+section ul {
+  @apply list-disc pl-6 mb-3 space-y-1;
+}
+
+section ul li {
+  @apply text-slate-700 dark:text-slate-300;
+}
+</style>
+
 <template>
-  <div class="max-w-2xl mx-auto p-4">
-    <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
-      <h1 class="text-2xl font-bold text-primary-dark dark:text-accent-light mb-2">📄 Terms of Use & Privacy Policy – Grocery List</h1>
-      <div class="text-sm text-slate-500 mb-4">Laatste versie: 1.2<br>Laatst bijgewerkt: 10-11-2025 16:30</div>
-      <hr class="my-4 border-slate-200 dark:border-slate-700" />
+  <div class="fixed inset-0 flex items-start justify-center bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 px-4 pt-4 pb-24 md:pt-20 md:pb-8 overflow-y-auto">
+    <div class="w-full max-w-3xl my-4 md:my-8">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-center">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
+            <span class="text-4xl">📄</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">Terms of Use & Privacy Policy</h1>
+          <p class="text-blue-100 text-sm">Laatste versie: 1.2 | Laatst bijgewerkt: 10-11-2025</p>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6 md:p-8 flex flex-col gap-6">
+          <hr class="border-slate-200 dark:border-slate-700" />
       <section>
-        <h2 class="text-lg font-bold mb-2">1. Over deze applicatie</h2>
-        <p>Deze applicatie (“Grocery List”) is een persoonlijke webapplicatie waarmee gebruikers boodschappenlijsten kunnen aanmaken, bekijken, delen, bewerken en verwijderen. De applicatie is ontwikkeld voor persoonlijk gebruik en heeft als doel het beheren van boodschappen overzichtelijker te maken.</p>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">1. Over deze applicatie</h2>
+        <p class="text-slate-700 dark:text-slate-300">Deze applicatie ("Grocery List") is een persoonlijke webapplicatie waarmee gebruikers boodschappenlijsten kunnen aanmaken, bekijken, delen, bewerken en verwijderen. De applicatie is ontwikkeld voor persoonlijk gebruik en heeft als doel het beheren van boodschappen overzichtelijker te maken.</p>
       </section>
       <hr class="my-4 border-slate-200 dark:border-slate-700" />
       <section>
-        <h2 class="text-lg font-bold mb-2">2. Beheerder van de applicatie</h2>
-        <p>De applicatie wordt beheerd door de ontwikkelaar van Grocery List (“Beheerder”). Voor vragen kun je contact opnemen via het e-mailadres dat in de applicatie wordt vermeld.</p>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">2. Beheerder van de applicatie</h2>
+        <p class="text-slate-700 dark:text-slate-300">De applicatie wordt beheerd door de ontwikkelaar van Grocery List ("Beheerder"). Voor vragen kun je contact opnemen via het e-mailadres dat in de applicatie wordt vermeld.</p>
       </section>
       <hr class="my-4 border-slate-200 dark:border-slate-700" />
       <section>
-        <h2 class="text-lg font-bold mb-2">🔒 Privacy Policy</h2>
-        <h3 class="font-semibold mt-2">3. Welke gegevens worden verzameld</h3>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">🔒 Privacy Policy</h2>
+        <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 mt-4 mb-2">3. Welke gegevens worden verzameld</h3>
         <ul class="list-disc pl-6 mb-2">
           <li>Naam</li>
           <li>E-mailadres</li>
@@ -255,6 +292,8 @@ const i18n = useI18nStore();
         <h4 class="font-semibold mt-2">21. External processors</h4>
         <p>For the operation of the application, the Administrator uses trusted external services, such as hosting providers and email services. These parties process data only on behalf of the Administrator and in accordance with the GDPR. The Administrator remains responsible for careful handling of this data.</p>
       </section>
+        </div>
+      </div>
     </div>
   </div>
 </template>
