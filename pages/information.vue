@@ -99,7 +99,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
+  <div class="flex flex-col">
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto overflow-x-hidden w-full">
       <!-- Hero Header -->
