@@ -12,6 +12,7 @@ const form = ref({
 });
 
 const hasError = ref(false)
+const verified = ref(false)
 const errorText = ref('')
 const title = ref(i18n.t('auth.verifyEmailTitle'));
 const body = ref(i18n.t('auth.verifyingEmail'));
@@ -25,6 +26,7 @@ form.value.token = route.params.id as string;
 auth.verifyEmail(form.value.token).then((data:any) => {
   title.value = i18n.t('auth.emailVerifiedTitle');
   body.value = i18n.t('auth.emailVerifiedBody');
+  verified.value = true;
 }).catch((error) => {
   title.value = i18n.t('auth.emailVerifyFailedTitle');
   body.value = i18n.t('auth.emailVerifyFailedBody');
@@ -50,8 +52,15 @@ auth.verifyEmail(form.value.token).then((data:any) => {
         <!-- Content -->
         <div class="p-8 text-center space-y-6">
           <!-- Icon Status -->
-          <div v-if="!hasError" class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+          <div v-if="!hasError">
+            <div v-if="!verified" class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30">
+              <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+            </div>
+            <div v-else class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/30">
+              <svg class="w-10 h-10 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
           </div>
           <div v-else class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-100 dark:bg-red-900/30">
             <svg class="w-10 h-10 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
