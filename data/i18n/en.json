@@ -138,7 +138,8 @@
     "emptyState": {
       "title": "No Items Yet",
       "message": "Start adding items to your grocery list. Click the + button below to add your first item!"
-    }
+    },
+    "inList": "In your list"
   },
   "cards": {
     "available": "Available Cards",

@@ -138,7 +138,8 @@
     "emptyState": {
       "title": "Nog geen items",
       "message": "Begin met het toevoegen van items aan je boodschappenlijst. Klik op de + knop hieronder om je eerste item toe te voegen!"
-    }
+    },
+    "inList": "In je lijst"
   },
   "cards": {
     "available": "Beschikbare kaarten",
