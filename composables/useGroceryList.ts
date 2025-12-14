@@ -188,6 +188,12 @@ export function useGroceryList() {
             // Add to the specific list's items
             const currentItems = itemsByListId.value.get(listId) || [];
             itemsByListId.value.set(listId, [...currentItems, newItem]);
+
+            // Notify other users via Socket.io
+            if (process.client) {
+                const { notifyItemUpdate } = useSocket();
+                notifyItemUpdate(listId, newItem);
+            }
         } catch (error) {
             console.error('Error adding item:', error);
         }
@@ -232,6 +238,12 @@ export function useGroceryList() {
                 item.id === updatedItem.id ? Object.assign({}, item, { checked: updatedItem.checked }) : item
             )
         );
+
+        // Notify other users via Socket.io
+        if (process.client && currentListId.value) {
+            const { notifyItemUpdate } = useSocket();
+            notifyItemUpdate(currentListId.value, updatedItem);
+        }
     }
 
     function updateItem(item: TGroceryListItem): void {
@@ -254,6 +266,12 @@ export function useGroceryList() {
             },
             body: {item}
         });
+
+        // Notify other users via Socket.io
+        if (process.client && currentListId.value) {
+            const { notifyItemUpdate } = useSocket();
+            notifyItemUpdate(currentListId.value, item);
+        }
     }
 
     function increaseItems(item: TGroceryListItem): void {
@@ -279,6 +297,12 @@ export function useGroceryList() {
             },
             body: {id: item.id}
         });
+
+        // Notify other users via Socket.io
+        if (process.client && currentListId.value) {
+            const { notifyItemUpdate } = useSocket();
+            notifyItemUpdate(currentListId.value, {...item, quantity: item.quantity + 1});
+        }
     }
 
     function decreaseItems(item: TGroceryListItem): void {
@@ -314,6 +338,16 @@ export function useGroceryList() {
             },
             body: {id: item.id}
         });
+
+        // Notify other users via Socket.io
+        if (process.client && currentListId.value) {
+            const { notifyItemUpdate } = useSocket();
+            if (newQuantity < 1) {
+                notifyItemUpdate(currentListId.value, {...item, deleted: true});
+            } else {
+                notifyItemUpdate(currentListId.value, {...item, quantity: newQuantity});
+            }
+        }
     }
 
     async function updatePendingListStatus(id: number, status: 'accepted' | 'declined'): Promise<any> {

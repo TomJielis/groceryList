@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import {ref, computed, onMounted} from 'vue'; // added onMounted
+import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import {useRoute} from 'vue-router';
 import AddItemListForm from '~/components/list/AddItemListForm.vue';
 import GroceryListItem from '~/components/list/groceryListItem.vue';
 import {useGroceryList} from '~/composables/useGroceryList';
 import {useListStore} from '~/stores/lists';
 import {useI18nStore} from '~/stores/i18n';
+import {useAuthStore} from '~/stores/auth';
+import {useSocket} from '~/composables/useSocket';
 import AddButton from "~/components/form/addButton.vue";
 import Loader from '~/components/Loader.vue';
 
@@ -15,6 +17,7 @@ definePageMeta({
 });
 
 const listStore = useListStore();
+const authStore = useAuthStore();
 const route = useRoute();
 const loading = ref(true);
 
@@ -24,6 +27,9 @@ const i18n = useI18nStore();
 const showAddItem = ref(false);
 const showCheckedItems = ref(false);
 const editingItemId = ref<number | null>(null);
+
+// Socket.io for real-time updates
+const { connect, joinList, leaveList, onListRefresh, onItemChanged, offListRefresh, offItemChanged, notifyListUpdate } = useSocket();
 
 
 const {
@@ -45,6 +51,45 @@ onMounted(async () => {
       loading.value = false;
     }
     loading.value = false;
+
+    // Connect to Socket.io and join the list room
+    console.log('[List Page] Setting up Socket.io connection for list:', listId)
+    connect();
+    joinList(Number(listId));
+
+    // Listen for real-time updates from other users
+    const handleListRefresh = async (data: { listId: number, userId: number }) => {
+      console.log('[List Page] 📬 List updated by another user:', data);
+      console.log('[List Page] Current user ID:', authStore.user?.id, 'Update from:', data.userId);
+
+      // Only refresh if the update came from a different user
+      if (data.userId !== authStore.user?.id) {
+        console.log('[List Page] 🔄 Refreshing items...');
+        await fetchItems(Number(listId));
+      } else {
+        console.log('[List Page] ⏭️ Skipping refresh (own update)');
+      }
+    };
+
+    const handleItemChanged = async (data: { listId: number, item: any }) => {
+      console.log('[List Page] 📬 Item changed by another user:', data);
+      console.log('[List Page] 🔄 Refreshing items...');
+      // Refresh the items to get the latest state
+      await fetchItems(Number(listId));
+    };
+
+    onListRefresh(handleListRefresh);
+    onItemChanged(handleItemChanged);
+    console.log('[List Page] ✅ Event listeners registered');
+  }
+});
+
+onBeforeUnmount(() => {
+  // Leave the list room when component unmounts
+  if (listId && !isNaN(Number(listId))) {
+    leaveList(Number(listId));
+    offListRefresh(() => {});
+    offItemChanged(() => {});
   }
 });
 

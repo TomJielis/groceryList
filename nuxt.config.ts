@@ -11,6 +11,10 @@ export default defineNuxtConfig({
       ]
     }
   },
+  // Exclude Socket.io paths from Nuxt router
+  routeRules: {
+    '/socket.io/**': { ssr: false },
+  },
   modules: ['@pinia/nuxt'],
   css: ['@/assets/css/tailwind.css', '@/assets/css/main.css'],
   postcss: {
