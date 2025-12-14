@@ -8,6 +8,17 @@ const itemsByListId = ref<Map<number, TGroceryListItem[]>>(new Map());
 const lists = ref<TGroceryList[]>([]);
 const currentListId = ref<number | null>(null);
 
+/**
+ * Helper function to notify other users via Socket.io
+ * Only works on client-side and when currentListId is set
+ */
+function notifyOtherUsers(listId: number | null, item: any): void {
+    if (process.client && listId !== null) {
+        const { notifyItemUpdate } = useSocket();
+        notifyItemUpdate(listId, item);
+    }
+}
+
 export function useGroceryList() {
 
     // Computed items for the current list
@@ -190,10 +201,7 @@ export function useGroceryList() {
             itemsByListId.value.set(listId, [...currentItems, newItem]);
 
             // Notify other users via Socket.io
-            if (process.client) {
-                const { notifyItemUpdate } = useSocket();
-                notifyItemUpdate(listId, newItem);
-            }
+            notifyOtherUsers(listId, newItem);
         } catch (error) {
             console.error('Error adding item:', error);
         }
@@ -220,10 +228,7 @@ export function useGroceryList() {
             });
 
             // Notify other users via Socket.io AFTER successful API call
-            if (process.client && currentListId.value) {
-                const { notifyItemUpdate } = useSocket();
-                notifyItemUpdate(currentListId.value, {...item, deleted: true});
-            }
+            notifyOtherUsers(currentListId.value, {...item, deleted: true});
         } catch (error) {
             console.error('Error deleting item:', error);
             // Revert on error
@@ -258,10 +263,7 @@ export function useGroceryList() {
             });
 
             // Notify other users via Socket.io AFTER successful API call
-            if (process.client && currentListId.value) {
-                const { notifyItemUpdate } = useSocket();
-                notifyItemUpdate(currentListId.value, updatedItem);
-            }
+            notifyOtherUsers(currentListId.value, updatedItem);
         } catch (error) {
             console.error('Error updating checked status:', error);
             // Revert the optimistic update on error
@@ -297,10 +299,7 @@ export function useGroceryList() {
             });
 
             // Notify other users via Socket.io AFTER successful API call
-            if (process.client && currentListId.value) {
-                const { notifyItemUpdate } = useSocket();
-                notifyItemUpdate(currentListId.value, item);
-            }
+            notifyOtherUsers(currentListId.value, item);
         } catch (error) {
             console.error('Error updating item:', error);
         }
@@ -332,10 +331,7 @@ export function useGroceryList() {
             });
 
             // Notify other users via Socket.io AFTER successful API call
-            if (process.client && currentListId.value) {
-                const { notifyItemUpdate } = useSocket();
-                notifyItemUpdate(currentListId.value, {...item, quantity: item.quantity + 1});
-            }
+            notifyOtherUsers(currentListId.value, {...item, quantity: item.quantity + 1});
         } catch (error) {
             console.error('Error increasing item quantity:', error);
         }
@@ -378,14 +374,10 @@ export function useGroceryList() {
             });
 
             // Notify other users via Socket.io AFTER successful API call
-            if (process.client && currentListId.value) {
-                const { notifyItemUpdate } = useSocket();
-                if (newQuantity < 1) {
-                    notifyItemUpdate(currentListId.value, {...item, deleted: true});
-                } else {
-                    notifyItemUpdate(currentListId.value, {...item, quantity: newQuantity});
-                }
-            }
+            const notificationData = newQuantity < 1
+                ? {...item, deleted: true}
+                : {...item, quantity: newQuantity};
+            notifyOtherUsers(currentListId.value, notificationData);
         } catch (error) {
             console.error('Error decreasing item quantity:', error);
         }
