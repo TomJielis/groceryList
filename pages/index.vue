@@ -3,42 +3,17 @@ import {useGroceryList} from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
 import ShareListModal from '~/components/ShareListModal.vue';
 import deleteModal from '~/components/deleteModal.vue';
-import {ref, watch, computed, onMounted} from 'vue'
+import {ref, watch, computed, onMounted, onBeforeUnmount} from 'vue'
 import {useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
 import { useI18nStore } from '~/stores/i18n';
 import addButton from "~/components/form/addButton.vue"
 import Loader from '~/components/Loader.vue';
+import { useSocket } from '~/composables/useSocket';
 
 const listStore = useListStore();
 const loading = ref(true);
-onMounted(async () => {
-  loading.value = true;
-  try {
-    await listStore.fetchLists();
-  } catch (error) {
-    // Errors are handled by the global error interceptor
-    loading.value = false;
-  }
-  loading.value = false;
-})
-
-const sortedLists = computed(() => {
-  return [...listStore.lists].sort((a, b) => {
-    const isAFavorite = a.id === auth?.user?.favorite_list_id;
-    const isBFavorite = b.id === auth?.user?.favorite_list_id;
-    if (isAFavorite && !isBFavorite) return -1;
-    if (!isAFavorite && isBFavorite) return 1;
-    return 0;
-  });
-});
-
-definePageMeta({
-  middleware: ['auth', 'terms'],
-  requiresAuth: true,
-})
-
 const auth = useAuthStore()
 const list = useGroceryList()
 const {favorite, shareList, deleteList} = list
@@ -56,6 +31,64 @@ const shareListName = ref('')
 const showDeleteModal = ref(false)
 const deleteListId = ref<number | null>(null)
 const deleteListName = ref('')
+
+const { connect, onListRefresh, onItemChanged, offListRefresh, offItemChanged, joinList, leaveList } = useSocket();
+
+onMounted(async () => {
+  loading.value = true;
+  try {
+    await listStore.fetchLists();
+  } catch (error) {
+    // Errors are handled by the global error interceptor
+    loading.value = false;
+  }
+  loading.value = false;
+
+  // Connect to Socket.io and join all list rooms so index can receive progress updates
+  connect();
+  listStore.lists.forEach((l: any) => {
+    if (l?.id) joinList(Number(l.id));
+  });
+
+  const refreshLists = async () => {
+    // Re-fetch lists to update counts and progress bars
+    await listStore.fetchLists();
+  };
+
+  onListRefresh(async (data: { listId: number }) => {
+    // Only refresh affected list; for simplicity re-fetch all
+    await refreshLists();
+  });
+
+  onItemChanged(async (data: { listId: number }) => {
+    await refreshLists();
+  });
+});
+
+onBeforeUnmount(() => {
+  // Leave all joined rooms when leaving index page
+  listStore.lists.forEach((l: any) => {
+    if (l?.id) leaveList(Number(l.id));
+  });
+  offListRefresh(() => {});
+  offItemChanged(() => {});
+})
+
+const sortedLists = computed(() => {
+  return [...listStore.lists].sort((a, b) => {
+    const isAFavorite = a.id === auth?.user?.favorite_list_id;
+    const isBFavorite = b.id === auth?.user?.favorite_list_id;
+    if (isAFavorite && !isBFavorite) return -1;
+    if (!isAFavorite && isBFavorite) return 1;
+    return 0;
+  });
+});
+
+definePageMeta({
+  middleware: ['auth', 'terms'],
+  requiresAuth: true,
+})
+
 
 function handleList() {
   openListForm.value = false
