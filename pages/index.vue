@@ -124,8 +124,9 @@ function shareListWithUser(id: number) {
 
 function handleShareConfirm(email: string) {
   if (shareListId.value && email.trim()) {
-    shareList(shareListId.value, email).then(() => {
+    shareList(shareListId.value, email).then(async () => {
       showSuccess(i18n.t('lists.shared'));
+      await listStore.fetchLists();
       showShareModal.value = false;
     }).catch((error) => {
       showNotification(error);
