@@ -36,6 +36,7 @@ onMounted(async () => {
 
 const newItem = ref('');
 const loading = ref(true);
+const processing = ref<Set<string>>(new Set());
 
 async function addItemToList(itemName: string) {
   const name = itemName.trim();
@@ -43,6 +44,28 @@ async function addItemToList(itemName: string) {
 
   await addItem(name, listId);
   newItem.value = '';
+}
+
+function isInListUnchecked(name: string) {
+  return items.value.some(listItem => listItem.name.toLowerCase() === name.toLowerCase() && !listItem.checked);
+}
+
+async function toggleSuggestion(name: string) {
+  const key = name.toLowerCase();
+  if (processing.value.has(key)) return;
+  processing.value.add(key);
+  try {
+    const found = items.value.find(listItem => listItem.name.toLowerCase() === key && !listItem.checked);
+    if (found) {
+      // Item already in list (unchecked) => decrease/remove
+      await decreaseItems(found);
+    } else {
+      // Not in list => add
+      await addItem(name, listId);
+    }
+  } finally {
+    processing.value.delete(key);
+  }
 }
 
 const filteredSuggestions = computed(() => {
@@ -197,14 +220,15 @@ const filteredSuggestions = computed(() => {
                 <div class="flex items-center gap-3 p-4">
                   <!-- Add/Check Button -->
                   <button
-                    @click="addItemToList(item.name)"
+                    @click="toggleSuggestion(item.name)"
                     class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200 active:scale-95"
-                    :class="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)
+                    :class="isInListUnchecked(item.name)
                       ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
                       : 'bg-gradient-to-br from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl'"
+                    :disabled="processing.has(item.name.toLowerCase())"
                   >
                     <svg
-                      v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
+                      v-if="isInListUnchecked(item.name)"
                       class="w-6 h-6"
                       fill="none"
                       stroke="currentColor"
