@@ -8,8 +8,6 @@ import {useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
 import { useI18nStore } from '~/stores/i18n';
-import addButton from "~/components/form/addButton.vue"
-import Loader from '~/components/Loader.vue';
 import { useSocket } from '~/composables/useSocket';
 
 const listStore = useListStore();
@@ -223,134 +221,241 @@ function openListSettings(id: number) {
 
 
 <template>
-  <div class="max-w-2xl mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-6 text-primary-dark dark:text-accent-light text-center">🛒 {{ i18n.t('lists.title') }}</h1>
-    <div v-if="!openListForm" class="flex-1 flex flex-col">
-      <Loader v-if="loading" />
-      <div v-else-if="sortedLists.length === 0" class="flex flex-1 flex-col items-center justify-center px-4 py-40 text-center">
-        <div class="text-8xl mb-6 opacity-50">🛒</div>
-        <h2 class="text-2xl font-bold mb-2 text-primary-dark dark:text-accent-light">
-          {{ i18n.t('lists.emptyState.title') }}
-        </h2>
-        <p class="text-slate-600 dark:text-slate-400 mb-8 max-w-md">
-          {{ i18n.t('lists.emptyState.message') }}
-        </p>
-        <addButton @click="openListForm = true" />
-      </div>
-
-      <ul v-else class="space-y-5">
-        <li
-            v-for="listItem in sortedLists"
-            :key="listItem.id"
-            @click="$router.push(`/list/${listItem.id}`)"
-            class="cursor-pointer bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-5 active:shadow-2xl border border-border-light dark:border-border-dark transition relative hover:shadow-2xl hover:border-accent/60 group"
-        >
-          <div class="flex items-start justify-between ">
-            <div>
-          <span class="text-base font-medium break-words whitespace-normal">
-            {{ listItem.name }}
-            <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-yellow-500">⭐</span>
-          </span>
+  <div class="fixed inset-0 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
+    <!-- Fixed Header -->
+    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm touch-none">
+      <div class="max-w-2xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex-1 min-w-0">
+            <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <span class="text-2xl">🛒</span>
+              <span>{{ i18n.t('lists.title') || 'Mijn Lijsten' }}</span>
+            </h1>
+            <div class="flex items-center gap-3 mt-1 text-sm text-slate-600 dark:text-slate-400">
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                {{ sortedLists.length }} {{ i18n.t('lists.listCount') || 'lijsten' }}
+              </span>
+              <span v-if="sortedLists.length > 0" class="w-1 h-1 rounded-full bg-slate-400"></span>
+              <span v-if="sortedLists.length > 0" class="flex items-center gap-1 text-blue-600 dark:text-blue-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                {{ sortedLists.reduce((sum, list) => sum + (list.grocery_list_items_checked_count || 0), 0) }} {{ i18n.t('lists.completed') || 'afgevinkt' }}
+              </span>
             </div>
-            <div class="relative ml-2">
-              <button
-                  class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent/10 text-accent active:bg-accent/20 transition border border-accent/30 focus:ring-2 focus:ring-accent"
-                  @click.stop="toggleDropdown(listItem.id)"
-              >
-                ⋮
-              </button>
+          </div>
+          <!-- Add List Button -->
+          <button
+            v-if="!openListForm"
+            @click="openListForm = true"
+            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
 
-              <div
-                  v-if="openDropdown === listItem.id"
-                  class="dropdown-menu absolute right-0 top-0 z-[99999] w-44 bg-white dark:bg-slate-900 border border-accent/30 dark:border-accent/40 rounded-xl shadow-2xl py-2 flex flex-col gap-1"
-              >
-                <button
-                    class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
-                    @click.stop="setFavoriteList(listItem.id)"
-                >
-                  {{ auth?.user?.favorite_list_id === listItem.id
-                    ? `❌ ${i18n.t('lists.menu.removeFavorite')}`
-                    : `⭐ ${i18n.t('lists.menu.markFavorite')}` }}
-                </button>
-                <button
-                    v-if="listItem.created_by.id == auth.user.id"
-                    class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
-                    @click.stop="openListSettings(listItem.id)"
-                >
-                  ⚙️ {{ i18n.t('lists.menu.edit')}}
-                </button>
-                <button
-                    v-if="listItem.created_by.id == auth.user.id"
-                    class="block w-full text-left px-4 py-3 rounded-lg hover:bg-accent/20 dark:hover:bg-accent/30 transition text-accent dark:text-accent font-semibold"
-                    @click.stop="shareListWithUser(listItem.id)"
-                >
-                  👥 {{ i18n.t('lists.menu.share') }}
-                </button>
-                <button
-                    class="block w-full text-left px-4 py-3 rounded-lg text-error hover:bg-error/10 dark:hover:bg-error/20 transition font-semibold"
-                    @click.stop="deleteListItem(listItem.id)"
-                >
-                  🗑️ {{ listItem.created_by.id == auth.user.id ?  i18n.t('lists.menu.delete') : i18n.t('lists.menu.leave') }}
-                </button>
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto overflow-x-hidden">
+      <div class="max-w-2xl mx-auto px-4 pb-24 pt-6">
+        <div v-if="!openListForm">
+          <div v-if="loading" class="flex items-center justify-center py-20">
+            <div class="text-center">
+              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+              <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') || 'Laden...' }}</p>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div v-else-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-20 px-6">
+            <div class="w-32 h-32 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-full flex items-center justify-center mb-6 animate-bounce">
+              <span class="text-6xl">🛒</span>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-3 text-center">
+              {{ i18n.t('lists.emptyState.title') }}
+            </h2>
+            <p class="text-slate-600 dark:text-slate-400 text-center max-w-sm mb-8">
+              {{ i18n.t('lists.emptyState.message') }}
+            </p>
+            <button
+              @click="openListForm = true"
+              class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              <span>{{ i18n.t('lists.createFirst') || 'Maak je eerste lijst' }}</span>
+            </button>
+          </div>
+
+          <!-- Lists Grid -->
+          <div v-else class="space-y-3">
+            <div
+              v-for="listItem in sortedLists"
+              :key="listItem.id"
+              @click="$router.push(`/list/${listItem.id}`)"
+              class="cursor-pointer bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-lg border border-slate-200 dark:border-slate-700 transition-all duration-200 group active:scale-98"
+            >
+              <div class="p-5">
+                <div class="flex items-start justify-between mb-3">
+                  <div class="flex-1 min-w-0">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-2">
+                      <span class="truncate">{{ listItem.name }}</span>
+                      <span v-if="auth?.user?.favorite_list_id === listItem.id" class="flex-shrink-0 text-yellow-500">⭐</span>
+                    </h3>
+
+                    <!-- Stats Row -->
+                    <div class="flex items-center gap-3 mt-2 text-sm text-slate-600 dark:text-slate-400">
+                      <span class="flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        {{ (listItem.grocery_list_items_count || 0) - (listItem.grocery_list_items_checked_count || 0) }} {{ i18n.t('lists.remaining') || 'te doen' }}
+                      </span>
+                      <span v-if="calculateProgress(listItem) > 0" class="flex items-center gap-1 text-green-600 dark:text-green-400 font-medium">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        {{ calculateProgress(listItem) }}%
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Menu Button -->
+                  <div class="relative ml-2 flex-shrink-0">
+                    <button
+                      class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                      @click.stop="toggleDropdown(listItem.id)"
+                    >
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                      </svg>
+                    </button>
+
+                    <div
+                      v-if="openDropdown === listItem.id"
+                      class="dropdown-menu absolute right-0 top-12 z-[99999] w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl py-2 flex flex-col"
+                    >
+                      <button
+                        class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
+                        @click.stop="setFavoriteList(listItem.id)"
+                      >
+                        <span>{{ auth?.user?.favorite_list_id === listItem.id ? '⭐' : '☆' }}</span>
+                        <span>{{ auth?.user?.favorite_list_id === listItem.id ? i18n.t('lists.menu.removeFavorite') : i18n.t('lists.menu.markFavorite') }}</span>
+                      </button>
+                      <button
+                        v-if="listItem.created_by.id == auth.user.id"
+                        class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
+                        @click.stop="openListSettings(listItem.id)"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        <span>{{ i18n.t('lists.menu.edit') }}</span>
+                      </button>
+                      <button
+                        v-if="listItem.created_by.id == auth.user.id"
+                        class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
+                        @click.stop="shareListWithUser(listItem.id)"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                        </svg>
+                        <span>{{ i18n.t('lists.menu.share') }}</span>
+                      </button>
+                      <div class="h-px bg-slate-200 dark:bg-slate-700 my-1"></div>
+                      <button
+                        class="w-full text-left px-4 py-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-red-600 dark:text-red-400 font-medium flex items-center gap-2"
+                        @click.stop="deleteListItem(listItem.id)"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        <span>{{ listItem.created_by.id == auth.user.id ? i18n.t('lists.menu.delete') : i18n.t('lists.menu.leave') }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="flex-1 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-500"
+                      :style="{ width: `${calculateProgress(listItem)}%` }"
+                    ></div>
+                  </div>
+                  <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 min-w-fit">
+                    {{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }}
+                  </span>
+                </div>
+
+                <!-- Shared Users -->
+                <div v-if="listItem.grocery_list_invites && listItem.grocery_list_invites.length > 0" class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                  </svg>
+                  <div class="flex items-center -space-x-2">
+                    <span
+                      v-for="invite in listItem.grocery_list_invites.slice(0, 3)"
+                      :key="invite.user?.id"
+                      class="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700"
+                      :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
+                      :title="invite.user?.name"
+                    >
+                      {{ invite.user?.name.charAt(0).toUpperCase() ?? '?' }}
+                    </span>
+                    <span
+                      class="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700"
+                      :style="{ backgroundColor: stringToColor(listItem.created_by.name) }"
+                      :title="listItem.created_by.name + ' (eigenaar)'"
+                    >
+                      {{ listItem.created_by.name.charAt(0).toUpperCase() }}
+                    </span>
+                    <span
+                      v-if="listItem.grocery_list_invites.length > 3"
+                      class="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-slate-200 dark:bg-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-400 shadow-sm"
+                    >
+                      +{{ listItem.grocery_list_invites.length - 3 }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="mt-3 flex items-center space-x-2">
-            <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                  class="h-full bg-green-500 rounded-full transition-all duration-300"
-                  :style="{ width: `${calculateProgress(listItem)}%` }"
-              ></div>
-            </div>
-            <div class="text-sm text-gray-600 min-w-fit">
-              {{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }}
-            </div>
-          </div>
-          <div
-              v-if="listItem.grocery_list_invites && listItem.grocery_list_invites.length > 0"
-              class="flex items-center mt-3 space-x-[-8px]"
-          >
-        <span
-            v-for="invite in listItem.grocery_list_invites"
-            class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
-            :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
-        >
-          {{ invite.user?.name.charAt(0).toUpperCase() ?? '?' }}
-        </span>
-            <span
-                class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white text-sm font-semibold text-gray-800 shadow-sm"
-                :style="{ backgroundColor: stringToColor(listItem.created_by.name) }"
-                :title="listItem.created_by.name"
-            >
-          {{ listItem.created_by.name.charAt(0).toUpperCase() }}
-        </span>
-          </div>
-        </li>
-      </ul>
-      <addButton v-if="sortedLists.length" @click="openListForm = true" />
+        </div>
+
+        <!-- List Form -->
+        <div v-else class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <ListForm :list-id="editListId" @list-added="handleList" @close="() => { openListForm = false; editListId = null }"/>
+        </div>
+      </div>
     </div>
 
-    <div v-else>
-      <ListForm :list-id="editListId" @list-added="handleList" @close="() => { openListForm = false; editListId = null }"/>
-    </div>
-
-    <ShareListModal
-        :is-visible="showShareModal"
-        v-model:email="shareEmail"
-        :list-name="shareListName"
-        @close="closeShareModal"
-        @confirm="handleShareConfirm"
-    />
-
-    <deleteModal
-        :is-visible="showDeleteModal"
-        :title="i18n.t('lists.deleteTitle')"
-        :content="i18n.t('lists.confirmDelete')"
-        :item-name="deleteListName"
-        :delete-button-text="i18n.t('lists.deleteBtn')"
-        :withValidation="true"
-        @close="closeDeleteModal"
-        @confirm="handleDeleteConfirm"
-    />
   </div>
+
+  <ShareListModal
+    :is-visible="showShareModal"
+    v-model:email="shareEmail"
+    :list-name="shareListName"
+    @close="closeShareModal"
+    @confirm="handleShareConfirm"
+  />
+
+  <deleteModal
+    :is-visible="showDeleteModal"
+    :title="i18n.t('lists.deleteTitle')"
+    :content="i18n.t('lists.confirmDelete')"
+    :item-name="deleteListName"
+    :delete-button-text="i18n.t('lists.deleteBtn')"
+    :withValidation="true"
+    @close="closeDeleteModal"
+    @confirm="handleDeleteConfirm"
+  />
 </template>
