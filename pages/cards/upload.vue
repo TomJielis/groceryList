@@ -55,7 +55,7 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div class="fixed inset-0 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
+  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
     <!-- Fixed Header -->
     <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm touch-none">
       <div class="max-w-2xl mx-auto px-4 py-4">
