@@ -139,7 +139,8 @@
       "title": "Nog geen items",
       "message": "Begin met het toevoegen van items aan je boodschappenlijst. Klik op de + knop hieronder om je eerste item toe te voegen!"
     },
-    "inList": "In je lijst"
+    "inList": "In je lijst",
+    "addFirst": "Voeg je eerste item toe"
   },
   "cards": {
     "available": "Beschikbare kaarten",
@@ -157,7 +158,12 @@
     "deleteCardName": "Kaart",
     "deleteBtn": "Verwijder kaart",
     "addBtn": "Kaart toevoegen",
-    "noCards": "Je hebt nog geen kaart toegevoegd."
+    "noCards": "Je hebt nog geen kaart toegevoegd.",
+    "emptyState": {
+      "title": "Nog geen kaarten",
+      "message": "Voeg je eerste klanten- of kortingskaart toe zodat je alles bij de hand hebt."
+    },
+    "uploadFirst": "Upload je eerste kaart"
   },
   "profile": {
     "title": "Profiel",

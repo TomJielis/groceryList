@@ -119,7 +119,8 @@
     "sharedUsersTitle": "Shared with",
     "sharedUsersNone": "Not shared with anyone yet",
     "sharedUserRemoved": "User removed from list",
-    "delete-shared-user-body": "Are you sure you want to remove access for this user?"
+    "delete-shared-user-body": "Are you sure you want to remove access for this user?",
+    "createFirst": "Create your first list"
   },
   "list": {
     "total": "Total",
@@ -139,7 +140,8 @@
       "title": "No Items Yet",
       "message": "Start adding items to your grocery list. Click the + button below to add your first item!"
     },
-    "inList": "In your list"
+    "inList": "In your list",
+    "addFirst": "Add your first item"
   },
   "cards": {
     "available": "Available Cards",
@@ -157,7 +159,12 @@
     "deleteCardName": "Card",
     "deleteBtn": "Delete card",
     "addBtn": "Add card",
-    "noCards": "You have not added any cards yet."
+    "noCards": "You have not added any cards yet.",
+    "emptyState": {
+      "title": "No cards yet",
+      "message": "Add your first loyalty or discount card to keep everything handy."
+    },
+    "uploadFirst": "Upload your first card"
   },
   "profile": {
     "title": "Profile",
