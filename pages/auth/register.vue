@@ -54,7 +54,7 @@ function handleLanguageChange(locale: 'nl' | 'en') {
       <!-- Card -->
       <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-center">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 text-center">
           <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
             <span class="text-4xl">📝</span>
           </div>
@@ -66,7 +66,6 @@ function handleLanguageChange(locale: 'nl' | 'en') {
         <div class="p-6">
           <div v-if="!verifyMailMessage">
             <form @submit.prevent="handleRegister" class="space-y-4">
-              <!-- Name Input -->
               <div>
                 <label for="name" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                   {{ i18n.t('auth.name') || 'Naam' }}
@@ -226,16 +225,3 @@ function handleLanguageChange(locale: 'nl' | 'en') {
     </div>
   </div>
 </template>
-
-<style scoped>
-:deep(.accept-terms-link) a {
-  color: #2563eb;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: color 0.2s;
-  font-weight: 600;
-}
-:deep(.accept-terms-link) a:hover {
-  color: #1d4ed8;
-}
-</style>

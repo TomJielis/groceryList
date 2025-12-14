@@ -55,7 +55,7 @@ function toggleLanguage() {
       <!-- Card -->
       <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-center">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6  text-center">
           <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
             <span class="text-4xl">🛒</span>
           </div>
