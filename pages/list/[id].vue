@@ -125,6 +125,10 @@ async function updateGroceryListItem(item: any) {
   }
 }
 
+async function handleCheckItem(item: any) {
+  await checked(item);
+}
+
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>
@@ -157,14 +161,14 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
               :item="item"
               :isEditing="editingItemId === item.id"
               @edit="editingItemId = $event"
-              @check="checked"
+              @check="handleCheckItem"
               @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
             />
           </transition-group>
 
           <p
             v-if="checkedItems.length"
-            class="text-center text-gray-700 mt-4 cursor-pointer hover:underline"
+            class="text-center text-gray-700 dark:text-gray-300 mt-4 cursor-pointer hover:underline"
             @click="showCheckedItems = !showCheckedItems"
           >
             {{ showCheckedItems ? i18n.t('list.hideChecked') : i18n.t('list.showChecked') }}
@@ -179,7 +183,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
                 :item="item"
                 :isEditing="editingItemId === item.id"
                 @edit="editingItemId = $event"
-                @check="checked"
+                @check="handleCheckItem"
                 @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
               />
             </transition-group>
