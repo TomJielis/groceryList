@@ -68,6 +68,7 @@
     "title": "Your grocery lists",
     "listCount": "lists",
     "completed": "completed",
+    "remaining": "remaining",
     "editList": "Edit list",
     "newList": "New list",
     "sharedWith": "Shared with",
@@ -144,6 +145,7 @@
     "title": "Title",
     "attachment": "Attachment",
     "upload": "Upload",
+    "uploadSubtitle": "Upload a photo or PDF",
     "view": "View",
     "manageYourCards": "Manage your discount cards",
     "titlePlaceholder": "E.g. Albert Heijn Bonus Card",
@@ -175,6 +177,8 @@
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Please type 'DELETE' to confirm account deletion",
     "accountDeactivated": "Account has been deactivated",
+    "primaryLanguage": "Primary language",
+    "secondaryLanguage": "Secondary language",
     "form": {
       "name": "Name",
       "email": "Email"

@@ -68,6 +68,7 @@
     "title": "Jouw boodschappenlijsten",
     "listCount": "lijsten",
     "completed": "afgevinkt",
+    "remaining": "te doen",
     "editList": "Lijst bewerken",
     "newList": "Nieuwe lijst",
     "sharedWith": "Gedeeld met",
@@ -144,6 +145,7 @@
     "title": "Titel",
     "attachment": "Bijlage",
     "upload": "Uploaden",
+    "uploadSubtitle": "Upload een foto of PDF",
     "view": "Bekijken",
     "manageYourCards": "Beheer je kortingskaarten",
     "titlePlaceholder": "Bijv. Albert Heijn Bonuskaart",
@@ -175,6 +177,8 @@
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Type 'DELETE' om account verwijdering te bevestigen",
     "accountDeactivated": "Account is gedeactiveerd",
+    "primaryLanguage": "Primaire taal",
+    "secondaryLanguage": "Secundaire taal",
     "form": {
       "name": "Naam",
       "email": "E-mail"

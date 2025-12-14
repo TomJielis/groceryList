@@ -397,30 +397,31 @@ function openListSettings(id: number) {
                 </div>
 
                 <!-- Shared Users -->
-                <div v-if="listItem.grocery_list_invites && listItem.grocery_list_invites.length > 0" class="flex items-center gap-2">
-                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div v-if="listItem.grocery_list_invites && listItem.grocery_list_invites.length > 0" class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
+                  <svg class="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                   </svg>
+                  <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ i18n.t('lists.sharedWith') }}:</span>
                   <div class="flex items-center -space-x-2">
                     <span
                       v-for="invite in listItem.grocery_list_invites.slice(0, 3)"
                       :key="invite.user?.id"
-                      class="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700"
-                      :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
+                      class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white dark:border-slate-800 text-xs font-bold shadow-md hover:scale-110 transition-transform cursor-help"
+                      :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#1e293b' }"
                       :title="invite.user?.name"
                     >
                       {{ invite.user?.name.charAt(0).toUpperCase() ?? '?' }}
                     </span>
                     <span
-                      class="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700"
-                      :style="{ backgroundColor: stringToColor(listItem.created_by.name) }"
+                      class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white dark:border-slate-800 text-xs font-bold shadow-md hover:scale-110 transition-transform cursor-help ring-2 ring-blue-500 dark:ring-blue-400"
+                      :style="{ backgroundColor: stringToColor(listItem.created_by.name), color: '#1e293b' }"
                       :title="listItem.created_by.name + ' (eigenaar)'"
                     >
                       {{ listItem.created_by.name.charAt(0).toUpperCase() }}
                     </span>
                     <span
                       v-if="listItem.grocery_list_invites.length > 3"
-                      class="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-slate-200 dark:bg-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-400 shadow-sm"
+                      class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-600 text-xs font-bold text-slate-700 dark:text-slate-200 shadow-md"
                     >
                       +{{ listItem.grocery_list_invites.length - 3 }}
                     </span>
