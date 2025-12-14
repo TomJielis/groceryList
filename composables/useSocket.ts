@@ -7,7 +7,6 @@ const isConnected = ref(false)
 export function useSocket() {
   const connect = () => {
     if (socket?.connected) {
-      console.log('[Socket.io Client] Already connected:', socket.id)
       return socket
     }
 
@@ -25,22 +24,18 @@ export function useSocket() {
     })
 
     socket.on('connect', () => {
-      console.log('[Socket.io Client] ✅ Connected! Socket ID:', socket?.id)
       isConnected.value = true
     })
 
     socket.on('disconnect', (reason) => {
-      console.log('[Socket.io Client] ❌ Disconnected. Reason:', reason)
       isConnected.value = false
     })
 
     socket.on('connect_error', (error) => {
-      console.error('[Socket.io Client] ⚠️ Connection error:', error.message)
       isConnected.value = false
     })
 
     socket.on('reconnect', (attemptNumber) => {
-      console.log('[Socket.io Client] 🔄 Reconnected after', attemptNumber, 'attempts')
     })
 
     return socket
@@ -61,47 +56,38 @@ export function useSocket() {
     if (socket && !socket.connected) {
       socket.once('connect', () => {
         socket?.emit('join-list', listId)
-        console.log('[Socket.io Client] 📥 Joining list:', listId)
       })
     } else {
       socket?.emit('join-list', listId)
-      console.log('[Socket.io Client] 📥 Joining list:', listId)
     }
   }
 
   const leaveList = (listId: number) => {
     socket?.emit('leave-list', listId)
-    console.log('[Socket.io Client] 📤 Leaving list:', listId)
   }
 
   const notifyListUpdate = (listId: number, userId: number) => {
     if (!socket?.connected) {
-      console.warn('[Socket.io Client] ⚠️ Cannot notify - not connected')
       return
     }
     socket.emit('list-updated', { listId, userId })
-    console.log('[Socket.io Client] 🔔 Notified list update:', { listId, userId })
   }
 
   const notifyItemUpdate = (listId: number, item: any) => {
     if (!socket?.connected) {
-      console.warn('[Socket.io Client] ⚠️ Cannot notify - not connected')
       return
     }
     socket.emit('item-updated', { listId, item })
-    console.log('[Socket.io Client] 🔔 Notified item update:', { listId, itemId: item.id })
   }
 
   const onListRefresh = (callback: (data: { listId: number, userId: number }) => void) => {
     socket?.on('list-refresh', (data) => {
-      console.log('[Socket.io Client] 📬 Received list-refresh:', data)
       callback(data)
     })
   }
 
   const onItemChanged = (callback: (data: { listId: number, item: any }) => void) => {
     socket?.on('item-changed', (data) => {
-      console.log('[Socket.io Client] 📬 Received item-changed:', data)
       callback(data)
     })
   }
