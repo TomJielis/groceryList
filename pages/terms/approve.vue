@@ -1,6 +1,5 @@
-
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18nStore } from '~/stores/i18n'
 import { useRouter } from 'vue-router'
 import {useAuth} from "~/composables/useAuth";
@@ -15,8 +14,18 @@ const acceptedTerms = ref(false)
 onMounted(async () => {
   try {
     const user = await auth.me()
-    if (user) authStore.setUser(user)
-  } catch {}
+    if (user) {
+      authStore.setUser(user)
+    } else {
+      authStore.clearAuth()
+      // No user returned (unauthorized) -> redirect to login
+      router.push('/auth/login')
+    }
+  } catch (err: any) {
+    authStore.clearAuth()
+    // If unauthorized or any failure fetching user, redirect to login
+    router.push('/auth/login')
+  }
 })
 
 const approveTerms = async () => {
