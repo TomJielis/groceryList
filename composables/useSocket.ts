@@ -35,9 +35,6 @@ export function useSocket() {
       isConnected.value = false
     })
 
-    socket.on('reconnect', (attemptNumber) => {
-    })
-
     return socket
   }
 
