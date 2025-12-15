@@ -181,6 +181,7 @@
     "deactivateAccountTitle": "Deactivate Account",
     "deactivateAccountWarning": "This action cannot be undone. Your account and all data will be permanently deleted.",
     "deactivateWarning": "This action is permanent and cannot be undone",
+    "permanentAction": "This is a permanent action",
     "deactivateAccountConfirm": "Please type 'DELETE' to confirm:",
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Please type 'DELETE' to confirm account deletion",

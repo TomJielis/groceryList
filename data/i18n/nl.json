@@ -180,6 +180,7 @@
     "deactivateAccountTitle": "Account Deactiveren",
     "deactivateAccountWarning": "Deze actie kan niet ongedaan worden gemaakt. Je account en alle gegevens worden permanent verwijderd.",
     "deactivateWarning": "Deze actie is permanent en kan niet ongedaan worden gemaakt",
+    "permanentAction": "Dit is een permanente actie",
     "deactivateAccountConfirm": "Type 'DELETE' om te bevestigen:",
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Type 'DELETE' om account verwijdering te bevestigen",
