@@ -150,14 +150,6 @@ const filteredSuggestions = computed(() => {
               </svg>
             </button>
           </div>
-
-          <!-- Subtitle -->
-          <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-            <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
-            <span class="font-medium">{{ i18n.t('items.addNew') || 'Items toevoegen' }}</span>
-          </div>
         </div>
       </div>
 
@@ -211,7 +203,7 @@ const filteredSuggestions = computed(() => {
 
           <!-- Suggestions List -->
           <div v-else class="space-y-2">
-            <transition-group name="list" tag="div" class="space-y-2">
+            <transition-group name="list" tag="div" class="space-y-2 pb-20">
               <div
                 v-for="item in filteredSuggestions"
                 :key="item.name"
