@@ -185,8 +185,6 @@
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Type 'DELETE' om account verwijdering te bevestigen",
     "accountDeactivated": "Account is gedeactiveerd",
-    "primaryLanguage": "Primaire taal",
-    "secondaryLanguage": "Secundaire taal",
     "form": {
       "name": "Naam",
       "email": "E-mail"

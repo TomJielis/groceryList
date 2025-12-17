@@ -26,7 +26,6 @@ function handleLanguageChange(locale: 'nl' | 'en') {
       </div>
       <div class="flex-1">
         <p class="font-bold text-slate-900 dark:text-white">{{ i18n.t('nav.dutch') || 'Nederlands' }}</p>
-        <p class="text-xs text-slate-500 dark:text-slate-400">{{ i18n.t('profile.primaryLanguage') || 'Primaire taal' }}</p>
       </div>
       <input
         type="radio"
@@ -48,7 +47,6 @@ function handleLanguageChange(locale: 'nl' | 'en') {
       </div>
       <div class="flex-1">
         <p class="font-bold text-slate-900 dark:text-white">{{ i18n.t('nav.english') || 'English' }}</p>
-        <p class="text-xs text-slate-500 dark:text-slate-400">{{ i18n.t('profile.secondaryLanguage') || 'Secondary language' }}</p>
       </div>
       <input
         type="radio"

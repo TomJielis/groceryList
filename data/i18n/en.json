@@ -186,8 +186,6 @@
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Please type 'DELETE' to confirm account deletion",
     "accountDeactivated": "Account has been deactivated",
-    "primaryLanguage": "Primary language",
-    "secondaryLanguage": "Secondary language",
     "form": {
       "name": "Name",
       "email": "Email"
