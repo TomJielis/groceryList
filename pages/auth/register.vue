@@ -122,7 +122,7 @@ function handleLanguageChange(locale: 'nl' | 'en') {
               </div>
 
               <!-- Language Selector - Only visible on desktop -->
-              <div class="hidden md:block">
+              <div class="md:block">
                 <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                   {{ i18n.t('profile.language') || 'Taal' }}
                 </label>
