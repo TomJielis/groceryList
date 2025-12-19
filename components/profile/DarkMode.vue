@@ -12,7 +12,7 @@ const isDarkMode = ref(false);
 
 onMounted(() => {
   // Explicitly default to light mode (false) unless user has dark_mode set to true
-  isDarkMode.value = authStore.user?.dark_mode === true;
+  isDarkMode.value = authStore.user?.dark_mode == true;
 });
 
 // Watch for changes in authStore.user.dark_mode

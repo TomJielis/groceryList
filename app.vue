@@ -50,7 +50,7 @@ const applyTheme = (darkMode: boolean) => {
 
 const initializeTheme = () => {
   // Priority: 1. User preference from database, 2. localStorage, 3. Default to light mode
-  if (authStore.user?.dark_mode === true) {
+  if (authStore.user?.dark_mode == true) {
     // User has explicitly enabled dark mode in the database
     applyTheme(true);
   } else if (authStore.user?.dark_mode === false) {
