@@ -53,7 +53,7 @@ const initializeTheme = () => {
   if (authStore.user?.dark_mode == true) {
     // User has explicitly enabled dark mode in the database
     applyTheme(true);
-  } else if (authStore.user?.dark_mode === false) {
+  } else if (authStore.user?.dark_mode == false) {
     // User has explicitly disabled dark mode in the database
     applyTheme(false);
   } else {
@@ -64,9 +64,9 @@ const initializeTheme = () => {
 
 // Watch for changes in user's dark_mode preference
 watch(() => authStore.user?.dark_mode, (newDarkMode) => {
-  if (newDarkMode === true) {
+  if (newDarkMode == true) {
     applyTheme(true);
-  } else if (newDarkMode === false) {
+  } else if (newDarkMode == false) {
     applyTheme(false);
   }
   // If undefined or null, do nothing (keep current theme)
