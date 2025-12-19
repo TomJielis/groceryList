@@ -11,7 +11,8 @@ const {
   items,
   fetchItems,
   increaseItems,
-  decreaseItems
+  decreaseItems,
+  clearItem
 } = useGroceryList();
 
 definePageMeta({
@@ -58,7 +59,7 @@ async function toggleSuggestion(name: string) {
     const found = items.value.find(listItem => listItem.name.toLowerCase() === key && !listItem.checked);
     if (found) {
       // Item already in list (unchecked) => decrease/remove
-      await decreaseItems(found);
+      await clearItem(found);
     } else {
       // Not in list => add
       await addItem(name, listId);
