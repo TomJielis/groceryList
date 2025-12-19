@@ -4,7 +4,13 @@ html, body {
     height: 100%;
     touch-action: none;
     -webkit-overflow-scrolling: auto;
-    background: #f3f4f6;
+    background: #ffffff; /* white for light mode */
+}
+
+/* Use class-based dark mode */
+html.dark,
+html.dark body {
+    background: #0f172a; /* slate-900 for dark mode */
 }
 
 html.pwa-standalone,
@@ -12,6 +18,8 @@ body.pwa-standalone {
     overflow: hidden;
     overscroll-behavior: none;
     -webkit-overflow-scrolling: auto;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .scrollable-content {

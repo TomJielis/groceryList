@@ -10,6 +10,7 @@ import AccountActions from '~/components/profile/AccountActions.vue';
 import DeactivateAccountModal from '~/components/profile/DeactivateAccountModal.vue';
 import {useAuth} from "~/composables/useAuth";
 import PendingLists from "~/components/list/PendingGroceryList.vue";
+import DarkMode from "~/components/profile/DarkMode.vue";
 
 definePageMeta({
   middleware: ['auth', 'terms'],
@@ -151,6 +152,11 @@ function handleLogout() {
           <div class="p-6">
             <LanguageSettings @language-change="handleLanguageChange" />
           </div>
+        </div>
+
+        <!-- Theme Settings -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <darkMode />
         </div>
 
         <!-- Account Actions -->
