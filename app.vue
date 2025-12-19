@@ -91,12 +91,9 @@ onMounted(() => {
   <div
       :class="['min-h-screen bg-gradient-to-br from-sky-50 via-blue-100 to-indigo-200 dark:from-slate-800 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 font-inter flex flex-col relative transition-colors',
       { 'pwa-standalone': pwa }]"
-      :style="pwa ? { paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' } : {}"
   >
     <Navbar
-        class="hidden md:block fixed top-0 left-0 right-0 z-50 h-12 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg"
-        :style="pwa ? { top: 'env(safe-area-inset-top)' } : {}"
-    />
+        class="hidden md:block fixed top-0 left-0 right-0 z-50 h-12 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg"/>
 
     <NotificationBar/>
 
@@ -107,9 +104,7 @@ onMounted(() => {
     </div>
 
     <BottomBar
-        class="md:hidden fixed bottom-0 left-0 right-0 z-50 h-16 shadow-xl border-t border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg"
-        :style="pwa ? { bottom: 'env(safe-area-inset-bottom)' } : {}"
-    />
+        class="md:hidden fixed bottom-0 left-0 right-0 z-50 h-16 shadow-xl border-t border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg"/>
   </div>
 </template>
 
@@ -127,8 +122,17 @@ html.dark,
 html.dark body {
   background-color: #0f172a; /* slate-900 for dark mode */
 }
+
+html.pwa-standalone,
+body.pwa-standalone {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
 </style>
 
 <style scoped>
-/* PWA safe area handled via inline styles in template */
+/* Ensure the background extends into safe areas */
+.pwa-standalone {
+  padding-top: env(safe-area-inset-top);
+}
 </style>
