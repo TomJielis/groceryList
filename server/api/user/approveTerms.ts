@@ -12,6 +12,6 @@ export default defineEventHandler(async (event) => {
             }, token);
         return response;
     } catch (error) {
-        throw new Error(`Failed to fetch data: ${error}`);
+        throw new Error(`Failed to approve terms: ${error}`);
     }
 });

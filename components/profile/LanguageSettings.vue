@@ -13,27 +13,47 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 </script>
 
 <template>
-  <div class="bg-white/90 dark:bg-slate-900/90 rounded-2xl shadow-xl p-6 border border-border-light dark:border-border-dark transition flex flex-col gap-4">
-    <h2 class="text-lg font-bold text-primary-dark dark:text-accent-light mb-4">{{ i18n.t('profile.language') }}</h2>
-    <div class="space-y-3">
-      <label class="flex items-center gap-3 cursor-pointer">
-        <input
-          type="radio"
-          :checked="i18n.locale === 'nl'"
-          @change="handleLanguageChange('nl')"
-          class="accent-accent w-5 h-5 rounded-full border border-border-light dark:border-border-dark focus:ring-2 focus:ring-accent"
-        />
-        <span class="text-base text-slate-700 dark:text-slate-100 font-medium">🇳🇱 {{ i18n.t('nav.dutch') }}</span>
-      </label>
-      <label class="flex items-center gap-3 cursor-pointer">
-        <input
-          type="radio"
-          :checked="i18n.locale === 'en'"
-          @change="handleLanguageChange('en')"
-          class="accent-accent w-5 h-5 rounded-full border border-border-light dark:border-border-dark focus:ring-2 focus:ring-accent"
-        />
-        <span class="text-base text-slate-700 dark:text-slate-100 font-medium">🇺🇸 {{ i18n.t('nav.english') }}</span>
-      </label>
-    </div>
+  <div class="space-y-3">
+    <!-- Dutch Option -->
+    <label
+      class="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border-2 cursor-pointer transition-all"
+      :class="i18n.locale === 'nl'
+        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+        : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700'"
+    >
+      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 flex items-center justify-center text-2xl">
+        🇳🇱
+      </div>
+      <div class="flex-1">
+        <p class="font-bold text-slate-900 dark:text-white">{{ i18n.t('nav.dutch') || 'Nederlands' }}</p>
+      </div>
+      <input
+        type="radio"
+        :checked="i18n.locale === 'nl'"
+        @change="handleLanguageChange('nl')"
+        class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500"
+      />
+    </label>
+
+    <!-- English Option -->
+    <label
+      class="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border-2 cursor-pointer transition-all"
+      :class="i18n.locale === 'en'
+        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+        : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700'"
+    >
+      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-red-100 dark:from-blue-900/30 dark:to-red-900/30 flex items-center justify-center text-2xl">
+        🇺🇸
+      </div>
+      <div class="flex-1">
+        <p class="font-bold text-slate-900 dark:text-white">{{ i18n.t('nav.english') || 'English' }}</p>
+      </div>
+      <input
+        type="radio"
+        :checked="i18n.locale === 'en'"
+        @change="handleLanguageChange('en')"
+        class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500"
+      />
+    </label>
   </div>
 </template>

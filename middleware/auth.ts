@@ -5,7 +5,13 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   const authStore = useAuthStore()
 
+  // If no token and not already on auth/info pages, redirect to login
   if (!authStore.token) {
-    return navigateTo('/information')
+    // Prevent redirect loops - check if already on auth pages
+    const isOnAuthPage = to.path.includes('/auth/') || to.path === '/information'
+
+    if (!isOnAuthPage) {
+      return navigateTo('/auth/login')
+    }
   }
 })

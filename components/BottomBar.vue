@@ -26,54 +26,117 @@ onMounted(() => {
 });
 
 function isActiveTab(path: string) {
-  if (path === '/') return route.path === '/';
+  if (path === '/') {
+    // For home/lists page, match exactly '/' or '/list/*' routes
+    return route.path === '/' || route.path.startsWith('/list/');
+  }
   return route.path.startsWith(path);
 }
 </script>
 
 <template>
-  <nav class="fixed bottom-0 left-0 right-0 flex justify-around items-center p-3 shadow-md md:hidden h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-slate-200 dark:border-slate-700">
-    <nuxtLink v-if="!authStore.user" to="/information" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-100 dark:bg-slate-800': isActiveTab('/information') }">
-      <span class="text-2xl">ℹ️</span>
-      <span class="text-xs font-medium">{{ t('nav.info') }}</span>
+  <nav class="fixed bottom-0 left-0 right-0 flex justify-around items-center px-2 py-2 shadow-2xl md:hidden h-20 bg-white dark:bg-slate-900 border-t-2 border-slate-200 dark:border-slate-700">
+    <!-- Info Tab -->
+    <nuxtLink
+      v-if="!authStore.user"
+      to="/information"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      :class="isActiveTab('/information')
+        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+    >
+      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/information') ? 'drop-shadow-lg' : ''">ℹ️</span>
+      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/information') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.info') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="authStore.user" to="/" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-100 dark:bg-slate-800': isActiveTab('/') }">
-      <span class="text-2xl">📝</span>
-      <span class="text-xs font-medium">{{ t('nav.lists') }}</span>
+
+    <!-- Lists Tab -->
+    <nuxtLink
+      v-if="authStore.user"
+      to="/"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      :class="isActiveTab('/')
+        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+    >
+      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/') ? 'drop-shadow-lg' : ''">📝</span>
+      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.lists') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="authStore.user" to="/cards" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-100 dark:bg-slate-800': isActiveTab('/cards') }">
-      <span class="text-2xl">💳</span>
-      <span class="text-xs font-medium">{{ t('nav.cards') }}</span>
+
+    <!-- Cards Tab -->
+    <nuxtLink
+      v-if="authStore.user"
+      to="/cards"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      :class="isActiveTab('/cards')
+        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+    >
+      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/cards') ? 'drop-shadow-lg' : ''">💳</span>
+      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/cards') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.cards') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="!authStore.user" to="/auth/login" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-100 dark:bg-slate-800': isActiveTab('/auth/login') }">
-      <span class="text-2xl">🚪</span>
-      <span class="text-xs font-medium">{{ t('nav.login') }}</span>
+
+    <!-- Login Tab -->
+    <nuxtLink
+      v-if="!authStore.user"
+      to="/auth/login"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      :class="isActiveTab('/auth/login')
+        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+    >
+      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/auth/login') ? 'drop-shadow-lg' : ''">🚪</span>
+      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/auth/login') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.login') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="!authStore.user" to="/auth/register" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" :class="{ 'bg-slate-100 dark:bg-slate-800': isActiveTab('/auth/register') }">
-      <span class="text-2xl">📝</span>
-      <span class="text-xs font-medium">{{ t('nav.register') }}</span>
+
+    <!-- Register Tab -->
+    <nuxtLink
+      v-if="!authStore.user"
+      to="/auth/register"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      :class="isActiveTab('/auth/register')
+        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+    >
+      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/auth/register') ? 'drop-shadow-lg' : ''">📝</span>
+      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/auth/register') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.register') }}</span>
     </nuxtLink>
-    <nuxtLink v-if="authStore.user" to="/profile" class="flex flex-col items-center justify-center text-center flex-1 py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors relative" :class="{ 'bg-slate-100 dark:bg-slate-800': isActiveTab('/profile') }">
-      <span class="text-2xl">👤</span>
-      <span class="text-xs font-medium">{{ t('nav.profile') }}</span>
+
+    <!-- Profile Tab -->
+    <nuxtLink
+      v-if="authStore.user"
+      to="/profile"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      :class="isActiveTab('/profile')
+        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+    >
+      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/profile') ? 'drop-shadow-lg' : ''">👤</span>
+      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/profile') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.profile') }}</span>
       <span
         v-if="pendingCount > 0"
-        class="absolute top-1 right-5 bg-red-500 text-white text-[10px] leading-none rounded-full px-1.5 py-0.5 font-bold shadow"
+        class="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-red-600 text-white text-[10px] leading-none rounded-full min-w-[20px] h-[20px] flex items-center justify-center font-bold shadow-lg animate-pulse border-2 border-white dark:border-slate-900"
       >
         {{ pendingCount }}
       </span>
     </nuxtLink>
+
+    <!-- Language Selector -->
     <div v-if="!authStore.user" class="flex flex-col items-center justify-center text-center flex-1 relative">
-      <button @click="showLang = !showLang" class="flex flex-col items-center justify-center py-2 px-3 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-        <span class="text-2xl">🌐</span>
-        <span class="text-xs font-medium">{{ i18n.locale.toUpperCase() }}</span>
+      <button
+        @click="showLang = !showLang"
+        class="flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl transition-all duration-300 group hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105"
+      >
+        <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300">🌐</span>
+        <span class="text-[11px] font-bold tracking-wide text-slate-600 dark:text-slate-400">{{ i18n.locale.toUpperCase() }}</span>
       </button>
-      <div v-if="showLang" class="absolute bottom-16 left-1/2 -translate-x-1/2 w-36 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-2 z-50">
-        <button @click="setLocale('nl')" class="flex w-full text-left px-4 py-1.5 text-xs hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
-          🇳🇱 {{ t('nav.dutch') }}
+      <div v-if="showLang" class="absolute bottom-20 left-1/2 -translate-x-1/2 w-40 bg-white dark:bg-slate-800 backdrop-blur-xl border-2 border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl py-3 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
+        <button @click="setLocale('nl')" class="flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 dark:hover:from-slate-700 dark:hover:to-slate-600 rounded-xl mx-1 transition-all duration-200">
+          <span class="text-xl">🇳🇱</span>
+          <span>{{ t('nav.dutch') }}</span>
         </button>
-        <button @click="setLocale('en')" class="flex w-full text-left px-4 py-1.5 text-xs hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
-          🇺🇸 {{ t('nav.english') }}
+        <button @click="setLocale('en')" class="flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 dark:hover:from-slate-700 dark:hover:to-slate-600 rounded-xl mx-1 transition-all duration-200">
+          <span class="text-xl">🇺🇸</span>
+          <span>{{ t('nav.english') }}</span>
         </button>
       </div>
     </div>

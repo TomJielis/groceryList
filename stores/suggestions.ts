@@ -15,9 +15,9 @@ export const useSuggestionStore = defineStore('suggestions', {
 
     getters: {
         combinedSuggestions(state) {
-            const auth = useAuthStore();
+            // Use active UI locale so switching language updates suggestions immediately
             const i18n = useI18nStore();
-            const lang = auth.user?.language || i18n.locale;
+            const lang = i18n.locale;
 
             const defaultMapped = state.defaultSuggestions.map(item => ({
                 name: lang === 'nl' ? item.name_nl : item.name_en

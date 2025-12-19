@@ -18,6 +18,7 @@
   },
   "auth": {
     "loginTitle": "Login - Grocery List",
+    "loginSubtitle": "Welcome back to Grocery List",
     "email": "Email",
     "password": "Password",
     "passwordPlaceholder": "••••••••",
@@ -25,9 +26,12 @@
     "loginBtn": "Login",
     "forgotPassword": "Forgot password?",
     "createAccount": "Create new account",
+    "or": "Or",
     "registerTitle": "Register",
+    "registerSubtitle": "Create a free account",
     "registerBtn": "Register",
     "name": "Name",
+    "namePlaceholder": "Your name",
     "verifyMailMessageTitle": "Verify your email",
     "verifyMailMessageBody": "A verification email has been sent. Please check your inbox.",
     "verifyEmailTitle": "Verify Email",
@@ -38,8 +42,13 @@
     "emailVerifyFailedBody": "There was a problem verifying your email. Please try again or contact support.",
     "unexpectedError": "An unexpected error occurred.",
     "goToLogin": "Go to login",
-    "resetPasswordTitle": "Reset password",
+    "backToLogin": "Back to login",
+    "resetPasswordTitle": "Forgot password",
+    "resetPasswordSubtitle": "No problem, we'll send you a reset link",
     "resetPasswordBtn": "Reset password",
+    "newPasswordTitle": "New password",
+    "newPasswordSubtitle": "Choose a new password for your account",
+    "newPassword": "New password",
     "repeatPassword": "Repeat password",
     "passwordUpdatedTitle": "Password updated",
     "passwordUpdatedBody": "Your password has been updated. You can now log in.",
@@ -52,10 +61,19 @@
     "back": "Back",
     "save": "Save",
     "cancel": "Cancel",
-    "delete": "Delete"
+    "delete": "Delete",
+    "loading": "Loading..."
   },
   "lists": {
     "title": "Your grocery lists",
+    "listCount": "lists",
+    "completed": "completed",
+    "remaining": "remaining",
+    "editList": "Edit list",
+    "newList": "New list",
+    "sharedWith": "Shared with",
+    "pendingInvites": "Pending invitations",
+    "invitedBy": "Invited by",
     "confirmDelete": "Are you sure you want to delete this list?",
     "deleteTitle": "Delete List",
     "deleteListName": "List",
@@ -101,10 +119,13 @@
     "sharedUsersTitle": "Shared with",
     "sharedUsersNone": "Not shared with anyone yet",
     "sharedUserRemoved": "User removed from list",
-    "delete-shared-user-body": "Are you sure you want to remove access for this user?"
+    "delete-shared-user-body": "Are you sure you want to remove access for this user?",
+    "createFirst": "Create your first list"
   },
   "list": {
     "total": "Total",
+    "toBuy": "To Buy",
+    "items": "items",
     "showChecked": "Show",
     "hideChecked": "Hide",
     "checkedItemsSuffix": "checked items"
@@ -112,22 +133,38 @@
   "items": {
     "addPlaceholder": "Enter new item",
     "pricePlaceholder": "€ price",
+    "addNew": "Add items",
+    "suggestions": "suggestions",
+    "total": "Total",
     "emptyState": {
       "title": "No Items Yet",
       "message": "Start adding items to your grocery list. Click the + button below to add your first item!"
-    }
+    },
+    "inList": "In your list",
+    "addFirst": "Add your first item"
   },
   "cards": {
     "available": "Available Cards",
     "title": "Title",
     "attachment": "Attachment",
     "upload": "Upload",
+    "uploadSubtitle": "Upload a photo or PDF",
+    "view": "View",
+    "manageYourCards": "Manage your discount cards",
+    "titlePlaceholder": "E.g. Albert Heijn Bonus Card",
+    "fileTypes": "Supports: JPG, PNG, PDF",
+    "uploadBtn": "Upload",
     "confirmDelete": "Do you want to delete this card?",
     "deleteTitle": "Delete Card",
     "deleteCardName": "Card",
     "deleteBtn": "Delete card",
     "addBtn": "Add card",
-    "noCards": "You have not added any cards yet."
+    "noCards": "You have not added any cards yet.",
+    "emptyState": {
+      "title": "No cards yet",
+      "message": "Add your first loyalty or discount card to keep everything handy."
+    },
+    "uploadFirst": "Upload your first card"
   },
   "profile": {
     "title": "Profile",
@@ -137,10 +174,14 @@
     "profileUpdated": "Profile updated successfully",
     "language": "Language Settings",
     "languageChanged": "Language changed successfully",
+    "emailLocked": "Email cannot be changed",
     "accountActions": "Account Actions",
+    "dangerZone": "Danger Zone",
     "deactivateAccount": "Deactivate Account",
     "deactivateAccountTitle": "Deactivate Account",
     "deactivateAccountWarning": "This action cannot be undone. Your account and all data will be permanently deleted.",
+    "deactivateWarning": "This action is permanent and cannot be undone",
+    "permanentAction": "This is a permanent action",
     "deactivateAccountConfirm": "Please type 'DELETE' to confirm:",
     "typeDELETE": "Type DELETE",
     "deleteConfirmError": "Please type 'DELETE' to confirm account deletion",
@@ -176,10 +217,17 @@
     "title": "Terms of Use & Privacy Policy – Grocery List",
     "lastUpdated": "Last updated: {date}"
   },
+  "termsApproval": {
+    "title": "Action Required: Approve New Terms",
+    "body": "To continue using this application, you must approve the new terms and conditions.",
+    "approveBtn": "Approve and Continue"
+  },
   "info": {
+    "badge": "Grocery List App",
     "title": "Welcome to Grocery List!",
     "subtitle": "Your smart assistant for all your groceries.",
     "featuresTitle": "Discover the features",
+    "featuresSubtitle": "Discover everything you can do with our app",
     "feature1Title": "Create & Manage Lists",
     "feature1Text": "Create an unlimited number of grocery lists for any occasion. Add infinite products and keep everything organized in one place.",
     "feature2Title": "Share with Family & Friends",
@@ -191,6 +239,7 @@
     "feature5Title": "Everything on Your Account",
     "feature5Text": "All your lists, products, and cards are securely stored on your personal account. Available anytime, anywhere.",
     "ctaTitle": "Ready to get started?",
+    "ctaSubtitle": "Join Grocery List to organize shopping, share lists, and never miss an item.",
     "ctaButton": "Create a free account",
     "screensTitle": "A glimpse inside the app",
     "screensIntro": "Here's how it looks while managing lists, adding products and checking items off.",
@@ -222,11 +271,5 @@
     "mobileText": "Optimized touch interface with a bottom navigation bar.",
     "tabletTitle": "Tablet",
     "tabletText": "More space for lists and items in one overview."
-  },
-  "termsApproval": {
-    "title": "Action Required: Approve New Terms",
-    "body": "To continue using this application, you must agree on the new terms and conditions.",
-    "approveBtn": "Accept the terms"
-  },
-  "termsFullText": "# 📄 Terms of Use & Privacy Policy – Grocery List\n\n**Latest version:** 1.2  \n**Last updated:** 10-11-2025 16:30\n\n---\n\n## 1. About this application\nThis application (\"Grocery List\") is a personal web application that allows users to create, view, share, edit, and delete grocery lists.\n\nThe application is developed for personal use and aims to make managing groceries more organized.\n\n---\n\n## 2. Application administrator\nThe application is managed by the developer of Grocery List (\"Administrator\").\n\nFor questions, you can contact the email address listed in the application.\n\n---\n\n# 🔒 Privacy Policy\n\n## 3. What data is collected\nWhen creating an account, the following personal data is stored:\n- Name\n- Email address\n- Password (securely hashed with a cryptographic algorithm)\n\nAdditionally, the following data you add yourself is stored:\n- Grocery lists (and shared lists)\n- Products you add\n- Photos you upload (optional)\n\n---\n\n## 4. Purposes of data processing\nData is only processed to:\n- allow users to log in securely via Laravel Sanctum,\n- correctly assign shared lists to the right users,\n- guarantee the operation of the grocery list functionality,\n- display notifications within the app.\n\nNo data is **sold, shared, or passed on to third parties**.\n\n---\n\n## 5. Data security\n- Passwords are never stored in plain text, but securely hashed using Laravel’s built-in hashing mechanisms (bcrypt/argon2).\n- Data traffic between frontend (Nuxt) and backend (Laravel Sanctum API) is encrypted via HTTPS.\n- Only authorized users have access to their own data.\n- Uploads (such as photos) are securely stored and are only visible to users with access to the relevant list.\n\n---\n\n## 6. Responsibility for photos\nUsers are responsible for the content of the photos they upload. It is not allowed to upload photos that:\n- are copyright protected without permission,\n- are offensive, discriminatory, or insulting,\n- contain personal data of third parties without their consent.\n\nThe Administrator reserves the right to remove content in case of abuse.\n\n---\n\n## 7. Sharing lists\nThe application allows you to share lists with other registered users.\nOnly users you explicitly add have access to that list.\nYou can stop sharing or delete the list at any time.\n\n---\n\n## 8. Retention period and deletion of data\nUsers can delete their account and all associated data at any time.\nAfter deletion, all data (lists, products, photos, and shared data) is permanently removed from the database.\nOnly emails already sent via the administrator’s Gmail account cannot be deleted, as they are outside the application.\n\n---\n\n## 9. Cookies and local storage\nThe application only uses technical cookies or localStorage to retain session information (such as authentication via Sanctum or preferences).\nNo **tracking or advertising cookies** are used.\n\n---\n\n## 10. Your rights\nYou have the right to:\n- request access to your stored data,\n- correct or delete your data,\n- terminate your account.\n\nFor questions, you can contact the administrator via the contact address in the application.\n\n---\n\n## 11. Changes\nThe administrator may change these terms and privacy policy when the operation of the application changes.\nFor important changes, you will be informed within the application and can accept the new terms again.\n\n---\n\n# ⚖️ Terms of Use\n\n## 12. Use of the application\n- You may only use the application for personal, non-commercial use.\n- You are responsible for the content you add.\n- The administrator is not liable for data loss, malfunctions, or misuse of login details by third parties.\n\n---\n\n## 13. Acceptance\nBy creating an account or logging in, you declare that you:\n- have read these Terms of Use and Privacy Policy,\n- agree to them, and\n- are over 16 years old (or have permission from a parent/guardian).\n\n---\n\n## 14. Applicable law\nThese terms are governed by Dutch law.\nAny disputes will be submitted exclusively to the competent court in Amsterdam, the Netherlands.\n\n---\n\n## 14a. International users\nThe application is developed and hosted in the Netherlands and is subject to Dutch and European (GDPR) law.\nUsers who use the application from other countries do so on their own initiative and responsibility.\nBy using the application, they agree that only Dutch law applies and that no appeal can be made to local legislation or consumer protection outside the Netherlands or the European Union.\n\n---\n\n## 🔐 Supplementary provisions\n\n### 15. Limitation of liability\nThe Administrator is not responsible or liable for:\n- any loss of data, corruption of data, or unavailability of the application, regardless of the cause (including technical failures, maintenance, or interruptions of external services);\n- indirect, incidental, or consequential damages, including loss of data or profits;\n- unauthorized access to your account due to weak passwords, device compromise, or user negligence.\n\nUse of the application is entirely at your own risk.\nThe application is provided “as is,” without any guarantee of uninterrupted or error-free operation.\n\n---\n\n### 16. Suspension and deletion of accounts\nThe Administrator reserves the right to:\n- suspend or delete accounts that violate these terms or applicable law,\n- remove content that is illegal, offensive, or harmful,\n- terminate access to the application (temporarily or permanently) for technical, maintenance, or security reasons, or in case of abuse.\n\nIn such cases, the Administrator is not obliged to restore or recover user data that has been deleted or lost as a result.\n\n---\n\n### 17. Termination of the service\nThe Administrator may modify, suspend, or permanently discontinue the application or any of its features at any time, with or without notice.\nIf the service is discontinued, all user data will be permanently deleted from the database in accordance with the Privacy Policy.\n\n---\n\n### 18. Disclaimer\nWhile the Administrator strives to ensure that the application functions correctly and securely, no guarantee is given that it will be uninterrupted, error-free, or fully compatible with all devices or browsers.\nUsers acknowledge that technical issues or outages may occur and that the Administrator cannot be held liable for any resulting inconvenience or data loss.\n\n---\n\n### 19. User generated content\nUsers are fully responsible for all data, texts, product names, photos, or other content they add to the application (“user content”).\nThe Administrator does not pre-moderate or check this content and cannot be held liable for its accuracy, legality, or suitability.\nThe Administrator reserves the right to remove or block user content when it:\n- violates laws or regulations,\n- infringes copyrights or privacy of third parties, or\n- is, in the Administrator's opinion, inappropriate, offensive, or misleading.\n\nThe user indemnifies the Administrator against all claims from third parties arising from user content added by the user.\n\n---\n\n### 20. Indemnity\nBy using the application, the user agrees to indemnify and defend the Administrator against all claims, damages, losses, costs, or liabilities arising from:\n- violation of these terms,\n- uploading or sharing unlawful or infringing content,\n- misuse of the application, or\n- violation of third-party rights.\n\n---\n\n### 21. External processors\nFor the operation of the application, the Administrator uses trusted external services, such as hosting providers and email services.\nThese parties process data only on behalf of the Administrator and in accordance with the GDPR.\nThe Administrator remains responsible for careful handling of this data."
+  }
 }

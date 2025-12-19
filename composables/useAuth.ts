@@ -135,7 +135,7 @@ export function useAuth() {
         });
 
         if (!result.ok) {
-            throw new Error(`Failed to login user: ${result.statusText}`);
+            throw new Error(`Failed to approve terms: ${result.statusText}`);
         }
 
         return await result.json();

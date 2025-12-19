@@ -1,5 +1,8 @@
 import { handleUnauthorized } from '~/utils/authInterceptor';
 
+// Track last unauthorized call to prevent spam
+let last401Time = 0;
+
 export default defineNuxtPlugin((nuxtApp) => {
   if (process.server) return;
 
@@ -8,9 +11,15 @@ export default defineNuxtPlugin((nuxtApp) => {
   global.fetch = (async (resource: any, config: any = {}) => {
     try {
       const response = await originalGlobalFetch(resource, config);
-      // Check for 401 status - handle immediately
+
+      // Check for 401 status - handle with debouncing
       if (response.status === 401) {
-        handleUnauthorized();
+        const now = Date.now();
+        // Only handle if more than 2 seconds since last 401
+        if (now - last401Time > 2000) {
+          last401Time = now;
+          handleUnauthorized();
+        }
         return response;
       }
 
@@ -25,8 +34,12 @@ export default defineNuxtPlugin((nuxtApp) => {
           if (data.message?.includes('Unauthorized') ||
               data.error?.includes('Unauthorized') ||
               JSON.stringify(data).includes('Unauthorized')) {
+            const now = Date.now();
+            // Only handle if more than 2 seconds since last 401
+            if (now - last401Time > 2000) {
+              last401Time = now;
               handleUnauthorized();
-            // Don't return, the page will redirect
+            }
           }
         } catch (parseError) {
           // If we can't parse the response, just continue
@@ -44,17 +57,24 @@ export default defineNuxtPlugin((nuxtApp) => {
   const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
     const message = event.reason?.message || '';
     if (message.includes('Unauthorized')) {
-      handleUnauthorized();
-      event.preventDefault();
+      const now = Date.now();
+      // Only handle if more than 2 seconds since last 401
+      if (now - last401Time > 2000) {
+        last401Time = now;
+        handleUnauthorized();
+        event.preventDefault();
+      }
     }
   };
 
   window.addEventListener('unhandledrejection', handleUnhandledRejection);
 
-  // Cleanup on app unmount
-  nuxtApp.hook('app:unmounted', () => {
-    window.removeEventListener('unhandledrejection', handleUnhandledRejection);
-  });
+  // Cleanup on beforeunload
+  if (process.client) {
+    window.addEventListener('beforeunload', () => {
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    });
+  }
 });
 
 
