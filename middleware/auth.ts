@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const isOnAuthPage = to.path.includes('/auth/') || to.path === '/information'
 
     if (!isOnAuthPage) {
-      return navigateTo('/auth/login')
+      return navigateTo('/information')
     }
   }
 })
