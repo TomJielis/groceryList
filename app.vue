@@ -72,6 +72,15 @@ watch(() => authStore.user?.dark_mode, (newDarkMode) => {
   // If undefined or null, do nothing (keep current theme)
 });
 
+// Watch for changes in user's language preference
+watch(() => authStore.user?.language, (newLanguage) => {
+  if (newLanguage === 'nl') {
+    i18n.setLocale('nl');
+  } else if (newLanguage === 'en') {
+    i18n.setLocale('en');
+  }
+});
+
 onMounted(() => {
   if (window.matchMedia('(display-mode: standalone)').matches) {
     document.documentElement.classList.add('pwa-standalone');
@@ -84,6 +93,9 @@ onMounted(() => {
 
   // Initialize theme
   initializeTheme();
+
+  // Initialize language based on user preference or browser language
+  i18n.initLocale();
 });
 
 </script>

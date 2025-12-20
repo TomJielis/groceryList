@@ -27,11 +27,25 @@ export const useI18nStore = defineStore('i18n', {
     },
     initLocale() {
       const auth = useAuthStore();
-      if (!auth.user) {
-        this.locale = 'en';
-      } else if (auth.user.language === 'nl') {
+
+      // Priority: 1. User preference from database, 2. localStorage, 3. Browser language, 4. Default to English
+      if (auth.user?.language === 'nl') {
         this.locale = 'nl';
+      } else if (auth.user?.language === 'en') {
+        this.locale = 'en';
+      } else if (this.locale) {
+        // Use persisted locale from localStorage (persist: true)
+        return;
+      } else if (typeof navigator !== 'undefined') {
+        // Detect browser language
+        const browserLang = navigator.language.toLowerCase();
+        if (browserLang.startsWith('nl')) {
+          this.locale = 'nl';
+        } else {
+          this.locale = 'en';
+        }
       } else {
+        // Default to English
         this.locale = 'en';
       }
     }
