@@ -20,6 +20,7 @@ const i18n = useI18nStore();
 
 const openListForm = ref(false)
 const openDropdown = ref<number | null>(null)
+const dropdownPosition = ref<'top' | 'bottom'>('bottom')
 
 const showShareModal = ref(false)
 const shareEmail = ref('')
@@ -93,7 +94,21 @@ function handleList() {
 }
 
 function toggleDropdown(id: number) {
-  openDropdown.value = openDropdown.value === id ? null : id
+  if (openDropdown.value === id) {
+    openDropdown.value = null
+  } else {
+    openDropdown.value = id
+    // Determine if dropdown should appear above or below
+    setTimeout(() => {
+      const button = document.querySelector(`[data-list-menu="${id}"]`) as HTMLElement
+      if (button) {
+        const rect = button.getBoundingClientRect()
+        const spaceBelow = window.innerHeight - rect.bottom
+        // If less than 300px below, show above
+        dropdownPosition.value = spaceBelow < 300 ? 'top' : 'bottom'
+      }
+    }, 0)
+  }
 }
 
 function handleClickOutside(event: MouseEvent) {
@@ -331,6 +346,7 @@ function openListSettings(id: number) {
                   <!-- Menu Button -->
                   <div class="relative ml-2 flex-shrink-0">
                     <button
+                      :data-list-menu="listItem.id"
                       class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
                       @click.stop="toggleDropdown(listItem.id)"
                     >
@@ -341,7 +357,8 @@ function openListSettings(id: number) {
 
                     <div
                       v-if="openDropdown === listItem.id"
-                      class="dropdown-menu absolute right-0 top-12 z-[99999] w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl py-2 flex flex-col"
+                      class="dropdown-menu absolute right-0 z-[99999] w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl py-2 flex flex-col"
+                      :class="dropdownPosition === 'top' ? 'bottom-12' : 'top-12'"
                     >
                       <button
                         class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
