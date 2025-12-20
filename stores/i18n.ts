@@ -31,7 +31,6 @@ export const useI18nStore = defineStore('i18n', {
       // If user has a preference in database, use it
       if (auth.user?.language === 'nl' || auth.user?.language === 'en') {
         this.locale = auth.user.language;
-        console.log('Using database language:', this.locale);
         return;
       }
 
@@ -40,15 +39,12 @@ export const useI18nStore = defineStore('i18n', {
         const browserLang = navigator.language.toLowerCase();
         if (browserLang.startsWith('nl')) {
           this.locale = 'nl';
-          console.log('Using browser language: nl (detected from', browserLang + ')');
         } else {
           this.locale = 'en';
-          console.log('Using browser language: en (detected from', browserLang + ')');
         }
       } else {
         // Default to English
         this.locale = 'en';
-        console.log('Using default language: en');
       }
     }
   },
