@@ -28,25 +28,27 @@ export const useI18nStore = defineStore('i18n', {
     initLocale() {
       const auth = useAuthStore();
 
-      // Priority: 1. User preference from database, 2. localStorage, 3. Browser language, 4. Default to English
-      if (auth.user?.language === 'nl') {
-        this.locale = 'nl';
-      } else if (auth.user?.language === 'en') {
-        this.locale = 'en';
-      } else if (this.locale) {
-        // Use persisted locale from localStorage (persist: true)
+      // If user has a preference in database, use it
+      if (auth.user?.language === 'nl' || auth.user?.language === 'en') {
+        this.locale = auth.user.language;
+        console.log('Using database language:', this.locale);
         return;
-      } else if (typeof navigator !== 'undefined') {
-        // Detect browser language
+      }
+
+      // If no user preference in database, detect browser language
+      if (typeof navigator !== 'undefined') {
         const browserLang = navigator.language.toLowerCase();
         if (browserLang.startsWith('nl')) {
           this.locale = 'nl';
+          console.log('Using browser language: nl (detected from', browserLang + ')');
         } else {
           this.locale = 'en';
+          console.log('Using browser language: en (detected from', browserLang + ')');
         }
       } else {
         // Default to English
         this.locale = 'en';
+        console.log('Using default language: en');
       }
     }
   },
