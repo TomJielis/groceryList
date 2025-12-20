@@ -27,13 +27,22 @@ export const useI18nStore = defineStore('i18n', {
     },
     initLocale() {
       const auth = useAuthStore();
-      if (!auth.user) {
-        this.locale = 'en';
-      } else if (auth.user.language === 'nl') {
-        this.locale = 'nl';
-      } else {
-        this.locale = 'en';
-      }
+        // If user has a preference in database, use it
+        if (auth.user?.language === 'nl' || auth.user?.language === 'en') {
+            this.locale = auth.user.language;
+            return;
+        }
+
+        if (typeof navigator !== 'undefined') {
+            const browserLang = navigator.language.toLowerCase();
+            if (browserLang.startsWith('nl')) {
+                this.locale = 'nl';
+            } else {
+                this.locale = 'en';
+            }
+        } else {
+            this.locale = 'en';
+        }
     }
   },
   persist: true,

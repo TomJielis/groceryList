@@ -31,6 +31,9 @@ onMounted(() => {
   } else {
     document.body.classList.remove('pwa-standalone');
   }
+
+  // Initialize language based on user preference or browser language
+  i18n.initLocale();
 });
 
 </script>
