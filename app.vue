@@ -17,7 +17,7 @@ useHead(() => ({
       name: 'description',
       content: t.value('app.metaDescription')
     },
-    {name: 'viewport', content: 'width=device-width, initial-scale=1.0, user-scalable=no'},
+    {name: 'viewport', content: 'width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover'},
     {name: 'apple-mobile-web-app-capable', content: 'yes'},
     {name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent'},
   ]
