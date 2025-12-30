@@ -13,7 +13,7 @@ const currentListId = ref<number | null>(null);
  * Only works on client-side and when currentListId is set
  */
 function notifyOtherUsers(listId: number | null, item: any): void {
-    if (process.client && listId !== null) {
+    if (import.meta.client && listId !== null) {
         const { notifyItemUpdate } = useSocket();
         notifyItemUpdate(listId, item);
     }

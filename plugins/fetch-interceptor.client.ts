@@ -1,7 +1,7 @@
 import { handleUnauthorized } from '~/utils/authInterceptor';
 
 export default defineNuxtPlugin(() => {
-  if (process.server) return;
+  if (import.meta.server) return;
 
   // Create a custom $fetch instance that handles 401s
   const originalFetch = $fetch;

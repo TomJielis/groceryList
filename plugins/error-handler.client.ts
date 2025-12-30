@@ -4,7 +4,7 @@ import { handleUnauthorized } from '~/utils/authInterceptor';
 let last401Time = 0;
 
 export default defineNuxtPlugin((nuxtApp) => {
-  if (process.server) return;
+  if (import.meta.server) return;
 
   // Intercept global fetch
   const originalGlobalFetch = global.fetch;
@@ -70,7 +70,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   window.addEventListener('unhandledrejection', handleUnhandledRejection);
 
   // Cleanup on beforeunload
-  if (process.client) {
+  if (import.meta.client) {
     window.addEventListener('beforeunload', () => {
       window.removeEventListener('unhandledrejection', handleUnhandledRejection);
     });
