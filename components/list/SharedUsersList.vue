@@ -2,7 +2,6 @@
 import type { TGroceryListInvite } from '~/types/TGroceryList';
 import { useI18nStore } from '~/stores/i18n';
 import { useAuthStore } from '~/stores/auth';
-import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps<{
   invites: TGroceryListInvite[];

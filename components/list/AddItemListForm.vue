@@ -15,10 +15,6 @@ const {
   clearItem
 } = useGroceryList();
 
-definePageMeta({
-  middleware: ['auth', 'terms'],
-});
-
 const emit = defineEmits(['item-added', 'close']);
 
 const suggestionStore = useSuggestionStore()

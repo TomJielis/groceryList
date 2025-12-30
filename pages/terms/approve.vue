@@ -5,6 +5,10 @@ import { useRouter } from 'vue-router'
 import {useAuth} from "~/composables/useAuth";
 import { useAuthStore} from "~/stores/auth";
 
+definePageMeta({
+  middleware: ['auth'],
+})
+
 const authStore = useAuthStore();
 const auth = useAuth();
 const i18n = useI18nStore()
