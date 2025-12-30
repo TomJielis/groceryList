@@ -119,6 +119,7 @@
     "sharedUsersTitle": "Shared with",
     "sharedUsersNone": "Not shared with anyone yet",
     "sharedUserRemoved": "User removed from list",
+    "noSharedUsers": "This list is not shared with anyone yet",
     "delete-shared-user-body": "Are you sure you want to remove access for this user?",
     "createFirst": "Create your first list"
   },

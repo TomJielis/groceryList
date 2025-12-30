@@ -119,7 +119,8 @@
     "created_by": "Aangemaakt door:",
     "sharedUsersTitle": "Gedeeld met",
     "sharedUsersNone": "Nog niet gedeeld met iemand",
-    "sharedUserRemoved": "Gebruiker verwijderd uit lijst"
+    "sharedUserRemoved": "Gebruiker verwijderd uit lijst",
+    "noSharedUsers": "Deze lijst is nog niet gedeeld met anderen"
   },
   "list": {
     "total": "Totaal",

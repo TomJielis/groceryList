@@ -36,6 +36,7 @@ export default defineNuxtConfig({
     nitro: {
         preset: 'node-server',
         errorHandler: '~/server/utils/globalErrorHandler.ts',
+        compatibilityDate: '2025-12-30',
     },
     devtools: {
         enabled: false // Zet Nuxt DevTools volledig uit

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, defineEmits, watch, onMounted} from "vue";
+import {ref, watch, onMounted} from "vue";
 import {useGroceryList} from "~/composables/useGroceryList";
 import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
@@ -7,11 +7,6 @@ import {useI18nStore} from '~/stores/i18n';
 import {useAuthStore} from "~/stores/auth";
 import deleteModal from '~/components/deleteModal.vue';
 import type { TGroceryListInvite } from '~/types/TGroceryList';
-
-definePageMeta({
-  middleware: ['auth', 'terms'],
-});
-
 
 const listStore = useListStore();
 const {showNotification, showSuccess} = useNotification();
