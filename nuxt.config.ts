@@ -34,7 +34,7 @@ export default defineNuxtConfig({
         },
     },
     nitro: {
-        serverDir: 'server/nuxt-api',
+        preset: 'node-server',
         errorHandler: '~/server/utils/globalErrorHandler.ts',
     },
     devtools: {

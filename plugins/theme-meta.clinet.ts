@@ -1,6 +1,6 @@
 // typescript
 export default defineNuxtPlugin(() => {
-    if (!process.client || !window.matchMedia) return;
+    if (!import.meta.client || !window.matchMedia) return;
 
     const LIGHT = '#ffffff';
     const DARK = '#0f172a';

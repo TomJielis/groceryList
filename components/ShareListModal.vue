@@ -18,7 +18,7 @@ const i18n = useI18nStore();
 
 // Prevent body scroll when modal is open
 watch(() => props.isVisible, (isVisible) => {
-  if (process.client) {
+  if (import.meta.client) {
     if (isVisible) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -28,7 +28,7 @@ watch(() => props.isVisible, (isVisible) => {
 });
 
 onUnmounted(() => {
-  if (process.client) {
+  if (import.meta.client) {
     document.body.style.overflow = '';
   }
 });
