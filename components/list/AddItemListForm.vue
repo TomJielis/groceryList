@@ -39,14 +39,6 @@ const newItem = ref('');
 const loading = ref(true);
 const processing = ref<Set<string>>(new Set());
 
-async function addItemToList(itemName: string) {
-  const name = itemName.trim();
-  if (!name) return;
-
-  await addItem(name, listId);
-  newItem.value = '';
-}
-
 function isInListUnchecked(name: string) {
   return items.value.some(listItem => listItem.name.toLowerCase() === name.toLowerCase() && !listItem.checked);
 }
@@ -66,6 +58,7 @@ async function toggleSuggestion(name: string) {
     }
   } finally {
     processing.value.delete(key);
+    newItem.value = '';
   }
 }
 
