@@ -83,16 +83,16 @@ const formatDate = (date: string | null) => {
                   <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     {{ i18n.t('admin.email') }}
                   </th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden md:table-cell">
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider md:table-cell">
                     {{ i18n.t('admin.registered') }}
                   </th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell">
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider lg:table-cell">
                     {{ i18n.t('admin.lastActive') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     {{ i18n.t('admin.lists') }}
                   </th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell">
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider lg:table-cell">
                     {{ i18n.t('admin.version') }}
                   </th>
                   <th class="px-6 py-3"></th>
@@ -113,16 +113,16 @@ const formatDate = (date: string | null) => {
                   <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm">
                     {{ user.email }}
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm hidden md:table-cell">
+                  <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm  md:table-cell">
                     {{ formatDate(user.created_at) }}
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm hidden lg:table-cell">
+                  <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm  lg:table-cell">
                     {{ formatDate(user.last_active) }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm">
                     {{ user.lists_count }}
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm hidden lg:table-cell">
+                  <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm  lg:table-cell">
                     {{ user.terms_version || '-' }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
