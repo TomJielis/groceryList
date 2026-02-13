@@ -240,6 +240,7 @@
     "onLatestVersion": "on latest version",
     "topLists": "Top 10 Active Lists",
     "viewAllUsers": "View all users",
+    "viewAll": "View all",
     "backToDashboard": "Back to dashboard",
     "backToUsers": "Back to users",
     "name": "Name",
@@ -268,7 +269,15 @@
     "no": "No",
     "noActivityData": "No activity data available",
     "noVersionData": "No version data available",
-    "noTopLists": "No top lists available"
+    "noTopLists": "No top lists available",
+    "topItems": "Top Items",
+    "mostAdded": "Most Added",
+    "mostChecked": "Most Checked",
+    "currentMonth": "Current Month",
+    "count": "Count",
+    "noTopItems": "No top items available",
+    "viewTopItems": "View top items",
+    "userTopItems": "Top Items of this User"
   },
   "info": {
     "badge": "Grocery List App",

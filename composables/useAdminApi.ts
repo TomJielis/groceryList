@@ -104,6 +104,22 @@ export function useAdminApi() {
         return await response.json();
     }
 
+    async function getStatsTopItems(month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/stats/top-items${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch top items stats: ${response.statusText}`);
+        }
+
+        return await response.json();
+    }
+
     return {
         getStatsUsers,
         getStatsItems,
@@ -112,5 +128,6 @@ export function useAdminApi() {
         getStatsVersions,
         getUsers,
         getUserDetail,
+        getStatsTopItems,
     }
 }

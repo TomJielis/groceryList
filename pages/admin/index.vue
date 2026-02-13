@@ -10,7 +10,7 @@ definePageMeta({
 })
 
 const i18n = useI18nStore()
-const { getStatsUsers, getStatsItems, getStatsLists, getStatsActivity, getStatsVersions } = useAdminApi()
+const { getStatsUsers, getStatsItems, getStatsLists, getStatsActivity, getStatsVersions, getStatsTopItems } = useAdminApi()
 
 const loading = ref(true)
 const error = ref<string | null>(null)
@@ -20,21 +20,25 @@ const statsItems = ref<any>(null)
 const statsLists = ref<any>(null)
 const statsActivity = ref<any>(null)
 const statsVersions = ref<any>(null)
+const statsTopItems = ref<any>(null)
+const topItemsMonth = ref<'current' | 'previous'>('current')
 
 onMounted(async () => {
   try {
-    const [users, items, lists, activity, versions] = await Promise.all([
+    const [users, items, lists, activity, versions, topItems] = await Promise.all([
       getStatsUsers(),
       getStatsItems(),
       getStatsLists(),
       getStatsActivity(),
       getStatsVersions(),
+      getStatsTopItems(),
     ])
     statsUsers.value = users
     statsItems.value = items
     statsLists.value = lists
     statsActivity.value = activity
     statsVersions.value = versions
+    statsTopItems.value = topItems
   } catch (e: any) {
     error.value = e.message || 'Failed to load admin data'
   } finally {
@@ -71,6 +75,21 @@ const versionLabels = computed(() => {
 const versionData = computed(() => {
   if (!statsVersions.value?.current_month?.breakdown) return []
   return Object.values(statsVersions.value.current_month.breakdown).map((v: any) => v.count)
+})
+
+const topItemsMostAdded = computed(() => {
+  const monthKey = topItemsMonth.value === 'current' ? 'current_month' : 'previous_month'
+  return statsTopItems.value?.[monthKey]?.most_added || []
+})
+
+const topItemsMostChecked = computed(() => {
+  const monthKey = topItemsMonth.value === 'current' ? 'current_month' : 'previous_month'
+  return statsTopItems.value?.[monthKey]?.most_checked || []
+})
+
+const topItemsPeriod = computed(() => {
+  const monthKey = topItemsMonth.value === 'current' ? 'current_month' : 'previous_month'
+  return statsTopItems.value?.[monthKey]?.period || ''
 })
 </script>
 
@@ -209,16 +228,127 @@ const versionData = computed(() => {
             </div>
           </div>
 
-          <!-- Link to users page -->
-          <NuxtLink
-            to="/admin/users"
-            class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline font-medium"
-          >
-            {{ i18n.t('admin.viewAllUsers') }}
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </NuxtLink>
+          <!-- Top Items Widget -->
+          <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-8">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="text-xl">🏆</span>
+                {{ i18n.t('admin.topItems') }}
+              </h2>
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-700 rounded-lg p-0.5">
+                  <button
+                    @click="topItemsMonth = 'current'"
+                    :class="[
+                      'px-2.5 py-1 text-xs font-medium rounded-md transition-colors',
+                      topItemsMonth === 'current'
+                        ? 'bg-white dark:bg-slate-600 text-slate-900 dark:text-white shadow-sm'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    ]"
+                  >
+                    {{ i18n.t('admin.currentMonth') }}
+                  </button>
+                  <button
+                    @click="topItemsMonth = 'previous'"
+                    :class="[
+                      'px-2.5 py-1 text-xs font-medium rounded-md transition-colors',
+                      topItemsMonth === 'previous'
+                        ? 'bg-white dark:bg-slate-600 text-slate-900 dark:text-white shadow-sm'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    ]"
+                  >
+                    {{ i18n.t('admin.previousMonth') }}
+                  </button>
+                </div>
+                <NuxtLink
+                  to="/admin/top-items"
+                  class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  {{ i18n.t('admin.viewAll') }}
+                </NuxtLink>
+              </div>
+            </div>
+
+            <p v-if="topItemsPeriod" class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+              {{ topItemsPeriod }}
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Most Added -->
+              <div>
+                <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1">
+                  <span class="text-green-500">+</span>
+                  {{ i18n.t('admin.mostAdded') }}
+                </h3>
+                <ol v-if="topItemsMostAdded.length > 0" class="space-y-2">
+                  <li
+                    v-for="(item, index) in topItemsMostAdded.slice(0, 5)"
+                    :key="index"
+                    class="flex items-center justify-between text-sm"
+                  >
+                    <span class="flex items-center gap-2 truncate">
+                      <span class="text-slate-400 dark:text-slate-500 font-medium w-4">{{ index + 1 }}.</span>
+                      <span class="text-slate-700 dark:text-slate-300 truncate">{{ item.name }}</span>
+                    </span>
+                    <span class="text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded text-xs ml-2 flex-shrink-0">
+                      {{ item.count }}×
+                    </span>
+                  </li>
+                </ol>
+                <p v-else class="text-sm text-slate-400 dark:text-slate-500 italic">
+                  {{ i18n.t('admin.noTopItems') }}
+                </p>
+              </div>
+
+              <!-- Most Checked -->
+              <div>
+                <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1">
+                  <span class="text-blue-500">✓</span>
+                  {{ i18n.t('admin.mostChecked') }}
+                </h3>
+                <ol v-if="topItemsMostChecked.length > 0" class="space-y-2">
+                  <li
+                    v-for="(item, index) in topItemsMostChecked.slice(0, 5)"
+                    :key="index"
+                    class="flex items-center justify-between text-sm"
+                  >
+                    <span class="flex items-center gap-2 truncate">
+                      <span class="text-slate-400 dark:text-slate-500 font-medium w-4">{{ index + 1 }}.</span>
+                      <span class="text-slate-700 dark:text-slate-300 truncate">{{ item.name }}</span>
+                    </span>
+                    <span class="text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded text-xs ml-2 flex-shrink-0">
+                      {{ item.count }}×
+                    </span>
+                  </li>
+                </ol>
+                <p v-else class="text-sm text-slate-400 dark:text-slate-500 italic">
+                  {{ i18n.t('admin.noTopItems') }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Links -->
+          <div class="flex flex-wrap gap-6">
+            <NuxtLink
+              to="/admin/users"
+              class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline font-medium"
+            >
+              {{ i18n.t('admin.viewAllUsers') }}
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </NuxtLink>
+            <NuxtLink
+              to="/admin/top-items"
+              class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline font-medium"
+            >
+              {{ i18n.t('admin.viewTopItems') }}
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </NuxtLink>
+          </div>
         </template>
       </div>
     </div>

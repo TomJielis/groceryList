@@ -234,6 +234,7 @@
     "onLatestVersion": "op laatste versie",
     "topLists": "Top 10 Actieve Lijsten",
     "viewAllUsers": "Bekijk alle gebruikers",
+    "viewAll": "Bekijk alles",
     "backToDashboard": "Terug naar dashboard",
     "backToUsers": "Terug naar gebruikers",
     "name": "Naam",
@@ -262,7 +263,15 @@
     "no": "Nee",
     "noActivityData": "Geen activiteitsgegevens beschikbaar",
     "noVersionData": "Geen versiegegevens beschikbaar",
-    "noTopLists": "Geen top lijsten beschikbaar"
+    "noTopLists": "Geen top lijsten beschikbaar",
+    "topItems": "Top Items",
+    "mostAdded": "Meest Toegevoegd",
+    "mostChecked": "Meest Afgevinkt",
+    "currentMonth": "Huidige Maand",
+    "count": "Aantal",
+    "noTopItems": "Geen top items beschikbaar",
+    "viewTopItems": "Bekijk top items",
+    "userTopItems": "Top Items van deze Gebruiker"
   },
   "info": {
     "badge": "Boodschappenlijst App",
