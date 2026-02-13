@@ -372,28 +372,6 @@ const recentlyActiveUsers = computed(() => {
               </div>
             </div>
           </div>
-
-          <!-- Navigation Links -->
-          <div class="flex flex-wrap gap-6">
-            <NuxtLink
-              to="/admin/users"
-              class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline font-medium"
-            >
-              {{ i18n.t('admin.viewAllUsers') }}
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-              </svg>
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/top-items"
-              class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline font-medium"
-            >
-              {{ i18n.t('admin.viewTopItems') }}
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-              </svg>
-            </NuxtLink>
-          </div>
         </template>
       </div>
     </div>
