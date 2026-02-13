@@ -6,4 +6,5 @@ export type TUser = {
     name: any
     created_at: string
     updated_at: string
+    is_admin: boolean
 }
