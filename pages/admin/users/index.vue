@@ -19,6 +19,12 @@ onMounted(async () => {
     const data = await getUsers()
     users.value = data.users || []
     total.value = data.total || 0
+    // Sort users by last_active (most recent first)
+    users.value = (data.users || []).sort((a: any, b: any) => {
+      if (!a.last_active) return 1
+      if (!b.last_active) return -1
+      return new Date(b.last_active).getTime() - new Date(a.last_active).getTime()
+    })
   } catch (e: any) {
     error.value = e.message || 'Failed to load users'
   } finally {
