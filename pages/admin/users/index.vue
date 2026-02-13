@@ -118,6 +118,10 @@ const formatDate = (date: string | null) => {
                       class="text-green-500"
                       :title="i18n.t('admin.verified')"
                     >✓</span>
+                    <span
+                      v-if="user.blocked"
+                      class="px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400 rounded-full"
+                    >{{ i18n.t('admin.blocked') }}</span>
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm">
@@ -157,13 +161,17 @@ const formatDate = (date: string | null) => {
           >
             <!-- User Header -->
             <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <span class="font-semibold text-slate-900 dark:text-white">{{ user.name }}</span>
                 <span
                   v-if="user.email_verified"
                   class="text-green-500 text-sm"
                   :title="i18n.t('admin.verified')"
                 >✓</span>
+                <span
+                  v-if="user.blocked"
+                  class="px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400 rounded-full"
+                >{{ i18n.t('admin.blocked') }}</span>
               </div>
               <NuxtLink
                 :to="`/admin/users/${user.id}`"

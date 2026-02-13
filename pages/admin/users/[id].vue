@@ -9,11 +9,12 @@ definePageMeta({
 
 const route = useRoute()
 const i18n = useI18nStore()
-const { getUserDetail } = useAdminApi()
+const { getUserDetail, blockUser } = useAdminApi()
 
 const loading = ref(true)
 const error = ref<string | null>(null)
 const data = ref<any>(null)
+const blocking = ref(false)
 
 const userId = computed(() => Number(route.params.id))
 
@@ -39,6 +40,27 @@ const formatDate = (date: string | null, includeTime = false) => {
     options.minute = '2-digit'
   }
   return new Date(date).toLocaleDateString(i18n.locale === 'nl' ? 'nl-NL' : 'en-US', options)
+}
+
+const toggleBlockUser = async () => {
+  if (!data.value?.user) return
+
+  const newBlockedStatus = !data.value.user.blocked
+  const confirmMessage = newBlockedStatus
+    ? i18n.t('admin.blockConfirm')
+    : i18n.t('admin.unblockConfirm')
+
+  if (!confirm(confirmMessage)) return
+
+  blocking.value = true
+  try {
+    await blockUser(userId.value, newBlockedStatus)
+    data.value.user.blocked = newBlockedStatus
+  } catch (e: any) {
+    alert(e.message || 'Failed to update user')
+  } finally {
+    blocking.value = false
+  }
 }
 </script>
 
@@ -110,7 +132,35 @@ const formatDate = (date: string | null, includeTime = false) => {
                   <dt class="text-slate-500 dark:text-slate-400">{{ i18n.t('admin.appVersion') }}</dt>
                   <dd class="text-slate-900 dark:text-white">{{ data.user.terms_version || '-' }}</dd>
                 </div>
+                <div class="py-3 flex justify-between items-center">
+                  <dt class="text-slate-500 dark:text-slate-400">{{ i18n.t('admin.status') || 'Status' }}</dt>
+                  <dd>
+                    <span
+                      v-if="data.user.blocked"
+                      class="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400 rounded-full"
+                    >{{ i18n.t('admin.blocked') }}</span>
+                    <span
+                      v-else
+                      class="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400 rounded-full"
+                    >{{ i18n.t('admin.active') || 'Active' }}</span>
+                  </dd>
+                </div>
               </dl>
+
+              <!-- Block/Unblock Button -->
+              <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <button
+                  @click="toggleBlockUser"
+                  :disabled="blocking"
+                  class="w-full py-2.5 px-4 rounded-lg text-sm font-medium transition-colors"
+                  :class="data.user.blocked
+                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
+                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'"
+                >
+                  <span v-if="blocking">...</span>
+                  <span v-else>{{ data.user.blocked ? i18n.t('admin.unblock') : i18n.t('admin.block') }}</span>
+                </button>
+              </div>
             </div>
 
             <!-- Lists Info -->

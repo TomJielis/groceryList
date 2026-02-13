@@ -104,6 +104,22 @@ export function useAdminApi() {
         return await response.json();
     }
 
+    async function blockUser(id: number, blocked: boolean) {
+        const response = await fetch(`/api/admin/users/${id}/block`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ blocked }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update user block status: ${response.statusText}`);
+        }
+
+        return await response.json();
+    }
+
     async function getStatsTopItems(month?: string) {
         const params = month ? `?month=${month}` : '';
         const response = await fetch(`/api/admin/stats/top-items${params}`, {
@@ -129,5 +145,6 @@ export function useAdminApi() {
         getUsers,
         getUserDetail,
         getStatsTopItems,
+        blockUser,
     }
 }

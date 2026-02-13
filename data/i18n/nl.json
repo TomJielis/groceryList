@@ -273,7 +273,16 @@
     "count": "Aantal",
     "noTopItems": "Geen top items beschikbaar",
     "viewTopItems": "Bekijk top items",
-    "userTopItems": "Top Items van deze Gebruiker"
+    "userTopItems": "Top Items van deze Gebruiker",
+    "block": "Blokkeren",
+    "unblock": "Deblokkeren",
+    "blocked": "Geblokkeerd",
+    "blockConfirm": "Weet je zeker dat je deze gebruiker wilt blokkeren?",
+    "unblockConfirm": "Weet je zeker dat je deze gebruiker wilt deblokkeren?",
+    "userBlocked": "Gebruiker is geblokkeerd",
+    "userUnblocked": "Gebruiker is gedeblokkeerd",
+    "status": "Status",
+    "active": "Actief"
   },
   "info": {
     "badge": "Boodschappenlijst App",

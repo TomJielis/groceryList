@@ -279,6 +279,15 @@
     "count": "Count",
     "noTopItems": "No top items available",
     "viewTopItems": "View top items",
+    "block": "Block",
+    "unblock": "Unblock",
+    "blocked": "Blocked",
+    "blockConfirm": "Are you sure you want to block this user?",
+    "unblockConfirm": "Are you sure you want to unblock this user?",
+    "userBlocked": "User has been blocked",
+    "userUnblocked": "User has been unblocked",
+    "status": "Status",
+    "active": "Active",
     "userTopItems": "Top Items of this User"
   },
   "info": {
