@@ -239,6 +239,8 @@
     "versionDistribution": "Version Distribution",
     "onLatestVersion": "on latest version",
     "topLists": "Top 10 Active Lists",
+    "recentlyActiveUsers": "Recently Active Users",
+    "noActiveUsers": "No active users found",
     "viewAllUsers": "View all users",
     "viewAll": "View all",
     "backToDashboard": "Back to dashboard",

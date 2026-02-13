@@ -10,7 +10,7 @@ definePageMeta({
 })
 
 const i18n = useI18nStore()
-const { getStatsUsers, getStatsItems, getStatsLists, getStatsActivity, getStatsVersions, getStatsTopItems } = useAdminApi()
+const { getStatsUsers, getStatsItems, getStatsLists, getStatsActivity, getStatsVersions, getStatsTopItems, getUsers } = useAdminApi()
 
 const loading = ref(true)
 const error = ref<string | null>(null)
@@ -22,16 +22,18 @@ const statsActivity = ref<any>(null)
 const statsVersions = ref<any>(null)
 const statsTopItems = ref<any>(null)
 const topItemsMonth = ref<'current' | 'previous'>('current')
+const allUsers = ref<any[]>([])
 
 onMounted(async () => {
   try {
-    const [users, items, lists, activity, versions, topItems] = await Promise.all([
+    const [users, items, lists, activity, versions, topItems, usersData] = await Promise.all([
       getStatsUsers(),
       getStatsItems(),
       getStatsLists(),
       getStatsActivity(),
       getStatsVersions(),
       getStatsTopItems(),
+      getUsers(),
     ])
     statsUsers.value = users
     statsItems.value = items
@@ -39,6 +41,7 @@ onMounted(async () => {
     statsActivity.value = activity
     statsVersions.value = versions
     statsTopItems.value = topItems
+    allUsers.value = usersData.users || []
   } catch (e: any) {
     error.value = e.message || 'Failed to load admin data'
   } finally {
@@ -90,6 +93,14 @@ const topItemsMostChecked = computed(() => {
 const topItemsPeriod = computed(() => {
   const monthKey = topItemsMonth.value === 'current' ? 'current_month' : 'previous_month'
   return statsTopItems.value?.[monthKey]?.period || ''
+})
+
+const recentlyActiveUsers = computed(() => {
+  if (!allUsers.value.length) return []
+  return [...allUsers.value]
+    .filter(u => u.last_active)
+    .sort((a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime())
+    .slice(0, 10)
 })
 </script>
 
@@ -224,6 +235,40 @@ const topItemsPeriod = computed(() => {
               </ul>
               <p v-else class="text-slate-500 dark:text-slate-400 text-center py-8">
                 {{ i18n.t('admin.noTopLists') }}
+              </p>
+            </div>
+
+            <!-- Active Users -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <span class="text-xl">👥</span>
+                  {{ i18n.t('admin.recentlyActiveUsers') }}
+                </h2>
+                <NuxtLink
+                  to="/admin/users"
+                  class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  {{ i18n.t('admin.viewAll') }}
+                </NuxtLink>
+              </div>
+              <ul v-if="recentlyActiveUsers.length > 0" class="space-y-2">
+                <li
+                  v-for="user in recentlyActiveUsers"
+                  :key="user.id"
+                  class="flex items-center gap-2 text-sm"
+                >
+                  <span class="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></span>
+                  <NuxtLink
+                    :to="`/admin/users/${user.id}`"
+                    class="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 truncate"
+                  >
+                    {{ user.name }}
+                  </NuxtLink>
+                </li>
+              </ul>
+              <p v-else class="text-slate-500 dark:text-slate-400 text-center py-8">
+                {{ i18n.t('admin.noActiveUsers') }}
               </p>
             </div>
           </div>
