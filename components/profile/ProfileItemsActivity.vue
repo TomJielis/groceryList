@@ -9,9 +9,39 @@ interface Props {
   }
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const i18n = useI18nStore();
+
+// Calculate percentage change
+const calculateChange = (current: number, previous: number) => {
+  const absolute = current - previous
+  let percentage: number
+  if (previous > 0) {
+    percentage = Math.round((absolute / previous) * 100)
+  } else if (current > 0) {
+    // Previous was 0, current > 0 = 100% new
+    percentage = 100
+  } else {
+    // Both are 0
+    percentage = 0
+  }
+  return { absolute, percentage }
+}
+
+// Calculate change for added items
+const addedChange = computed(() => {
+  const current = props.items?.current_month?.added ?? 0
+  const previous = props.items?.previous_month?.added ?? 0
+  return calculateChange(current, previous)
+})
+
+// Calculate change for checked items
+const checkedChange = computed(() => {
+  const current = props.items?.current_month?.checked ?? 0
+  const previous = props.items?.previous_month?.checked ?? 0
+  return calculateChange(current, previous)
+})
 </script>
 
 <template>
@@ -19,12 +49,13 @@ const i18n = useI18nStore();
     <AdminStatsCard
       :title="i18n.t('profile.itemsAddedMonth') || 'Items toegevoegd'"
       :value="items?.current_month?.added ?? 0"
-      :change="items?.change"
+      :change="addedChange"
       :previous-value="items?.previous_month?.added"
     />
     <AdminStatsCard
       :title="i18n.t('profile.itemsCheckedMonth') || 'Items afgevinkt'"
       :value="items?.current_month?.checked ?? 0"
+      :change="checkedChange"
       :previous-value="items?.previous_month?.checked"
     />
     <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-6">
