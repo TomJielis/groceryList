@@ -1,10 +1,19 @@
-import { getCookie } from 'h3'
+import { getCookie, getQuery } from 'h3'
 import { apiClient } from "~/server/api/utils/apiClient"
 
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, 'token')
+    const query = getQuery(event)
+
+    const params = new URLSearchParams()
+    if (query.month) {
+        params.append('month', query.month as string)
+    }
+
+    const url = `/admin/stats/activity${params.toString() ? `?${params.toString()}` : ''}`
+
     try {
-        const response = await apiClient('/admin/stats/activity', {
+        const response = await apiClient(url, {
             method: 'GET',
         }, token)
         return response
