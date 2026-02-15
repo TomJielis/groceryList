@@ -134,7 +134,7 @@ const invalidLoginAttemptsChange = computed(() => {
   const current = statsUsers.value?.current_month?.breakdown?.invalid_login_attempts ?? 0
   const previous = statsUsers.value?.previous_month?.breakdown?.invalid_login_attempts ?? 0
   const absolute = current - previous
-  const percentage = previous > 0 ? Math.round(((current - previous) / previous) * 1000) / 10 : null
+  const percentage = previous > 0 ? Math.round((current / previous) * 100) : null
   return {
     absolute,
     percentage,
@@ -182,7 +182,7 @@ const invalidLoginAttemptsChange = computed(() => {
           </div>
 
           <!-- User Stats Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             <AdminStatsCard
               :title="i18n.t('admin.totalUsers')"
               :value="statsUsers?.current_month?.value ?? 0"
@@ -207,28 +207,25 @@ const invalidLoginAttemptsChange = computed(() => {
                 :change="invalidLoginAttemptsChange"
                 :previous-value="statsUsers?.previous_month?.breakdown?.invalid_login_attempts"
             />
-          </div>
 
-          <!-- Items & Lists Stats Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <AdminStatsCard
-              :title="i18n.t('admin.itemsAdded')"
-              :value="statsItems?.current_month?.breakdown?.added ?? 0"
-              :change="statsItems?.change"
-              :previous-value="statsItems?.previous_month?.breakdown?.added"
+                :title="i18n.t('admin.itemsAdded')"
+                :value="statsItems?.current_month?.breakdown?.added ?? 0"
+                :change="statsItems?.change"
+                :previous-value="statsItems?.previous_month?.breakdown?.added"
             />
             <AdminStatsCard
-              :title="i18n.t('admin.itemsChecked')"
-              :value="statsItems?.current_month?.breakdown?.checked ?? 0"
+                :title="i18n.t('admin.itemsChecked')"
+                :value="statsItems?.current_month?.breakdown?.checked ?? 0"
             />
             <AdminStatsCard
-              :title="i18n.t('admin.listsCreated')"
-              :value="statsLists?.current_month?.breakdown?.created ?? 0"
-              :change="statsLists?.change"
+                :title="i18n.t('admin.listsCreated')"
+                :value="statsLists?.current_month?.breakdown?.created ?? 0"
+                :change="statsLists?.change"
             />
             <AdminStatsCard
-              :title="i18n.t('admin.sharedLists')"
-              :value="statsLists?.current_month?.breakdown?.shared ?? 0"
+                :title="i18n.t('admin.sharedLists')"
+                :value="statsLists?.current_month?.breakdown?.shared ?? 0"
             />
           </div>
 
