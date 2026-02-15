@@ -229,40 +229,34 @@ const filteredSuggestions = computed(() => {
                     </svg>
                   </button>
 
-                  <!-- Product Name -->
+<!-- Product Name -->
                   <div class="flex-1 min-w-0">
                     <h3 class="font-semibold text-slate-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {{ item.name }}
                     </h3>
-                    <p
-                      v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
-                      class="text-sm text-green-600 dark:text-green-400 font-medium mt-0.5"
-                    >
-                      {{ i18n.t('items.inList') || 'In je lijst' }}
-                    </p>
+                    <div class="flex items-center gap-2 mt-0.5">
+                      <p
+                        v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
+                        class="text-sm text-green-600 dark:text-green-400 font-medium"
+                      >
+                        {{ i18n.t('items.inList') || 'In je lijst' }}
+                      </p>
+                    </div>
                   </div>
 
+                  <!-- Price Display -->
+                  <PriceDisplay
+                    :unit-price="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.unit_price"
+                    :quantity="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1"
+                  />
+
                   <!-- Quantity Controls -->
-                  <div
+                  <QuantityControls
                     v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
-                    class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900 rounded-lg p-1.5"
-                  >
-                    <button
-                      @click="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) decreaseItems(found); }"
-                      class="w-9 h-9 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg font-bold text-slate-700 dark:text-slate-200 shadow-sm active:scale-95 transition-all flex items-center justify-center"
-                    >
-                      −
-                    </button>
-                    <span class="min-w-[2rem] text-center text-lg font-bold text-slate-900 dark:text-white">
-                      {{ items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity ?? 1 }}
-                    </span>
-                    <button
-                      @click="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) increaseItems(found); }"
-                      class="w-9 h-9 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg font-bold text-slate-700 dark:text-slate-200 shadow-sm active:scale-95 transition-all flex items-center justify-center"
-                    >
-                      +
-                    </button>
-                  </div>
+                    :quantity="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1"
+                    @increase="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) increaseItems(found); }"
+                    @decrease="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) decreaseItems(found); }"
+                  />
                 </div>
               </div>
             </transition-group>
