@@ -23,7 +23,7 @@ const calculateChange = (current: number, previous: number) => {
   const absolute = current - previous
   let percentage: number
   if (previous > 0) {
-    percentage = Math.round((absolute / previous) * 100)
+    percentage = Math.round((current / previous) * 100)
   } else if (current > 0) {
     // Previous was 0, current > 0 = 100% new
     percentage = 100
@@ -54,7 +54,6 @@ const invalidLoginChange = computed(() => {
   return calculateChange(current, previous)
 })
 
-console.log(props);
 </script>
 
 <template>
