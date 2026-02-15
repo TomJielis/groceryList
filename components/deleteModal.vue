@@ -95,9 +95,12 @@ function handleConfirm() {
             </p>
 
             <div v-if="withValidation">
-              <label class="text-xs font-semibold text-red-500 uppercase tracking-wider mb-2 block px-1">
-                {{ i18n.t('deleteModal.typeListNameToDelete') }} "{{ itemName }}"
-              </label>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mb-2 px-1">
+                {{ i18n.t('deleteModal.typeListNameToDelete') }}
+              </p>
+              <p class="text-base font-bold text-red-600 dark:text-red-400 mb-3 px-1">
+                {{ itemName }}
+              </p>
               <input
                 v-model="confirmText"
                 type="text"
