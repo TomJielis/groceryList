@@ -9,7 +9,7 @@ const { items, fetchItems } = useGroceryList();
 export const useSuggestionStore = defineStore('suggestions', {
     state: () => ({
         defaultSuggestions: [] as { name_nl: string, name_en: string }[],
-        userSuggestions: [] as { name: string }[],
+        userSuggestions: [] as { name: string, unit_price?: number | null }[],
         loading: false,
     }),
 
@@ -20,13 +20,17 @@ export const useSuggestionStore = defineStore('suggestions', {
             const lang = i18n.locale;
 
             const defaultMapped = state.defaultSuggestions.map(item => ({
-                name: lang === 'nl' ? item.name_nl : item.name_en
+                name: lang === 'nl' ? item.name_nl : item.name_en,
+                unit_price: null as number | null
             }))
 
             const userMapped = state.userSuggestions.map(item => ({
-                name: item.name
+                name: item.name,
+                unit_price: item.unit_price || null
             }))
-            const all = [...defaultMapped, ...userMapped]
+
+            // Merge: user suggestions take priority (they have prices)
+            const all = [...userMapped, ...defaultMapped]
             const seen = new Set<string>()
             return all.filter((item) => {
                 const lower = item.name.toLowerCase()
@@ -48,6 +52,7 @@ export const useSuggestionStore = defineStore('suggestions', {
                 this.userSuggestions = Array.isArray(res)
                     ? res.filter((item: any) => item.checked).map((item: any) => ({
                         name: item.name,
+                        unit_price: item.unit_price || null,
                         checked: false
                     }))
                     : []

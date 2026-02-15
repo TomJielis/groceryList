@@ -39,6 +39,11 @@ function isInListUnchecked(name: string) {
   return items.value.some(listItem => listItem.name.toLowerCase() === name.toLowerCase() && !listItem.checked);
 }
 
+// Helper function to get the list item for a suggestion (reactive)
+function getListItem(name: string) {
+  return items.value.find(listItem => listItem.name.toLowerCase() === name.toLowerCase() && !listItem.checked);
+}
+
 async function toggleSuggestion(name: string) {
   const key = name.toLowerCase();
   if (processing.value.has(key)) return;
@@ -59,11 +64,14 @@ async function toggleSuggestion(name: string) {
 }
 
 const filteredSuggestions = computed(() => {
-  // Get all item names from the current list
-  const allItemsFromList = items.value.map(item => ({ name: item.name }));
+  // Get all item names from the current list with their prices
+  const allItemsFromList = items.value.map(item => ({
+    name: item.name,
+    unit_price: item.unit_price || null
+  }));
 
-  // Combine and deduplicate suggestions
-  const allSuggestions = [...suggestionStore.combinedSuggestions, ...allItemsFromList];
+  // Combine and deduplicate suggestions (list items take priority for price)
+  const allSuggestions = [...allItemsFromList, ...suggestionStore.combinedSuggestions];
   const seen = new Set<string>();
   const uniqueSuggestions = allSuggestions.filter(item => {
     const lower = item.name.toLowerCase();
@@ -99,7 +107,7 @@ const filteredSuggestions = computed(() => {
   });
 
   const isDuplicate = sorted.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
-  return newItem.value && !isDuplicate ? [{name: newItem.value, checked: false}, ...sorted] : sorted;
+  return newItem.value && !isDuplicate ? [{name: newItem.value, checked: false, unit_price: null}, ...sorted] : sorted;
 });
 </script>
 
@@ -237,7 +245,7 @@ const filteredSuggestions = computed(() => {
                     </h3>
                     <div class="flex items-center gap-2 mt-0.5">
                       <p
-                        v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
+                        v-if="getListItem(item.name)"
                         class="text-sm text-green-600 dark:text-green-400 font-medium"
                       >
                         {{ i18n.t('items.inList') || 'In je lijst' }}
@@ -245,18 +253,18 @@ const filteredSuggestions = computed(() => {
                     </div>
                   </div>
 
-                  <!-- Price Display -->
+                  <!-- Price Display - show from list item or from suggestion -->
                   <PriceDisplay
-                    :unit-price="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.unit_price"
-                    :quantity="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1"
+                    :unit-price="getListItem(item.name)?.unit_price || item.unit_price"
+                    :quantity="getListItem(item.name)?.quantity || 1"
                   />
 
                   <!-- Quantity Controls -->
                   <QuantityControls
-                    v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
-                    :quantity="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1"
-                    @increase="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) increaseItems(found); }"
-                    @decrease="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) decreaseItems(found); }"
+                    v-if="getListItem(item.name)"
+                    :quantity="getListItem(item.name)?.quantity || 1"
+                    @increase="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
+                    @decrease="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
                   />
                 </div>
 
@@ -293,17 +301,24 @@ const filteredSuggestions = computed(() => {
                       </svg>
                     </button>
 
-                    <!-- Product Name - Full width -->
-                    <div class="flex-1 min-w-0">
+                    <!-- Product Name - Full width + price if not in list -->
+                    <div class="flex-1 min-w-0 flex items-center justify-between gap-2">
                       <h3 class="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
                         {{ item.name }}
                       </h3>
+                      <!-- Show price inline if item is NOT in list but has a known price -->
+                      <PriceDisplay
+                        v-if="!getListItem(item.name) && item.unit_price"
+                        :unit-price="item.unit_price"
+                        :quantity="1"
+                        :show-icon="false"
+                      />
                     </div>
                   </div>
 
                   <!-- Row 2: Status + Price + Controls (only for items in list) -->
                   <div
-                    v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
+                    v-if="getListItem(item.name)"
                     class="flex items-center justify-between mt-2 ml-14"
                   >
                     <div class="flex items-center gap-2">
@@ -311,16 +326,16 @@ const filteredSuggestions = computed(() => {
                         {{ i18n.t('items.inList') || 'In je lijst' }}
                       </span>
                       <PriceDisplay
-                        :unit-price="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.unit_price"
-                        :quantity="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1"
+                        :unit-price="getListItem(item.name)?.unit_price"
+                        :quantity="getListItem(item.name)?.quantity || 1"
                         :show-icon="false"
                       />
                     </div>
 
                     <QuantityControls
-                      :quantity="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1"
-                      @increase="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) increaseItems(found); }"
-                      @decrease="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) decreaseItems(found); }"
+                      :quantity="getListItem(item.name)?.quantity || 1"
+                      @increase="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
+                      @decrease="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
                     />
                   </div>
                 </div>
