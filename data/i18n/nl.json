@@ -275,7 +275,7 @@
     "itemsActivity": "Items Activiteit",
     "itemsAddedMonth": "Items toegevoegd (deze maand)",
     "itemsCheckedMonth": "Items afgevinkt (deze maand)",
-    "invalidLogginAttempts": "Foutieve inlog pogingen (deze maand)",
+    "invalidLoginAttempts": "Foutieve inlog pogingen (deze maand)",
     "previousMonth": "Vorige maand",
     "added": "toegevoegd",
     "checked": "afgevinkt",

@@ -277,7 +277,7 @@ const checkedChange = computed(() => {
                 :previous-value="data.items?.previous_month?.checked"
               />
               <AdminStatsCard
-                :title="i18n.t('admin.invalidLogginAttempts')"
+                :title="i18n.t('admin.invalidLoginAttempts')"
                 :value="data.invalid_loggin_attempts?.current_month ?? 0"
                 :change="checkedChange"
                 :previous-value="data.invalid_loggin_attempts?.previous_month ?? 0"

@@ -190,6 +190,12 @@ const recentlyActiveUsers = computed(() => {
               :title="i18n.t('admin.verifiedEmails')"
               :value="statsUsers?.current_month?.breakdown?.verified_email ?? 0"
             />
+            <AdminStatsCard
+                :title="i18n.t('admin.invalidLoginAttempts')"
+                :value="statsUsers?.current_month?.breakdown?.invalid_login_attempts ?? 0"
+                :change="statsUsers?.change"
+                :previous-value="statsUsers?.previous_month?.breakdown?.invalid_login_attempts"
+            />
           </div>
 
           <!-- Items & Lists Stats Cards -->

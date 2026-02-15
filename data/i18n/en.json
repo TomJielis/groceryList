@@ -281,7 +281,7 @@
     "itemsActivity": "Items Activity",
     "itemsAddedMonth": "Items added (this month)",
     "itemsCheckedMonth": "Items checked (this month)",
-    "invalidLogginAttempts": "Invalid login attempts (this month)",
+    "invalidLoginAttempts": "Invalid login attempts (this month)",
     "previousMonth": "Previous month",
     "added": "added",
     "checked": "checked",
