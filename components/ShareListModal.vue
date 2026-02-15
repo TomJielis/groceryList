@@ -77,93 +77,86 @@ function preventScroll(event: TouchEvent) {
       >
         <div v-if="isVisible" class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden max-h-[90vh]" @click.stop>
           <!-- Header -->
-          <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                </svg>
-                <h3 class="text-xl font-bold text-white">
-                  {{ i18n.t('lists.shareTitle') || 'Lijst delen' }}
-                </h3>
-              </div>
+          <div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4">
+            <div class="flex items-center gap-4">
+              <!-- Close Button -->
               <button
                 @click="handleClose"
-                class="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors active:scale-95"
+                class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors active:scale-95"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
               </button>
+
+              <!-- Title -->
+              <div class="flex-1 min-w-0">
+                <h1 class="text-xl font-bold text-slate-900 dark:text-white truncate">
+                  {{ i18n.t('lists.shareTitle') }}
+                </h1>
+                <p v-if="listName" class="text-sm text-slate-500 dark:text-slate-400 truncate">
+                  {{ listName }}
+                </p>
+              </div>
+
+              <!-- Share Icon -->
+              <div class="flex-shrink-0 w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                </svg>
+              </div>
             </div>
           </div>
 
           <!-- Content -->
-          <div class="p-6">
-            <!-- List Name -->
-            <div v-if="listName" class="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-              <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                </svg>
-                <span class="text-sm text-slate-600 dark:text-slate-400">
-                  {{ i18n.t('lists.shareListName') || 'Lijst' }}:
-                </span>
-                <span class="font-bold text-slate-900 dark:text-white">{{ listName }}</span>
-              </div>
-            </div>
-
+          <div class="p-6 bg-slate-50 dark:bg-slate-900">
             <!-- Instructions -->
-            <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
-              {{ i18n.t('lists.sharePrompt') || 'Voer het e-mailadres in van de persoon met wie je deze lijst wilt delen.' }}
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
+              {{ i18n.t('lists.sharePrompt') }}
             </p>
 
             <!-- Email Input -->
             <div class="mb-6">
-              <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <label class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 block px-1">
                 {{ i18n.t('lists.emailAddress') || 'E-mailadres' }}
               </label>
               <div class="relative">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
                 <input
                   :value="email"
                   @input="updateEmail"
                   type="email"
-                  :placeholder="i18n.t('lists.shareEmailPlaceholder') || 'naam@voorbeeld.nl'"
-                  class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base placeholder:text-slate-400"
+                  :placeholder="i18n.t('lists.shareEmailPlaceholder')"
+                  class="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
                   @keyup.enter="isValidEmail(email) && handleConfirm()"
                 />
               </div>
-              <p v-if="email && !isValidEmail(email)" class="mt-2 text-xs text-red-600 dark:text-red-400 flex items-center gap-1">
+              <p v-if="email && !isValidEmail(email)" class="mt-2 text-xs text-red-500 flex items-center gap-1 px-1">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <span>{{ i18n.t('validation.invalidEmail') || 'Ongeldig e-mailadres' }}</span>
+                <span>{{ i18n.t('validation.invalidEmail') }}</span>
               </p>
             </div>
+          </div>
 
-            <!-- Action Buttons -->
+          <!-- Footer -->
+          <div class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 px-6 py-4">
             <div class="flex gap-3">
               <button
                 @click="handleClose"
-                class="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-98 flex items-center justify-center gap-2"
+                class="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-95"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-                <span>{{ i18n.t('common.cancel') || 'Annuleren' }}</span>
+                {{ i18n.t('common.cancel') }}
               </button>
               <button
                 @click="handleConfirm"
                 :disabled="!isValidEmail(email)"
-                class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-98 shadow-lg flex items-center justify-center gap-2"
+                class="flex-1 px-4 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-95"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                </svg>
-                <span>{{ i18n.t('lists.shareBtn') || 'Delen' }}</span>
+                {{ i18n.t('lists.shareBtn') }}
               </button>
             </div>
           </div>
