@@ -35,11 +35,11 @@ const changeIcon = computed(() => {
     <div class="mt-2 flex items-baseline">
       <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ value }}</p>
       <!-- Show percentage change -->
-      <p v-if="previousValue !== undefined && change.percentage !== null" :class="['ml-2 text-sm font-medium', changeColor]">
+      <p v-if="change.percentage !== null" :class="['ml-2 text-sm font-medium', changeColor]">
         {{ changeIcon }} {{ Math.abs(change.percentage) }}%
       </p>
     </div>
-    <p v-if="previousValue !== undefined" class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
       {{ i18n.t('profile.previousMonth') || 'Vorige maand' }}: {{ previousValue }}
     </p>
   </div>

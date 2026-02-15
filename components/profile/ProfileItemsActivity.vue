@@ -22,17 +22,17 @@ const i18n = useI18nStore();
     <AdminStatsCard
       :title="i18n.t('profile.itemsAddedMonth')"
       :value="items?.current_month?.added ?? 0"
-      :previous-value="items?.previous_month?.added"
+      :previous-value="items?.previous_month?.added ?? 0"
     />
     <AdminStatsCard
       :title="i18n.t('profile.itemsCheckedMonth')"
       :value="items?.current_month?.checked ?? 0"
-      :previous-value="items?.previous_month?.checked"
+      :previous-value="items?.previous_month?.checked ?? 0"
     />
     <AdminStatsCard
       :title="i18n.t('profile.invalidLoginAttempts')"
       :value="props?.invalid_login_attempts?.current_month ?? 0"
-      :previous-value="props?.invalid_login_attempts?.previous_month"
+      :previous-value="props?.invalid_login_attempts?.previous_month ?? 0"
     />
     <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-6">
       <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">
