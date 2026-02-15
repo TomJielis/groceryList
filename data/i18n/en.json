@@ -70,6 +70,8 @@
     "listCount": "lists",
     "completed": "completed",
     "remaining": "remaining",
+    "owner": "owner",
+    "createFirst": "Create your first list",
     "editList": "Edit list",
     "newList": "New list",
     "sharedWith": "Shared with",
@@ -130,7 +132,13 @@
     "items": "items",
     "showChecked": "Show",
     "hideChecked": "Hide",
-    "checkedItemsSuffix": "checked items"
+    "checkedItemsSuffix": "checked items",
+    "remaining": "remaining",
+    "done": "done",
+    "completed": "Completed",
+    "progress": "Progress",
+    "allDone": "All done!",
+    "allDoneMessage": "You have checked off all items"
   },
   "items": {
     "addPlaceholder": "Enter new item",

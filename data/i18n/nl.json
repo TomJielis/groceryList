@@ -70,6 +70,8 @@
     "listCount": "lijsten",
     "completed": "afgevinkt",
     "remaining": "te doen",
+    "owner": "eigenaar",
+    "createFirst": "Maak je eerste lijst",
     "editList": "Lijst bewerken",
     "newList": "Nieuwe lijst",
     "sharedWith": "Gedeeld met",
@@ -129,7 +131,13 @@
     "items": "items",
     "showChecked": "Weergeef",
     "hideChecked": "Verberg",
-    "checkedItemsSuffix": "afgevinkte items"
+    "checkedItemsSuffix": "afgevinkte items",
+    "remaining": "over",
+    "done": "klaar",
+    "completed": "Afgerond",
+    "progress": "Voortgang",
+    "allDone": "Alles gedaan!",
+    "allDoneMessage": "Je hebt alle items afgevinkt"
   },
   "items": {
     "addPlaceholder": "Nieuwe item invoeren",

@@ -114,113 +114,102 @@ const filteredSuggestions = computed(() => {
 <template>
   <ClientOnly>
     <div class="fixed inset-0 z-50 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden md:pt-16">
-      <!-- Fixed Header - Same as list detail page -->
+      <!-- Fixed Header -->
       <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm z-10 touch-none">
-        <div class="max-w-4xl mx-auto px-4 py-4">
-          <div class="flex items-center justify-between gap-4 mb-3">
-            <div class="flex-1 min-w-0">
-              <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white truncate flex items-center gap-2">
-                <span class="text-2xl">🛒</span>
-                <span>{{ listStore.lists.find((list: any) => list.id == listId)?.name || 'Lijst' }}</span>
-              </h1>
-              <div class="flex items-center gap-3 mt-1 text-sm text-slate-600 dark:text-slate-400">
-                <span class="flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                  </svg>
-                  {{ items.filter(item => !item.checked).length }} {{ i18n.t('list.items') || 'items' }}
-                </span>
-                <span class="w-1 h-1 rounded-full bg-slate-400"></span>
-                <span class="flex items-center gap-1 font-semibold text-green-600 dark:text-green-400">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-                  </svg>
-                  €{{ items.filter(item => !item.checked).reduce((sum, item) => sum + ((item.unit_price || 0) * item.quantity), 0).toFixed(2) }}
-                </span>
-              </div>
-            </div>
+        <div class="max-w-4xl mx-auto px-4 py-3">
+          <!-- Top Row: Back button, Title, Price -->
+          <div class="flex items-center gap-3">
+            <!-- Back/Close Button -->
             <button
               @click="emit('close')"
-              class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors active:scale-95"
+              class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors active:scale-95"
             >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
             </button>
+
+            <!-- Title & Stats -->
+            <div class="flex-1 min-w-0">
+              <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white truncate">
+                {{ listStore.lists.find((list: any) => list.id == listId)?.name || i18n.t('items.addNew') }}
+              </h1>
+              <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                <span>{{ items.filter(item => !item.checked).length }} {{ i18n.t('list.items') }}</span>
+                <span class="text-slate-300 dark:text-slate-600">•</span>
+                <span>{{ filteredSuggestions.length }} {{ i18n.t('items.suggestions') }}</span>
+              </div>
+            </div>
+
+            <!-- Total Price Badge -->
+            <div class="flex-shrink-0 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-xl border border-green-200 dark:border-green-800">
+              <span class="text-sm font-bold text-green-700 dark:text-green-400">
+                €{{ items.filter(item => !item.checked).reduce((sum, item) => sum + ((item.unit_price || 0) * item.quantity), 0).toFixed(2) }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Search Input -->
+          <div class="mt-3">
+            <div class="relative">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <input
+                v-model="newItem"
+                type="text"
+                :placeholder="i18n.t('items.addPlaceholder')"
+                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
+                autofocus
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Search Input - Fixed (match list page spacing + background) -->
-      <div class="flex-shrink-0  touch-none">
-        <div class="max-w-4xl mx-auto px-4 py-4">
-          <div class="relative">
-            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-            <input
-              v-model="newItem"
-              type="text"
-              :placeholder="i18n.t('items.addPlaceholder') || 'Zoek of voeg product toe...'"
-              class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
-              autofocus
-            />
-          </div>
-
-          <!-- Quick stats -->
-          <div v-if="filteredSuggestions.length > 0" class="flex items-center gap-2 mt-3 text-sm text-slate-600 dark:text-slate-400">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-            </svg>
-            <span>{{ filteredSuggestions.length }} {{ i18n.t('items.suggestions') || 'suggesties' }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Content - Scrollable (match list page spacing + background) -->
+      <!-- Content - Scrollable -->
       <div class="flex-1 overflow-y-auto overflow-x-hidden">
         <div class="max-w-4xl mx-auto px-4 py-4">
           <div v-if="loading" class="flex items-center justify-center py-16">
             <div class="text-center">
               <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') || 'Laden...' }}</p>
+              <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
             </div>
           </div>
 
           <!-- Empty State -->
           <div v-else-if="filteredSuggestions.length === 0" class="flex flex-col items-center justify-center py-16 px-4">
-            <div class="w-20 h-20 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-              <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
               </svg>
             </div>
-            <p class="text-slate-600 dark:text-slate-400 text-center">
-              {{ i18n.t('items.noSuggestions') || 'Geen suggesties gevonden' }}
+            <p class="text-slate-500 dark:text-slate-400 text-center text-sm">
+              {{ i18n.t('items.noSuggestions') }}
             </p>
           </div>
 
           <!-- Suggestions List -->
-          <div v-else class="space-y-2">
-            <transition-group name="list" tag="div" class="space-y-2 pb-20">
-              <div
-                v-for="item in filteredSuggestions"
-                :key="item.name"
-                class="bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-700 transition-all duration-200 overflow-hidden group"
-              >
-                <!-- Desktop Layout: Single row -->
-                <div class="hidden sm:flex items-center gap-3 p-4">
+          <div v-else class="space-y-2 pb-20">
+            <div
+              v-for="item in filteredSuggestions"
+              :key="item.name"
+              class="bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-700 transition-all duration-200 overflow-hidden group"
+            >
+              <div class="p-3">
+                <div class="flex items-center gap-3">
                   <!-- Add/Check Button -->
                   <button
                     @click="toggleSuggestion(item.name)"
-                    class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200 active:scale-95"
+                    class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 active:scale-95"
                     :class="isInListUnchecked(item.name)
-                      ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
-                      : 'bg-gradient-to-br from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl'"
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gradient-to-br from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-md'"
                     :disabled="processing.has(item.name.toLowerCase())"
                   >
                     <svg
                       v-if="isInListUnchecked(item.name)"
-                      class="w-6 h-6"
+                      class="w-5 h-5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -229,7 +218,7 @@ const filteredSuggestions = computed(() => {
                     </svg>
                     <svg
                       v-else
-                      class="w-6 h-6"
+                      class="w-5 h-5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -238,120 +227,66 @@ const filteredSuggestions = computed(() => {
                     </svg>
                   </button>
 
-                  <!-- Product Name -->
+                  <!-- Product Name & Info -->
                   <div class="flex-1 min-w-0">
-                    <h3 class="font-semibold text-slate-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    <h3 class="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight truncate">
                       {{ item.name }}
                     </h3>
-                    <div class="flex items-center gap-2 mt-0.5">
-                      <p
-                        v-if="getListItem(item.name)"
-                        class="text-sm text-green-600 dark:text-green-400 font-medium"
-                      >
-                        {{ i18n.t('items.inList') || 'In je lijst' }}
-                      </p>
-                    </div>
-                  </div>
-
-                  <!-- Price Display - show from list item or from suggestion -->
-                  <PriceDisplay
-                    :unit-price="getListItem(item.name)?.unit_price || item.unit_price"
-                    :quantity="getListItem(item.name)?.quantity || 1"
-                  />
-
-                  <!-- Quantity Controls -->
-                  <QuantityControls
-                    v-if="getListItem(item.name)"
-                    :quantity="getListItem(item.name)?.quantity || 1"
-                    @increase="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
-                    @decrease="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
-                  />
-                </div>
-
-                <!-- Mobile Layout: Two rows -->
-                <div class="sm:hidden p-3">
-                  <!-- Row 1: Button + Name -->
-                  <div class="flex items-center gap-3">
-                    <!-- Add/Check Button -->
-                    <button
-                      @click="toggleSuggestion(item.name)"
-                      class="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 active:scale-95"
-                      :class="isInListUnchecked(item.name)
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
-                        : 'bg-gradient-to-br from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl'"
-                      :disabled="processing.has(item.name.toLowerCase())"
-                    >
-                      <svg
-                        v-if="isInListUnchecked(item.name)"
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                      </svg>
-                      <svg
-                        v-else
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-                      </svg>
-                    </button>
-
-                    <!-- Product Name - Full width + price if not in list -->
-                    <div class="flex-1 min-w-0 flex items-center justify-between gap-2">
-                      <h3 class="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
-                        {{ item.name }}
-                      </h3>
-                      <!-- Show price inline if item is NOT in list but has a known price -->
-                      <PriceDisplay
-                        v-if="!getListItem(item.name) && item.unit_price"
-                        :unit-price="item.unit_price"
-                        :quantity="1"
-                        :show-icon="false"
-                      />
-                    </div>
-                  </div>
-
-                  <!-- Row 2: Status + Price + Controls (only for items in list) -->
-                  <div
-                    v-if="getListItem(item.name)"
-                    class="flex items-center justify-between mt-2 ml-14"
-                  >
-                    <div class="flex items-center gap-2">
+                    <div v-if="getListItem(item.name)" class="flex items-center gap-2 mt-0.5">
                       <span class="text-xs text-green-600 dark:text-green-400 font-medium">
-                        {{ i18n.t('items.inList') || 'In je lijst' }}
+                        {{ i18n.t('items.inList') }}
                       </span>
-                      <PriceDisplay
-                        :unit-price="getListItem(item.name)?.unit_price"
-                        :quantity="getListItem(item.name)?.quantity || 1"
-                        :show-icon="false"
-                      />
+                      <span class="text-xs text-slate-400">•</span>
+                      <span class="text-xs text-slate-500 dark:text-slate-400">
+                        {{ getListItem(item.name)?.quantity }}x · €{{ getListItem(item.name)?.unit_price?.toFixed(2) || '0.00' }}
+                      </span>
+                    </div>
+                    <div v-else-if="item.unit_price" class="mt-0.5">
+                      <span class="text-xs text-slate-500 dark:text-slate-400">
+                        €{{ item.unit_price?.toFixed(2) }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Price & Quantity (for items in list) -->
+                  <div v-if="getListItem(item.name)" class="flex items-center gap-2">
+                    <!-- Total Price -->
+                    <div class="text-right mr-1 hidden sm:block">
+                      <div class="text-sm font-bold text-slate-900 dark:text-white">
+                        €{{ ((getListItem(item.name)?.unit_price || 0) * (getListItem(item.name)?.quantity || 1)).toFixed(2) }}
+                      </div>
                     </div>
 
-                    <QuantityControls
-                      :quantity="getListItem(item.name)?.quantity || 1"
-                      @increase="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
-                      @decrease="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
-                    />
+                    <!-- Compact Quantity Controls -->
+                    <div class="flex items-center bg-slate-100 dark:bg-slate-700 rounded-lg">
+                      <button
+                        @click.stop="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
+                        class="w-8 h-8 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-l-lg transition-colors active:scale-95"
+                      >
+                        <span class="text-lg font-bold">−</span>
+                      </button>
+                      <span class="w-8 text-center text-sm font-bold text-slate-900 dark:text-white">
+                        {{ getListItem(item.name)?.quantity || 1 }}
+                      </span>
+                      <button
+                        @click.stop="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
+                        class="w-8 h-8 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-r-lg transition-colors active:scale-95"
+                      >
+                        <span class="text-lg font-bold">+</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </transition-group>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- Remove large footer back button to keep controls in header only -->
-      <!-- (Footer deleted) -->
     </div>
     <template #fallback>
       <div class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white dark:bg-slate-900">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') || 'Laden...' }}</p>
+        <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
       </div>
     </template>
   </ClientOnly>
@@ -374,25 +309,5 @@ const filteredSuggestions = computed(() => {
 .overflow-y-auto {
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
-}
-
-/* List animations */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.3s ease;
-}
-
-.list-enter-from {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(-10px);
-}
-
-.list-move {
-  transition: transform 0.3s ease;
 }
 </style>
