@@ -13,10 +13,8 @@ const route = useRoute();
 
 const pendingCount = computed(() => listStore.pendingLists.length);
 
-const showLang = ref(false);
 function setLocale(locale: 'nl' | 'en') {
   i18n.setLocale(locale);
-  showLang.value = false;
 }
 
 onMounted(() => {
@@ -121,24 +119,14 @@ function isActiveTab(path: string) {
     </nuxtLink>
 
     <!-- Language Selector -->
-    <div v-if="!authStore.user" class="flex flex-col items-center justify-center text-center flex-1 relative">
+    <div v-if="!authStore.user" class="flex flex-col items-center justify-center text-center flex-1">
       <button
-        @click="showLang = !showLang"
-        class="flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl transition-all duration-300 group hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105"
+        @click="setLocale(i18n.locale === 'nl' ? 'en' : 'nl')"
+        class="flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl transition-all duration-300 group hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105 w-full"
       >
-        <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300">🌐</span>
-        <span class="text-[11px] font-bold tracking-wide text-slate-600 dark:text-slate-400">{{ i18n.locale.toUpperCase() }}</span>
+        <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300">{{ i18n.locale === 'nl' ? '🇳🇱' : '🇬🇧' }}</span>
+        <span class="text-[11px] font-bold tracking-wide text-slate-600 dark:text-slate-400">{{ i18n.locale === 'nl' ? 'NL' : 'EN' }}</span>
       </button>
-      <div v-if="showLang" class="absolute bottom-20 left-1/2 -translate-x-1/2 w-40 bg-white dark:bg-slate-800 backdrop-blur-xl border-2 border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl py-3 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
-        <button @click="setLocale('nl')" class="flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 dark:hover:from-slate-700 dark:hover:to-slate-600 rounded-xl mx-1 transition-all duration-200">
-          <span class="text-xl">🇳🇱</span>
-          <span>{{ t('nav.dutch') }}</span>
-        </button>
-        <button @click="setLocale('en')" class="flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 dark:hover:from-slate-700 dark:hover:to-slate-600 rounded-xl mx-1 transition-all duration-200">
-          <span class="text-xl">🇺🇸</span>
-          <span>{{ t('nav.english') }}</span>
-        </button>
-      </div>
     </div>
   </nav>
 </template>

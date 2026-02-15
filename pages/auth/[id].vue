@@ -42,58 +42,46 @@ auth.verifyEmail(form.value.token).then((data:any) => {
       <!-- Card -->
       <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-center">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
-            <span class="text-4xl">✉️</span>
-          </div>
-          <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">{{ title }}</h1>
-        </div>
-
-        <!-- Content -->
-        <div class="p-8 text-center space-y-6">
-          <!-- Icon Status -->
-          <div v-if="!hasError">
-            <div v-if="!verified" class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30">
-              <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
-            </div>
-            <div v-else class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/30">
-              <svg class="w-10 h-10 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-              </svg>
-            </div>
-          </div>
-          <div v-else class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-100 dark:bg-red-900/30">
-            <svg class="w-10 h-10 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="px-6 py-8 text-center border-b border-slate-200 dark:border-slate-700">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
+            :class="hasError ? 'bg-red-50 dark:bg-red-900/20' : verified ? 'bg-green-50 dark:bg-green-900/20' : 'bg-blue-50 dark:bg-blue-900/20'"
+          >
+            <span v-if="!hasError && !verified" class="text-4xl">✉️</span>
+            <svg v-else-if="verified" class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <svg v-else class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </div>
+          <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">{{ title }}</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6 text-center space-y-6">
+          <!-- Loading Spinner -->
+          <div v-if="!hasError && !verified" class="flex justify-center py-4">
+            <div class="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent"></div>
+          </div>
 
           <!-- Body Text -->
-          <p class="text-lg text-slate-700 dark:text-slate-300">
+          <p class="text-slate-600 dark:text-slate-400">
             {{ body }}
           </p>
 
           <!-- Error Message -->
-          <div v-if="hasError" class="p-4 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl">
-            <div class="flex items-start gap-3">
-              <svg class="w-6 h-6 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              <p class="text-sm font-medium text-red-800 dark:text-red-200 text-left">
-                {{ errorText }}
-              </p>
-            </div>
+          <div v-if="hasError" class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+            <p class="text-sm text-red-700 dark:text-red-300">
+              {{ errorText }}
+            </p>
           </div>
 
           <!-- Button -->
           <NuxtLink
             to="/auth/login"
-            class="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all shadow-lg active:scale-95"
+            class="inline-block px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all active:scale-95"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
-            </svg>
-            <span>{{ i18n.t('auth.goToLogin') || 'Naar inloggen' }}</span>
+            {{ i18n.t('auth.goToLogin') }}
           </NuxtLink>
         </div>
       </div>
