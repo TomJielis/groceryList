@@ -323,26 +323,6 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
       </div>
       </div>
     </div>
-
-    <!-- Floating Add Button (Mobile, when scrolled) -->
-    <transition
-      enter-active-class="transition-all duration-200 ease-out"
-      enter-from-class="opacity-0 scale-90 translate-y-4"
-      enter-to-class="opacity-100 scale-100 translate-y-0"
-      leave-active-class="transition-all duration-150 ease-in"
-      leave-from-class="opacity-100 scale-100 translate-y-0"
-      leave-to-class="opacity-0 scale-90 translate-y-4"
-    >
-      <button
-        v-if="!showAddItem && items.length > 0 && uncheckedItems.length > 3"
-        @click="showAddItem = true"
-        class="md:hidden fixed bottom-20 right-4 w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 z-40"
-      >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-        </svg>
-      </button>
-    </transition>
   </div>
 </template>
 
