@@ -1,0 +1,17 @@
+import { getCookie, getQuery } from 'h3'
+import { apiClient } from '~/server/api/utils/apiClient'
+
+export default defineEventHandler(async (event) => {
+  const token = getCookie(event, 'token')
+  const query = getQuery(event)
+  const monthParam = query.month ? `?month=${query.month}` : ''
+
+  try {
+    const response = await apiClient(`/user/stats${monthParam}`, {
+      method: 'GET',
+    }, token)
+    return response
+  } catch (error) {
+    throw new Error(`Failed to fetch user stats: ${error}`)
+  }
+})

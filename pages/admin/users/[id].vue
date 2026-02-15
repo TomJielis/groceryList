@@ -2,6 +2,7 @@
 import { useAdminApi } from '~/composables/useAdminApi'
 import { useI18nStore } from '~/stores/i18n'
 import AdminStatsCard from '~/components/admin/AdminStatsCard.vue'
+import MonthSelector from '~/components/profile/MonthSelector.vue'
 
 definePageMeta({
   middleware: ['auth', 'admin']
@@ -15,18 +16,54 @@ const loading = ref(true)
 const error = ref<string | null>(null)
 const data = ref<any>(null)
 const blocking = ref(false)
+const selectedMonth = ref('')
+const availableMonths = ref<string[]>([])
 
 const userId = computed(() => Number(route.params.id))
 
+// Generate last 12 months as fallback
+const generateAvailableMonths = () => {
+  const months: string[] = []
+  const now = new Date()
+  for (let i = 0; i < 12; i++) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    months.push(`${year}-${month}`)
+  }
+  return months
+}
+
 onMounted(async () => {
+  // Initialize with generated months
+  availableMonths.value = generateAvailableMonths()
+  selectedMonth.value = availableMonths.value[0]
+  await loadUserData()
+})
+
+const loadUserData = async (month?: string) => {
+  loading.value = true
+  error.value = null
   try {
-    data.value = await getUserDetail(userId.value)
+    data.value = await getUserDetail(userId.value, month || selectedMonth.value)
+    // Only use backend months if there are more than our generated fallback
+    if (data.value.available_months?.length > 1) {
+      availableMonths.value = data.value.available_months
+      if (!month && data.value.available_months[0]) {
+        selectedMonth.value = data.value.available_months[0]
+      }
+    }
   } catch (e: any) {
     error.value = e.message || 'Failed to load user details'
   } finally {
     loading.value = false
   }
-})
+}
+
+const onMonthChange = (month: string) => {
+  selectedMonth.value = month
+  loadUserData(month)
+}
 
 const formatDate = (date: string | null, includeTime = false) => {
   if (!date) return '-'
@@ -62,6 +99,32 @@ const toggleBlockUser = async () => {
     blocking.value = false
   }
 }
+
+// Calculate percentage change
+const calculateChange = (current: number, previous: number) => {
+  const absolute = current - previous
+  let percentage: number
+  if (previous > 0) {
+    percentage = Math.round((absolute / previous) * 100)
+  } else if (current > 0) {
+    percentage = 100
+  } else {
+    percentage = 0
+  }
+  return { absolute, percentage }
+}
+
+const addedChange = computed(() => {
+  const current = data.value?.items?.current_month?.added ?? 0
+  const previous = data.value?.items?.previous_month?.added ?? 0
+  return calculateChange(current, previous)
+})
+
+const checkedChange = computed(() => {
+  const current = data.value?.items?.current_month?.checked ?? 0
+  const previous = data.value?.items?.previous_month?.checked ?? 0
+  return calculateChange(current, previous)
+})
 </script>
 
 <template>
@@ -185,6 +248,15 @@ const toggleBlockUser = async () => {
             </div>
           </div>
 
+          <!-- Month Selector -->
+          <div v-if="availableMonths.length" class="mt-8 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+            <MonthSelector
+              :selected-month="selectedMonth"
+              :available-months="availableMonths"
+              @change="onMonthChange"
+            />
+          </div>
+
           <!-- Items Activity -->
           <div class="mt-8 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
             <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">
@@ -195,12 +267,13 @@ const toggleBlockUser = async () => {
               <AdminStatsCard
                 :title="i18n.t('admin.itemsAddedMonth')"
                 :value="data.items?.current_month?.added ?? 0"
-                :change="data.items?.change"
+                :change="addedChange"
                 :previous-value="data.items?.previous_month?.added"
               />
               <AdminStatsCard
                 :title="i18n.t('admin.itemsCheckedMonth')"
                 :value="data.items?.current_month?.checked ?? 0"
+                :change="checkedChange"
                 :previous-value="data.items?.previous_month?.checked"
               />
               <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-6">

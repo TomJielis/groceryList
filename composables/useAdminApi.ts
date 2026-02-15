@@ -1,6 +1,7 @@
 export function useAdminApi() {
-    async function getStatsUsers() {
-        const response = await fetch('/api/admin/stats/users', {
+    async function getStatsUsers(month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/stats/users${params}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -14,8 +15,9 @@ export function useAdminApi() {
         return await response.json();
     }
 
-    async function getStatsItems() {
-        const response = await fetch('/api/admin/stats/items', {
+    async function getStatsItems(month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/stats/items${params}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,8 +31,9 @@ export function useAdminApi() {
         return await response.json();
     }
 
-    async function getStatsLists() {
-        const response = await fetch('/api/admin/stats/lists', {
+    async function getStatsLists(month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/stats/lists${params}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,8 +47,9 @@ export function useAdminApi() {
         return await response.json();
     }
 
-    async function getStatsActivity() {
-        const response = await fetch('/api/admin/stats/activity', {
+    async function getStatsActivity(month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/stats/activity${params}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,8 +63,9 @@ export function useAdminApi() {
         return await response.json();
     }
 
-    async function getStatsVersions() {
-        const response = await fetch('/api/admin/stats/versions', {
+    async function getStatsVersions(month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/stats/versions${params}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,8 +94,9 @@ export function useAdminApi() {
         return await response.json();
     }
 
-    async function getUserDetail(id: number) {
-        const response = await fetch(`/api/admin/users/${id}`, {
+    async function getUserDetail(id: number, month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/users/${id}${params}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

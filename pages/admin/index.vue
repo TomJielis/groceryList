@@ -4,6 +4,7 @@ import { useI18nStore } from '~/stores/i18n'
 import AdminStatsCard from '~/components/admin/AdminStatsCard.vue'
 import AdminLineChart from '~/components/admin/AdminLineChart.vue'
 import AdminDoughnutChart from '~/components/admin/AdminDoughnutChart.vue'
+import MonthSelector from '~/components/profile/MonthSelector.vue'
 
 definePageMeta({
   middleware: ['auth', 'admin']
@@ -21,18 +22,42 @@ const statsLists = ref<any>(null)
 const statsActivity = ref<any>(null)
 const statsVersions = ref<any>(null)
 const statsTopItems = ref<any>(null)
-const topItemsMonth = ref<'current' | 'previous'>('current')
 const allUsers = ref<any[]>([])
+const selectedMonth = ref('')
+const availableMonths = ref<string[]>([])
+
+// Generate last 12 months as fallback
+const generateAvailableMonths = () => {
+  const months: string[] = []
+  const now = new Date()
+  for (let i = 0; i < 12; i++) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    months.push(`${year}-${month}`)
+  }
+  return months
+}
 
 onMounted(async () => {
+  // Initialize with generated months
+  availableMonths.value = generateAvailableMonths()
+  selectedMonth.value = availableMonths.value[0]
+  await loadData()
+})
+
+const loadData = async (month?: string) => {
+  loading.value = true
+  error.value = null
   try {
+    const monthParam = month || selectedMonth.value
     const [users, items, lists, activity, versions, topItems, usersData] = await Promise.all([
-      getStatsUsers(),
-      getStatsItems(),
-      getStatsLists(),
-      getStatsActivity(),
-      getStatsVersions(),
-      getStatsTopItems(),
+      getStatsUsers(monthParam),
+      getStatsItems(monthParam),
+      getStatsLists(monthParam),
+      getStatsActivity(monthParam),
+      getStatsVersions(monthParam),
+      getStatsTopItems(monthParam),
       getUsers(),
     ])
     statsUsers.value = users
@@ -47,7 +72,12 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
-})
+}
+
+const onMonthChange = (month: string) => {
+  selectedMonth.value = month
+  loadData(month)
+}
 
 const activityLabels = computed(() => {
   if (!statsActivity.value?.current_month?.daily) return []
@@ -81,18 +111,15 @@ const versionData = computed(() => {
 })
 
 const topItemsMostAdded = computed(() => {
-  const monthKey = topItemsMonth.value === 'current' ? 'current_month' : 'previous_month'
-  return statsTopItems.value?.[monthKey]?.most_added || []
+  return statsTopItems.value?.current_month?.most_added || []
 })
 
 const topItemsMostChecked = computed(() => {
-  const monthKey = topItemsMonth.value === 'current' ? 'current_month' : 'previous_month'
-  return statsTopItems.value?.[monthKey]?.most_checked || []
+  return statsTopItems.value?.current_month?.most_checked || []
 })
 
 const topItemsPeriod = computed(() => {
-  const monthKey = topItemsMonth.value === 'current' ? 'current_month' : 'previous_month'
-  return statsTopItems.value?.[monthKey]?.period || ''
+  return statsTopItems.value?.current_month?.period || ''
 })
 
 const recentlyActiveUsers = computed(() => {
@@ -134,6 +161,15 @@ const recentlyActiveUsers = computed(() => {
 
         <!-- Content -->
         <template v-else>
+          <!-- Month Selector -->
+          <div v-if="availableMonths.length" class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-8">
+            <MonthSelector
+              :selected-month="selectedMonth"
+              :available-months="availableMonths"
+              @change="onMonthChange"
+            />
+          </div>
+
           <!-- User Stats Cards -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <AdminStatsCard
@@ -280,38 +316,12 @@ const recentlyActiveUsers = computed(() => {
                 <span class="text-xl">🏆</span>
                 {{ i18n.t('admin.topItems') }}
               </h2>
-              <div class="flex items-center gap-2">
-                <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-700 rounded-lg p-0.5">
-                  <button
-                    @click="topItemsMonth = 'current'"
-                    :class="[
-                      'px-2.5 py-1 text-xs font-medium rounded-md transition-colors',
-                      topItemsMonth === 'current'
-                        ? 'bg-white dark:bg-slate-600 text-slate-900 dark:text-white shadow-sm'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                    ]"
-                  >
-                    {{ i18n.t('admin.currentMonth') }}
-                  </button>
-                  <button
-                    @click="topItemsMonth = 'previous'"
-                    :class="[
-                      'px-2.5 py-1 text-xs font-medium rounded-md transition-colors',
-                      topItemsMonth === 'previous'
-                        ? 'bg-white dark:bg-slate-600 text-slate-900 dark:text-white shadow-sm'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                    ]"
-                  >
-                    {{ i18n.t('admin.previousMonth') }}
-                  </button>
-                </div>
-                <NuxtLink
-                  to="/admin/top-items"
-                  class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  {{ i18n.t('admin.viewAll') }}
-                </NuxtLink>
-              </div>
+              <NuxtLink
+                to="/admin/top-items"
+                class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                {{ i18n.t('admin.viewAll') }}
+              </NuxtLink>
             </div>
 
             <p v-if="topItemsPeriod" class="text-xs text-slate-500 dark:text-slate-400 mb-4">
