@@ -120,19 +120,6 @@ function isActiveTab(path: string) {
       </span>
     </nuxtLink>
 
-    <!-- Admin Tab -->
-    <nuxtLink
-      v-if="authStore.user?.is_admin"
-      to="/admin"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
-      :class="isActiveTab('/admin')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
-    >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/admin') ? 'drop-shadow-lg' : ''">⚙️</span>
-      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/admin') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.admin') }}</span>
-    </nuxtLink>
-
     <!-- Language Selector -->
     <div v-if="!authStore.user" class="flex flex-col items-center justify-center text-center flex-1 relative">
       <button

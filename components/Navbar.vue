@@ -112,17 +112,6 @@ onUnmounted(() => {
             {{ t('nav.profile') }}
           </nuxt-link>
 
-          <nuxt-link
-            v-if="authStore.user?.is_admin"
-            to="/admin"
-            class="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
-            :class="isActiveTab('/admin')
-              ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white'
-              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50'"
-          >
-            {{ t('nav.admin') }}
-          </nuxt-link>
-
           <div class="relative language-dropdown ml-1">
             <button
               @click="languageDropdownOpen = !languageDropdownOpen"
