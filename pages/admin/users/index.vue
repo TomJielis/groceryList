@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAdminApi } from '~/composables/useAdminApi'
 import { useI18nStore } from '~/stores/i18n'
+import DataTable from '~/components/DataTable.vue'
 
 definePageMeta({
   middleware: ['auth', 'admin']
@@ -32,10 +33,26 @@ onMounted(async () => {
   }
 })
 
-const formatDate = (date: string | null) => {
-  if (!date) return '-'
-  return new Date(date).toLocaleDateString(i18n.locale === 'nl' ? 'nl-NL' : 'en-US')
-}
+const userColumns = [
+  {
+    key: 'name',
+    label: i18n.t('admin.name'),
+    type: 'link' as const,
+    linkTo: (row: any) => `/admin/users/${row.id}`,
+    isPrimary: true,
+    badges: (row: any) => {
+      const badges = []
+      if (row.email_verified) badges.push({ text: '✓', color: 'green' as const })
+      if (row.blocked) badges.push({ text: i18n.t('admin.blocked'), color: 'red' as const })
+      return badges
+    }
+  },
+  { key: 'email', label: i18n.t('admin.email') },
+  { key: 'created_at', label: i18n.t('admin.registered'), type: 'date' as const },
+  { key: 'last_active', label: i18n.t('admin.lastActive'), type: 'datetime' as const, hideOnMobile: true },
+  { key: 'lists_count', label: i18n.t('admin.lists'), type: 'number' as const },
+  { key: 'terms_version', label: i18n.t('admin.version'), hideOnMobile: true },
+]
 </script>
 
 <template>
@@ -77,134 +94,14 @@ const formatDate = (date: string | null) => {
           <p class="text-red-600 dark:text-red-400">{{ error }}</p>
         </div>
 
-        <!-- Empty State -->
-        <div v-else-if="users.length === 0" class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 text-center py-12">
-          <p class="text-slate-500 dark:text-slate-400">{{ i18n.t('admin.noUsers') }}</p>
-        </div>
-
-        <!-- Users Table (Desktop) -->
-        <div v-if="users.length > 0" class="hidden md:block bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
-            <thead class="bg-slate-50 dark:bg-slate-900">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                  {{ i18n.t('admin.name') }}
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                  {{ i18n.t('admin.email') }}
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                  {{ i18n.t('admin.registered') }}
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell">
-                  {{ i18n.t('admin.lastActive') }}
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                  {{ i18n.t('admin.lists') }}
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell">
-                  {{ i18n.t('admin.version') }}
-                </th>
-                <th class="px-6 py-3"></th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-              <tr v-for="user in users" :key="user.id" class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center gap-2">
-                    <span class="font-medium text-slate-900 dark:text-white">{{ user.name }}</span>
-                    <span
-                      v-if="user.email_verified"
-                      class="text-green-500"
-                      :title="i18n.t('admin.verified')"
-                    >✓</span>
-                    <span
-                      v-if="user.blocked"
-                      class="px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400 rounded-full"
-                    >{{ i18n.t('admin.blocked') }}</span>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm">
-                  {{ user.email }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm">
-                  {{ formatDate(user.created_at) }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm hidden lg:table-cell">
-                  {{ formatDate(user.last_active) }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm">
-                  {{ user.lists_count }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400 text-sm hidden lg:table-cell">
-                  {{ user.terms_version || '-' }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <NuxtLink
-                    :to="`/admin/users/${user.id}`"
-                    class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
-                  >
-                    {{ i18n.t('admin.details') }}
-                  </NuxtLink>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Users Cards (Mobile) -->
-        <div v-if="users.length > 0" class="md:hidden space-y-3">
-          <div
-            v-for="user in users"
-            :key="user.id"
-            class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4"
-          >
-            <!-- User Header -->
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2 flex-wrap">
-                <span class="font-semibold text-slate-900 dark:text-white">{{ user.name }}</span>
-                <span
-                  v-if="user.email_verified"
-                  class="text-green-500 text-sm"
-                  :title="i18n.t('admin.verified')"
-                >✓</span>
-                <span
-                  v-if="user.blocked"
-                  class="px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400 rounded-full"
-                >{{ i18n.t('admin.blocked') }}</span>
-              </div>
-              <NuxtLink
-                :to="`/admin/users/${user.id}`"
-                class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
-              >
-                {{ i18n.t('admin.details') }}
-              </NuxtLink>
-            </div>
-
-            <!-- Email -->
-            <p class="text-slate-500 dark:text-slate-400 text-sm mb-3 break-all">{{ user.email }}</p>
-
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-2 gap-3 text-sm">
-              <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-2">
-                <p class="text-xs text-slate-400 dark:text-slate-500 uppercase">{{ i18n.t('admin.registered') }}</p>
-                <p class="text-slate-700 dark:text-slate-300 font-medium">{{ formatDate(user.created_at) }}</p>
-              </div>
-              <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-2">
-                <p class="text-xs text-slate-400 dark:text-slate-500 uppercase">{{ i18n.t('admin.lastActive') }}</p>
-                <p class="text-slate-700 dark:text-slate-300 font-medium">{{ formatDate(user.last_active) }}</p>
-              </div>
-              <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-2">
-                <p class="text-xs text-slate-400 dark:text-slate-500 uppercase">{{ i18n.t('admin.lists') }}</p>
-                <p class="text-slate-700 dark:text-slate-300 font-medium">{{ user.lists_count }}</p>
-              </div>
-              <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-2">
-                <p class="text-xs text-slate-400 dark:text-slate-500 uppercase">{{ i18n.t('admin.version') }}</p>
-                <p class="text-slate-700 dark:text-slate-300 font-medium">{{ user.terms_version || '-' }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Users Table -->
+        <DataTable
+          v-else
+          :columns="userColumns"
+          :data="users"
+          :empty-message="i18n.t('admin.noUsers')"
+          :row-link="(row) => `/admin/users/${row.id}`"
+        />
       </div>
     </div>
   </div>

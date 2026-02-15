@@ -132,11 +132,24 @@ const recentlyActiveUsers = computed(() => {
 })
 
 const userColumns = [
-  { key: 'name', label: i18n.t('admin.name'), type: 'link' as const, linkTo: (row: any) => `/admin/users/${row.id}` },
+  {
+    key: 'name',
+    label: i18n.t('admin.name'),
+    type: 'link' as const,
+    linkTo: (row: any) => `/admin/users/${row.id}`,
+    isPrimary: true,
+    badges: (row: any) => {
+      const badges = []
+      if (row.email_verified) badges.push({ text: '✓', color: 'green' as const })
+      if (row.blocked) badges.push({ text: i18n.t('admin.blocked'), color: 'red' as const })
+      return badges
+    }
+  },
   { key: 'email', label: i18n.t('admin.email') },
-  { key: 'last_active', label: i18n.t('admin.lastActive'), type: 'datetime' as const },
+  { key: 'created_at', label: i18n.t('admin.registered'), type: 'date' as const },
+  { key: 'last_active', label: i18n.t('admin.lastActive'), type: 'datetime' as const, hideOnMobile: true },
   { key: 'lists_count', label: i18n.t('admin.lists'), type: 'number' as const },
-  { key: 'terms_version', label: i18n.t('admin.version') },
+  { key: 'terms_version', label: i18n.t('admin.version'), hideOnMobile: true },
 ]
 </script>
 
