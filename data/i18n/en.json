@@ -203,6 +203,7 @@
     "noTopItems": "No items this month",
     "adminDashboard": "Admin Dashboard",
     "adminDashboardDescription": "Manage users and view statistics",
+    "invalidLoginAttempts": "Invalid login attempts",
     "form": {
       "name": "Name",
       "email": "Email"
@@ -280,6 +281,7 @@
     "itemsActivity": "Items Activity",
     "itemsAddedMonth": "Items added (this month)",
     "itemsCheckedMonth": "Items checked (this month)",
+    "invalidLogginAttempts": "Invalid login attempts (this month)",
     "previousMonth": "Previous month",
     "added": "added",
     "checked": "checked",

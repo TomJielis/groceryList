@@ -202,6 +202,7 @@
     "noTopItems": "Geen items deze maand",
     "adminDashboard": "Admin Dashboard",
     "adminDashboardDescription": "Beheer gebruikers en bekijk statistieken",
+    "invalidLoginAttempts": "Foutieve inlog pogingen",
     "form": {
       "name": "Naam",
       "email": "E-mail"
@@ -274,6 +275,7 @@
     "itemsActivity": "Items Activiteit",
     "itemsAddedMonth": "Items toegevoegd (deze maand)",
     "itemsCheckedMonth": "Items afgevinkt (deze maand)",
+    "invalidLogginAttempts": "Foutieve inlog pogingen (deze maand)",
     "previousMonth": "Vorige maand",
     "added": "toegevoegd",
     "checked": "afgevinkt",

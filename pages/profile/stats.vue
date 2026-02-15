@@ -131,7 +131,7 @@ async function onMonthChange(month: string) {
               <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">
                 {{ i18n.t('profile.itemsActivity') || 'Item Activiteit' }}
               </h2>
-              <ProfileItemsActivity :items="data.items" />
+              <ProfileItemsActivity :items="data.items" :invalid_login_attempts="data.invalid_login_attempts" />
             </div>
 
             <!-- Top Items Section -->

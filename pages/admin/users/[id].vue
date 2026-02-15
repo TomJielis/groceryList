@@ -263,7 +263,7 @@ const checkedChange = computed(() => {
               {{ i18n.t('admin.itemsActivity') }}
             </h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <AdminStatsCard
                 :title="i18n.t('admin.itemsAddedMonth')"
                 :value="data.items?.current_month?.added ?? 0"
@@ -275,6 +275,12 @@ const checkedChange = computed(() => {
                 :value="data.items?.current_month?.checked ?? 0"
                 :change="checkedChange"
                 :previous-value="data.items?.previous_month?.checked"
+              />
+              <AdminStatsCard
+                :title="i18n.t('admin.invalidLogginAttempts')"
+                :value="data.invalid_loggin_attempts?.current_month ?? 0"
+                :change="checkedChange"
+                :previous-value="data.invalid_loggin_attempts?.previous_month ?? 0"
               />
               <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-6">
                 <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">

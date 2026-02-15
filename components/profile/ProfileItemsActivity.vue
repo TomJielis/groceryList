@@ -7,6 +7,11 @@ interface Props {
     previous_month: { added: number; checked: number; period: string }
     change?: { absolute: number; percentage: number | null }
   }
+  invalid_login_attempts?: {
+    current_month: number
+    previous_month: number
+    change?: { absolute: number; percentage: number | null }
+  }
 }
 
 const props = defineProps<Props>();
@@ -42,21 +47,35 @@ const checkedChange = computed(() => {
   const previous = props.items?.previous_month?.checked ?? 0
   return calculateChange(current, previous)
 })
+
+const invalidLoginChange = computed(() => {
+  const current = props?.invalid_login_attempts?.current_month ?? 0
+  const previous = props?.invalid_login_attempts?.previous_month ?? 0
+  return calculateChange(current, previous)
+})
+
+console.log(props);
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <AdminStatsCard
-      :title="i18n.t('profile.itemsAddedMonth') || 'Items toegevoegd'"
+      :title="i18n.t('profile.itemsAddedMonth')"
       :value="items?.current_month?.added ?? 0"
       :change="addedChange"
       :previous-value="items?.previous_month?.added"
     />
     <AdminStatsCard
-      :title="i18n.t('profile.itemsCheckedMonth') || 'Items afgevinkt'"
+      :title="i18n.t('profile.itemsCheckedMonth')"
       :value="items?.current_month?.checked ?? 0"
       :change="checkedChange"
       :previous-value="items?.previous_month?.checked"
+    />
+    <AdminStatsCard
+      :title="i18n.t('profile.invalidLoginAttempts')"
+      :value="props?.invalid_login_attempts?.current_month ?? 0"
+      :change="invalidLoginChange"
+      :previous-value="props?.invalid_login_attempts?.previous_month"
     />
     <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-6">
       <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">
