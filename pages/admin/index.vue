@@ -144,7 +144,7 @@ const userColumns = [
   <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
     <!-- Fixed Header -->
     <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="max-w-5xl mx-auto px-4 py-4">
+      <div class="max-w-7xl mx-auto px-4 py-4">
         <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <span class="text-2xl">⚙️</span>
           <span>{{ i18n.t('admin.title') }}</span>
@@ -154,7 +154,7 @@ const userColumns = [
 
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto overflow-x-hidden pb-24">
-      <div class="max-w-5xl mx-auto px-4 py-6">
+      <div class="max-w-7xl mx-auto px-4 py-6">
         <!-- Loading State -->
         <div v-if="loading" class="flex items-center justify-center py-20">
           <div class="text-center">

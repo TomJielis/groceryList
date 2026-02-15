@@ -90,7 +90,7 @@ function handleLogout() {
   <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
     <!-- Fixed Header -->
     <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm touch-none">
-      <div class="max-w-2xl mx-auto px-4 py-4">
+      <div class="max-w-4xl mx-auto px-4 py-4">
         <div class="flex items-center justify-between gap-4">
           <div class="flex-1">
             <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -112,7 +112,7 @@ function handleLogout() {
 
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto overflow-x-hidden">
-      <div class="max-w-2xl mx-auto px-4 pb-24 pt-6 space-y-6">
+      <div class="max-w-4xl mx-auto px-4 pb-24 pt-6 space-y-6">
         <!-- Profile Information -->
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
