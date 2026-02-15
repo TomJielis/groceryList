@@ -99,32 +99,6 @@ const toggleBlockUser = async () => {
     blocking.value = false
   }
 }
-
-// Calculate percentage change
-const calculateChange = (current: number, previous: number) => {
-  const absolute = current - previous
-  let percentage: number
-  if (previous > 0) {
-    percentage = Math.round((absolute / previous) * 100)
-  } else if (current > 0) {
-    percentage = 100
-  } else {
-    percentage = 0
-  }
-  return { absolute, percentage }
-}
-
-const addedChange = computed(() => {
-  const current = data.value?.items?.current_month?.added ?? 0
-  const previous = data.value?.items?.previous_month?.added ?? 0
-  return calculateChange(current, previous)
-})
-
-const checkedChange = computed(() => {
-  const current = data.value?.items?.current_month?.checked ?? 0
-  const previous = data.value?.items?.previous_month?.checked ?? 0
-  return calculateChange(current, previous)
-})
 </script>
 
 <template>
@@ -267,19 +241,16 @@ const checkedChange = computed(() => {
               <AdminStatsCard
                 :title="i18n.t('admin.itemsAddedMonth')"
                 :value="data.items?.current_month?.added ?? 0"
-                :change="addedChange"
                 :previous-value="data.items?.previous_month?.added"
               />
               <AdminStatsCard
                 :title="i18n.t('admin.itemsCheckedMonth')"
                 :value="data.items?.current_month?.checked ?? 0"
-                :change="checkedChange"
                 :previous-value="data.items?.previous_month?.checked"
               />
               <AdminStatsCard
                 :title="i18n.t('admin.invalidLoginAttempts')"
                 :value="data.invalid_loggin_attempts?.current_month ?? 0"
-                :change="checkedChange"
                 :previous-value="data.invalid_loggin_attempts?.previous_month ?? 0"
               />
               <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-6">

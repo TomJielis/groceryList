@@ -1,30 +1,31 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n'
+import { calculateChange } from '~/utils/calculateChange'
 
 interface Props {
   title: string
   value: number | string
-  change?: {
-    absolute: number
-    percentage: number | null
-  }
   previousValue?: number | string
 }
 
 const props = defineProps<Props>()
 const i18n = useI18nStore()
 
-// Percentage change: 0% = no change, >0% = increase, <0% = decrease
-const isPositive = computed(() => (props.change?.percentage ?? 0) > 0)
-const isNegative = computed(() => (props.change?.percentage ?? 0) < 0)
-const isZero = computed(() => (props.change?.percentage ?? 0) === 0)
-const changeColor = computed(() => {
-  if (isZero.value) return 'text-slate-500 dark:text-slate-400'
-  return isPositive.value ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+// Calculate percentage using the shared helper
+const change = computed(() => {
+  const current = typeof props.value === 'number' ? props.value : Number(props.value) || 0
+  const previous = typeof props.previousValue === 'number' ? props.previousValue : Number(props.previousValue) || 0
+  return calculateChange(current, previous)
 })
+
+const changeColor = computed(() => {
+  if (change.value.isZero) return 'text-slate-500 dark:text-slate-400'
+  return change.value.isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+})
+
 const changeIcon = computed(() => {
-  if (isZero.value) return '→'
-  return isPositive.value ? '↑' : '↓'
+  if (change.value.isZero) return '→'
+  return change.value.isPositive ? '↑' : '↓'
 })
 </script>
 
@@ -34,7 +35,7 @@ const changeIcon = computed(() => {
     <div class="mt-2 flex items-baseline">
       <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ value }}</p>
       <!-- Show percentage change -->
-      <p v-if="change && change.percentage !== null" :class="['ml-2 text-sm font-medium', changeColor]">
+      <p v-if="previousValue !== undefined && change.percentage !== null" :class="['ml-2 text-sm font-medium', changeColor]">
         {{ changeIcon }} {{ Math.abs(change.percentage) }}%
       </p>
     </div>

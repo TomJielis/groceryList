@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useAdminApi } from '~/composables/useAdminApi'
 import { useI18nStore } from '~/stores/i18n'
-import { calculateChange } from '~/utils/calculateChange'
 import AdminStatsCard from '~/components/admin/AdminStatsCard.vue'
 import AdminLineChart from '~/components/admin/AdminLineChart.vue'
 import AdminDoughnutChart from '~/components/admin/AdminDoughnutChart.vue'
@@ -130,43 +129,6 @@ const recentlyActiveUsers = computed(() => {
     .sort((a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime())
     .slice(0, 10)
 })
-
-
-const totalUsersChange = computed(() => {
-  const current = statsUsers.value?.current_month?.value ?? 0
-  const previous = statsUsers.value?.previous_month?.value ?? 0
-  return calculateChange(current, previous)
-})
-
-const invalidLoginAttemptsChange = computed(() => {
-  const current = statsUsers.value?.current_month?.breakdown?.invalid_login_attempts ?? 0
-  const previous = statsUsers.value?.previous_month?.breakdown?.invalid_login_attempts ?? 0
-  return calculateChange(current, previous)
-})
-
-const itemsAddedChange = computed(() => {
-  const current = statsItems.value?.current_month?.breakdown?.added ?? 0
-  const previous = statsItems.value?.previous_month?.breakdown?.added ?? 0
-  return calculateChange(current, previous)
-})
-
-const itemsCheckedChange = computed(() => {
-  const current = statsItems.value?.current_month?.breakdown?.checked ?? 0
-  const previous = statsItems.value?.previous_month?.breakdown?.checked ?? 0
-  return calculateChange(current, previous)
-})
-
-const listsCreatedChange = computed(() => {
-  const current = statsLists.value?.current_month?.breakdown?.created ?? 0
-  const previous = statsLists.value?.previous_month?.breakdown?.created ?? 0
-  return calculateChange(current, previous)
-})
-
-const sharedListsChange = computed(() => {
-  const current = statsLists.value?.current_month?.breakdown?.shared ?? 0
-  const previous = statsLists.value?.previous_month?.breakdown?.shared ?? 0
-  return calculateChange(current, previous)
-})
 </script>
 
 <template>
@@ -213,7 +175,6 @@ const sharedListsChange = computed(() => {
             <AdminStatsCard
               :title="i18n.t('admin.totalUsers')"
               :value="statsUsers?.current_month?.value ?? 0"
-              :change="totalUsersChange"
               :previous-value="statsUsers?.previous_month?.value"
             />
             <AdminStatsCard
@@ -231,32 +192,27 @@ const sharedListsChange = computed(() => {
             <AdminStatsCard
                 :title="i18n.t('admin.invalidLoginAttempts')"
                 :value="statsUsers?.current_month?.breakdown?.invalid_login_attempts ?? 0"
-                :change="invalidLoginAttemptsChange"
                 :previous-value="statsUsers?.previous_month?.breakdown?.invalid_login_attempts"
             />
 
             <AdminStatsCard
                 :title="i18n.t('admin.itemsAdded')"
                 :value="statsItems?.current_month?.breakdown?.added ?? 0"
-                :change="itemsAddedChange"
                 :previous-value="statsItems?.previous_month?.breakdown?.added"
             />
             <AdminStatsCard
                 :title="i18n.t('admin.itemsChecked')"
                 :value="statsItems?.current_month?.breakdown?.checked ?? 0"
-                :change="itemsCheckedChange"
                 :previous-value="statsItems?.previous_month?.breakdown?.checked"
             />
             <AdminStatsCard
                 :title="i18n.t('admin.listsCreated')"
                 :value="statsLists?.current_month?.breakdown?.created ?? 0"
-                :change="listsCreatedChange"
                 :previous-value="statsLists?.previous_month?.breakdown?.created"
             />
             <AdminStatsCard
                 :title="i18n.t('admin.sharedLists')"
                 :value="statsLists?.current_month?.breakdown?.shared ?? 0"
-                :change="sharedListsChange"
                 :previous-value="statsLists?.previous_month?.breakdown?.shared"
             />
           </div>
