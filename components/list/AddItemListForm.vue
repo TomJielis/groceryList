@@ -199,7 +199,8 @@ const filteredSuggestions = computed(() => {
                 :key="item.name"
                 class="bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-700 transition-all duration-200 overflow-hidden group"
               >
-                <div class="flex items-center gap-3 p-4">
+                <!-- Desktop Layout: Single row -->
+                <div class="hidden sm:flex items-center gap-3 p-4">
                   <!-- Add/Check Button -->
                   <button
                     @click="toggleSuggestion(item.name)"
@@ -229,7 +230,7 @@ const filteredSuggestions = computed(() => {
                     </svg>
                   </button>
 
-<!-- Product Name -->
+                  <!-- Product Name -->
                   <div class="flex-1 min-w-0">
                     <h3 class="font-semibold text-slate-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {{ item.name }}
@@ -257,6 +258,71 @@ const filteredSuggestions = computed(() => {
                     @increase="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) increaseItems(found); }"
                     @decrease="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) decreaseItems(found); }"
                   />
+                </div>
+
+                <!-- Mobile Layout: Two rows -->
+                <div class="sm:hidden p-3">
+                  <!-- Row 1: Button + Name -->
+                  <div class="flex items-center gap-3">
+                    <!-- Add/Check Button -->
+                    <button
+                      @click="toggleSuggestion(item.name)"
+                      class="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 active:scale-95"
+                      :class="isInListUnchecked(item.name)
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
+                        : 'bg-gradient-to-br from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl'"
+                      :disabled="processing.has(item.name.toLowerCase())"
+                    >
+                      <svg
+                        v-if="isInListUnchecked(item.name)"
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                      </svg>
+                      <svg
+                        v-else
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                      </svg>
+                    </button>
+
+                    <!-- Product Name - Full width -->
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
+                        {{ item.name }}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <!-- Row 2: Status + Price + Controls (only for items in list) -->
+                  <div
+                    v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
+                    class="flex items-center justify-between mt-2 ml-14"
+                  >
+                    <div class="flex items-center gap-2">
+                      <span class="text-xs text-green-600 dark:text-green-400 font-medium">
+                        {{ i18n.t('items.inList') || 'In je lijst' }}
+                      </span>
+                      <PriceDisplay
+                        :unit-price="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.unit_price"
+                        :quantity="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1"
+                        :show-icon="false"
+                      />
+                    </div>
+
+                    <QuantityControls
+                      :quantity="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1"
+                      @increase="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) increaseItems(found); }"
+                      @decrease="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) decreaseItems(found); }"
+                    />
+                  </div>
                 </div>
               </div>
             </transition-group>
