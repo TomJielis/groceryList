@@ -198,6 +198,7 @@ const userColumns = [
               :title="i18n.t('admin.totalUsers')"
               :value="statsUsers?.current_month?.value ?? 0"
               :previous-value="statsUsers?.previous_month?.value"
+              :showPercentage="true"
             />
             <AdminStatsCard
               :title="i18n.t('admin.newUsers')"
@@ -215,27 +216,32 @@ const userColumns = [
                 :title="i18n.t('admin.invalidLoginAttempts')"
                 :value="statsUsers?.current_month?.breakdown?.invalid_login_attempts ?? 0"
                 :previous-value="statsUsers?.previous_month?.breakdown?.invalid_login_attempts"
+                :showPercentage="true"
             />
 
             <AdminStatsCard
                 :title="i18n.t('admin.itemsAdded')"
                 :value="statsItems?.current_month?.breakdown?.added ?? 0"
                 :previous-value="statsItems?.previous_month?.breakdown?.added"
+                :showPercentage="true"
             />
             <AdminStatsCard
                 :title="i18n.t('admin.itemsChecked')"
                 :value="statsItems?.current_month?.breakdown?.checked ?? 0"
                 :previous-value="statsItems?.previous_month?.breakdown?.checked"
+                :showPercentage="true"
             />
             <AdminStatsCard
                 :title="i18n.t('admin.listsCreated')"
                 :value="statsLists?.current_month?.breakdown?.created ?? 0"
                 :previous-value="statsLists?.previous_month?.breakdown?.created"
+                :showPercentage="true"
             />
             <AdminStatsCard
                 :title="i18n.t('admin.sharedLists')"
                 :value="statsLists?.current_month?.breakdown?.shared ?? 0"
                 :previous-value="statsLists?.previous_month?.breakdown?.shared"
+                :showPercentage="true"
             />
           </div>
 

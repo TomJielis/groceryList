@@ -242,16 +242,19 @@ const toggleBlockUser = async () => {
                 :title="i18n.t('admin.itemsAddedMonth')"
                 :value="data.items?.current_month?.added ?? 0"
                 :previous-value="data.items?.previous_month?.added"
+                :showPercentage="true"
               />
               <AdminStatsCard
                 :title="i18n.t('admin.itemsCheckedMonth')"
                 :value="data.items?.current_month?.checked ?? 0"
                 :previous-value="data.items?.previous_month?.checked"
+                :showPercentage="true"
               />
               <AdminStatsCard
                 :title="i18n.t('admin.invalidLoginAttempts')"
                 :value="data.invalid_loggin_attempts?.current_month ?? 0"
                 :previous-value="data.invalid_loggin_attempts?.previous_month ?? 0"
+                :showPercentage="true"
               />
               <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-6">
                 <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">

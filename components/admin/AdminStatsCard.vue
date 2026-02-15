@@ -6,6 +6,7 @@ interface Props {
   title: string
   value: number | string
   previousValue?: number | string
+  showPercentage?: boolean
 }
 
 const props = defineProps<Props>()
@@ -35,11 +36,11 @@ const changeIcon = computed(() => {
     <div class="mt-2 flex items-baseline">
       <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ value }}</p>
       <!-- Show percentage change -->
-      <p v-if="change.percentage !== null" :class="['ml-2 text-sm font-medium', changeColor]">
+      <p v-if="change.percentage !== null && showPercentage" :class="['ml-2 text-sm font-medium', changeColor]">
         {{ changeIcon }} {{ Math.abs(change.percentage) }}%
       </p>
     </div>
-    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+    <p v-if="showPercentage" class="mt-1 text-sm text-slate-500 dark:text-slate-400">
       {{ i18n.t('profile.previousMonth') || 'Vorige maand' }}: {{ previousValue }}
     </p>
   </div>
