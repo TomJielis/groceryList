@@ -129,6 +129,17 @@ const recentlyActiveUsers = computed(() => {
     .sort((a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime())
     .slice(0, 10)
 })
+
+const invalidLoginAttemptsChange = computed(() => {
+  const current = statsUsers.value?.current_month?.breakdown?.invalid_login_attempts ?? 0
+  const previous = statsUsers.value?.previous_month?.breakdown?.invalid_login_attempts ?? 0
+  const absolute = current - previous
+  const percentage = previous > 0 ? Math.round(((current - previous) / previous) * 1000) / 10 : null
+  return {
+    absolute,
+    percentage,
+  }
+})
 </script>
 
 <template>
@@ -193,7 +204,7 @@ const recentlyActiveUsers = computed(() => {
             <AdminStatsCard
                 :title="i18n.t('admin.invalidLoginAttempts')"
                 :value="statsUsers?.current_month?.breakdown?.invalid_login_attempts ?? 0"
-                :change="statsUsers?.change"
+                :change="invalidLoginAttemptsChange"
                 :previous-value="statsUsers?.previous_month?.breakdown?.invalid_login_attempts"
             />
           </div>
