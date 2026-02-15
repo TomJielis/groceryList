@@ -3,7 +3,7 @@ import type { TGroceryListInvite } from '~/types/TGroceryList';
 import { useI18nStore } from '~/stores/i18n';
 import { useAuthStore } from '~/stores/auth';
 
-const props = defineProps<{
+defineProps<{
   invites: TGroceryListInvite[];
   loading: boolean;
 }>();
@@ -91,25 +91,3 @@ function initial(name?: string) {
     </div>
   </div>
 </template>
-
-<style scoped>
-/* List animations */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.3s ease;
-}
-
-.list-enter-from {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(-10px);
-}
-
-.list-move {
-  transition: transform 0.3s ease;
-}
-</style>

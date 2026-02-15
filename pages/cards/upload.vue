@@ -103,7 +103,7 @@ function handleSubmit() {
                 type="text"
                 :placeholder="i18n.t('cards.titlePlaceholder') || 'Bijv. Albert Heijn Bonuskaart'"
                 required
-                class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
+                class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
               />
             </div>
 

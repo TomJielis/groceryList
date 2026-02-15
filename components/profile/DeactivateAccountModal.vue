@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
 
-const props = defineProps<{
+defineProps<{
   isVisible: boolean;
   confirmText: string;
 }>();
