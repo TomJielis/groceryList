@@ -4,6 +4,7 @@ import { useI18nStore } from '~/stores/i18n'
 import AdminStatsCard from '~/components/admin/AdminStatsCard.vue'
 import AdminLineChart from '~/components/admin/AdminLineChart.vue'
 import AdminDoughnutChart from '~/components/admin/AdminDoughnutChart.vue'
+import DataTable from '~/components/DataTable.vue'
 import MonthSelector from '~/components/profile/MonthSelector.vue'
 
 definePageMeta({
@@ -129,6 +130,14 @@ const recentlyActiveUsers = computed(() => {
     .sort((a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime())
     .slice(0, 10)
 })
+
+const userColumns = [
+  { key: 'name', label: i18n.t('admin.name'), type: 'link' as const, linkTo: (row: any) => `/admin/users/${row.id}` },
+  { key: 'email', label: i18n.t('admin.email') },
+  { key: 'last_active', label: i18n.t('admin.lastActive'), type: 'datetime' as const },
+  { key: 'lists_count', label: i18n.t('admin.lists'), type: 'number' as const },
+  { key: 'terms_version', label: i18n.t('admin.version') },
+]
 </script>
 
 <template>
@@ -275,41 +284,21 @@ const recentlyActiveUsers = computed(() => {
                 {{ i18n.t('admin.noTopLists') }}
               </p>
             </div>
-
-            <!-- Active Users -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                  <span class="text-xl">👥</span>
-                  {{ i18n.t('admin.recentlyActiveUsers') }}
-                </h2>
-                <NuxtLink
-                  to="/admin/users"
-                  class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  {{ i18n.t('admin.viewAll') }}
-                </NuxtLink>
-              </div>
-              <ul v-if="recentlyActiveUsers.length > 0" class="space-y-2">
-                <li
-                  v-for="user in recentlyActiveUsers"
-                  :key="user.id"
-                  class="flex items-center gap-2 text-sm"
-                >
-                  <span class="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></span>
-                  <NuxtLink
-                    :to="`/admin/users/${user.id}`"
-                    class="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 truncate"
-                  >
-                    {{ user.name }}
-                  </NuxtLink>
-                </li>
-              </ul>
-              <p v-else class="text-slate-500 dark:text-slate-400 text-center py-8">
-                {{ i18n.t('admin.noActiveUsers') }}
-              </p>
-            </div>
           </div>
+
+          <!-- Active Users (Full Width) -->
+          <DataTable
+            :columns="userColumns"
+            :data="recentlyActiveUsers"
+            :title="i18n.t('admin.recentlyActiveUsers')"
+            icon="👥"
+            :show-view-all="true"
+            view-all-link="/admin/users"
+            :empty-message="i18n.t('admin.noActiveUsers')"
+            :limit="10"
+            :row-link="(row) => `/admin/users/${row.id}`"
+            class="mb-8"
+          />
 
           <!-- Top Items Widget -->
           <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-8">
