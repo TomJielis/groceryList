@@ -331,120 +331,65 @@ function openListSettings(id: number) {
               v-for="listItem in sortedLists"
               :key="listItem.id"
               @click="$router.push(`/list/${listItem.id}`)"
-              class="cursor-pointer bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-700 transition-all duration-200 group overflow-hidden"
+              class="cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 transition-all duration-200 group overflow-hidden hover:border-blue-300 dark:hover:border-blue-600"
             >
-              <!-- Progress indicator on top -->
-              <div class="h-1 bg-slate-100 dark:bg-slate-700">
-                <div
-                  class="h-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-500"
-                  :style="{ width: `${calculateProgress(listItem)}%` }"
-                ></div>
-              </div>
-
               <div class="p-4">
-                <div class="flex items-center gap-3">
-                  <!-- List info -->
+                <!-- Row 1: Title + Menu -->
+                <div class="flex items-start justify-between gap-3 mb-3">
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2">
-                      <h3 class="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                      <h3 class="text-lg font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
                         {{ listItem.name }}
                       </h3>
-                      <span v-if="auth?.user?.favorite_list_id === listItem.id" class="flex-shrink-0 text-yellow-500 text-sm">⭐</span>
+                      <span v-if="auth?.user?.favorite_list_id === listItem.id" class="flex-shrink-0 text-yellow-500">⭐</span>
                     </div>
-
-                    <!-- Stats -->
-                    <div class="flex items-center gap-3 mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      <span>{{ getRemainingCount(listItem) }} {{ i18n.t('lists.remaining') }}</span>
-                      <span class="text-slate-300 dark:text-slate-600">•</span>
-                      <span class="text-green-600 dark:text-green-400 font-medium">{{ calculateProgress(listItem) }}%</span>
-                    </div>
-                  </div>
-
-                  <!-- Progress circle -->
-                  <div class="flex-shrink-0 relative w-12 h-12">
-                    <svg class="w-12 h-12 transform -rotate-90">
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        stroke="currentColor"
-                        stroke-width="4"
-                        fill="none"
-                        class="text-slate-200 dark:text-slate-700"
-                      />
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        stroke="currentColor"
-                        stroke-width="4"
-                        fill="none"
-                        class="text-green-500"
-                        :stroke-dasharray="125.6"
-                        :stroke-dashoffset="125.6 - (125.6 * calculateProgress(listItem) / 100)"
-                        stroke-linecap="round"
-                      />
-                    </svg>
-                    <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-700 dark:text-slate-300">
-                      {{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }}
-                    </span>
                   </div>
 
                   <!-- Menu Button -->
                   <button
                     :data-list-menu="listItem.id"
-                    class="flex-shrink-0 w-9 h-9 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                    class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors -mr-1"
                     @click.stop="toggleDropdown(listItem.id)"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
                     </svg>
                   </button>
+                </div>
 
-                  <!-- Dropdown Menu -->
-                  <div
-                    v-if="openDropdown === listItem.id"
-                    class="dropdown-menu absolute right-4 z-[99999] w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl py-2"
-                    :class="dropdownPosition === 'top' ? 'bottom-16' : 'top-16'"
-                  >
-                    <button
-                      class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
-                      @click.stop="setFavoriteList(listItem.id)"
-                    >
-                      <span>{{ auth?.user?.favorite_list_id === listItem.id ? '⭐' : '☆' }}</span>
-                      <span>{{ auth?.user?.favorite_list_id === listItem.id ? i18n.t('lists.menu.removeFavorite') : i18n.t('lists.menu.markFavorite') }}</span>
-                    </button>
-                    <button
-                      v-if="listItem.created_by.id == auth.user.id"
-                      class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
-                      @click.stop="openListSettings(listItem.id)"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                      </svg>
-                      <span>{{ i18n.t('lists.menu.edit') }}</span>
-                    </button>
-                    <button
-                      v-if="listItem.created_by.id == auth.user.id"
-                      class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
-                      @click.stop="shareListWithUser(listItem.id)"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                      </svg>
-                      <span>{{ i18n.t('lists.menu.share') }}</span>
-                    </button>
-                    <div class="h-px bg-slate-200 dark:bg-slate-700 my-1"></div>
-                    <button
-                      class="w-full text-left px-4 py-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-red-600 dark:text-red-400 font-medium flex items-center gap-2"
-                      @click.stop="deleteListItem(listItem.id)"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                      </svg>
-                      <span>{{ listItem.created_by.id == auth.user.id ? i18n.t('lists.menu.delete') : i18n.t('lists.menu.leave') }}</span>
-                    </button>
+                <!-- Row 2: Progress bar -->
+                <div class="mb-3">
+                  <div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-500"
+                      :style="{ width: `${calculateProgress(listItem)}%` }"
+                    ></div>
                   </div>
+                </div>
+
+                <!-- Row 3: Stats -->
+                <div class="flex items-center justify-between text-sm">
+                  <div class="flex items-center gap-4">
+                    <!-- Open items -->
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                      <span class="text-slate-600 dark:text-slate-400">
+                        <span class="font-semibold text-slate-900 dark:text-white">{{ getRemainingCount(listItem) }}</span> {{ i18n.t('lists.remaining') }}
+                      </span>
+                    </div>
+                    <!-- Done items -->
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                      <span class="text-slate-600 dark:text-slate-400">
+                        <span class="font-semibold text-slate-900 dark:text-white">{{ listItem.grocery_list_items_checked_count ?? 0 }}</span> {{ i18n.t('list.done') }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Percentage -->
+                  <span class="font-semibold text-green-600 dark:text-green-400">
+                    {{ calculateProgress(listItem) }}%
+                  </span>
                 </div>
 
                 <!-- Shared Users -->
@@ -475,6 +420,51 @@ function openListSettings(id: number) {
                   </div>
                   <span class="text-xs text-slate-400 dark:text-slate-500">{{ i18n.t('lists.sharedWith') }}</span>
                 </div>
+              </div>
+
+              <!-- Dropdown Menu -->
+              <div
+                v-if="openDropdown === listItem.id"
+                class="dropdown-menu absolute right-4 z-[99999] w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl py-2"
+                :class="dropdownPosition === 'top' ? 'bottom-16' : 'top-16'"
+              >
+                <button
+                  class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
+                  @click.stop="setFavoriteList(listItem.id)"
+                >
+                  <span>{{ auth?.user?.favorite_list_id === listItem.id ? '⭐' : '☆' }}</span>
+                  <span>{{ auth?.user?.favorite_list_id === listItem.id ? i18n.t('lists.menu.removeFavorite') : i18n.t('lists.menu.markFavorite') }}</span>
+                </button>
+                <button
+                  v-if="listItem.created_by.id == auth.user.id"
+                  class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
+                  @click.stop="openListSettings(listItem.id)"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  </svg>
+                  <span>{{ i18n.t('lists.menu.edit') }}</span>
+                </button>
+                <button
+                  v-if="listItem.created_by.id == auth.user.id"
+                  class="w-full text-left px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
+                  @click.stop="shareListWithUser(listItem.id)"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                  </svg>
+                  <span>{{ i18n.t('lists.menu.share') }}</span>
+                </button>
+                <div class="h-px bg-slate-200 dark:bg-slate-700 my-1"></div>
+                <button
+                  class="w-full text-left px-4 py-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-red-600 dark:text-red-400 font-medium flex items-center gap-2"
+                  @click.stop="deleteListItem(listItem.id)"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  <span>{{ listItem.created_by.id == auth.user.id ? i18n.t('lists.menu.delete') : i18n.t('lists.menu.leave') }}</span>
+                </button>
               </div>
             </div>
           </div>

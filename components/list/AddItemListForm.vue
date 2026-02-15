@@ -115,51 +115,49 @@ const filteredSuggestions = computed(() => {
   <ClientOnly>
     <div class="fixed inset-0 z-50 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden md:pt-16">
       <!-- Fixed Header -->
-      <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm z-10 touch-none">
-        <div class="max-w-4xl mx-auto px-4 py-3">
+      <div class="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 z-10 touch-none">
+        <div class="max-w-4xl mx-auto px-4 py-4">
           <!-- Top Row: Back button, Title, Price -->
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-4">
             <!-- Back/Close Button -->
             <button
               @click="emit('close')"
-              class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors active:scale-95"
+              class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors active:scale-95"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
               </svg>
             </button>
 
-            <!-- Title & Stats -->
+            <!-- Title -->
             <div class="flex-1 min-w-0">
-              <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white truncate">
-                {{ listStore.lists.find((list: any) => list.id == listId)?.name || i18n.t('items.addNew') }}
+              <h1 class="text-xl font-bold text-slate-900 dark:text-white truncate">
+                {{ i18n.t('items.addNew') }}
               </h1>
-              <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                <span>{{ items.filter(item => !item.checked).length }} {{ i18n.t('list.items') }}</span>
-                <span class="text-slate-300 dark:text-slate-600">•</span>
-                <span>{{ filteredSuggestions.length }} {{ i18n.t('items.suggestions') }}</span>
-              </div>
+              <p class="text-sm text-slate-500 dark:text-slate-400 truncate">
+                {{ listStore.lists.find((list: any) => list.id == listId)?.name }}
+              </p>
             </div>
 
-            <!-- Total Price Badge -->
-            <div class="flex-shrink-0 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-xl border border-green-200 dark:border-green-800">
-              <span class="text-sm font-bold text-green-700 dark:text-green-400">
-                €{{ items.filter(item => !item.checked).reduce((sum, item) => sum + ((item.unit_price || 0) * item.quantity), 0).toFixed(2) }}
+            <!-- Items count badge -->
+            <div class="flex-shrink-0 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-full">
+              <span class="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                {{ items.filter(item => !item.checked).length }} {{ i18n.t('list.items') }}
               </span>
             </div>
           </div>
 
           <!-- Search Input -->
-          <div class="mt-3">
+          <div class="mt-4">
             <div class="relative">
-              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
               </svg>
               <input
                 v-model="newItem"
                 type="text"
                 :placeholder="i18n.t('items.addPlaceholder')"
-                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
+                class="w-full pl-12 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500 transition text-base font-medium placeholder:text-slate-400"
                 autofocus
               />
             </div>
@@ -170,111 +168,130 @@ const filteredSuggestions = computed(() => {
       <!-- Content - Scrollable -->
       <div class="flex-1 overflow-y-auto overflow-x-hidden">
         <div class="max-w-4xl mx-auto px-4 py-4">
-          <div v-if="loading" class="flex items-center justify-center py-16">
+          <div v-if="loading" class="flex items-center justify-center py-20">
             <div class="text-center">
-              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
+              <div class="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent mx-auto"></div>
+              <p class="mt-4 text-slate-500 dark:text-slate-400 text-sm">{{ i18n.t('common.loading') }}</p>
             </div>
           </div>
 
           <!-- Empty State -->
-          <div v-else-if="filteredSuggestions.length === 0" class="flex flex-col items-center justify-center py-16 px-4">
-            <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+          <div v-else-if="filteredSuggestions.length === 0" class="flex flex-col items-center justify-center py-20">
+            <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mb-4">
               <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
               </svg>
             </div>
-            <p class="text-slate-500 dark:text-slate-400 text-center text-sm">
+            <p class="text-slate-500 dark:text-slate-400 text-center">
               {{ i18n.t('items.noSuggestions') }}
             </p>
           </div>
 
           <!-- Suggestions List -->
-          <div v-else class="space-y-2 pb-20">
-            <div
-              v-for="item in filteredSuggestions"
-              :key="item.name"
-              class="bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-700 transition-all duration-200 overflow-hidden group"
-            >
-              <div class="p-3">
-                <div class="flex items-center gap-3">
-                  <!-- Add/Check Button -->
-                  <button
-                    @click="toggleSuggestion(item.name)"
-                    class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 active:scale-95"
-                    :class="isInListUnchecked(item.name)
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gradient-to-br from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-md'"
-                    :disabled="processing.has(item.name.toLowerCase())"
-                  >
-                    <svg
-                      v-if="isInListUnchecked(item.name)"
-                      class="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+          <div v-else class="pb-24">
+            <!-- Section: Items in List -->
+            <div v-if="filteredSuggestions.some(item => isInListUnchecked(item.name))" class="mb-6">
+              <h3 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 px-1">
+                {{ i18n.t('items.inList') }}
+              </h3>
+              <div class="space-y-2">
+                <div
+                  v-for="item in filteredSuggestions.filter(i => isInListUnchecked(i.name))"
+                  :key="item.name"
+                  class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+                >
+                  <div class="p-4 flex items-center gap-4">
+                    <!-- Check Button -->
+                    <button
+                      @click="toggleSuggestion(item.name)"
+                      class="flex-shrink-0 w-11 h-11 rounded-xl bg-green-500 text-white flex items-center justify-center transition-transform active:scale-95"
+                      :disabled="processing.has(item.name.toLowerCase())"
                     >
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    <svg
-                      v-else
-                      class="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-                    </svg>
-                  </button>
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    </button>
 
-                  <!-- Product Name & Info -->
-                  <div class="flex-1 min-w-0">
-                    <h3 class="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight truncate">
-                      {{ item.name }}
-                    </h3>
-                    <div v-if="getListItem(item.name)" class="flex items-center gap-2 mt-0.5">
-                      <span class="text-xs text-green-600 dark:text-green-400 font-medium">
-                        {{ i18n.t('items.inList') }}
-                      </span>
-                      <span class="text-xs text-slate-400">•</span>
-                      <span class="text-xs text-slate-500 dark:text-slate-400">
-                        {{ getListItem(item.name)?.quantity }}x · €{{ getListItem(item.name)?.unit_price?.toFixed(2) || '0.00' }}
-                      </span>
+                    <!-- Product Info -->
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-semibold text-slate-900 dark:text-white truncate">
+                        {{ item.name }}
+                      </h3>
+                      <p class="text-sm text-slate-500 dark:text-slate-400">
+                        {{ getListItem(item.name)?.quantity }}× · €{{ (getListItem(item.name)?.unit_price || 0).toFixed(2) }}
+                      </p>
                     </div>
-                    <div v-else-if="item.unit_price" class="mt-0.5">
-                      <span class="text-xs text-slate-500 dark:text-slate-400">
-                        €{{ item.unit_price?.toFixed(2) }}
-                      </span>
-                    </div>
-                  </div>
 
-                  <!-- Price & Quantity (for items in list) -->
-                  <div v-if="getListItem(item.name)" class="flex items-center gap-2">
-                    <!-- Total Price -->
-                    <div class="text-right mr-1 hidden sm:block">
-                      <div class="text-sm font-bold text-slate-900 dark:text-white">
+                    <!-- Total & Controls -->
+                    <div class="flex items-center gap-3">
+                      <span class="text-lg font-bold text-slate-900 dark:text-white hidden sm:block">
                         €{{ ((getListItem(item.name)?.unit_price || 0) * (getListItem(item.name)?.quantity || 1)).toFixed(2) }}
+                      </span>
+
+                      <!-- Quantity Controls -->
+                      <div class="flex items-center bg-slate-100 dark:bg-slate-700 rounded-xl overflow-hidden">
+                        <button
+                          @click.stop="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
+                          class="w-10 h-10 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors active:scale-95"
+                        >
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                          </svg>
+                        </button>
+                        <span class="w-10 text-center font-bold text-slate-900 dark:text-white">
+                          {{ getListItem(item.name)?.quantity || 1 }}
+                        </span>
+                        <button
+                          @click.stop="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
+                          class="w-10 h-10 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors active:scale-95"
+                        >
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                          </svg>
+                        </button>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                    <!-- Compact Quantity Controls -->
-                    <div class="flex items-center bg-slate-100 dark:bg-slate-700 rounded-lg">
-                      <button
-                        @click.stop="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
-                        class="w-8 h-8 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-l-lg transition-colors active:scale-95"
-                      >
-                        <span class="text-lg font-bold">−</span>
-                      </button>
-                      <span class="w-8 text-center text-sm font-bold text-slate-900 dark:text-white">
-                        {{ getListItem(item.name)?.quantity || 1 }}
-                      </span>
-                      <button
-                        @click.stop="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
-                        class="w-8 h-8 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-r-lg transition-colors active:scale-95"
-                      >
-                        <span class="text-lg font-bold">+</span>
-                      </button>
+            <!-- Section: Suggestions -->
+            <div>
+              <h3 v-if="filteredSuggestions.some(item => isInListUnchecked(item.name))" class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 px-1">
+                {{ i18n.t('items.suggestions') }}
+              </h3>
+              <div class="space-y-2">
+                <div
+                  v-for="item in filteredSuggestions.filter(i => !isInListUnchecked(i.name))"
+                  :key="item.name"
+                  @click="toggleSuggestion(item.name)"
+                  class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden cursor-pointer hover:border-blue-300 dark:hover:border-blue-600 transition-colors"
+                >
+                  <div class="p-4 flex items-center gap-4">
+                    <!-- Add Button -->
+                    <div
+                      class="flex-shrink-0 w-11 h-11 rounded-xl bg-blue-500 text-white flex items-center justify-center"
+                    >
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                      </svg>
                     </div>
+
+                    <!-- Product Info -->
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-semibold text-slate-900 dark:text-white truncate">
+                        {{ item.name }}
+                      </h3>
+                      <p v-if="item.unit_price" class="text-sm text-slate-500 dark:text-slate-400">
+                        €{{ item.unit_price.toFixed(2) }}
+                      </p>
+                    </div>
+
+                    <!-- Arrow -->
+                    <svg class="w-5 h-5 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -285,8 +302,8 @@ const filteredSuggestions = computed(() => {
     </div>
     <template #fallback>
       <div class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white dark:bg-slate-900">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
+        <div class="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent"></div>
+        <p class="mt-4 text-slate-500 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
       </div>
     </template>
   </ClientOnly>
