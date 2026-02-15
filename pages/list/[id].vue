@@ -8,7 +8,6 @@ import {useListStore} from '~/stores/lists';
 import {useI18nStore} from '~/stores/i18n';
 import {useAuthStore} from '~/stores/auth';
 import {useSocket} from '~/composables/useSocket';
-import AddButton from "~/components/form/addButton.vue";
 import Loader from '~/components/Loader.vue';
 
 
@@ -136,6 +135,17 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
     <!-- Fixed Header -->
     <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
       <div class="max-w-4xl mx-auto px-4 py-4">
+        <!-- Back button -->
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline mb-2"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          {{ i18n.t('common.back') || 'Terug' }}
+        </NuxtLink>
+
         <div class="flex items-center justify-between gap-4">
           <div class="flex-1 min-w-0">
             <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white truncate flex items-center gap-2">
@@ -162,12 +172,26 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <button
             v-if="!showAddItem"
             @click="showAddItem = true"
-            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
+            class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
             </svg>
           </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div v-if="items.length > 0" class="mt-4">
+          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+            <span>{{ checkedItems.length }} / {{ items.length }} {{ i18n.t('list.completed') || 'afgevinkt' }}</span>
+            <span class="font-semibold">{{ items.length > 0 ? Math.round((checkedItems.length / items.length) * 100) : 0 }}%</span>
+          </div>
+          <div class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div
+              class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-500 ease-out"
+              :style="{ width: `${items.length > 0 ? (checkedItems.length / items.length) * 100 : 0}%` }"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
@@ -302,14 +326,5 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 <style scoped>
 @supports (height: 100dvh) {
   .min-h-screen { min-height: 100dvh; }
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-.fade-leave-from, .fade-enter-to {
-  opacity: 1;
 }
 </style>

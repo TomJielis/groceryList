@@ -198,19 +198,26 @@ const filteredSuggestions = computed(() => {
                 v-for="item in filteredSuggestions"
                 :key="item.name"
                 class="bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-700 transition-all duration-200 overflow-hidden group"
+                :class="{ 'ring-2 ring-green-500 ring-offset-2 dark:ring-offset-slate-900': isInListUnchecked(item.name) }"
               >
-                <div class="flex items-center gap-3 p-4">
+                <div class="flex items-center gap-4 p-4">
                   <!-- Add/Check Button -->
                   <button
                     @click="toggleSuggestion(item.name)"
                     class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200 active:scale-95"
                     :class="isInListUnchecked(item.name)
-                      ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
+                      ? 'bg-green-500 text-white hover:bg-green-600 shadow-lg'
                       : 'bg-gradient-to-br from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl'"
                     :disabled="processing.has(item.name.toLowerCase())"
                   >
+                    <div v-if="processing.has(item.name.toLowerCase())" class="animate-spin">
+                      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    </div>
                     <svg
-                      v-if="isInListUnchecked(item.name)"
+                      v-else-if="isInListUnchecked(item.name)"
                       class="w-6 h-6"
                       fill="none"
                       stroke="currentColor"
@@ -229,18 +236,32 @@ const filteredSuggestions = computed(() => {
                     </svg>
                   </button>
 
-<!-- Product Name -->
+                  <!-- Product Name and Details -->
                   <div class="flex-1 min-w-0">
                     <h3 class="font-semibold text-slate-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {{ item.name }}
                     </h3>
-                    <div class="flex items-center gap-2 mt-0.5">
-                      <p
-                        v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
-                        class="text-sm text-green-600 dark:text-green-400 font-medium"
+                    <div class="flex items-center gap-3 mt-1 text-sm">
+                      <!-- In List Badge -->
+                      <span
+                        v-if="isInListUnchecked(item.name)"
+                        class="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded-md text-green-600 dark:text-green-400 font-medium"
                       >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
                         {{ i18n.t('items.inList') || 'In je lijst' }}
-                      </p>
+                      </span>
+                      <!-- Quantity badge if in list -->
+                      <span
+                        v-if="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)?.quantity"
+                        class="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-600 dark:text-slate-400"
+                      >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+                        </svg>
+                        {{ items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1 }}x
+                      </span>
                     </div>
                   </div>
 
@@ -252,7 +273,7 @@ const filteredSuggestions = computed(() => {
 
                   <!-- Quantity Controls -->
                   <QuantityControls
-                    v-if="items.some(listItem => listItem.name.toLowerCase() === item.name.toLowerCase() && !listItem.checked)"
+                    v-if="isInListUnchecked(item.name)"
                     :quantity="items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase())?.quantity || 1"
                     @increase="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) increaseItems(found); }"
                     @decrease="() => { const found = items.find(listItem => listItem.name.toLowerCase() === item.name.toLowerCase()); if (found) decreaseItems(found); }"
