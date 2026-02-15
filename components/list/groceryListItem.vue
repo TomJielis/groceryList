@@ -108,12 +108,12 @@ const handleSave = () => {
         </button>
         <button
           @click="handleSave"
-          class="flex-1 px-4 py-2.5 font-semibold rounded-lg transition active:scale-95 shadow-lg"
+          class="flex-1 px-4 py-2.5 font-semibold rounded-lg transition active:scale-95"
           :class="localItem.quantity === 0
             ? 'bg-red-500 hover:bg-red-600 text-white'
-            : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white'"
+            : 'bg-blue-500 hover:bg-blue-600 text-white'"
         >
-          {{ localItem.quantity === 0 ? i18n.t('common.delete') || 'Verwijderen' : i18n.t('common.save') || 'Opslaan' }}
+          {{ localItem.quantity === 0 ? i18n.t('common.delete') : i18n.t('common.save') }}
         </button>
       </div>
     </div>

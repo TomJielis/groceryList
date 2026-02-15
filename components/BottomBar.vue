@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth";
 import { useI18nStore } from "~/stores/i18n";
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useListStore } from '~/stores/lists';
 import { useRoute } from 'vue-router';
 
@@ -33,17 +33,17 @@ function isActiveTab(path: string) {
 </script>
 
 <template>
-  <nav class="fixed bottom-0 left-0 right-0 flex justify-around items-center px-2 py-2 shadow-2xl md:hidden h-20 bg-white dark:bg-slate-900 border-t-2 border-slate-200 dark:border-slate-700">
+  <nav class="fixed bottom-0 left-0 right-0 flex justify-around items-center px-2 py-2 shadow-2xl md:hidden h-20 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700">
     <!-- Info Tab -->
     <nuxtLink
       v-if="!authStore.user"
       to="/information"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-200 group relative"
       :class="isActiveTab('/information')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+        ? 'bg-blue-500 text-white'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800'"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/information') ? 'drop-shadow-lg' : ''">ℹ️</span>
+      <span class="text-2xl mb-1">ℹ️</span>
       <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/information') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.info') }}</span>
     </nuxtLink>
 
@@ -51,12 +51,12 @@ function isActiveTab(path: string) {
     <nuxtLink
       v-if="authStore.user"
       to="/"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-200 group relative"
       :class="isActiveTab('/')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+        ? 'bg-blue-500 text-white'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800'"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/') ? 'drop-shadow-lg' : ''">📝</span>
+      <span class="text-2xl mb-1">📝</span>
       <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.lists') }}</span>
     </nuxtLink>
 
@@ -64,12 +64,12 @@ function isActiveTab(path: string) {
     <nuxtLink
       v-if="authStore.user"
       to="/cards"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-200 group relative"
       :class="isActiveTab('/cards')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+        ? 'bg-blue-500 text-white'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800'"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/cards') ? 'drop-shadow-lg' : ''">💳</span>
+      <span class="text-2xl mb-1">💳</span>
       <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/cards') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.cards') }}</span>
     </nuxtLink>
 
@@ -77,12 +77,12 @@ function isActiveTab(path: string) {
     <nuxtLink
       v-if="!authStore.user"
       to="/auth/login"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-200 group relative"
       :class="isActiveTab('/auth/login')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+        ? 'bg-blue-500 text-white'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800'"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/auth/login') ? 'drop-shadow-lg' : ''">🚪</span>
+      <span class="text-2xl mb-1">🚪</span>
       <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/auth/login') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.login') }}</span>
     </nuxtLink>
 
@@ -90,12 +90,12 @@ function isActiveTab(path: string) {
     <nuxtLink
       v-if="!authStore.user"
       to="/auth/register"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-200 group relative"
       :class="isActiveTab('/auth/register')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+        ? 'bg-blue-500 text-white'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800'"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/auth/register') ? 'drop-shadow-lg' : ''">📝</span>
+      <span class="text-2xl mb-1">📝</span>
       <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/auth/register') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.register') }}</span>
     </nuxtLink>
 
@@ -103,18 +103,20 @@ function isActiveTab(path: string) {
     <nuxtLink
       v-if="authStore.user"
       to="/profile"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
+      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-200 group"
       :class="isActiveTab('/profile')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+        ? 'bg-blue-500 text-white'
+        : 'hover:bg-slate-100 dark:hover:bg-slate-800'"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/profile') ? 'drop-shadow-lg' : ''">👤</span>
-      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/profile') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.profile') }}</span>
-      <span
-        v-if="pendingCount > 0"
-        class="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-red-600 text-white text-[10px] leading-none rounded-full min-w-[20px] h-[20px] flex items-center justify-center font-bold shadow-lg animate-pulse border-2 border-white dark:border-slate-900"
-      >
-        {{ pendingCount }}
+      <span class="text-2xl mb-1">👤</span>
+      <span class="flex items-center gap-0.5">
+        <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/profile') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.profile') }}</span>
+        <span
+          v-if="pendingCount > 0"
+          class="bg-red-500 text-white text-[9px] leading-none rounded-full min-w-[14px] h-[14px] flex items-center justify-center font-bold"
+        >
+          {{ pendingCount }}
+        </span>
       </span>
     </nuxtLink>
 
@@ -122,9 +124,9 @@ function isActiveTab(path: string) {
     <div v-if="!authStore.user" class="flex flex-col items-center justify-center text-center flex-1">
       <button
         @click="setLocale(i18n.locale === 'nl' ? 'en' : 'nl')"
-        class="flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl transition-all duration-300 group hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105 w-full"
+        class="flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl transition-all duration-200 hover:bg-slate-100 dark:hover:bg-slate-800 w-full"
       >
-        <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300">{{ i18n.locale === 'nl' ? '🇳🇱' : '🇬🇧' }}</span>
+        <span class="text-2xl mb-1">{{ i18n.locale === 'nl' ? '🇳🇱' : '🇬🇧' }}</span>
         <span class="text-[11px] font-bold tracking-wide text-slate-600 dark:text-slate-400">{{ i18n.locale === 'nl' ? 'NL' : 'EN' }}</span>
       </button>
     </div>

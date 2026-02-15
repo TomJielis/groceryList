@@ -59,13 +59,13 @@ function getCreatorName(list: TGroceryList): string {
         <div
           v-for="list in pendingLists"
           :key="list.id"
-          class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 border-2 border-amber-200 dark:border-amber-800 rounded-xl p-4 shadow-sm"
+          class="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800 rounded-2xl p-4"
         >
           <!-- List Info -->
           <div class="mb-4">
             <div class="flex items-start gap-3 mb-2">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-amber-700 dark:text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-amber-700 dark:text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                 </svg>
               </div>
@@ -74,7 +74,7 @@ function getCreatorName(list: TGroceryList): string {
                   {{ list.name }}
                 </h4>
                 <p class="text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-                  {{ i18n.t('lists.invitedBy') || 'Uitgenodigd door' }} <span class="font-semibold">{{ getCreatorName(list) }}</span>
+                  {{ i18n.t('lists.invitedBy') }} <span class="font-semibold">{{ getCreatorName(list) }}</span>
                 </p>
               </div>
             </div>
@@ -84,21 +84,15 @@ function getCreatorName(list: TGroceryList): string {
           <div class="flex gap-2">
             <button
               @click="handleAction(list.id, 'accepted')"
-              class="flex-1 px-4 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+              class="flex-1 px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-all active:scale-95"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-              </svg>
-              <span>{{ i18n.t('lists.approve') || 'Accepteren' }}</span>
+              {{ i18n.t('lists.approve') }}
             </button>
             <button
               @click="handleAction(list.id, 'declined')"
-              class="flex-1 px-4 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+              class="flex-1 px-4 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-all active:scale-95"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-              <span>{{ i18n.t('lists.decline') || 'Weigeren' }}</span>
+              {{ i18n.t('lists.decline') }}
             </button>
           </div>
         </div>

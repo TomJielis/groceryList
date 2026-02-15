@@ -84,12 +84,12 @@ function closeModal() {
       </p>
       <NuxtLink
         to="/cards/upload"
-        class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
+        class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all duration-200 flex items-center gap-2"
       >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
-        <span>{{ i18n.t('cards.uploadFirst') || 'Upload je eerste kaart' }}</span>
+        <span>{{ i18n.t('cards.uploadFirst') }}</span>
       </NuxtLink>
     </div>
 

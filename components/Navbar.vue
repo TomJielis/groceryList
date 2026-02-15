@@ -91,12 +91,12 @@ onUnmounted(() => {
             {{ t('nav.login') }}
           </nuxt-link>
 
-          <!-- Primary CTA Button - only one with full gradient -->
+          <!-- Primary CTA Button -->
           <nuxt-link
             v-if="!authStore.user"
             to="/auth/register"
             replace
-            class="ml-2 px-5 py-2 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
+            class="ml-2 px-5 py-2 rounded-xl text-sm font-bold text-white bg-blue-500 hover:bg-blue-600 transition-all duration-200"
           >
             {{ t('nav.register') }}
           </nuxt-link>
