@@ -139,10 +139,10 @@ const filteredSuggestions = computed(() => {
               </p>
             </div>
 
-            <!-- Items count badge -->
-            <div class="flex-shrink-0 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-full">
-              <span class="text-sm font-semibold text-blue-600 dark:text-blue-400">
-                {{ items.filter(item => !item.checked).length }} {{ i18n.t('list.items') }}
+            <!-- Total Price Badge -->
+            <div class="flex-shrink-0 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-800">
+              <span class="text-sm font-bold text-green-700 dark:text-green-400">
+                €{{ items.filter(item => !item.checked).reduce((sum, item) => sum + ((item.unit_price || 0) * item.quantity), 0).toFixed(2) }}
               </span>
             </div>
           </div>
