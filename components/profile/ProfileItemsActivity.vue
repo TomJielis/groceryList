@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
+import { calculateChange } from '~/utils/calculateChange';
 
 interface Props {
   items: {
@@ -18,21 +19,6 @@ const props = defineProps<Props>();
 
 const i18n = useI18nStore();
 
-// Calculate percentage change
-const calculateChange = (current: number, previous: number) => {
-  const absolute = current - previous
-  let percentage: number
-  if (previous > 0) {
-    percentage = Math.round((current / previous) * 100)
-  } else if (current > 0) {
-    // Previous was 0, current > 0 = 100% new
-    percentage = 100
-  } else {
-    // Both are 0
-    percentage = 0
-  }
-  return { absolute, percentage }
-}
 
 // Calculate change for added items
 const addedChange = computed(() => {

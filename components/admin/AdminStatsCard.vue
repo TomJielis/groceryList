@@ -14,7 +14,9 @@ interface Props {
 const props = defineProps<Props>()
 const i18n = useI18nStore()
 
-const isPositive = computed(() => (props.change?.percentage ?? 0) >= 0)
+// Percentage change: 0% = no change, >0% = increase, <0% = decrease
+const isPositive = computed(() => (props.change?.percentage ?? 0) > 0)
+const isNegative = computed(() => (props.change?.percentage ?? 0) < 0)
 const isZero = computed(() => (props.change?.percentage ?? 0) === 0)
 const changeColor = computed(() => {
   if (isZero.value) return 'text-slate-500 dark:text-slate-400'
@@ -32,7 +34,7 @@ const changeIcon = computed(() => {
     <div class="mt-2 flex items-baseline">
       <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ value }}</p>
       <!-- Show percentage change -->
-      <p v-if="change && change.percentage !== undefined" :class="['ml-2 text-sm font-medium', changeColor]">
+      <p v-if="change && change.percentage !== null" :class="['ml-2 text-sm font-medium', changeColor]">
         {{ changeIcon }} {{ Math.abs(change.percentage) }}%
       </p>
     </div>
