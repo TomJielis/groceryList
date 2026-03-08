@@ -18,18 +18,19 @@ const {message, visible, type} = useNotification();
       class="fixed top-0 left-0 right-0 z-[9999] w-full flex items-center justify-center px-4 pt-4 md:pt-20 pointer-events-none"
     >
       <div
-        class="flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg font-medium text-sm pointer-events-auto max-w-md w-full"
+        class="flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl font-semibold text-base backdrop-blur-xl border pointer-events-auto transform hover:scale-[1.02] transition-transform duration-200"
         :class="[
           type === 'success'
-            ? 'bg-green-500 text-white'
-            : 'bg-red-500 text-white'
+            ? 'bg-gradient-to-r from-green-500 to-emerald-500 border-green-400 text-white'
+            : 'bg-gradient-to-r from-red-500 to-rose-500 border-red-400 text-white',
+          'max-w-md w-full'
         ]"
       >
         <!-- Icon -->
         <div class="flex-shrink-0">
           <svg
             v-if="type === 'success'"
-            class="w-5 h-5"
+            class="w-6 h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -37,13 +38,13 @@ const {message, visible, type} = useNotification();
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 13l4 4L19 7"
+              stroke-width="2.5"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
           <svg
             v-else
-            class="w-5 h-5"
+            class="w-6 h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -51,14 +52,22 @@ const {message, visible, type} = useNotification();
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
+              stroke-width="2.5"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
         </div>
 
         <!-- Message -->
-        <span class="flex-1">{{ message }}</span>
+        <span class="flex-1 text-center font-medium">{{ message }}</span>
+
+        <!-- Decorative Pulse -->
+        <div
+          class="absolute inset-0 rounded-2xl animate-pulse opacity-30"
+          :class="[
+            type === 'success' ? 'bg-green-300' : 'bg-red-300'
+          ]"
+        ></div>
       </div>
     </div>
   </Transition>

@@ -58,7 +58,7 @@ function handleSubmit() {
   <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
     <!-- Fixed Header -->
     <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm touch-none">
-      <div class="max-w-6xl mx-auto px-4 py-4">
+      <div class="max-w-4xl mx-auto px-4 py-4">
         <div class="flex items-center justify-between gap-4">
           <div class="flex-1 min-w-0">
             <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -89,7 +89,7 @@ function handleSubmit() {
 
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto overflow-x-hidden">
-      <div class="max-w-6xl mx-auto px-4 pb-24 pt-6">
+      <div class="max-w-4xl mx-auto px-4 pb-24 pt-6">
         <form @submit.prevent="handleSubmit" class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
           <!-- Form Content -->
           <div class="p-6 space-y-6">
@@ -103,7 +103,7 @@ function handleSubmit() {
                 type="text"
                 :placeholder="i18n.t('cards.titlePlaceholder') || 'Bijv. Albert Heijn Bonuskaart'"
                 required
-                class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
+                class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
               />
             </div>
 
@@ -161,16 +161,22 @@ function handleSubmit() {
               <button
                 type="button"
                 @click="router.push('/cards/')"
-                class="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-95"
+                class="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-98 flex items-center justify-center gap-2"
               >
-                {{ i18n.t('common.cancel') }}
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                <span>{{ i18n.t('common.cancel') || 'Annuleren' }}</span>
               </button>
               <button
                 type="submit"
                 :disabled="!formData.title || !formData.attachment"
-                class="flex-1 px-4 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-95"
+                class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-98 shadow-lg flex items-center justify-center gap-2"
               >
-                {{ i18n.t('cards.uploadBtn') }}
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                <span>{{ i18n.t('cards.uploadBtn') || 'Uploaden' }}</span>
               </button>
             </div>
           </div>
