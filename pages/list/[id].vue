@@ -134,7 +134,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
   <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
     <!-- Fixed Header -->
     <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="max-w-4xl mx-auto px-4 py-3">
+      <div class="max-w-6xl mx-auto px-4 py-3">
         <!-- Top Row: Back button, Title, Add button -->
         <div class="flex items-center gap-3">
           <!-- Back Button -->
@@ -194,7 +194,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto">
-      <div class="max-w-4xl mx-auto px-4 pb-24 pt-4">
+      <div class="max-w-6xl mx-auto px-4 pb-24 pt-4">
       <Loader v-if="loading" />
 
       <!-- Empty State -->
@@ -223,19 +223,44 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
       <div v-else class="space-y-4">
         <div v-if="!showAddItem">
           <!-- Active Items Section -->
-          <div v-if="uncheckedItems.length > 0" class="space-y-2">
-            <transition-group name="list" tag="div" class="space-y-2">
-              <GroceryListItem
-                v-for="item in uncheckedItems"
-                :key="item.id"
-                :item="item"
-                :isEditing="editingItemId === item.id"
-                @edit="editingItemId = $event"
-                @check="handleCheckItem"
-                @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
-                class="transform transition-all duration-200"
-              />
-            </transition-group>
+          <div v-if="uncheckedItems.length > 0">
+            <!-- Desktop Table View -->
+            <div class="hidden md:block bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+              <div class="grid grid-cols-12 gap-4 px-6 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <div class="col-span-5">{{ i18n.t('items.name') }}</div>
+                <div class="col-span-2 text-center">{{ i18n.t('items.quantity') }}</div>
+                <div class="col-span-2 text-center">{{ i18n.t('items.price') }}</div>
+                <div class="col-span-2 text-center">{{ i18n.t('items.total') }}</div>
+                <div class="col-span-1"></div>
+              </div>
+              <transition-group name="list" tag="div">
+                <GroceryListItem
+                  v-for="item in uncheckedItems"
+                  :key="item.id"
+                  :item="item"
+                  :isEditing="editingItemId === item.id"
+                  :tableMode="true"
+                  @edit="editingItemId = $event"
+                  @check="handleCheckItem"
+                  @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+                />
+              </transition-group>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="md:hidden space-y-2">
+              <transition-group name="list" tag="div" class="space-y-2">
+                <GroceryListItem
+                  v-for="item in uncheckedItems"
+                  :key="item.id"
+                  :item="item"
+                  :isEditing="editingItemId === item.id"
+                  @edit="editingItemId = $event"
+                  @check="handleCheckItem"
+                  @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+                />
+              </transition-group>
+            </div>
           </div>
 
           <!-- All Done State -->
@@ -289,19 +314,38 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
               leave-from-class="opacity-100 max-h-[2000px]"
               leave-to-class="opacity-0 max-h-0"
             >
-              <div v-if="showCheckedItems" class="mt-3 space-y-2 overflow-hidden">
-                <transition-group name="list" tag="div" class="space-y-2">
-                  <GroceryListItem
-                    v-for="item in checkedItems"
-                    :key="item.id"
-                    :item="item"
-                    :isEditing="editingItemId === item.id"
-                    @edit="editingItemId = $event"
-                    @check="handleCheckItem"
-                    @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
-                    class="opacity-60"
-                  />
-                </transition-group>
+              <div v-if="showCheckedItems" class="mt-3 overflow-hidden">
+                <!-- Desktop Table View -->
+                <div class="hidden md:block bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                  <transition-group name="list" tag="div">
+                    <GroceryListItem
+                      v-for="item in checkedItems"
+                      :key="item.id"
+                      :item="item"
+                      :isEditing="editingItemId === item.id"
+                      :tableMode="true"
+                      @edit="editingItemId = $event"
+                      @check="handleCheckItem"
+                      @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+                    />
+                  </transition-group>
+                </div>
+
+                <!-- Mobile Card View -->
+                <div class="md:hidden space-y-2">
+                  <transition-group name="list" tag="div" class="space-y-2">
+                    <GroceryListItem
+                      v-for="item in checkedItems"
+                      :key="item.id"
+                      :item="item"
+                      :isEditing="editingItemId === item.id"
+                      @edit="editingItemId = $event"
+                      @check="handleCheckItem"
+                      @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+                      class="opacity-60"
+                    />
+                  </transition-group>
+                </div>
               </div>
             </transition>
           </div>
@@ -325,18 +369,3 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
     </div>
   </div>
 </template>
-
-<style scoped>
-@supports (height: 100dvh) {
-  .min-h-screen { min-height: 100dvh; }
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-.fade-leave-from, .fade-enter-to {
-  opacity: 1;
-}
-</style>

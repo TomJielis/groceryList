@@ -132,7 +132,7 @@ async function removeSharedUser(invite: any) {
             {{ props.listId ? i18n.t('lists.editList') : i18n.t('lists.newList') }}
           </h1>
           <p v-if="props.listId" class="text-sm text-slate-500 dark:text-slate-400 truncate">
-            {{ i18n.t('lists.editDescription') || 'Wijzig de naam of beheer gedeelde gebruikers' }}
+            {{ i18n.t('lists.editDescription') }}
           </p>
         </div>
       </div>
@@ -156,7 +156,7 @@ async function removeSharedUser(invite: any) {
 
       <!-- Shared Users Section -->
       <div v-if="props.listId && sharedInvites.length > 0">
-        <h3 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 px-1">
+        <h3 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-1">
           {{ i18n.t('lists.sharedWith') }} ({{ sharedInvites.length }})
         </h3>
 
@@ -164,27 +164,28 @@ async function removeSharedUser(invite: any) {
           <div class="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent"></div>
         </div>
 
-        <div v-else class="space-y-2">
+        <div v-else class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
           <div
-            v-for="invite in sharedInvites"
+            v-for="(invite, index) in sharedInvites"
             :key="invite.id"
-            class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700"
+            class="flex items-center justify-between px-4 py-3"
+            :class="{ 'border-b border-slate-100 dark:border-slate-700/50': index < sharedInvites.length - 1 }"
           >
             <div class="flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 flex items-center justify-center text-blue-700 dark:text-blue-300 font-bold text-lg">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">
                 {{ (invite.user?.name || invite.user?.email || '?').charAt(0).toUpperCase() }}
               </div>
               <div>
-                <p class="font-semibold text-slate-900 dark:text-white">{{ invite.user?.name || invite.user?.email }}</p>
-                <p v-if="invite.user?.name" class="text-sm text-slate-500 dark:text-slate-400">{{ invite.user?.email }}</p>
+                <p class="font-medium text-slate-900 dark:text-white">{{ invite.user?.name || invite.user?.email }}</p>
+                <p v-if="invite.user?.name" class="text-xs text-slate-500 dark:text-slate-400">{{ invite.user?.email }}</p>
               </div>
             </div>
             <button
               v-if="invite.user?.id !== auth.user.id"
               @click="removeSharedUser(invite)"
-              class="w-10 h-10 flex items-center justify-center hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors text-red-500"
+              class="w-8 h-8 flex items-center justify-center hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors text-red-500"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
               </svg>
             </button>

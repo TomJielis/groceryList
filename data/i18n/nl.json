@@ -71,8 +71,12 @@
     "completed": "afgevinkt",
     "remaining": "te doen",
     "owner": "eigenaar",
+    "name": "Naam",
+    "items": "Items",
+    "by": "door",
     "createFirst": "Maak je eerste lijst",
     "editList": "Lijst bewerken",
+    "editDescription": "Wijzig de naam of beheer gedeelde gebruikers",
     "newList": "Nieuwe lijst",
     "sharedWith": "Gedeeld met",
     "pendingInvites": "Uitnodigingen in afwachting",
@@ -145,6 +149,9 @@
     "addNew": "Items toevoegen",
     "suggestions": "suggesties",
     "total": "Totaal",
+    "name": "Product",
+    "quantity": "Aantal",
+    "price": "Prijs",
     "emptyState": {
       "title": "Nog geen items",
       "message": "Begin met het toevoegen van items aan je boodschappenlijst. Klik op de + knop hieronder om je eerste item toe te voegen!"

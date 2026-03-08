@@ -71,8 +71,12 @@
     "completed": "completed",
     "remaining": "remaining",
     "owner": "owner",
+    "name": "Name",
+    "items": "Items",
+    "by": "by",
     "createFirst": "Create your first list",
     "editList": "Edit list",
+    "editDescription": "Change the name or manage shared users",
     "newList": "New list",
     "sharedWith": "Shared with",
     "pendingInvites": "Pending invitations",
@@ -146,6 +150,9 @@
     "addNew": "Add items",
     "suggestions": "suggestions",
     "total": "Total",
+    "name": "Product",
+    "quantity": "Quantity",
+    "price": "Price",
     "emptyState": {
       "title": "No Items Yet",
       "message": "Start adding items to your grocery list. Click the + button below to add your first item!"
