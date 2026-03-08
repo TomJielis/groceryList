@@ -4,11 +4,13 @@ const emit = defineEmits(['click']);
 
 <template>
   <button
-      class="fixed bottom-24 right-6 z-60 bg-gradient-to-br from-indigo-500 to-sky-400 hover:from-indigo-600 hover:to-sky-500 rounded-full shadow-2xl w-16 h-16 flex items-center justify-center text-4xl transition border-4 border-white dark:border-slate-800 ring-2 ring-indigo-300 dark:ring-indigo-800"
+      class="fixed bottom-24 right-6 z-60 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg w-14 h-14 flex items-center justify-center text-white transition-all active:scale-95"
       style="padding-bottom: env(safe-area-inset-bottom)"
       aria-label="Add item"
       @click="emit('click')"
   >
-    <span class="pb-1">+</span>
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+    </svg>
   </button>
 </template>

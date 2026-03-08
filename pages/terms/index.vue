@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
-import BackButton from "~/components/form/backButton.vue";
 const config = useRuntimeConfig()
 
 const i18n = useI18nStore();
@@ -38,12 +37,12 @@ section ul li {
     <div class="w-full max-w-3xl my-4 md:my-8">
       <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-center">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
+        <div class="px-6 py-8 text-center border-b border-slate-200 dark:border-slate-700">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-900/20 mb-4">
             <span class="text-4xl">📄</span>
           </div>
-          <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">Terms of Use & Privacy Policy</h1>
-          <p class="text-blue-100 text-sm">Laatste versie: 1.2 | Laatst bijgewerkt: 10-11-2025</p>
+          <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">Terms of Use & Privacy Policy</h1>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">Laatste versie: 1.2 | Laatst bijgewerkt: 10-11-2025</p>
         </div>
 
         <!-- Content -->
@@ -297,8 +296,3 @@ section ul li {
     </div>
   </div>
 </template>
-
-<style scoped>
-h1, h2, h3 {
-}
-</style>

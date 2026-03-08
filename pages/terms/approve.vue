@@ -45,15 +45,15 @@ const approveTerms = async () => {
       <!-- Card -->
       <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-center">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
+        <div class="px-6 py-8 text-center border-b border-slate-200 dark:border-slate-700">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-orange-50 dark:bg-orange-900/20 mb-4">
             <span class="text-4xl">📋</span>
           </div>
-          <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">
-            {{ i18n.t('termsApproval.title', 'Action Required: Approve New Terms') }}
+          <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">
+            {{ i18n.t('termsApproval.title') }}
           </h1>
-          <p class="text-blue-100 text-sm">
-            {{ i18n.t('termsApproval.body', 'To continue using this application, you must approve the new terms and conditions.') }}
+          <p class="text-slate-500 dark:text-slate-400 text-sm">
+            {{ i18n.t('termsApproval.body') }}
           </p>
         </div>
 
@@ -62,7 +62,7 @@ const approveTerms = async () => {
           <form @submit.prevent="approveTerms" class="space-y-6">
             <!-- Terms Checkbox -->
             <label
-              class="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border-2 cursor-pointer transition-all"
+              class="flex items-start gap-3 p-4 bg-white dark:bg-slate-800 rounded-xl border cursor-pointer transition-all"
               :class="acceptedTerms ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700'"
             >
               <input
@@ -71,19 +71,16 @@ const approveTerms = async () => {
                 required
                 class="w-5 h-5 mt-0.5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
               />
-              <span class="text-sm text-slate-700 dark:text-slate-300 accept-terms-link" v-html="i18n.t('register.acceptTerms')"></span>
+              <span class="text-sm text-slate-600 dark:text-slate-400 accept-terms-link" v-html="i18n.t('register.acceptTerms')"></span>
             </label>
 
             <!-- Submit Button -->
             <button
               type="submit"
               :disabled="!acceptedTerms"
-              class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-blue-600 disabled:hover:to-indigo-600"
+              class="w-full py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-95"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              <span>{{ i18n.t('termsApproval.approveBtn', 'Approve and Continue') }}</span>
+              {{ i18n.t('termsApproval.approveBtn') }}
             </button>
           </form>
         </div>

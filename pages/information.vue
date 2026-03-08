@@ -274,27 +274,24 @@ onMounted(() => {
 
     <!-- CTA Section -->
     <section class="max-w-5xl mx-auto px-4 pb-24" v-if="!auth.user">
-      <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl shadow-2xl overflow-hidden">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
         <div class="p-12 text-center">
           <div class="mb-6">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-900/20 mb-4">
               <span class="text-4xl">🚀</span>
             </div>
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-3">
               {{ t('info.ctaTitle') }}
             </h2>
-            <p class="text-blue-100 max-w-2xl mx-auto text-lg">
-              {{ t('info.ctaSubtitle') || 'Begin vandaag nog met het organiseren van je boodschappen' }}
+            <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+              {{ t('info.ctaSubtitle') }}
             </p>
           </div>
           <NuxtLink
             to="/auth/register"
-            class="inline-flex items-center gap-2 bg-white hover:bg-blue-50 text-blue-600 font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-95"
+            class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-xl transition-all active:scale-95"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-            </svg>
-            <span>{{ t('info.ctaButton') }}</span>
+            {{ t('info.ctaButton') }}
           </NuxtLink>
         </div>
       </div>

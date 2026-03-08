@@ -70,7 +70,13 @@
     "listCount": "lijsten",
     "completed": "afgevinkt",
     "remaining": "te doen",
+    "owner": "eigenaar",
+    "name": "Naam",
+    "items": "Items",
+    "by": "door",
+    "createFirst": "Maak je eerste lijst",
     "editList": "Lijst bewerken",
+    "editDescription": "Wijzig de naam of beheer gedeelde gebruikers",
     "newList": "Nieuwe lijst",
     "sharedWith": "Gedeeld met",
     "pendingInvites": "Uitnodigingen in afwachting",
@@ -129,7 +135,13 @@
     "items": "items",
     "showChecked": "Weergeef",
     "hideChecked": "Verberg",
-    "checkedItemsSuffix": "afgevinkte items"
+    "checkedItemsSuffix": "afgevinkte items",
+    "remaining": "over",
+    "done": "klaar",
+    "completed": "Afgerond",
+    "progress": "Voortgang",
+    "allDone": "Alles gedaan!",
+    "allDoneMessage": "Je hebt alle items afgevinkt"
   },
   "items": {
     "addPlaceholder": "Nieuwe item invoeren",
@@ -137,6 +149,9 @@
     "addNew": "Items toevoegen",
     "suggestions": "suggesties",
     "total": "Totaal",
+    "name": "Product",
+    "quantity": "Aantal",
+    "price": "Prijs",
     "emptyState": {
       "title": "Nog geen items",
       "message": "Begin met het toevoegen van items aan je boodschappenlijst. Klik op de + knop hieronder om je eerste item toe te voegen!"

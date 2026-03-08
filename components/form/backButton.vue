@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { PropType } from 'vue'
 import { useI18nStore } from '~/stores/i18n'
 
-const props = defineProps({
-  label: { type: String as PropType<string>, default: '' },
-  type: { type: String as PropType<'button' | 'submit' | 'reset'>, default: 'button' },
-  ariaLabel: { type: String as PropType<string>, default: '' },
-})
+const props = defineProps<{
+  label?: string;
+  type?: 'button' | 'submit' | 'reset';
+  ariaLabel?: string;
+}>()
 
 const emit = defineEmits<{
   (e: 'click', ev: MouseEvent): void
@@ -27,9 +26,9 @@ function onClick(e: MouseEvent) {
   <div class="fixed left-0 mt-6 space-y-3 p-4 bottom-20 md:bottom-3 z-50 flex justify-center w-full">
     <div class="w-full max-w-md">
       <button
-        :type="props.type"
+        :type="props.type || 'button'"
         :aria-label="ariaLabel || labelText"
-        class="py-3 px-6 rounded-xl bg-gray-200 text-gray-700 font-medium text-base hover:bg-gray-300 transition w-full"
+        class="py-3 px-6 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold text-base transition-all active:scale-95 w-full"
         @click="onClick"
       >
         <slot>{{ labelText }}</slot>
