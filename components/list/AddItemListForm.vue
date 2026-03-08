@@ -26,8 +26,11 @@ const listId = parseInt(route.params.id as string)
 
 onMounted(async () => {
   loading.value = true;
-  await fetchItems(listId);
-  await suggestionStore.fetchSuggestions();
+  // Fetch items and suggestions in parallel for faster loading
+  await Promise.all([
+    fetchItems(listId),
+    suggestionStore.fetchSuggestionsOnly()
+  ]);
   loading.value = false;
 })
 
@@ -35,13 +38,24 @@ const newItem = ref('');
 const loading = ref(true);
 const processing = ref<Set<string>>(new Set());
 
+// Create a Map for O(1) lookups instead of repeated .find() calls
+const itemsMap = computed(() => {
+  const map = new Map<string, typeof items.value[0]>();
+  for (const item of items.value) {
+    map.set(item.name.toLowerCase(), item);
+  }
+  return map;
+});
+
 function isInListUnchecked(name: string) {
-  return items.value.some(listItem => listItem.name.toLowerCase() === name.toLowerCase() && !listItem.checked);
+  const item = itemsMap.value.get(name.toLowerCase());
+  return item && !item.checked;
 }
 
 // Helper function to get the list item for a suggestion (reactive)
 function getListItem(name: string) {
-  return items.value.find(listItem => listItem.name.toLowerCase() === name.toLowerCase() && !listItem.checked);
+  const item = itemsMap.value.get(name.toLowerCase());
+  return item && !item.checked ? item : undefined;
 }
 
 async function toggleSuggestion(name: string) {
@@ -49,8 +63,8 @@ async function toggleSuggestion(name: string) {
   if (processing.value.has(key)) return;
   processing.value.add(key);
   try {
-    const found = items.value.find(listItem => listItem.name.toLowerCase() === key && !listItem.checked);
-    if (found) {
+    const found = itemsMap.value.get(key);
+    if (found && !found.checked) {
       // Item already in list (unchecked) => decrease/remove
       await clearItem(found);
     } else {
@@ -64,6 +78,9 @@ async function toggleSuggestion(name: string) {
 }
 
 const filteredSuggestions = computed(() => {
+  const searchTerm = newItem.value.toLowerCase();
+  const map = itemsMap.value;
+
   // Get all item names from the current list with their prices
   const allItemsFromList = items.value.map(item => ({
     name: item.name,
@@ -73,41 +90,44 @@ const filteredSuggestions = computed(() => {
   // Combine and deduplicate suggestions (list items take priority for price)
   const allSuggestions = [...allItemsFromList, ...suggestionStore.combinedSuggestions];
   const seen = new Set<string>();
-  const uniqueSuggestions = allSuggestions.filter(item => {
+  const uniqueSuggestions: typeof allSuggestions = [];
+
+  for (const item of allSuggestions) {
     const lower = item.name.toLowerCase();
-    if (seen.has(lower)) return false;
-    seen.add(lower);
-    return true;
-  });
+    if (!seen.has(lower)) {
+      seen.add(lower);
+      uniqueSuggestions.push(item);
+    }
+  }
 
-  const suggestions = uniqueSuggestions.filter(item =>
-      item.name.toLowerCase().includes(newItem.value.toLowerCase())
-  );
+  // Filter by search term
+  const filtered = searchTerm
+    ? uniqueSuggestions.filter(item => item.name.toLowerCase().includes(searchTerm))
+    : uniqueSuggestions;
 
-  // sort suggestions: unchecked items in list first (by created_at desc), then checked items and items not in list alphabetically
-  const sorted = suggestions.sort((a, b) => {
-    const aInList = items.value.find(listItem => listItem.name.toLowerCase() === a.name.toLowerCase());
-    const bInList = items.value.find(listItem => listItem.name.toLowerCase() === b.name.toLowerCase());
+  // Sort suggestions: unchecked items in list first (by created_at desc), then the rest alphabetically
+  const sorted = filtered.sort((a, b) => {
+    const aItem = map.get(a.name.toLowerCase());
+    const bItem = map.get(b.name.toLowerCase());
 
-    // Check if items are unchecked (not checked)
-    const aUnchecked = aInList && !aInList.checked;
-    const bUnchecked = bInList && !bInList.checked;
+    const aUnchecked = aItem && !aItem.checked;
+    const bUnchecked = bItem && !bItem.checked;
 
     // Unchecked items in list will be shown first
     if (aUnchecked && !bUnchecked) return -1;
     if (!aUnchecked && bUnchecked) return 1;
 
     // if both are unchecked, sort by created_at descending
-    if (aUnchecked && bUnchecked) {
-      return new Date(bInList.created_at).getTime() - new Date(aInList.created_at).getTime();
+    if (aUnchecked && bUnchecked && aItem && bItem) {
+      return new Date(bItem.created_at).getTime() - new Date(aItem.created_at).getTime();
     }
 
-    // De rest (checked items of items niet in lijst) alfabetisch sorteren
+    // The rest (checked items or items not in list) alphabetically
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
   });
 
-  const isDuplicate = sorted.some(item => item.name.toLowerCase() === newItem.value.toLowerCase());
-  return newItem.value && !isDuplicate ? [{name: newItem.value, checked: false, unit_price: null}, ...sorted] : sorted;
+  const isDuplicate = sorted.some(item => item.name.toLowerCase() === searchTerm);
+  return searchTerm && !isDuplicate ? [{name: newItem.value, checked: false, unit_price: null}, ...sorted] : sorted;
 });
 </script>
 
