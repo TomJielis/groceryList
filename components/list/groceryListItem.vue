@@ -6,7 +6,6 @@ import { useGroceryList } from '~/composables/useGroceryList';
 const props = defineProps<{
   item: any,
   isEditing: boolean,
-  tableMode?: boolean,
 }>();
 
 const emit = defineEmits<{
@@ -109,74 +108,18 @@ const handleSave = () => {
         </button>
         <button
           @click="handleSave"
-          class="flex-1 px-4 py-2.5 font-semibold rounded-lg transition active:scale-95"
+          class="flex-1 px-4 py-2.5 font-semibold rounded-lg transition active:scale-95 shadow-lg"
           :class="localItem.quantity === 0
             ? 'bg-red-500 hover:bg-red-600 text-white'
-            : 'bg-blue-500 hover:bg-blue-600 text-white'"
+            : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white'"
         >
-          {{ localItem.quantity === 0 ? i18n.t('common.delete') : i18n.t('common.save') }}
+          {{ localItem.quantity === 0 ? i18n.t('common.delete') || 'Verwijderen' : i18n.t('common.save') || 'Opslaan' }}
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Display Mode - Table Row -->
-  <div v-else-if="tableMode"
-    class="grid grid-cols-12 gap-4 px-6 py-3 items-center border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer"
-    :class="{ 'opacity-50': item.checked }"
-    @click="emit('edit', item.id)"
-  >
-    <!-- Checkbox + Name -->
-    <div class="col-span-5 flex items-center gap-3 min-w-0">
-      <label class="relative flex items-center justify-center w-5 h-5 cursor-pointer flex-shrink-0" @click.stop>
-        <input
-          type="checkbox"
-          :checked="item.checked"
-          @change="(e) => { const target = e.target as HTMLInputElement | null; if (target) emit('check', { ...item, checked: target.checked }); }"
-          class="peer sr-only"
-        />
-        <div class="w-5 h-5 border-2 rounded-md transition-all duration-200 peer-checked:bg-green-500 peer-checked:border-green-500 border-slate-300 dark:border-slate-600 flex items-center justify-center">
-          <svg v-if="item.checked" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-          </svg>
-        </div>
-      </label>
-      <span
-        class="font-medium truncate"
-        :class="item.checked ? 'line-through text-slate-400' : 'text-slate-900 dark:text-white'"
-      >
-        {{ item.name }}
-      </span>
-    </div>
-
-    <!-- Quantity -->
-    <div class="col-span-2 text-center">
-      <span class="inline-flex items-center justify-center px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-sm font-medium text-slate-700 dark:text-slate-300">
-        {{ item.quantity || 1 }}x
-      </span>
-    </div>
-
-    <!-- Unit Price -->
-    <div class="col-span-2 text-center text-sm text-slate-600 dark:text-slate-400">
-      €{{ item.unit_price?.toFixed(2) || '0.00' }}
-    </div>
-
-    <!-- Total -->
-    <div class="col-span-2 text-center">
-      <span class="font-semibold text-slate-900 dark:text-white">
-        €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
-      </span>
-    </div>
-
-    <!-- Action -->
-    <div class="col-span-1 flex justify-end">
-      <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-      </svg>
-    </div>
-  </div>
-
-  <!-- Display Mode - Card -->
+  <!-- Display Mode -->
   <div v-else class="bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md p-4 border border-slate-200 dark:border-slate-700 transition-all duration-200 group"
     :class="{ 'opacity-60': item.checked }"
   >
