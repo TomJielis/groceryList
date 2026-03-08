@@ -3,6 +3,7 @@ import {defineStore} from 'pinia'
 import grocerySuggestions from '~/data/suggestions.json';
 import {useGroceryList} from "~/composables/useGroceryList";
 import {useI18nStore} from "~/stores/i18n";
+import {useAuthStore} from "~/stores/auth";
 const { items, fetchItems } = useGroceryList();
 
 export const useSuggestionStore = defineStore('suggestions', {
@@ -60,12 +61,6 @@ export const useSuggestionStore = defineStore('suggestions', {
             } finally {
                 this.loading = false
             }
-        },
-
-        // Fast method that only loads default suggestions without fetching items
-        // Use this when items are already being fetched elsewhere (parallel loading)
-        fetchSuggestionsOnly() {
-            this.defaultSuggestions = grocerySuggestions
         },
     },
 })
