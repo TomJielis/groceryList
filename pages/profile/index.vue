@@ -90,20 +90,15 @@ function handleLogout() {
   <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
     <!-- Fixed Header -->
     <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm touch-none">
-      <div class="max-w-6xl mx-auto px-4 py-4">
-        <div class="flex items-center justify-between gap-4">
-          <div class="flex-1">
-            <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <span class="text-2xl">👤</span>
-              <span>{{ i18n.t('profile.title') || 'Profiel' }}</span>
+      <div class="max-w-6xl mx-auto px-4 py-3">
+        <div class="flex items-center gap-3">
+          <!-- Title & Stats -->
+          <div class="flex-1 min-w-0">
+            <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white">
+              {{ i18n.t('profile.title') || 'Profiel' }}
             </h1>
-            <div class="flex items-center gap-3 mt-1 text-sm text-slate-600 dark:text-slate-400">
-              <span class="flex items-center gap-1">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                </svg>
-                {{ authStore.user?.name || authStore.user?.email }}
-              </span>
+            <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              <span>{{ authStore.user?.name || authStore.user?.email }}</span>
             </div>
           </div>
         </div>
@@ -112,7 +107,7 @@ function handleLogout() {
 
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto overflow-x-hidden">
-      <div class="max-w-6xl mx-auto px-4 pb-24 pt-6 space-y-6">
+      <div class="max-w-6xl mx-auto px-4 pb-24 pt-4 space-y-6">
         <!-- Profile Information -->
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
