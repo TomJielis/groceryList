@@ -251,6 +251,7 @@
   },
   "admin": {
     "title": "Admin Dashboard",
+    "dashboard": "Beheer gebruikers en bekijk statistieken",
     "users": "Gebruikers",
     "totalUsers": "Totaal gebruikers",
     "newUsers": "Nieuwe gebruikers",

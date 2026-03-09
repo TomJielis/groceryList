@@ -257,6 +257,7 @@
   },
   "admin": {
     "title": "Admin Dashboard",
+    "dashboard": "Manage users and view statistics",
     "users": "Users",
     "totalUsers": "Total users",
     "newUsers": "New users",
