@@ -157,17 +157,34 @@ const userColumns = [
   <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
     <!-- Fixed Header -->
     <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 py-4">
-        <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <span class="text-2xl">⚙️</span>
-          <span>{{ i18n.t('admin.title') }}</span>
-        </h1>
+      <div class="max-w-7xl mx-auto px-4 py-3">
+        <div class="flex items-center gap-3">
+          <!-- Back Button -->
+          <NuxtLink
+            to="/profile"
+            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all duration-200 active:scale-95"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </NuxtLink>
+
+          <!-- Title & Stats -->
+          <div class="flex-1 min-w-0">
+            <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white">
+              {{ i18n.t('admin.title') }}
+            </h1>
+            <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              <span>{{ i18n.t('admin.dashboard') || 'Dashboard' }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto overflow-x-hidden pb-24">
-      <div class="max-w-7xl mx-auto px-4 py-6">
+      <div class="max-w-7xl mx-auto px-4 py-4">
         <!-- Loading State -->
         <div v-if="loading" class="flex items-center justify-center py-20">
           <div class="text-center">

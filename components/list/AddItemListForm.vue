@@ -135,32 +135,32 @@ const filteredSuggestions = computed(() => {
   <ClientOnly>
     <div class="fixed inset-0 z-50 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden md:pt-16">
       <!-- Fixed Header -->
-      <div class="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 z-10 touch-none">
-        <div class="max-w-6xl mx-auto px-4 py-4">
+      <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm z-10 touch-none">
+        <div class="max-w-6xl mx-auto px-4 py-3">
           <!-- Top Row: Back button, Title, Price -->
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-3">
             <!-- Back/Close Button -->
             <button
               @click="emit('close')"
-              class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors active:scale-95"
+              class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all duration-200 active:scale-95"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
             </button>
 
             <!-- Title -->
             <div class="flex-1 min-w-0">
-              <h1 class="text-xl font-bold text-slate-900 dark:text-white truncate">
+              <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white truncate">
                 {{ i18n.t('items.addNew') }}
               </h1>
-              <p class="text-sm text-slate-500 dark:text-slate-400 truncate">
-                {{ listStore.lists.find((list: any) => list.id == listId)?.name }}
-              </p>
+              <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                <span class="truncate">{{ listStore.lists.find((list: any) => list.id == listId)?.name }}</span>
+              </div>
             </div>
 
             <!-- Total Price Badge -->
-            <div class="flex-shrink-0 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-800">
+            <div class="flex-shrink-0 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-lg border border-green-200 dark:border-green-800">
               <span class="text-sm font-bold text-green-700 dark:text-green-400">
                 €{{ items.filter(item => !item.checked).reduce((sum, item) => sum + ((item.unit_price || 0) * item.quantity), 0).toFixed(2) }}
               </span>
@@ -168,7 +168,7 @@ const filteredSuggestions = computed(() => {
           </div>
 
           <!-- Search Input -->
-          <div class="mt-4">
+          <div class="mt-3">
             <div class="relative">
               <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
