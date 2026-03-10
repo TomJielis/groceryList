@@ -1,4 +1,5 @@
 import {defineNuxtConfig} from 'nuxt/config'
+import Aura from '@primevue/themes/aura'
 
 export default defineNuxtConfig({
     app: {
@@ -15,8 +16,16 @@ export default defineNuxtConfig({
     routeRules: {
         '/socket.io/**': {ssr: false},
     },
-    modules: ['@pinia/nuxt'],
-    css: ['@/assets/css/tailwind.css', '@/assets/css/main.css'],
+    modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
+    css: ['@/assets/css/tailwind.css', '@/assets/css/main.css', 'primeicons/primeicons.css'],
+    primevue: {
+        options: {
+            ripple: true,
+            theme: {
+                preset: Aura
+            }
+        }
+    },
     postcss: {
         plugins: {
             tailwindcss: {},
@@ -36,9 +45,10 @@ export default defineNuxtConfig({
     nitro: {
         preset: 'node-server',
         errorHandler: '~/server/utils/globalErrorHandler.ts',
-        compatibilityDate: '2025-12-30',
     },
     devtools: {
         enabled: false // Zet Nuxt DevTools volledig uit
-    }
+    },
+    compatibilityDate: '2025-12-30',
+
 })
