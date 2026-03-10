@@ -45,32 +45,6 @@ function closeUploadPanel() {
             </button>
           </div>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-          <div class="cards-stat">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('cards.total') }}
-            </p>
-            <p class="text-2xl font-semibold">12</p>
-          </div>
-          <div class="cards-stat">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('cards.shared') }}
-            </p>
-            <p class="text-2xl font-semibold text-emerald-300">8</p>
-          </div>
-          <div class="cards-stat">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('cards.pending') }}
-            </p>
-            <p class="text-2xl font-semibold text-amber-300">2</p>
-          </div>
-          <div class="cards-stat">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('cards.lastUpdated') }}
-            </p>
-            <p class="text-2xl font-semibold">{{ i18n.t('cards.today') }}</p>
-          </div>
-        </div>
       </div>
 
       <div class="cards-panel rounded-3xl border border-white/10 shadow-2xl p-4 md:p-6">
