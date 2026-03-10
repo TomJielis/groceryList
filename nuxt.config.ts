@@ -12,6 +12,11 @@ export default defineNuxtConfig({
             ]
         }
     },
+    router: {
+        options: {
+            scrollBehaviorType: 'smooth'
+        }
+    },
     // Exclude Socket.io paths from Nuxt router
     routeRules: {
         '/socket.io/**': {ssr: false},
