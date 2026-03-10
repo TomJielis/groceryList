@@ -66,32 +66,6 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 <template>
   <div class="auth-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
     <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center md:grid-cols-2">
-      <div class="auth-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-4">
-        <div class="text-5xl">📝</div>
-        <div>
-          <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
-            {{ i18n.t('auth.joinCommunity') }}
-          </p>
-          <h1 class="text-3xl md:text-4xl font-bold leading-tight">
-            {{ i18n.t('auth.registerTitle') }}
-          </h1>
-        </div>
-        <p class="text-sm text-slate-200 max-w-sm">
-          {{ i18n.t('auth.registerSubtitle') }}
-        </p>
-        <ul class="space-y-2 text-sm text-slate-200">
-          <li class="flex items-center gap-2">
-            <span class="text-emerald-300">✓</span> {{ i18n.t('lists.sharedWith') }}
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-emerald-300">✓</span> {{ i18n.t('auth.realTime') }}
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-emerald-300">✓</span> {{ i18n.t('auth.freeForever') }}
-          </li>
-        </ul>
-      </div>
-
       <Card class="auth-card border border-white/10 shadow-2xl">
         <template #content>
           <div class="text-center text-white space-y-2 mb-6">

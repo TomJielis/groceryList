@@ -66,35 +66,6 @@ function toggleLanguage() {
 <template>
   <div class="auth-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
     <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center md:grid-cols-2">
-      <div class="auth-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-4">
-        <div class="text-5xl">🛒</div>
-        <div>
-          <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
-            {{ t('app.tagline') }}
-          </p>
-          <h1 class="text-3xl md:text-4xl font-bold leading-tight">
-            {{ t('nav.login') }}
-          </h1>
-        </div>
-        <p class="text-sm text-slate-200 max-w-sm">
-          {{ t('auth.loginSubtitle') }}
-        </p>
-        <div class="grid grid-cols-2 gap-3 text-center">
-          <div class="bg-white/10 rounded-2xl p-3 border border-white/15">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ t('lists.listCount') }}
-            </p>
-            <p class="text-2xl font-semibold">120+</p>
-          </div>
-          <div class="bg-white/10 rounded-2xl p-3 border border-white/15">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ t('lists.sharedWith') }}
-            </p>
-            <p class="text-2xl font-semibold">{{ t('auth.realTime') }}</p>
-          </div>
-        </div>
-      </div>
-
       <Card class="auth-card border border-white/10 shadow-2xl">
         <template #content>
           <div class="text-center text-white space-y-2 mb-6">
