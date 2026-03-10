@@ -57,7 +57,7 @@ const periodLabel = computed(() => {
 </script>
 
 <template>
-  <div class="admin-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-8">
+  <div class="admin-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6 pb-16">
       <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl text-white p-6 md:p-8 shadow-2xl space-y-6">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

@@ -446,15 +446,16 @@ function openListSettings(id: number) {
               </div>
             </div>
 
-            <DataTable
-              :value="sortedLists"
-              dataKey="id"
-              responsiveLayout="stack"
-              breakpoint="960px"
-              rowHover
-              @row-click="handleRowNavigate"
-              class="lists-table hidden md:block"
-            >
+            <div class="hidden md:block">
+              <DataTable
+                :value="sortedLists"
+                dataKey="id"
+                responsiveLayout="stack"
+                breakpoint="960px"
+                rowHover
+                @row-click="handleRowNavigate"
+                class="lists-table"
+              >
               <template #empty>
                 <div class="py-8 text-center text-sm text-slate-200">
                   {{ i18n.t('lists.emptyState.message') }}
@@ -532,7 +533,8 @@ function openListSettings(id: number) {
                   />
                 </template>
               </Column>
-            </DataTable>
+              </DataTable>
+            </div>
           </div>
         </template>
       </Card>
