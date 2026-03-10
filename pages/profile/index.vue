@@ -102,44 +102,6 @@ function handleLogout() {
               {{ authStore.user?.email }}
             </p>
           </div>
-          <div class="flex flex-wrap gap-3">
-            <NuxtLink to="/profile/stats" class="profile-cta">
-              <span>{{ i18n.t('profile.myStats') }}</span>
-            </NuxtLink>
-            <NuxtLink
-              v-if="authStore.user?.is_admin"
-              to="/admin"
-              class="profile-cta secondary"
-            >
-              <span>{{ i18n.t('profile.adminDashboard') }}</span>
-            </NuxtLink>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-          <div class="profile-stat">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('lists.listCount') }}
-            </p>
-            <p class="text-2xl font-semibold">∞</p>
-          </div>
-          <div class="profile-stat">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('lists.pending-lists') }}
-            </p>
-            <p class="text-2xl font-semibold text-amber-300">{{ i18n.t('lists.pending') }}</p>
-          </div>
-          <div class="profile-stat">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('profile.language') }}
-            </p>
-            <p class="text-2xl font-semibold">{{ i18n.locale.toUpperCase() }}</p>
-          </div>
-          <div class="profile-stat">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('profile.accountActions') }}
-            </p>
-            <p class="text-2xl font-semibold text-emerald-300">Ready</p>
-          </div>
         </div>
       </div>
 
