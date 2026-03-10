@@ -96,6 +96,10 @@ const sortedLists = computed(() => {
   });
 });
 
+const sharedListsCount = computed(() => {
+  return listStore.lists.filter((list: any) => (list?.grocery_list_invites?.length || 0) > 0).length;
+});
+
 definePageMeta({
   middleware: ['auth', 'terms'],
   requiresAuth: true,
@@ -289,80 +293,73 @@ function openListSettings(id: number) {
 
 
 <template>
-  <div class="lists-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-8">
+  <div class="lists-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
-      <div class="lists-hero">
-        <div class="flex flex-col gap-6">
-          <div class="flex flex-col md:flex-row md:items-start md:gap-8">
-            <div class="flex-1 text-center md:text-left space-y-3">
-              <div class="text-5xl md:text-6xl">🛒</div>
-              <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
-                {{ i18n.t('lists.sharedWith') }}
-              </p>
-              <h1 class="text-3xl md:text-4xl font-bold text-white">
-                {{ i18n.t('lists.title') }}
-              </h1>
-              <p class="text-sm text-slate-300 md:max-w-xl mx-auto md:mx-0">
-                {{ i18n.t('lists.emptyState.message') }}
-              </p>
-            </div>
-            <div class="flex flex-col gap-4 w-full md:w-auto md:items-end">
-              <div class="flex flex-col sm:flex-row gap-3 w-full md:justify-end md:w-auto">
-                <button
-                  v-if="openListForm"
-                  type="button"
-                  class="lists-cta secondary w-full sm:w-auto"
-                  @click="closeListForm"
-                >
-                  <span class="flex items-center gap-2 justify-center">
-                    <i class="pi pi-times text-base"></i>
-                    {{ i18n.t('common.cancel') }}
-                  </span>
-                </button>
-                <button
-                  v-else
-                  type="button"
-                  class="lists-cta w-full sm:w-auto"
-                  @click="() => { editListId = undefined; openListForm = true }"
-                >
-                  <span class="flex items-center gap-2 justify-center">
-                    <i class="pi pi-plus text-base"></i>
-                    {{ i18n.t('lists.newList') }}
-                  </span>
-                </button>
-              </div>
-              <div class="lists-stat-grid grid grid-cols-3 gap-3 text-center w-full md:w-auto">
-                <div class="lists-stat-card">
-                  <p class="text-[11px] uppercase tracking-[0.2em] text-slate-300">
-                    {{ i18n.t('lists.listCount') }}
-                  </p>
-                  <p class="text-2xl font-bold text-white">{{ sortedLists.length }}</p>
-                </div>
-                <div class="lists-stat-card">
-                  <p class="text-[11px] uppercase tracking-[0.2em] text-slate-300">
-                    {{ i18n.t('lists.remaining') }}
-                  </p>
-                  <p class="text-2xl font-bold text-amber-300">{{ totalItemsRemaining }}</p>
-                </div>
-                <div class="lists-stat-card">
-                  <p class="text-[11px] uppercase tracking-[0.2em] text-slate-300">
-                    {{ i18n.t('lists.completed') }}
-                  </p>
-                  <p class="text-2xl font-bold text-emerald-300">{{ totalItemsChecked }}</p>
-                </div>
-              </div>
-            </div>
+      <div class="lists-hero space-y-5">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div class="space-y-2 text-left max-w-2xl">
+            <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
+              {{ i18n.t('lists.sharedWith') }}
+            </p>
+            <h1 class="text-3xl md:text-4xl font-bold text-white">
+              {{ i18n.t('lists.title') }}
+            </h1>
+            <p class="text-sm text-slate-300 max-w-xl">
+              {{ i18n.t('lists.emptyState.message') }}
+            </p>
           </div>
-
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between lists-meta">
-            <p class="text-xs text-slate-300 text-center md:text-left">
-              {{ i18n.t('lists.listCount') }} {{ sortedLists.length }} • {{ i18n.t('lists.sharedWith') }}
-            </p>
-            <p class="text-xs text-slate-400 text-center md:text-right">
-              {{ i18n.t('lists.updated') || 'Realtime synced' }}
-            </p>
+          <div class="flex gap-3 flex-col sm:flex-row w-full md:w-auto md:justify-end md:flex-shrink-0">
+            <button
+              v-if="openListForm"
+              type="button"
+              class="lists-cta secondary w-full sm:w-auto"
+              @click="closeListForm"
+            >
+              <span class="flex items-center gap-2 justify-center">
+                <i class="pi pi-times text-base"></i>
+                {{ i18n.t('common.cancel') }}
+              </span>
+            </button>
+            <button
+              v-else
+              type="button"
+              class="lists-cta w-full sm:w-auto"
+              @click="() => { editListId = undefined; openListForm = true }"
+            >
+              <span class="flex items-center gap-2 justify-center">
+                <i class="pi pi-plus text-base"></i>
+                {{ i18n.t('lists.newList') }}
+              </span>
+            </button>
           </div>
         </div>
+
+        <div class="lists-stat-grid grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+          <div class="lists-stat-card">
+            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+              {{ i18n.t('lists.listCount') }}
+            </p>
+            <p class="text-2xl font-semibold text-white">{{ sortedLists.length }}</p>
+            </div>
+            <div class="lists-stat-card">
+              <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+                {{ i18n.t('lists.remaining') }}
+              </p>
+              <p class="text-2xl font-semibold text-amber-300">{{ totalItemsRemaining }}</p>
+            </div>
+            <div class="lists-stat-card">
+              <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+                {{ i18n.t('lists.completed') }}
+              </p>
+              <p class="text-2xl font-semibold text-emerald-300">{{ totalItemsChecked }}</p>
+            </div>
+            <div class="lists-stat-card">
+              <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+                {{ i18n.t('lists.sharedWith') }}
+              </p>
+              <p class="text-2xl font-semibold text-sky-300">{{ sharedListsCount }}</p>
+            </div>
+          </div>
       </div>
 
       <Card v-if="openListForm" class="lists-card border border-slate-200/60 shadow-xl">
