@@ -99,7 +99,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="info-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900">
+  <div class="info-shell">
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto overflow-x-hidden w-full px-4 py-10">
       <!-- Hero Header -->
@@ -302,6 +302,8 @@ onMounted(() => {
 <style scoped>
 .info-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: transparent;
+  padding: 1.5rem 1rem;
 }
 
 .info-hero {

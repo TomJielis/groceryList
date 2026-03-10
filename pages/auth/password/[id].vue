@@ -1,10 +1,14 @@
 <script setup lang="ts">
-
 import {ref} from "vue";
 import { useAuth} from "~/composables/useAuth";
 import { useRoute } from 'vue-router';
 import {useNotification} from "~/composables/useNotification";
 import { useI18nStore } from '~/stores/i18n';
+
+import Card from 'primevue/card'
+import InputText from 'primevue/inputtext'
+import Password from 'primevue/password'
+import Button from 'primevue/button'
 
 const i18n = useI18nStore();
 const {showNotification} = useNotification();
@@ -29,105 +33,99 @@ function triggerNewPassword()
         showNotification(i18n.t('errors.unexpectedError'));
       });
 }
-
 </script>
 
 <template>
-  <div class="auth-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10 flex items-start justify-center">
-    <div class="w-full max-w-md mx-auto flex flex-col gap-6 my-4 md:my-8">
-      <!-- Header -->
-      <div class="auth-hero text-center">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 mb-4">
-          <span class="text-4xl">🔐</span>
-        </div>
-        <h1 class="text-2xl md:text-3xl font-bold text-white mb-1">{{ i18n.t('auth.newPasswordTitle') }}</h1>
-        <p class="text-slate-300 text-sm">{{ i18n.t('auth.newPasswordSubtitle') }}</p>
-      </div>
-
-      <!-- Form Card -->
-      <div class="auth-card">
-        <div v-if="!passwordUpdated">
-          <form @submit.prevent="triggerNewPassword" class="space-y-4">
-            <input type="hidden" v-model="userData.token" />
-
-            <!-- Email Input -->
-            <div>
-              <label for="email" class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 block px-1">
-                {{ i18n.t('auth.email') }}
-              </label>
-              <input
-                type="email"
-                id="email"
-                v-model="userData.email"
-                :placeholder="i18n.t('auth.emailPlaceholder')"
-                required
-                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium text-white placeholder:text-slate-500"
-              />
-            </div>
-
-            <!-- Password Input -->
-            <div>
-              <label for="password" class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 block px-1">
-                {{ i18n.t('auth.newPassword') }}
-              </label>
-              <input
-                type="password"
-                id="password"
-                v-model="userData.password"
-                :placeholder="i18n.t('auth.passwordPlaceholder')"
-                required
-                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium text-white placeholder:text-slate-500"
-              />
-            </div>
-
-            <!-- Repeat Password Input -->
-            <div>
-              <label for="repeatPassword" class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 block px-1">
-                {{ i18n.t('auth.repeatPassword') }}
-              </label>
-              <input
-                type="password"
-                id="repeatPassword"
-                v-model="userData.repeatPassword"
-                :placeholder="i18n.t('auth.repeatPasswordPlaceholder')"
-                required
-                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium text-white placeholder:text-slate-500"
-              />
-            </div>
-
-            <!-- Submit Button -->
-            <button
-              type="submit"
-              class="auth-cta w-full mt-6"
-            >
-              {{ i18n.t('auth.resetPasswordBtn') }}
-            </button>
-          </form>
-        </div>
-
-        <!-- Success Message -->
-        <div v-else class="text-center space-y-6 py-8">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-green-500/20 mb-4">
-            <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-          </div>
-          <div>
-            <h2 class="text-xl font-bold text-white mb-2">
-              {{ i18n.t('auth.passwordUpdatedTitle') }}
+  <div class="auth-shell px-4 py-6 flex items-start justify-center">
+    <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center">
+      <Card class="auth-card border border-white/10 shadow-2xl">
+        <template #content>
+          <div class="text-center text-white space-y-2 mb-6">
+            <div class="text-4xl">🔐</div>
+            <h2 class="text-2xl font-semibold">
+              {{ i18n.t('auth.newPasswordTitle') }}
             </h2>
-            <p class="text-slate-300 text-sm">
-              {{ i18n.t('auth.passwordUpdatedBody') }}
+            <p class="text-sm text-slate-300">
+              {{ i18n.t('auth.newPasswordSubtitle') }}
             </p>
           </div>
-          <NuxtLink
-            to="/auth/login"
-            class="auth-cta inline-block"
-          >
-            {{ i18n.t('auth.goToLogin') }}
-          </NuxtLink>
-        </div>
-      </div>
+
+          <div v-if="!passwordUpdated">
+            <form @submit.prevent="triggerNewPassword" class="space-y-4">
+              <input type="hidden" v-model="userData.token" />
+
+              <div>
+                <label class="block mb-2 text-sm text-slate-200">
+                  {{ i18n.t('auth.email') }}
+                </label>
+                <InputText
+                  v-model="userData.email"
+                  type="email"
+                  :placeholder="i18n.t('auth.emailPlaceholder')"
+                  class="w-full auth-input"
+                />
+              </div>
+
+              <div>
+                <label class="block mb-2 text-sm text-slate-200">
+                  {{ i18n.t('auth.newPassword') }}
+                </label>
+                <Password
+                  v-model="userData.password"
+                  :placeholder="i18n.t('auth.passwordPlaceholder')"
+                  toggleMask
+                  :feedback="false"
+                  inputClass="w-full"
+                  class="w-full auth-input"
+                />
+              </div>
+
+              <div>
+                <label class="block mb-2 text-sm text-slate-200">
+                  {{ i18n.t('auth.repeatPassword') }}
+                </label>
+                <Password
+                  v-model="userData.repeatPassword"
+                  :placeholder="i18n.t('auth.repeatPasswordPlaceholder')"
+                  toggleMask
+                  :feedback="false"
+                  inputClass="w-full"
+                  class="w-full auth-input"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                icon="pi pi-check"
+                :label="i18n.t('auth.resetPasswordBtn')"
+                class="w-full auth-btn"
+              />
+            </form>
+          </div>
+
+          <div v-else class="text-center py-6 text-white">
+            <div class="text-4xl mb-4">
+              ✅
+            </div>
+            <h3 class="text-xl font-semibold mb-2">
+              {{ i18n.t('auth.passwordUpdatedTitle') }}
+            </h3>
+            <p class="text-sm text-slate-200 mb-8">
+              {{ i18n.t('auth.passwordUpdatedBody') }}
+            </p>
+            <div class="pt-4 border-t border-white/10">
+              <NuxtLink to="/auth/login">
+                <Button
+                  severity="secondary"
+                  outlined
+                  class="auth-btn alt"
+                  :label="i18n.t('auth.goToLogin')"
+                />
+              </NuxtLink>
+            </div>
+          </div>
+        </template>
+      </Card>
     </div>
   </div>
 </template>
@@ -135,45 +133,46 @@ function triggerNewPassword()
 <style scoped>
 .auth-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: transparent;
 }
 
-.auth-hero {
+:deep(.auth-card .p-card-body) {
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 1.75rem;
   padding: 2rem;
-  border-radius: 1.75rem;
-  background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.9));
-  border: 1px solid rgba(148, 163, 184, 0.25);
   color: #f8fafc;
-  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
-  backdrop-filter: blur(30px);
 }
 
-.auth-card {
-  padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.85));
-  border-radius: 1.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #f8fafc;
-  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
-  backdrop-filter: blur(30px);
+:deep(.auth-card .p-card-content) {
+  padding: 0;
 }
 
-.auth-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+:deep(.auth-input.p-inputtext),
+:deep(.auth-input .p-password-input) {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  border-radius: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+:deep(.auth-input.p-inputtext::placeholder),
+:deep(.auth-input .p-password-input::placeholder) {
+  color: #cbd5f5;
+}
+
+.auth-btn :deep(.p-button) {
   border-radius: 999px;
-  padding: 0.85rem 1.75rem;
-  font-weight: 600;
-  background: linear-gradient(120deg, #fbbf24, #f97316);
+  background: linear-gradient(90deg, #fbbf24, #f97316);
   color: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 15px 30px rgba(251, 191, 36, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  border: none;
+  font-weight: 600;
+  width: 100%;
 }
 
-.auth-cta:active {
-  transform: translateY(2px);
-  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.25);
+.auth-btn.alt :deep(.p-button) {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #f8fafc;
 }
 </style>

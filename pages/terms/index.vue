@@ -8,6 +8,7 @@ const i18n = useI18nStore();
 <style scoped>
 .terms-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: transparent;
 }
 
 .terms-hero {
@@ -61,7 +62,7 @@ hr {
 </style>
 
 <template>
-  <div class="terms-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10 overflow-y-auto">
+  <div class="terms-shell px-4 py-6">
     <div class="w-full max-w-3xl mx-auto flex flex-col gap-6">
       <!-- Header -->
       <div class="terms-hero text-center">

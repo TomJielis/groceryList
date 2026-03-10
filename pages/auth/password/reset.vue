@@ -30,7 +30,7 @@ async function handleResetPassword() {
 </script>
 
 <template>
-  <div class="auth-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
+  <div class="auth-shell px-4 py-6">
     <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center">
       <Card class="auth-card border border-white/10 shadow-2xl">
         <template #content>
@@ -109,6 +109,7 @@ async function handleResetPassword() {
 <style scoped>
 .auth-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: transparent;
 }
 
 :deep(.auth-card .p-card-body) {
