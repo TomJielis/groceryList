@@ -46,7 +46,7 @@ onMounted(async () => {
       selectedMonth.value = response.selected_month || response.available_months[0]
     }
   } catch (e: any) {
-    error.value = e.message || 'Failed to load stats'
+    error.value = e.message || i18n.t('errors.failedToLoadStats')
   } finally {
     initialLoading.value = false
   }
@@ -60,7 +60,7 @@ async function onMonthChange(month: string) {
     const response = await getStats(month)
     data.value = response
   } catch (e: any) {
-    error.value = e.message || 'Failed to load stats'
+    error.value = e.message || i18n.t('errors.failedToLoadStats')
   } finally {
     loading.value = false
   }
@@ -82,28 +82,28 @@ async function onMonthChange(month: string) {
           </NuxtLink>
           <div>
             <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
-              {{ i18n.t('profile.myStats') || 'Mijn Statistieken' }}
+              {{ i18n.t('profile.myStats') }}
             </p>
             <h1 class="text-3xl font-bold">
-              {{ i18n.t('profile.myStatsDescription') || 'Bekijk je item activiteit' }}
+              {{ i18n.t('profile.myStatsDescription') }}
             </h1>
           </div>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
           <div class="stats-chip">
-            <p>{{ i18n.t('profile.itemsActivity') || 'Items' }}</p>
+            <p>{{ i18n.t('profile.itemsActivity') }}</p>
             <span>24</span>
           </div>
           <div class="stats-chip">
-            <p>{{ i18n.t('profile.topItems') || 'Top Items' }}</p>
+            <p>{{ i18n.t('profile.topItems') }}</p>
             <span>5</span>
           </div>
           <div class="stats-chip">
-            <p>{{ i18n.t('profile.language') || 'Maand' }}</p>
+            <p>{{ i18n.t('profile.language') }}</p>
             <span>{{ selectedMonth?.replace('-', '/') }}</span>
           </div>
           <div class="stats-chip">
-            <p>{{ i18n.t('common.status') || 'Status' }}</p>
+            <p>{{ i18n.t('common.status') }}</p>
             <span>{{ loading ? '…' : 'Live' }}</span>
           </div>
         </div>
@@ -114,7 +114,7 @@ async function onMonthChange(month: string) {
         <div v-if="initialLoading" class="flex items-center justify-center py-20">
           <div class="text-center">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') || 'Laden...' }}</p>
+            <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
           </div>
         </div>
 
@@ -148,7 +148,7 @@ async function onMonthChange(month: string) {
             <!-- Items Activity Section -->
             <div class="stats-card">
               <h2 class="section-title">
-                {{ i18n.t('profile.itemsActivity') || 'Item Activiteit' }}
+                {{ i18n.t('profile.itemsActivity') }}
               </h2>
               <ProfileItemsActivity :items="data.items" :invalid_login_attempts="data.invalid_login_attempts" />
             </div>
@@ -156,7 +156,7 @@ async function onMonthChange(month: string) {
             <!-- Top Items Section -->
             <div v-if="data.top_items" class="stats-card">
               <h2 class="section-title">
-                {{ i18n.t('profile.topItems') || 'Top Items' }}
+                {{ i18n.t('profile.topItems') }}
               </h2>
               <ProfileTopItems :top-items="data.top_items" />
             </div>

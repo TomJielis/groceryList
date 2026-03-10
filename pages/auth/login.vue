@@ -21,6 +21,11 @@ const { showNotification } = useNotification()
 
 const i18n = useI18nStore()
 const t = computed(() => i18n.t)
+const languageToggleLabel = computed(() =>
+  i18n.locale === 'en'
+    ? `🇳🇱 ${i18n.t('nav.dutch')}`
+    : `🇬🇧 ${i18n.t('nav.english')}`
+)
 
 useHead(() => ({
   title: t.value('auth.loginTitle'),
@@ -65,7 +70,7 @@ function toggleLanguage() {
         <div class="text-5xl">🛒</div>
         <div>
           <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
-            {{ t('app.tagline') || 'Grocery Flow' }}
+            {{ t('app.tagline') }}
           </p>
           <h1 class="text-3xl md:text-4xl font-bold leading-tight">
             {{ t('nav.login') }}
@@ -85,7 +90,7 @@ function toggleLanguage() {
             <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
               {{ t('lists.sharedWith') }}
             </p>
-            <p class="text-2xl font-semibold">{{ t('auth.realTime') || 'Realtime' }}</p>
+            <p class="text-2xl font-semibold">{{ t('auth.realTime') }}</p>
           </div>
         </div>
       </div>
@@ -164,7 +169,7 @@ function toggleLanguage() {
               severity="contrast"
               @click="toggleLanguage"
               class="auth-lang"
-              :label="i18n.locale === 'en' ? '🇳🇱 Nederlands' : '🇬🇧 English'"
+              :label="languageToggleLabel"
           />
         </div>
       </template>

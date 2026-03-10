@@ -25,7 +25,7 @@ const i18n = useI18nStore();
     <!-- Most Added -->
     <div>
       <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3">
-        {{ i18n.t('profile.mostAdded') || 'Meest toegevoegd' }}
+        {{ i18n.t('profile.mostAdded') }}
       </h3>
       <ul v-if="topItems.current_month?.most_added?.length > 0" class="space-y-2">
         <li
@@ -43,14 +43,14 @@ const i18n = useI18nStore();
         </li>
       </ul>
       <p v-else class="text-slate-500 dark:text-slate-400 text-sm">
-        {{ i18n.t('profile.noTopItems') || 'Geen items deze maand' }}
+        {{ i18n.t('profile.noTopItems') }}
       </p>
     </div>
 
     <!-- Most Checked -->
     <div>
       <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3">
-        {{ i18n.t('profile.mostChecked') || 'Meest afgevinkt' }}
+        {{ i18n.t('profile.mostChecked') }}
       </h3>
       <ul v-if="topItems.current_month?.most_checked?.length > 0" class="space-y-2">
         <li
@@ -68,7 +68,7 @@ const i18n = useI18nStore();
         </li>
       </ul>
       <p v-else class="text-slate-500 dark:text-slate-400 text-sm">
-        {{ i18n.t('profile.noTopItems') || 'Geen items deze maand' }}
+        {{ i18n.t('profile.noTopItems') }}
       </p>
     </div>
   </div>

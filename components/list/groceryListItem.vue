@@ -235,7 +235,7 @@ const handleSave = () => {
               €{{ ((item.unit_price || 0) * (item.quantity || 1)).toFixed(2) }}
             </div>
             <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              {{ i18n.t('items.total') || 'totaal' }}
+              {{ i18n.t('items.total') }}
             </div>
           </div>
         </div>

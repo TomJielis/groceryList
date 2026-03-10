@@ -108,7 +108,7 @@ onMounted(() => {
         <div class="relative max-w-5xl mx-auto px-4 py-16 md:py-24 text-center">
           <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-6">
             <span class="text-2xl">🛒</span>
-            <span class="text-sm font-semibold text-blue-700 dark:text-blue-300">{{ t('info.badge') || 'Grocerylist App' }}</span>
+            <span class="text-sm font-semibold text-blue-700 dark:text-blue-300">{{ t('info.badge') }}</span>
           </div>
           <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6">
             {{ t('info.title') }}
@@ -123,7 +123,7 @@ onMounted(() => {
     <section class="max-w-5xl mx-auto px-4 py-16">
       <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">{{ t('info.featuresTitle') }}</h2>
-        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">{{ t('info.featuresSubtitle') || 'Ontdek wat je allemaal kunt met onze app' }}</p>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">{{ t('info.featuresSubtitle') }}</p>
       </div>
       <div class="grid md:grid-cols-2 gap-6">
         <div

@@ -40,7 +40,7 @@ const changeIcon = computed(() => {
       </p>
     </div>
     <p v-if="showPercentage" class="text-xs text-slate-400">
-      {{ i18n.t('profile.previousMonth') || 'Vorige maand' }} · {{ previousValue ?? 0 }}
+      {{ i18n.t('profile.previousMonth') }} · {{ previousValue ?? 0 }}
     </p>
   </div>
 </template>

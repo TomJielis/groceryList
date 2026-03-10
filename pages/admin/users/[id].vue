@@ -54,7 +54,7 @@ const loadUserData = async (month?: string) => {
       }
     }
   } catch (e: any) {
-    error.value = e.message || 'Failed to load user details'
+    error.value = e.message || i18n.t('errors.failedToLoadUserDetails')
   } finally {
     loading.value = false
   }
@@ -94,7 +94,7 @@ const toggleBlockUser = async () => {
     await blockUser(userId.value, newBlockedStatus)
     data.value.user.blocked = newBlockedStatus
   } catch (e: any) {
-    alert(e.message || 'Failed to update user')
+    alert(e.message || i18n.t('errors.failedToUpdateUser'))
   } finally {
     blocking.value = false
   }
@@ -178,7 +178,7 @@ const toggleBlockUser = async () => {
                 <dd>{{ data.user.terms_version || '-' }}</dd>
               </div>
               <div class="flex justify-between items-center gap-4">
-                <dt class="text-slate-300">{{ i18n.t('admin.status') || 'Status' }}</dt>
+                <dt class="text-slate-300">{{ i18n.t('admin.status') }}</dt>
                 <dd>
                   <span
                     v-if="data.user.blocked"
@@ -190,7 +190,7 @@ const toggleBlockUser = async () => {
                     v-else
                     class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/20 text-emerald-100 border border-emerald-400/30"
                   >
-                    {{ i18n.t('admin.active') || 'Active' }}
+                    {{ i18n.t('admin.active') }}
                   </span>
                 </dd>
               </div>

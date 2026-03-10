@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "Grocery List",
-    "metaDescription": "Log in to manage your personal grocery lists. Free and easy to use."
+    "metaDescription": "Log in to manage your personal grocery lists. Free and easy to use.",
+    "tagline": "Grocery Flow"
   },
   "nav": {
     "brand": "Grocery List",
@@ -20,6 +21,9 @@
   "auth": {
     "loginTitle": "Login - Grocery List",
     "loginSubtitle": "Welcome back to Grocery List",
+    "realTime": "Realtime sync",
+    "joinCommunity": "Invite friends",
+    "freeForever": "Free account",
     "email": "Email",
     "password": "Password",
     "passwordPlaceholder": "••••••••",
@@ -46,6 +50,7 @@
     "backToLogin": "Back to login",
     "resetPasswordTitle": "Forgot password",
     "resetPasswordSubtitle": "No problem, we'll send you a reset link",
+    "resetHelper": "We'll send you a secure link to set a new password.",
     "resetPasswordBtn": "Reset password",
     "newPasswordTitle": "New password",
     "newPasswordSubtitle": "Choose a new password for your account",
@@ -86,6 +91,7 @@
     "deleteListName": "List",
     "deleteBtn": "Delete",
     "sharePrompt": "Enter an email address to share the list with:",
+    "emailAddress": "Email address",
     "shareEmailPlaceholder": "Email address",
     "shareTitle": "Share List",
     "shareListName": "List",
@@ -96,6 +102,8 @@
     "favorited": "List marked as favorite!",
     "approvedMessage": "List has been added to your lists.",
     "declinedMessage": "List invitation has been declined.",
+    "approveOrDecline": "Approve or decline shared lists quickly",
+    "pending": "Live",
     "emptyState": {
       "title": "No Lists Yet",
       "message": "Get started by creating your first grocery list. Click the + button below to add one!",
@@ -153,6 +161,7 @@
     "name": "Product",
     "quantity": "Quantity",
     "price": "Price",
+    "noPrice": "No price available",
     "emptyState": {
       "title": "No Items Yet",
       "message": "Start adding items to your grocery list. Click the + button below to add your first item!"
@@ -177,6 +186,7 @@
     "deleteBtn": "Delete card",
     "addBtn": "Add card",
     "noCards": "You have not added any cards yet.",
+    "uploadSuccess": "Card uploaded",
     "emptyState": {
       "title": "No cards yet",
       "message": "Add your first loyalty or discount card to keep everything handy."
@@ -185,7 +195,10 @@
   },
   "profile": {
     "title": "Profile",
+    "hello": "Welcome back",
     "information": "Profile Information",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@email.com",
     "edit": "Edit",
     "saveChanges": "Save Changes",
     "profileUpdated": "Profile updated successfully",
@@ -237,7 +250,13 @@
     "unexpectedError": "An unexpected error occurred",
     "cardStoreFailed": "Failed to store card",
     "cardDeleteFailed": "Failed to delete card",
-    "listUnshareFailed": "Failed to remove user from list"
+    "listUnshareFailed": "Failed to remove user from list",
+    "failedToLoadStats": "Failed to load stats",
+    "failedToLoadAdminData": "Failed to load admin data",
+    "failedToLoadTopItems": "Failed to load top items",
+    "failedToLoadUsers": "Failed to load users",
+    "failedToLoadUserDetails": "Failed to load user details",
+    "failedToUpdateUser": "Failed to update user"
   },
   "deleteModal": {
     "typeListNameToDelete": "To confirm, type the name of the list:",
@@ -245,6 +264,9 @@
   },
   "register": {
     "acceptTerms": "I agree with the <span class='underline underline-offset-2 hover:text-accent transition'><a href='/terms' target='_blank'>Terms of Use & Privacy Policy</a></span>."
+  },
+  "validation": {
+    "invalidEmail": "Please enter a valid email address"
   },
   "terms": {
     "title": "Terms of Use & Privacy Policy – Grocery List",
@@ -257,7 +279,9 @@
   },
   "admin": {
     "title": "Admin Dashboard",
+    "overview": "Overview",
     "dashboard": "Manage users and view statistics",
+    "analytics": "Insights",
     "users": "Users",
     "totalUsers": "Total users",
     "newUsers": "New users",

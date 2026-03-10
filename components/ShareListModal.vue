@@ -118,7 +118,7 @@ function preventScroll(event: TouchEvent) {
             <!-- Email Input -->
             <div class="mb-6">
               <label class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 block px-1">
-                {{ i18n.t('lists.emailAddress') || 'E-mailadres' }}
+                {{ i18n.t('lists.emailAddress') }}
               </label>
               <div class="relative">
                 <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,4 +181,3 @@ function preventScroll(event: TouchEvent) {
   overscroll-behavior: none;
 }
 </style>
-

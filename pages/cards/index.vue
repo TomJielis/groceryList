@@ -27,13 +27,13 @@ function closeUploadPanel() {
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div class="space-y-2">
             <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
-              {{ i18n.t('cards.available') || 'Kaarten' }}
+              {{ i18n.t('cards.available') }}
             </p>
             <h1 class="text-3xl md:text-4xl font-bold">
-              {{ i18n.t('cards.manageYourCards') || 'Beheer je kortingskaarten' }}
+              {{ i18n.t('cards.manageYourCards') }}
             </h1>
             <p class="text-sm text-slate-300">
-              {{ i18n.t('cards.subtitle') || 'Deel en verzamel klantenpassen met je team' }}
+              {{ i18n.t('cards.subtitle') }}
             </p>
           </div>
           <div class="flex gap-3">
@@ -41,34 +41,34 @@ function closeUploadPanel() {
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
               </svg>
-              <span>{{ i18n.t('cards.uploadNew') || 'Nieuwe kaart' }}</span>
+              <span>{{ i18n.t('cards.uploadNew') }}</span>
             </button>
           </div>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
           <div class="cards-stat">
             <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('cards.total') || 'Totaal' }}
+              {{ i18n.t('cards.total') }}
             </p>
             <p class="text-2xl font-semibold">12</p>
           </div>
           <div class="cards-stat">
             <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('cards.shared') || 'Gedeeld' }}
+              {{ i18n.t('cards.shared') }}
             </p>
             <p class="text-2xl font-semibold text-emerald-300">8</p>
           </div>
           <div class="cards-stat">
             <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('cards.pending') || 'In afwachting' }}
+              {{ i18n.t('cards.pending') }}
             </p>
             <p class="text-2xl font-semibold text-amber-300">2</p>
           </div>
           <div class="cards-stat">
             <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('cards.lastUpdated') || 'Laatst geupdate' }}
+              {{ i18n.t('cards.lastUpdated') }}
             </p>
-            <p class="text-2xl font-semibold">{{ i18n.t('cards.today') || 'Vandaag' }}</p>
+            <p class="text-2xl font-semibold">{{ i18n.t('cards.today') }}</p>
           </div>
         </div>
       </div>

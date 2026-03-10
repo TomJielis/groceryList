@@ -27,7 +27,7 @@ onMounted(async () => {
       return new Date(b.last_active).getTime() - new Date(a.last_active).getTime()
     })
   } catch (e: any) {
-    error.value = e.message || 'Failed to load users'
+    error.value = e.message || i18n.t('errors.failedToLoadUsers')
   } finally {
     loading.value = false
   }
@@ -70,13 +70,13 @@ const userColumns = [
           </NuxtLink>
           <div>
             <p class="text-[11px] uppercase tracking-[0.4em] text-slate-300">
-              {{ i18n.t('admin.overview') || 'Overview' }}
+              {{ i18n.t('admin.overview') }}
             </p>
             <h1 class="text-3xl font-bold">
               {{ i18n.t('admin.users') }}
             </h1>
             <p class="text-sm text-slate-300">
-              {{ total }} {{ i18n.t('admin.totalUsers') || 'gebruikers' }}
+              {{ total }} {{ i18n.t('admin.totalUsers') }}
             </p>
           </div>
         </div>

@@ -69,7 +69,7 @@ const loadData = async (month?: string) => {
     statsTopItems.value = topItems
     allUsers.value = usersData.users || []
   } catch (e: any) {
-    error.value = e.message || 'Failed to load admin data'
+    error.value = e.message || i18n.t('errors.failedToLoadAdminData')
   } finally {
     loading.value = false
   }
@@ -169,7 +169,7 @@ const userColumns = [
             </NuxtLink>
             <div>
               <p class="text-[11px] uppercase tracking-[0.4em] text-slate-300">
-                {{ i18n.t('admin.dashboard') || 'Dashboard' }}
+                {{ i18n.t('admin.dashboard') }}
               </p>
               <h1 class="text-3xl md:text-4xl font-bold">
                 {{ i18n.t('admin.title') }}

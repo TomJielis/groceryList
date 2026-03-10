@@ -33,10 +33,10 @@ const userData = ref({
 
 const verifyMailMessage = ref(false)
 
-const languageOptions = [
-  { label: '🇳🇱 Nederlands', value: 'nl' },
-  { label: '🇬🇧 English', value: 'en' }
-]
+const languageOptions = computed(() => [
+  { label: `🇳🇱 ${i18n.t('nav.dutch')}`, value: 'nl' },
+  { label: `🇬🇧 ${i18n.t('nav.english')}`, value: 'en' }
+])
 
 async function handleRegister() {
   const registrationData = {
@@ -70,7 +70,7 @@ function handleLanguageChange(locale: 'nl' | 'en') {
         <div class="text-5xl">📝</div>
         <div>
           <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
-            {{ i18n.t('auth.joinCommunity') || 'Invite friends' }}
+            {{ i18n.t('auth.joinCommunity') }}
           </p>
           <h1 class="text-3xl md:text-4xl font-bold leading-tight">
             {{ i18n.t('auth.registerTitle') }}
@@ -84,10 +84,10 @@ function handleLanguageChange(locale: 'nl' | 'en') {
             <span class="text-emerald-300">✓</span> {{ i18n.t('lists.sharedWith') }}
           </li>
           <li class="flex items-center gap-2">
-            <span class="text-emerald-300">✓</span> {{ i18n.t('auth.realTime') || 'Realtime sync' }}
+            <span class="text-emerald-300">✓</span> {{ i18n.t('auth.realTime') }}
           </li>
           <li class="flex items-center gap-2">
-            <span class="text-emerald-300">✓</span> {{ i18n.t('auth.freeForever') || 'Gratis account' }}
+            <span class="text-emerald-300">✓</span> {{ i18n.t('auth.freeForever') }}
           </li>
         </ul>
       </div>

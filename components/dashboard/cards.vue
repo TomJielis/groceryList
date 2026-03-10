@@ -71,7 +71,7 @@ function closeModal() {
     <div v-if="loading" class="flex items-center justify-center py-20">
       <div class="text-center">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-        <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') || 'Laden...' }}</p>
+        <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
       </div>
     </div>
 
@@ -81,10 +81,10 @@ function closeModal() {
         <span class="text-6xl">🎫</span>
       </div>
       <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-3 text-center">
-        {{ i18n.t('cards.emptyState.title') || 'Geen kaarten' }}
+        {{ i18n.t('cards.emptyState.title') }}
       </h2>
       <p class="text-slate-600 dark:text-slate-400 text-center max-w-sm mb-8">
-        {{ i18n.t('cards.emptyState.message') || 'Upload je eerste kortingskaart om deze overal bij de hand te hebben' }}
+        {{ i18n.t('cards.emptyState.message') }}
       </p>
       <button
         type="button"
@@ -118,7 +118,7 @@ function closeModal() {
               <button
                 @click="destroy(card.id)"
                 class="flex-shrink-0 p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors text-red-600 dark:text-red-400"
-                :title="i18n.t('cards.deleteBtn') || 'Verwijderen'"
+                :title="i18n.t('cards.deleteBtn')"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -156,7 +156,7 @@ function closeModal() {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
               </svg>
-              <span>{{ i18n.t('cards.view') || 'Bekijken' }}</span>
+              <span>{{ i18n.t('cards.view') }}</span>
             </button>
           </div>
         </div>

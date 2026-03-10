@@ -151,7 +151,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
                   <span>{{ list?.name }}</span>
                 </h1>
                 <p class="text-sm text-slate-300 mt-2">
-                  {{ uncheckedItems.length }} {{ i18n.t('list.remaining') || 'over' }} • {{ checkedItems.length }} {{ i18n.t('list.done') || 'klaar' }}
+                  {{ uncheckedItems.length }} {{ i18n.t('list.remaining') }} • {{ checkedItems.length }} {{ i18n.t('list.done') }}
                 </p>
               </div>
             </div>
@@ -171,7 +171,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
                 </svg>
-                <span>{{ i18n.t('items.addFirst') || 'Voeg item toe' }}</span>
+                <span>{{ i18n.t('items.addFirst') }}</span>
               </button>
             </div>
           </div>
@@ -179,19 +179,19 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <div class="grid grid-cols-3 gap-3 text-center">
             <div class="list-stat-card">
               <p class="text-[11px] uppercase tracking-[0.2em] text-slate-200/80">
-                {{ i18n.t('items.total') || 'Totaal' }}
+                {{ i18n.t('items.total') }}
               </p>
               <p class="text-2xl font-bold text-white">€{{ totalPrice.toFixed(2) }}</p>
             </div>
             <div class="list-stat-card">
               <p class="text-[11px] uppercase tracking-[0.2em] text-slate-200/80">
-                {{ i18n.t('list.remaining') || 'Over' }}
+                {{ i18n.t('list.remaining') }}
               </p>
               <p class="text-2xl font-bold text-amber-200">{{ uncheckedItems.length }}</p>
             </div>
             <div class="list-stat-card">
               <p class="text-[11px] uppercase tracking-[0.2em] text-slate-200/80">
-                {{ i18n.t('list.done') || 'Klaar' }}
+                {{ i18n.t('list.done') }}
               </p>
               <p class="text-2xl font-bold text-emerald-200">{{ checkedItems.length }}</p>
             </div>
@@ -199,7 +199,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
           <div v-if="items.length > 0" class="space-y-1">
             <div class="flex items-center justify-between text-xs text-slate-200">
-              <span>{{ i18n.t('list.progress') || 'Voortgang' }}</span>
+              <span>{{ i18n.t('list.progress') }}</span>
               <span class="font-semibold">{{ Math.round((checkedItems.length / items.length) * 100) }}%</span>
             </div>
             <div class="h-2 bg-white/10 rounded-full overflow-hidden">
@@ -230,7 +230,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            <span>{{ i18n.t('items.addFirst') || 'Voeg item toe' }}</span>
+            <span>{{ i18n.t('items.addFirst') }}</span>
           </button>
         </div>
 
@@ -283,10 +283,10 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
               <span class="text-4xl">🎉</span>
             </div>
             <h2 class="text-lg font-bold text-white mb-1 text-center">
-              {{ i18n.t('list.allDone') || 'Alles gedaan!' }}
+              {{ i18n.t('list.allDone') }}
             </h2>
             <p class="text-slate-200 text-center text-sm">
-              {{ i18n.t('list.allDoneMessage') || 'Je hebt alle items afgevinkt' }}
+              {{ i18n.t('list.allDoneMessage') }}
             </p>
           </div>
 
@@ -303,7 +303,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
                   </svg>
                 </div>
                 <span class="font-medium text-white">
-                  {{ i18n.t('list.completed') || 'Afgerond' }}
+                  {{ i18n.t('list.completed') }}
                 </span>
                 <span class="text-xs bg-emerald-400/20 text-emerald-100 px-2 py-0.5 rounded-full font-medium">
                   {{ checkedItems.length }}

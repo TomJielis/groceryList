@@ -52,12 +52,12 @@ function handleSubmit() {
       <!-- Name Input -->
       <div>
         <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-          {{ i18n.t('profile.form.name') || 'Naam' }}
+          {{ i18n.t('profile.form.name') }}
         </label>
         <input
           v-model="userData.name"
           type="text"
-          :placeholder="i18n.t('profile.name') || 'Je naam'"
+          :placeholder="i18n.t('profile.namePlaceholder')"
           required
           class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
         />
@@ -66,12 +66,12 @@ function handleSubmit() {
       <!-- Email Input (Disabled) -->
       <div>
         <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-          {{ i18n.t('profile.form.email') || 'Email' }}
+          {{ i18n.t('profile.form.email') }}
         </label>
         <input
           v-model="userData.email"
           type="email"
-          :placeholder="i18n.t('profile.email') || 'je@email.nl'"
+          :placeholder="i18n.t('profile.emailPlaceholder')"
           disabled
           class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-base font-medium text-slate-500 dark:text-slate-400 cursor-not-allowed"
         />
@@ -79,7 +79,7 @@ function handleSubmit() {
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
           </svg>
-          <span>{{ i18n.t('profile.emailLocked') || 'Email kan niet worden gewijzigd' }}</span>
+          <span>{{ i18n.t('profile.emailLocked') }}</span>
         </p>
       </div>
 
@@ -112,7 +112,7 @@ function handleSubmit() {
             </svg>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ i18n.t('auth.name') || 'Naam' }}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ i18n.t('auth.name') }}</p>
             <p class="text-base font-bold text-slate-900 dark:text-white truncate">{{ userData.name }}</p>
           </div>
         </div>
@@ -127,7 +127,7 @@ function handleSubmit() {
             </svg>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ i18n.t('auth.email') || 'Email' }}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ i18n.t('auth.email') }}</p>
             <p class="text-base font-bold text-slate-900 dark:text-white truncate">{{ userData.email }}</p>
           </div>
         </div>
@@ -141,7 +141,7 @@ function handleSubmit() {
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
         </svg>
-        <span>{{ i18n.t('profile.edit') || 'Bewerken' }}</span>
+        <span>{{ i18n.t('profile.edit') }}</span>
       </button>
     </div>
   </div>

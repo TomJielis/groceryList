@@ -46,7 +46,7 @@ async function handleResetPassword() {
           {{ i18n.t('auth.resetPasswordSubtitle') }}
         </p>
         <div class="bg-white/10 rounded-2xl p-4 border border-white/20 text-sm text-slate-200">
-          {{ i18n.t('auth.resetHelper') || 'We sturen je een beveiligde link om een nieuw wachtwoord in te stellen.' }}
+          {{ i18n.t('auth.resetHelper') }}
         </div>
       </div>
 

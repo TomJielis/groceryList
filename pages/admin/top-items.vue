@@ -20,7 +20,7 @@ const loadData = async () => {
   try {
     data.value = await getStatsTopItems(selectedMonth.value === 'previous' ? 'previous' : undefined)
   } catch (e: any) {
-    error.value = e.message || 'Failed to load top items data'
+    error.value = e.message || i18n.t('errors.failedToLoadTopItems')
   } finally {
     loading.value = false
   }
@@ -72,7 +72,7 @@ const periodLabel = computed(() => {
             </NuxtLink>
             <div>
               <p class="text-[11px] uppercase tracking-[0.4em] text-slate-300">
-                {{ i18n.t('admin.analytics') || 'Insights' }}
+              {{ i18n.t('admin.analytics') }}
               </p>
               <h1 class="text-3xl font-bold">
                 {{ i18n.t('admin.topItems') }}

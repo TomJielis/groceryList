@@ -50,10 +50,10 @@ function getCreatorName(list: TGroceryList): string {
         </div>
         <div>
           <h3 class="text-sm font-semibold tracking-[0.2em] uppercase text-slate-200">
-            {{ i18n.t('lists.pendingInvites') || 'Uitnodigingen in afwachting' }}
+            {{ i18n.t('lists.pendingInvites') }}
           </h3>
           <p class="text-xs text-slate-400">
-            {{ i18n.t('lists.approveOrDecline') || 'Keur gedeelde lijsten snel goed' }}
+            {{ i18n.t('lists.approveOrDecline') }}
           </p>
         </div>
       </div>

@@ -93,10 +93,10 @@ function handleLogout() {
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div class="space-y-2">
             <p class="text-xs uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('profile.title') || 'Profiel' }}
+              {{ i18n.t('profile.title') }}
             </p>
             <h1 class="text-3xl md:text-4xl font-bold">
-              {{ authStore.user?.name || i18n.t('profile.hello') || 'Welkom terug' }}
+              {{ authStore.user?.name || i18n.t('profile.hello') }}
             </h1>
             <p class="text-sm text-slate-300">
               {{ authStore.user?.email }}
@@ -104,14 +104,14 @@ function handleLogout() {
           </div>
           <div class="flex flex-wrap gap-3">
             <NuxtLink to="/profile/stats" class="profile-cta">
-              <span>{{ i18n.t('profile.myStats') || 'Mijn Statistieken' }}</span>
+              <span>{{ i18n.t('profile.myStats') }}</span>
             </NuxtLink>
             <NuxtLink
               v-if="authStore.user?.is_admin"
               to="/admin"
               class="profile-cta secondary"
             >
-              <span>{{ i18n.t('profile.adminDashboard') || 'Admin' }}</span>
+              <span>{{ i18n.t('profile.adminDashboard') }}</span>
             </NuxtLink>
           </div>
         </div>
@@ -126,7 +126,7 @@ function handleLogout() {
             <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
               {{ i18n.t('lists.pending-lists') }}
             </p>
-            <p class="text-2xl font-semibold text-amber-300">{{ i18n.t('lists.pending') || 'Live' }}</p>
+            <p class="text-2xl font-semibold text-amber-300">{{ i18n.t('lists.pending') }}</p>
           </div>
           <div class="profile-stat">
             <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
@@ -149,7 +149,7 @@ function handleLogout() {
             <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <h2>{{ i18n.t('profile.information') || 'Profiel informatie' }}</h2>
+            <h2>{{ i18n.t('profile.information') }}</h2>
           </div>
           <div class="profile-card-body">
             <ProfileInformation
@@ -172,8 +172,8 @@ function handleLogout() {
                 </svg>
               </div>
               <div>
-                <h2>{{ i18n.t('profile.myStats') || 'Mijn Statistieken' }}</h2>
-                <p>{{ i18n.t('profile.myStatsDescription') || 'Bekijk je item activiteit en top items' }}</p>
+                <h2>{{ i18n.t('profile.myStats') }}</h2>
+                <p>{{ i18n.t('profile.myStatsDescription') }}</p>
               </div>
             </div>
             <svg class="w-5 h-5 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -196,8 +196,8 @@ function handleLogout() {
                 </svg>
               </div>
               <div>
-                <h2>{{ i18n.t('profile.adminDashboard') || 'Admin Dashboard' }}</h2>
-                <p>{{ i18n.t('profile.adminDashboardDescription') || 'Beheer gebruikers en bekijk statistieken' }}</p>
+                <h2>{{ i18n.t('profile.adminDashboard') }}</h2>
+                <p>{{ i18n.t('profile.adminDashboardDescription') }}</p>
               </div>
             </div>
             <svg class="w-5 h-5 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,7 +211,7 @@ function handleLogout() {
             <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
             </svg>
-            <h2>{{ i18n.t('profile.language') || 'Taal' }}</h2>
+            <h2>{{ i18n.t('profile.language') }}</h2>
           </div>
           <div class="profile-card-body">
             <LanguageSettings @language-change="handleLanguageChange" />
@@ -224,7 +224,7 @@ function handleLogout() {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
-            <h2>{{ i18n.t('profile.accountActions') || 'Account acties' }}</h2>
+            <h2>{{ i18n.t('profile.accountActions') }}</h2>
           </div>
           <div class="profile-card-body">
             <AccountActions

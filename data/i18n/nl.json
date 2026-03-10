@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "Boodschappenlijst",
-    "metaDescription": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik."
+    "metaDescription": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik.",
+    "tagline": "Boodschappen Flow"
   },
   "nav": {
     "brand": "Boodschappenlijst",
@@ -20,6 +21,9 @@
   "auth": {
     "loginTitle": "Inloggen - Boodschappenlijstje",
     "loginSubtitle": "Welkom terug bij Boodschappenlijst",
+    "realTime": "Realtime",
+    "joinCommunity": "Nodig vrienden uit",
+    "freeForever": "Gratis account",
     "email": "Email",
     "password": "Wachtwoord",
     "passwordPlaceholder": "••••••••",
@@ -46,6 +50,7 @@
     "backToLogin": "Terug naar inloggen",
     "resetPasswordTitle": "Wachtwoord vergeten",
     "resetPasswordSubtitle": "Geen probleem, we sturen je een reset link",
+    "resetHelper": "We sturen je een beveiligde link om een nieuw wachtwoord in te stellen.",
     "resetPasswordBtn": "Wachtwoord resetten",
     "newPasswordTitle": "Nieuw wachtwoord",
     "newPasswordSubtitle": "Kies een nieuw wachtwoord voor je account",
@@ -86,6 +91,7 @@
     "deleteListName": "Lijst",
     "deleteBtn": "Verwijderen",
     "sharePrompt": "Voer een e-mailadres in om de lijst mee te delen:",
+    "emailAddress": "E-mailadres",
     "shareEmailPlaceholder": "E-mail adres",
     "shareTitle": "Lijst Delen",
     "shareListName": "Lijst",
@@ -93,6 +99,8 @@
     "shared": "Lijst is gedeeld!",
     "updated": "Lijst is geupdate!",
     "created": "Lijst is aangemaakt!",
+    "approveOrDecline": "Keur gedeelde lijsten snel goed",
+    "pending": "Live",
     "delete-shared-user-body": "Weet je zeker dat je deze gebruiker wilt verwijderen?",
     "favorited": "Lijst als favoriet gemarkeerd!",
     "emptyState": {
@@ -152,6 +160,7 @@
     "name": "Product",
     "quantity": "Aantal",
     "price": "Prijs",
+    "noPrice": "Geen prijs beschikbaar",
     "emptyState": {
       "title": "Nog geen items",
       "message": "Begin met het toevoegen van items aan je boodschappenlijst. Klik op de + knop hieronder om je eerste item toe te voegen!"
@@ -170,6 +179,7 @@
     "titlePlaceholder": "Bijv. Albert Heijn Bonuskaart",
     "fileTypes": "Ondersteunt: JPG, PNG, PDF",
     "uploadBtn": "Uploaden",
+    "uploadSuccess": "Kaart geüpload",
     "confirmDelete": "Wil je deze kaart verwijderen?",
     "deleteTitle": "Kaart Verwijderen",
     "deleteCardName": "Kaart",
@@ -184,7 +194,10 @@
   },
   "profile": {
     "title": "Profiel",
+    "hello": "Welkom terug",
     "information": "Profiel Informatie",
+    "namePlaceholder": "Je naam",
+    "emailPlaceholder": "jij@email.nl",
     "edit": "Bewerken",
     "saveChanges": "Wijzigingen Opslaan",
     "profileUpdated": "Profiel succesvol bijgewerkt",
@@ -236,7 +249,13 @@
     "unexpectedError": "Er is een onverwachte fout opgetreden",
     "cardStoreFailed": "Kaart opslaan mislukt",
     "cardDeleteFailed": "Kaart verwijderen mislukt",
-    "listUnshareFailed": "Gebruiker verwijderen mislukt"
+    "listUnshareFailed": "Gebruiker verwijderen mislukt",
+    "failedToLoadStats": "Statistieken laden mislukt",
+    "failedToLoadAdminData": "Admin-data laden mislukt",
+    "failedToLoadTopItems": "Top items laden mislukt",
+    "failedToLoadUsers": "Gebruikers laden mislukt",
+    "failedToLoadUserDetails": "Gebruikersdetails laden mislukt",
+    "failedToUpdateUser": "Gebruiker bijwerken mislukt"
   },
   "deleteModal": {
     "typeListNameToDelete": "Ter bevestiging, typ de naam van de lijst:",
@@ -245,13 +264,18 @@
   "register": {
     "acceptTerms": "Ik ga akkoord met de <span class='underline underline-offset-2 hover:text-accent transition'><a href='/terms' target='_blank'>Gebruiksvoorwaarden & Privacyverklaring</a></span>."
   },
+  "validation": {
+    "invalidEmail": "Voer een geldig e-mailadres in"
+  },
   "terms": {
     "title": "Algemene Voorwaarden & Privacyverklaring – Grocery List",
     "lastUpdated": "Laatst bijgewerkt: {date}"
   },
   "admin": {
     "title": "Admin Dashboard",
+    "overview": "Overzicht",
     "dashboard": "Beheer gebruikers en bekijk statistieken",
+    "analytics": "Inzichten",
     "users": "Gebruikers",
     "totalUsers": "Totaal gebruikers",
     "newUsers": "Nieuwe gebruikers",

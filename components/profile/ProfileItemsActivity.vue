@@ -40,11 +40,11 @@ const i18n = useI18nStore();
     />
     <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-6">
       <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">
-        {{ i18n.t('profile.previousMonth') || 'Vorige maand' }} ({{ items?.previous_month?.period }})
+        {{ i18n.t('profile.previousMonth') }} ({{ items?.previous_month?.period }})
       </h3>
       <p class="mt-2 text-lg text-slate-700 dark:text-slate-300">
-        {{ items?.previous_month?.added ?? 0 }} {{ i18n.t('profile.added') || 'toegevoegd' }},
-        {{ items?.previous_month?.checked ?? 0 }} {{ i18n.t('profile.checked') || 'afgevinkt' }}
+        {{ items?.previous_month?.added ?? 0 }} {{ i18n.t('profile.added') }},
+        {{ items?.previous_month?.checked ?? 0 }} {{ i18n.t('profile.checked') }}
       </p>
     </div>
   </div>
