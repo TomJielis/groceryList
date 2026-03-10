@@ -208,7 +208,7 @@ const handleSave = () => {
           <!-- Left: Name and Quantity -->
           <div class="flex-1 min-w-0">
             <h3
-              class="text-base font-semibold transition-colors"
+              class="text-base font-semibold transition-colors break-words"
               :class="item.checked
                 ? 'line-through text-slate-400 dark:text-slate-500'
                 : 'text-slate-900 dark:text-white'"
