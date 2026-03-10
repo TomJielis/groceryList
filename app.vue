@@ -40,31 +40,38 @@ onMounted(() => {
 <template>
   <NuxtLayout>
     <div
-        :class="['min-h-screen bg-gradient-to-br from-sky-50 via-blue-100 to-indigo-200 dark:from-slate-800 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 font-inter flex flex-col relative transition-colors',
+        :class="['min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 text-slate-100 font-inter flex flex-col relative transition-colors',
         { 'pwa-standalone': pwa }]"
     >
       <Navbar
-          class="hidden md:block fixed top-0 left-0 right-0 z-50 h-12 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg"/>
+          class="hidden md:block fixed top-0 left-0 right-0 z-50 h-12 border-b border-white/10 bg-slate-900/60 backdrop-blur-lg text-white"/>
 
       <NotificationBar/>
 
       <div
-          class="scrollable-content flex-1 overflow-y-auto md:pt-12 pb-16 md:pb-0 bg-white dark:bg-slate-900"
+          class="scrollable-content flex-1 overflow-y-auto md:pt-12 pb-16 md:pb-0 bg-transparent"
       >
         <NuxtPage />
       </div>
 
       <BottomBar
-          class="md:hidden fixed bottom-0 left-0 right-0 z-50 h-16 shadow-xl border-t border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg"/>
+          class="md:hidden fixed bottom-0 left-0 right-0 z-50 h-16 shadow-xl border-t border-white/10 bg-slate-900/80 backdrop-blur-lg text-white"/>
     </div>
   </NuxtLayout>
 </template>
 
-<style scoped>
+<style>
 html,
 body {
-  overflow-x: hidden;
+  overflow: hidden;
   height: 100%;
+  background-color: #0f172a;
+  overscroll-behavior: contain;
+}
+
+#__nuxt,
+#app {
+  min-height: 100%;
   background-color: #0f172a;
 }
 </style>

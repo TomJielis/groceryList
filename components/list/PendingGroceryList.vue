@@ -39,58 +39,67 @@ function getCreatorName(list: TGroceryList): string {
 </script>
 
 <template>
-  <div v-if="pendingLists && pendingLists.length > 0" class="mb-6">
+  <div v-if="pendingLists && pendingLists.length > 0" class="pending-shell space-y-4">
     <!-- Header -->
-    <div class="flex items-center gap-2 mb-3">
-      <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-      <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">
-        {{ i18n.t('lists.pendingInvites') || 'Uitnodigingen in afwachting' }}
-      </h3>
-      <span class="text-xs bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-full font-medium">
-        {{ pendingLists.length }}
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3 text-white">
+        <div class="w-12 h-12 rounded-2xl bg-amber-400/15 border border-amber-200/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold tracking-[0.2em] uppercase text-slate-200">
+            {{ i18n.t('lists.pendingInvites') || 'Uitnodigingen in afwachting' }}
+          </h3>
+          <p class="text-xs text-slate-400">
+            {{ i18n.t('lists.approveOrDecline') || 'Keur gedeelde lijsten snel goed' }}
+          </p>
+        </div>
+      </div>
+      <span class="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white">
+        {{ pendingLists.length }}×
       </span>
     </div>
 
     <!-- Pending Lists -->
-    <div class="space-y-3">
+    <div class="pending-scroll space-y-3">
       <transition-group name="list" tag="div" class="space-y-3">
         <div
           v-for="list in pendingLists"
           :key="list.id"
-          class="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800 rounded-2xl p-4"
+          class="pending-card rounded-2xl border border-white/10 bg-white/5 p-4 text-white/90"
         >
           <!-- List Info -->
           <div class="mb-4">
             <div class="flex items-start gap-3 mb-2">
-              <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-amber-700 dark:text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-200/30 to-amber-400/20 flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                 </svg>
               </div>
               <div class="flex-1 min-w-0">
-                <h4 class="text-base font-bold text-slate-900 dark:text-white truncate">
+                <h4 class="text-base font-semibold text-white truncate">
                   {{ list.name }}
                 </h4>
-                <p class="text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-                  {{ i18n.t('lists.invitedBy') }} <span class="font-semibold">{{ getCreatorName(list) }}</span>
+                <p class="text-sm text-slate-300 mt-0.5">
+                  {{ i18n.t('lists.invitedBy') }} <span class="font-semibold text-white">{{ getCreatorName(list) }}</span>
                 </p>
               </div>
             </div>
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex gap-2">
+          <div class="flex gap-3 flex-col sm:flex-row">
             <button
               @click="handleAction(list.id, 'accepted')"
-              class="flex-1 px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-all active:scale-95"
+              class="flex-1 pending-btn primary"
             >
               {{ i18n.t('lists.approve') }}
             </button>
             <button
               @click="handleAction(list.id, 'declined')"
-              class="flex-1 px-4 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-all active:scale-95"
+              class="flex-1 pending-btn secondary"
             >
               {{ i18n.t('lists.decline') }}
             </button>
@@ -102,6 +111,53 @@ function getCreatorName(list: TGroceryList): string {
 </template>
 
 <style scoped>
+/* Scroll container */
+.pending-shell {
+  color: #fff;
+}
+
+.pending-scroll {
+  max-height: 22rem;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.pending-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.pending-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+}
+
+.pending-scroll::-webkit-scrollbar-thumb {
+  background: rgba(248, 250, 252, 0.25);
+  border-radius: 999px;
+}
+
+.pending-btn {
+  border-radius: 1rem;
+  padding: 0.9rem 1.2rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pending-btn.primary {
+  background: linear-gradient(120deg, #34d399, #10b981);
+  color: #0f172a;
+}
+
+.pending-btn.secondary {
+  border: 1px solid rgba(248, 250, 252, 0.3);
+  background: rgba(15, 23, 42, 0.6);
+  color: #f8fafc;
+}
+
+.pending-btn:active {
+  transform: scale(0.97);
+}
+
 /* List animations */
 .list-enter-active,
 .list-leave-active {

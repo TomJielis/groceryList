@@ -20,8 +20,8 @@ const change = computed(() => {
 })
 
 const changeColor = computed(() => {
-  if (change.value.isZero) return 'text-slate-500 dark:text-slate-400'
-  return change.value.isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+  if (change.value.isZero) return 'text-slate-300'
+  return change.value.isPositive ? 'text-emerald-300' : 'text-rose-300'
 })
 
 const changeIcon = computed(() => {
@@ -31,17 +31,16 @@ const changeIcon = computed(() => {
 </script>
 
 <template>
-  <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-    <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ title }}</h3>
-    <div class="mt-2 flex items-baseline">
-      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ value }}</p>
-      <!-- Show percentage change -->
-      <p v-if="change.percentage !== null && showPercentage" :class="['ml-2 text-sm font-medium', changeColor]">
+  <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 shadow-2xl text-white/90 space-y-2">
+    <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">{{ title }}</p>
+    <div class="flex items-baseline gap-2">
+      <p class="text-3xl font-semibold text-white">{{ value }}</p>
+      <p v-if="change.percentage !== null && showPercentage" :class="['text-sm font-semibold', changeColor]">
         {{ changeIcon }} {{ Math.abs(change.percentage) }}%
       </p>
     </div>
-    <p v-if="showPercentage" class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-      {{ i18n.t('profile.previousMonth') || 'Vorige maand' }}: {{ previousValue }}
+    <p v-if="showPercentage" class="text-xs text-slate-400">
+      {{ i18n.t('profile.previousMonth') || 'Vorige maand' }} · {{ previousValue ?? 0 }}
     </p>
   </div>
 </template>

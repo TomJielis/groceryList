@@ -46,14 +46,14 @@ function goNewer() {
 </script>
 
 <template>
-  <div class="flex items-center justify-center gap-4">
+  <div class="flex items-center justify-center gap-3 text-white">
     <button
       type="button"
       :disabled="!canGoOlder"
-      class="p-2 rounded-lg transition-colors"
+      class="p-2 rounded-2xl border transition focus:outline-none focus:ring-2 focus:ring-amber-300/40"
       :class="canGoOlder
-        ? 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
-        : 'text-slate-300 dark:text-slate-600 cursor-not-allowed'"
+        ? 'text-white/90 border-white/20 bg-white/5 hover:bg-white/20'
+        : 'text-white/40 border-white/5 cursor-not-allowed'"
       @click="goOlder"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -61,17 +61,17 @@ function goNewer() {
       </svg>
     </button>
 
-    <span class="text-lg font-medium text-slate-900 dark:text-white min-w-[160px] text-center capitalize">
+    <span class="text-lg font-semibold text-white min-w-[160px] text-center capitalize tracking-wide">
       {{ formatMonth(selectedMonth) }}
     </span>
 
     <button
       type="button"
       :disabled="!canGoNewer"
-      class="p-2 rounded-lg transition-colors"
+      class="p-2 rounded-2xl border transition focus:outline-none focus:ring-2 focus:ring-amber-300/40"
       :class="canGoNewer
-        ? 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
-        : 'text-slate-300 dark:text-slate-600 cursor-not-allowed'"
+        ? 'text-white/90 border-white/20 bg-white/5 hover:bg-white/20'
+        : 'text-white/40 border-white/5 cursor-not-allowed'"
       @click="goNewer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

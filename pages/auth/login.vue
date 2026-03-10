@@ -59,23 +59,51 @@ function toggleLanguage() {
 </script>
 
 <template>
-  <div class="min-h-screen flex justify-center items-center bg-slate-900 px-4">
-    <Card class="w-full max-w-md shadow-2">
-      <template #title>
-        <div class="text-center mb-2">
-          <div class="text-4xl mb-2">🛒</div>
-          <h2 class="text-2xl font-bold">
-            {{ t('nav.login') }}
-          </h2>
-          <p class="text-sm text-slate-400">
-            {{ t('auth.loginSubtitle') }}
+  <div class="auth-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
+    <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center md:grid-cols-2">
+      <div class="auth-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-4">
+        <div class="text-5xl">🛒</div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
+            {{ t('app.tagline') || 'Grocery Flow' }}
           </p>
+          <h1 class="text-3xl md:text-4xl font-bold leading-tight">
+            {{ t('nav.login') }}
+          </h1>
         </div>
-      </template>
-      <template #content>
+        <p class="text-sm text-slate-200 max-w-sm">
+          {{ t('auth.loginSubtitle') }}
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-center">
+          <div class="bg-white/10 rounded-2xl p-3 border border-white/15">
+            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+              {{ t('lists.listCount') }}
+            </p>
+            <p class="text-2xl font-semibold">120+</p>
+          </div>
+          <div class="bg-white/10 rounded-2xl p-3 border border-white/15">
+            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+              {{ t('lists.sharedWith') }}
+            </p>
+            <p class="text-2xl font-semibold">{{ t('auth.realTime') || 'Realtime' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <Card class="auth-card border border-white/10 shadow-2xl">
+        <template #content>
+          <div class="text-center text-white space-y-2 mb-6">
+            <div class="text-4xl">✨</div>
+            <h2 class="text-2xl font-semibold">
+              {{ t('nav.login') }}
+            </h2>
+            <p class="text-sm text-slate-300">
+              {{ t('auth.loginSubtitle') }}
+            </p>
+          </div>
         <form @submit.prevent="handleLogin" class="space-y-4">
           <div>
-            <label class="block mb-2 text-sm">
+            <label class="block mb-2 text-sm text-slate-200">
               {{ t('auth.email') }}
             </label>
 
@@ -83,12 +111,12 @@ function toggleLanguage() {
                 v-model="userData.email"
                 type="email"
                 :placeholder="t('auth.emailPlaceholder')"
-                class="w-full"
+                class="w-full auth-input"
             />
           </div>
 
           <div>
-            <label class="block mb-2 text-sm">
+            <label class="block mb-2 text-sm text-slate-200">
               {{ t('auth.password') }}
             </label>
 
@@ -98,7 +126,7 @@ function toggleLanguage() {
                 toggleMask
                 :feedback="false"
                 inputClass="w-full"
-                class="w-full"
+                class="w-full auth-input"
             />
           </div>
 
@@ -106,15 +134,15 @@ function toggleLanguage() {
               type="submit"
               icon="pi pi-sign-in"
               :label="t('auth.loginBtn')"
-              class="w-full"
+              class="w-full auth-btn"
           />
 
         </form>
 
-        <div class="mt-6">
+        <div class="mt-6 text-sm">
           <NuxtLink
               to="/auth/password/reset"
-              class="block text-center text-sm text-primary mb-4"
+              class="block text-center text-emerald-300 hover:text-emerald-200 transition mb-4"
           >
             {{ t('auth.forgotPassword') }}
           </NuxtLink>
@@ -125,7 +153,7 @@ function toggleLanguage() {
             <Button
                 severity="secondary"
                 outlined
-                class="w-full mt-4"
+                class="w-full mt-4 auth-btn alt"
                 :label="t('auth.createAccount')"
             />
           </NuxtLink>
@@ -135,6 +163,7 @@ function toggleLanguage() {
               outlined
               severity="contrast"
               @click="toggleLanguage"
+              class="auth-lang"
               :label="i18n.locale === 'en' ? '🇳🇱 Nederlands' : '🇬🇧 English'"
           />
         </div>
@@ -142,5 +171,67 @@ function toggleLanguage() {
 
     </Card>
 
+    </div>
   </div>
 </template>
+
+<style scoped>
+.auth-shell {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.auth-hero {
+  background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.9));
+  backdrop-filter: blur(30px);
+}
+
+:deep(.auth-card .p-card-body) {
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 1.75rem;
+  padding: 2rem;
+  color: #f8fafc;
+}
+
+:deep(.auth-card .p-card-content) {
+  padding: 0;
+}
+
+:deep(.auth-input.p-inputtext),
+:deep(.auth-input .p-password-input) {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  border-radius: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+:deep(.auth-input.p-inputtext::placeholder),
+:deep(.auth-input .p-password-input::placeholder) {
+  color: #cbd5f5;
+}
+
+.auth-btn :deep(.p-button) {
+  border-radius: 999px;
+  background: linear-gradient(90deg, #fbbf24, #f97316);
+  color: #0f172a;
+  border: none;
+  font-weight: 600;
+  width: 100%;
+}
+
+.auth-btn.alt :deep(.p-button) {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #f8fafc;
+}
+
+.auth-lang :deep(.p-button) {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #f8fafc;
+}
+
+:deep(.p-divider .p-divider-content) {
+  color: #cbd5f5;
+}
+</style>

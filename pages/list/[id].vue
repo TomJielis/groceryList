@@ -131,102 +131,116 @@ async function handleCheckItem(item: any) {
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
-    <!-- Fixed Header -->
-    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="max-w-6xl mx-auto px-4 py-3">
-        <!-- Top Row: Back button, Title, Add button -->
-        <div class="flex items-center gap-3">
-          <!-- Back Button -->
-          <NuxtLink
-            to="/"
-            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors active:scale-95"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-          </NuxtLink>
-
-          <!-- Title & Stats -->
-           <div class="flex-1 min-w-0">
-            <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white truncate flex items-center gap-2">
-              <span>{{ list?.name }}</span>
-            </h1>
-            <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-              <span>{{ uncheckedItems.length }} {{ i18n.t('list.remaining') || 'over' }}</span>
-              <span class="text-slate-300 dark:text-slate-600">•</span>
-              <span>{{ checkedItems.length }} {{ i18n.t('list.done') || 'klaar' }}</span>
+  <div class="list-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-8">
+    <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
+      <div class="list-hero-card shadow-2xl border border-white/10 rounded-3xl">
+        <div class="flex flex-col gap-6">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div class="flex flex-col gap-4">
+              <NuxtLink
+                to="/"
+                class="inline-flex w-12 h-12 items-center justify-center rounded-2xl bg-white/10 text-white hover:bg-white/20 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+              </NuxtLink>
+              <div>
+                <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
+                  <span>📝</span>
+                  <span>{{ list?.name }}</span>
+                </h1>
+                <p class="text-sm text-slate-300 mt-2">
+                  {{ uncheckedItems.length }} {{ i18n.t('list.remaining') || 'over' }} • {{ checkedItems.length }} {{ i18n.t('list.done') || 'klaar' }}
+                </p>
+              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button
+                v-if="showAddItem"
+                @click="showAddItem = false"
+                class="w-full sm:w-auto px-5 py-3 rounded-2xl border border-white/20 text-white bg-white/5 hover:bg-white/10 transition-colors text-sm font-semibold"
+              >
+                {{ i18n.t('common.cancel') }}
+              </button>
+              <button
+                v-else
+                @click="showAddItem = true"
+                class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-amber-300 text-slate-900 font-semibold flex items-center justify-center gap-2 shadow-lg hover:-translate-y-0.5 transition"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                </svg>
+                <span>{{ i18n.t('items.addFirst') || 'Voeg item toe' }}</span>
+              </button>
             </div>
           </div>
 
-          <!-- Total Price Badge -->
-          <div class="flex-shrink-0 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-xl border border-green-200 dark:border-green-800">
-            <span class="text-sm font-bold text-green-700 dark:text-green-400">€{{ totalPrice.toFixed(2) }}</span>
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div class="list-stat-card">
+              <p class="text-[11px] uppercase tracking-[0.2em] text-slate-200/80">
+                {{ i18n.t('items.total') || 'Totaal' }}
+              </p>
+              <p class="text-2xl font-bold text-white">€{{ totalPrice.toFixed(2) }}</p>
+            </div>
+            <div class="list-stat-card">
+              <p class="text-[11px] uppercase tracking-[0.2em] text-slate-200/80">
+                {{ i18n.t('list.remaining') || 'Over' }}
+              </p>
+              <p class="text-2xl font-bold text-amber-200">{{ uncheckedItems.length }}</p>
+            </div>
+            <div class="list-stat-card">
+              <p class="text-[11px] uppercase tracking-[0.2em] text-slate-200/80">
+                {{ i18n.t('list.done') || 'Klaar' }}
+              </p>
+              <p class="text-2xl font-bold text-emerald-200">{{ checkedItems.length }}</p>
+            </div>
           </div>
 
-          <!-- Add Item Button -->
+          <div v-if="items.length > 0" class="space-y-1">
+            <div class="flex items-center justify-between text-xs text-slate-200">
+              <span>{{ i18n.t('list.progress') || 'Voortgang' }}</span>
+              <span class="font-semibold">{{ Math.round((checkedItems.length / items.length) * 100) }}%</span>
+            </div>
+            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+              <div
+                class="h-full bg-gradient-to-r from-emerald-300 to-emerald-500 rounded-full transition-all duration-500"
+                :style="{ width: `${(checkedItems.length / items.length) * 100}%` }"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-card rounded-3xl shadow-2xl border border-white/10 p-4 md:p-6 text-white">
+        <Loader v-if="loading" />
+
+        <div v-else-if="items.length === 0 && !showAddItem" class="flex flex-col items-center justify-center py-12 px-6 text-center space-y-4">
+          <div class="text-5xl">🛒</div>
+          <h2 class="text-2xl font-semibold text-white">
+            {{ i18n.t('items.emptyState.title') }}
+          </h2>
+          <p class="text-sm text-slate-200 max-w-md">
+            {{ i18n.t('items.emptyState.message') }}
+          </p>
           <button
-            v-if="!showAddItem"
             @click="showAddItem = true"
-            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-blue-500 hover:bg-blue-600 text-white transition-all duration-200 active:scale-95"
+            class="px-6 py-3 bg-white/10 border border-white/20 text-white rounded-2xl font-semibold flex items-center gap-2 transition hover:-translate-y-0.5"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
+            <span>{{ i18n.t('items.addFirst') || 'Voeg item toe' }}</span>
           </button>
         </div>
 
-        <!-- Progress Bar -->
-        <div v-if="items.length > 0" class="mt-3">
-          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
-            <span>{{ i18n.t('list.progress') || 'Voortgang' }}</span>
-            <span class="font-medium">{{ Math.round((checkedItems.length / items.length) * 100) }}%</span>
-          </div>
-          <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-            <div
-              class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-500 ease-out"
-              :style="{ width: `${(checkedItems.length / items.length) * 100}%` }"
-            ></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto">
-      <div class="max-w-6xl mx-auto px-4 pb-24 pt-4">
-      <Loader v-if="loading" />
-
-      <!-- Empty State -->
-      <div v-else-if="items.length === 0 && !showAddItem" class="flex flex-col items-center justify-center py-16 px-6">
-        <div class="w-24 h-24 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-full flex items-center justify-center mb-5">
-          <span class="text-5xl">🛒</span>
-        </div>
-        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2 text-center">
-          {{ i18n.t('items.emptyState.title') }}
-        </h2>
-        <p class="text-slate-600 dark:text-slate-400 text-center text-sm max-w-xs mb-6">
-          {{ i18n.t('items.emptyState.message') }}
-        </p>
-        <button
-          @click="showAddItem = true"
-          class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all duration-200 flex items-center gap-2"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-          </svg>
-          <span>{{ i18n.t('items.addFirst') || 'Voeg item toe' }}</span>
-        </button>
-      </div>
-
-      <!-- Items List -->
-      <div v-else class="space-y-4">
-        <div v-if="!showAddItem">
+        <div v-else class="space-y-5">
+          <div v-if="!showAddItem">
           <!-- Active Items Section -->
           <div v-if="uncheckedItems.length > 0">
             <!-- Desktop Table View -->
-            <div class="hidden md:block bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-              <div class="grid grid-cols-12 gap-4 px-6 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <div class="hidden md:block bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+              <div class="grid grid-cols-12 gap-4 px-6 py-3 bg-white/5 border-b border-white/10 text-xs font-semibold text-slate-200 uppercase tracking-wider">
                 <div class="col-span-5">{{ i18n.t('items.name') }}</div>
                 <div class="col-span-2 text-center">{{ i18n.t('items.quantity') }}</div>
                 <div class="col-span-2 text-center">{{ i18n.t('items.price') }}</div>
@@ -265,13 +279,13 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
           <!-- All Done State -->
           <div v-else-if="checkedItems.length > 0" class="flex flex-col items-center justify-center py-12 px-6">
-            <div class="w-20 h-20 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 rounded-full flex items-center justify-center mb-4">
+            <div class="w-20 h-20 bg-gradient-to-br from-emerald-400/30 to-emerald-500/10 rounded-full flex items-center justify-center mb-4">
               <span class="text-4xl">🎉</span>
             </div>
-            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-1 text-center">
+            <h2 class="text-lg font-bold text-white mb-1 text-center">
               {{ i18n.t('list.allDone') || 'Alles gedaan!' }}
             </h2>
-            <p class="text-slate-500 dark:text-slate-400 text-center text-sm">
+            <p class="text-slate-200 text-center text-sm">
               {{ i18n.t('list.allDoneMessage') || 'Je hebt alle items afgevinkt' }}
             </p>
           </div>
@@ -280,23 +294,23 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <div v-if="checkedItems.length > 0" class="mt-6">
             <button
               @click="showCheckedItems = !showCheckedItems"
-              class="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors duration-200 group"
+              class="w-full flex items-center justify-between px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors duration-200 group border border-white/10"
             >
               <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                  <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-8 h-8 rounded-lg bg-emerald-400/20 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                   </svg>
                 </div>
-                <span class="font-medium text-slate-700 dark:text-slate-300">
+                <span class="font-medium text-white">
                   {{ i18n.t('list.completed') || 'Afgerond' }}
                 </span>
-                <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">
+                <span class="text-xs bg-emerald-400/20 text-emerald-100 px-2 py-0.5 rounded-full font-medium">
                   {{ checkedItems.length }}
                 </span>
               </div>
               <svg
-                class="w-5 h-5 text-slate-400 transition-transform duration-200"
+                class="w-5 h-5 text-slate-200 transition-transform duration-200"
                 :class="{ 'rotate-180': showCheckedItems }"
                 fill="none"
                 stroke="currentColor"
@@ -316,7 +330,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             >
               <div v-if="showCheckedItems" class="mt-3 overflow-hidden">
                 <!-- Desktop Table View -->
-                <div class="hidden md:block bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="hidden md:block bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
                   <transition-group name="list" tag="div">
                     <GroceryListItem
                       v-for="item in checkedItems"
@@ -360,7 +374,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           leave-from-class="opacity-100 scale-100"
           leave-to-class="opacity-0 scale-95"
         >
-          <div v-if="showAddItem" class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div v-if="showAddItem" class="bg-slate-900/40 rounded-2xl shadow-xl border border-white/10 overflow-hidden">
             <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
           </div>
         </transition>
@@ -369,3 +383,37 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
     </div>
   </div>
 </template>
+
+<style scoped>
+.list-shell {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.list-hero-card {
+  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.25), rgba(15, 23, 42, 0.9));
+  padding: 2rem;
+}
+
+.list-stat-card {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 1.2rem;
+  padding: 0.9rem 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.list-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.list-card table {
+  width: 100%;
+  color: #f8fafc;
+}
+
+@media (max-width: 768px) {
+  .list-hero-card {
+    padding: 1.5rem;
+  }
+}
+</style>

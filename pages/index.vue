@@ -3,12 +3,24 @@ import {useGroceryList} from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
 import ShareListModal from '~/components/ShareListModal.vue';
 import deleteModal from '~/components/deleteModal.vue';
-import {ref, watch, computed, onMounted, onBeforeUnmount} from 'vue'
+import {ref, computed, onMounted, onBeforeUnmount} from 'vue'
+import { useRouter } from 'vue-router'
 import {useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
 import {useListStore} from "~/stores/lists";
 import { useI18nStore } from '~/stores/i18n';
 import { useSocket } from '~/composables/useSocket';
+import Button from 'primevue/button'
+import Card from 'primevue/card'
+import Tag from 'primevue/tag'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import ProgressBar from 'primevue/progressbar'
+import Avatar from 'primevue/avatar'
+import AvatarGroup from 'primevue/avatargroup'
+import Menu from 'primevue/menu'
+import Skeleton from 'primevue/skeleton'
+import type { MenuItem } from 'primevue/menuitem'
 
 const listStore = useListStore();
 const loading = ref(true);
@@ -19,8 +31,8 @@ const {showNotification, showSuccess} = useNotification();
 const i18n = useI18nStore();
 
 const openListForm = ref(false)
-const openDropdown = ref<number | null>(null)
-const dropdownPosition = ref<'top' | 'bottom'>('bottom')
+const actionMenu = ref<any>(null)
+const activeMenuList = ref<any | null>(null)
 
 const showShareModal = ref(false)
 const shareEmail = ref('')
@@ -32,6 +44,7 @@ const deleteListId = ref<number | null>(null)
 const deleteListName = ref('')
 
 const { connect, onListRefresh, onItemChanged, offListRefresh, offItemChanged, joinList, leaveList } = useSocket();
+const router = useRouter();
 
 onMounted(async () => {
   loading.value = true;
@@ -90,43 +103,70 @@ definePageMeta({
 
 
 function handleList() {
-  openListForm.value = false
+  closeListForm();
 }
 
-function toggleDropdown(id: number) {
-  if (openDropdown.value === id) {
-    openDropdown.value = null
-  } else {
-    openDropdown.value = id
-    // Determine if dropdown should appear above or below
-    setTimeout(() => {
-      const button = document.querySelector(`[data-list-menu="${id}"]`) as HTMLElement
-      if (button) {
-        const rect = button.getBoundingClientRect()
-        const spaceBelow = window.innerHeight - rect.bottom
-        // If less than 300px below, show above
-        dropdownPosition.value = spaceBelow < 300 ? 'top' : 'bottom'
+function closeListForm() {
+  openListForm.value = false;
+  editListId.value = undefined;
+}
+
+const actionMenuItems = computed<MenuItem[]>(() => {
+  const current = activeMenuList.value;
+  if (!current) return [];
+
+  const isFavorite = auth?.user?.favorite_list_id === current.id;
+  const isOwner = current?.created_by?.id === auth.user?.id;
+
+  const items: MenuItem[] = [
+    {
+      label: isFavorite ? i18n.t('lists.menu.removeFavorite') : i18n.t('lists.menu.markFavorite'),
+      icon: isFavorite ? 'pi pi-star-fill' : 'pi pi-star',
+      command: () => setFavoriteList(current.id)
+    }
+  ];
+
+  if (isOwner) {
+    items.push(
+      {
+        label: i18n.t('lists.menu.edit'),
+        icon: 'pi pi-pencil',
+        command: () => openListSettings(current.id)
+      },
+      {
+        label: i18n.t('lists.menu.share'),
+        icon: 'pi pi-share-alt',
+        command: () => shareListWithUser(current.id)
       }
-    }, 0)
+    );
   }
+
+  items.push({ separator: true });
+  items.push({
+    label: isOwner ? i18n.t('lists.menu.delete') : i18n.t('lists.menu.leave'),
+    icon: 'pi pi-trash',
+    command: () => deleteListItem(current.id),
+    class: 'text-red-500'
+  });
+
+  return items;
+});
+
+function openActionMenu(event: MouseEvent, listItem: any) {
+  activeMenuList.value = listItem;
+  actionMenu.value?.toggle(event);
 }
 
-function handleClickOutside(event: MouseEvent) {
-  const dropdowns = document.querySelectorAll('.dropdown-menu')
-  let clickedInside = false
-  dropdowns.forEach((dropdown) => {
-    if (dropdown.contains(event.target as Node)) clickedInside = true
-  })
-  if (!clickedInside) openDropdown.value = null
+function closeActionMenu() {
+  actionMenu.value?.hide();
 }
 
-watch(openDropdown, (val) => {
-  if (val !== null) {
-    document.addEventListener('click', handleClickOutside)
-  } else {
-    document.removeEventListener('click', handleClickOutside)
+function handleRowNavigate(event: any) {
+  const id = event?.data?.id;
+  if (id) {
+    router.push(`/list/${id}`);
   }
-})
+}
 
 function shareListWithUser(id: number) {
   const list = listStore.lists.find((list: any) => list.id === id);
@@ -134,7 +174,7 @@ function shareListWithUser(id: number) {
   shareListName.value = list?.name || '';
   shareEmail.value = '';
   showShareModal.value = true;
-  openDropdown.value = null;
+  closeActionMenu();
 }
 
 function handleShareConfirm(email: string) {
@@ -161,7 +201,7 @@ function deleteListItem(id: number) {
   deleteListId.value = id;
   deleteListName.value = list?.name || '';
   showDeleteModal.value = true;
-  openDropdown.value = null; // Close the dropdown
+  closeActionMenu();
 }
 
 function handleDeleteConfirm() {
@@ -197,7 +237,7 @@ function makeFavorite(id: number | null) {
 function setFavoriteList(id: number) {
   let listId = auth?.user?.favorite_list_id == id ? null : id;
   makeFavorite(listId)
-  openDropdown.value = null; // Close the submenu
+  closeActionMenu();
   const data = auth.user;
   if (data) {
     data.favorite_list_id = listId;
@@ -242,326 +282,267 @@ const editListId = ref<number | undefined>(undefined)
 function openListSettings(id: number) {
   editListId.value = id;
   openListForm.value = true;
-  openDropdown.value = null;
+  closeActionMenu();
 }
 
 </script>
 
 
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
-    <!-- Fixed Header -->
-    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm touch-none">
-      <div class="max-w-6xl mx-auto px-4 py-3">
-        <div class="flex items-center gap-3">
-          <!-- Title & Stats -->
-          <div class="flex-1 min-w-0">
-            <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white">
-              {{ i18n.t('lists.title') }}
-            </h1>
-            <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-              <span>{{ sortedLists.length }} {{ i18n.t('lists.listCount') }}</span>
-              <template v-if="sortedLists.length > 0">
-                <span class="text-slate-300 dark:text-slate-600">•</span>
-                <span>{{ totalItemsRemaining }} {{ i18n.t('lists.remaining') }}</span>
-              </template>
+  <div class="lists-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-8">
+    <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
+      <div class="lists-hero">
+        <div class="flex flex-col gap-6">
+          <div class="flex flex-col md:flex-row md:items-start md:gap-8">
+            <div class="flex-1 text-center md:text-left space-y-3">
+              <div class="text-5xl md:text-6xl">🛒</div>
+              <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
+                {{ i18n.t('lists.sharedWith') }}
+              </p>
+              <h1 class="text-3xl md:text-4xl font-bold text-white">
+                {{ i18n.t('lists.title') }}
+              </h1>
+              <p class="text-sm text-slate-300 md:max-w-xl mx-auto md:mx-0">
+                {{ i18n.t('lists.emptyState.message') }}
+              </p>
             </div>
-          </div>
-
-          <!-- Total Stats Badge -->
-          <div v-if="sortedLists.length > 0" class="flex-shrink-0 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-xl border border-green-200 dark:border-green-800">
-            <div class="flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-              </svg>
-              <span class="text-sm font-bold text-green-700 dark:text-green-400">{{ totalItemsChecked }}</span>
-            </div>
-          </div>
-
-          <!-- Add List Button -->
-          <button
-            v-if="!openListForm"
-            @click="openListForm = true"
-            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-blue-500 hover:bg-blue-600 text-white transition-all duration-200 active:scale-95"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto">
-      <div class="max-w-6xl mx-auto px-4 pb-24 pt-4">
-        <div v-if="!openListForm">
-          <div v-if="loading" class="flex items-center justify-center py-20">
-            <div class="text-center">
-              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
-            </div>
-          </div>
-
-          <!-- Empty State -->
-          <div v-else-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-16 px-6">
-            <div class="w-24 h-24 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-full flex items-center justify-center mb-5">
-              <span class="text-5xl">🛒</span>
-            </div>
-            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2 text-center">
-              {{ i18n.t('lists.emptyState.title') }}
-            </h2>
-            <p class="text-slate-600 dark:text-slate-400 text-center text-sm max-w-xs mb-6">
-              {{ i18n.t('lists.emptyState.message') }}
-            </p>
-            <button
-              @click="openListForm = true"
-              class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all duration-200 flex items-center gap-2"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-              </svg>
-              <span>{{ i18n.t('lists.createFirst') }}</span>
-            </button>
-          </div>
-
-          <!-- Lists -->
-          <div v-else>
-            <!-- Desktop Table View -->
-            <div class="hidden md:block">
-              <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
-                <!-- Table Header -->
-                <div class="grid grid-cols-12 gap-4 px-6 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider rounded-t-2xl">
-                  <div class="col-span-4">{{ i18n.t('lists.name') }}</div>
-                  <div class="col-span-3 text-center">{{ i18n.t('list.progress') }}</div>
-                  <div class="col-span-2 text-center">{{ i18n.t('lists.items') }}</div>
-                  <div class="col-span-2 text-center">{{ i18n.t('lists.sharedWith') }}</div>
-                  <div class="col-span-1"></div>
-                </div>
-
-                <!-- Table Rows -->
-                <div
-                  v-for="(listItem, index) in sortedLists"
-                  :key="listItem.id"
-                  @click="$router.push(`/list/${listItem.id}`)"
-                  class="grid grid-cols-12 gap-4 px-6 py-4 items-center cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
-                  :class="{ 'border-b border-slate-100 dark:border-slate-700/50': index < sortedLists.length - 1 }"
+            <div class="flex flex-col gap-4 w-full md:w-auto md:items-end">
+              <div class="flex flex-col sm:flex-row gap-3 w-full md:justify-end md:w-auto">
+                <button
+                  v-if="openListForm"
+                  type="button"
+                  class="lists-cta secondary w-full sm:w-auto"
+                  @click="closeListForm"
                 >
-                  <!-- Name -->
-                  <div class="col-span-4 flex items-center gap-3 min-w-0">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                      :class="auth?.user?.favorite_list_id === listItem.id
-                        ? 'bg-yellow-100 dark:bg-yellow-900/30'
-                        : 'bg-blue-50 dark:bg-blue-900/20'"
-                    >
-                      <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-lg">⭐</span>
-                      <span v-else class="text-lg">📝</span>
-                    </div>
-                    <div class="min-w-0">
-                      <h3 class="font-semibold text-slate-900 dark:text-white truncate">{{ listItem.name }}</h3>
-                      <p class="text-xs text-slate-500 dark:text-slate-400">{{ i18n.t('lists.by') }} {{ listItem.created_by.name }}</p>
-                    </div>
-                  </div>
-
-                  <!-- Progress -->
-                  <div class="col-span-3">
-                    <div class="flex items-center gap-3">
-                      <div class="flex-1 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                        <div
-                          class="h-full bg-green-500 rounded-full transition-all duration-500"
-                          :style="{ width: `${calculateProgress(listItem)}%` }"
-                        ></div>
-                      </div>
-                      <span class="text-sm font-semibold text-slate-600 dark:text-slate-300 w-10 text-right">{{ calculateProgress(listItem) }}%</span>
-                    </div>
-                  </div>
-
-                  <!-- Items Count -->
-                  <div class="col-span-2 text-center">
-                    <div class="inline-flex items-center gap-2">
-                      <span class="text-sm font-medium text-blue-600 dark:text-blue-400">{{ getRemainingCount(listItem) }}</span>
-                      <span class="text-slate-300 dark:text-slate-600">/</span>
-                      <span class="text-sm text-slate-500 dark:text-slate-400">{{ listItem.grocery_list_items_count ?? 0 }}</span>
-                    </div>
-                  </div>
-
-                  <!-- Shared Users -->
-                  <div class="col-span-2 flex justify-center">
-                    <div v-if="listItem.grocery_list_invites?.length > 0" class="flex items-center -space-x-2">
-                      <span
-                        v-for="invite in listItem.grocery_list_invites.slice(0, 3)"
-                        :key="invite.user?.id"
-                        class="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 text-xs font-bold"
-                        :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#1e293b' }"
-                        :title="invite.user?.name"
-                      >
-                        {{ invite.user?.name?.charAt(0)?.toUpperCase() ?? '?' }}
-                      </span>
-                      <span
-                        v-if="listItem.grocery_list_invites.length > 3"
-                        class="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-white dark:border-slate-800 bg-slate-200 dark:bg-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300"
-                      >
-                        +{{ listItem.grocery_list_invites.length - 3 }}
-                      </span>
-                    </div>
-                    <span v-else class="text-xs text-slate-400">—</span>
-                  </div>
-
-                  <!-- Actions -->
-                  <div class="col-span-1 flex justify-end relative">
-                    <button
-                      :data-list-menu="listItem.id"
-                      class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-                      @click.stop="toggleDropdown(listItem.id)"
-                    >
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
-                      </svg>
-                    </button>
-
-                    <!-- Dropdown Menu -->
-                    <div
-                      v-if="openDropdown === listItem.id"
-                      class="dropdown-menu absolute right-0 z-[99999] w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-1"
-                      :class="dropdownPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'"
-                    >
-                      <button
-                        class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2"
-                        @click.stop="setFavoriteList(listItem.id)"
-                      >
-                        <span>{{ auth?.user?.favorite_list_id === listItem.id ? '⭐' : '☆' }}</span>
-                        <span>{{ auth?.user?.favorite_list_id === listItem.id ? i18n.t('lists.menu.removeFavorite') : i18n.t('lists.menu.markFavorite') }}</span>
-                      </button>
-                      <button
-                        v-if="listItem.created_by.id == auth.user.id"
-                        class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2"
-                        @click.stop="openListSettings(listItem.id)"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
-                        <span>{{ i18n.t('lists.menu.edit') }}</span>
-                      </button>
-                      <button
-                        v-if="listItem.created_by.id == auth.user.id"
-                        class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2"
-                        @click.stop="shareListWithUser(listItem.id)"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                        </svg>
-                        <span>{{ i18n.t('lists.menu.share') }}</span>
-                      </button>
-                      <div class="h-px bg-slate-100 dark:bg-slate-700 my-1"></div>
-                      <button
-                        class="w-full text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-sm text-red-600 dark:text-red-400 flex items-center gap-2"
-                        @click.stop="deleteListItem(listItem.id)"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                        </svg>
-                        <span>{{ listItem.created_by.id == auth.user.id ? i18n.t('lists.menu.delete') : i18n.t('lists.menu.leave') }}</span>
-                      </button>
-                    </div>
-                  </div>
+                  <span class="flex items-center gap-2 justify-center">
+                    <i class="pi pi-times text-base"></i>
+                    {{ i18n.t('common.cancel') }}
+                  </span>
+                </button>
+                <button
+                  v-else
+                  type="button"
+                  class="lists-cta w-full sm:w-auto"
+                  @click="() => { editListId = undefined; openListForm = true }"
+                >
+                  <span class="flex items-center gap-2 justify-center">
+                    <i class="pi pi-plus text-base"></i>
+                    {{ i18n.t('lists.newList') }}
+                  </span>
+                </button>
+              </div>
+              <div class="lists-stat-grid grid grid-cols-3 gap-3 text-center w-full md:w-auto">
+                <div class="lists-stat-card">
+                  <p class="text-[11px] uppercase tracking-[0.2em] text-slate-300">
+                    {{ i18n.t('lists.listCount') }}
+                  </p>
+                  <p class="text-2xl font-bold text-white">{{ sortedLists.length }}</p>
+                </div>
+                <div class="lists-stat-card">
+                  <p class="text-[11px] uppercase tracking-[0.2em] text-slate-300">
+                    {{ i18n.t('lists.remaining') }}
+                  </p>
+                  <p class="text-2xl font-bold text-amber-300">{{ totalItemsRemaining }}</p>
+                </div>
+                <div class="lists-stat-card">
+                  <p class="text-[11px] uppercase tracking-[0.2em] text-slate-300">
+                    {{ i18n.t('lists.completed') }}
+                  </p>
+                  <p class="text-2xl font-bold text-emerald-300">{{ totalItemsChecked }}</p>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Mobile Card View -->
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between lists-meta">
+            <p class="text-xs text-slate-300 text-center md:text-left">
+              {{ i18n.t('lists.listCount') }} {{ sortedLists.length }} • {{ i18n.t('lists.sharedWith') }}
+            </p>
+            <p class="text-xs text-slate-400 text-center md:text-right">
+              {{ i18n.t('lists.updated') || 'Realtime synced' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <Card v-if="openListForm" class="lists-card border border-slate-200/60 shadow-xl">
+        <template #content>
+          <ListForm
+            :list-id="editListId"
+            @list-added="handleList"
+            @close="closeListForm"
+          />
+        </template>
+      </Card>
+
+      <Card v-else class="lists-card border border-slate-200/60 shadow-xl">
+        <template #content>
+          <div v-if="loading" class="space-y-3">
+            <Skeleton height="48px" class="rounded-2xl" />
+            <Skeleton height="48px" class="rounded-2xl" />
+            <Skeleton height="48px" class="rounded-2xl" />
+          </div>
+
+          <div v-else-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-12 gap-4 text-center text-white">
+            <div class="text-5xl">🛒</div>
+            <h2 class="text-2xl font-semibold">
+              {{ i18n.t('lists.emptyState.title') }}
+            </h2>
+            <p class="text-sm text-slate-200 max-w-md">
+              {{ i18n.t('lists.emptyState.message') }}
+            </p>
+            <Button
+              icon="pi pi-plus"
+              :label="i18n.t('lists.createFirst')"
+              @click="() => { editListId = undefined; openListForm = true }"
+            />
+          </div>
+
+          <div v-else class="space-y-6">
             <div class="md:hidden space-y-3">
               <div
                 v-for="listItem in sortedLists"
                 :key="listItem.id"
-                @click="$router.push(`/list/${listItem.id}`)"
-                class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-4 active:scale-[0.98] transition-all"
+                class="lists-mobile-card text-white"
+                @click="router.push(`/list/${listItem.id}`)"
               >
-                <!-- Header -->
-                <div class="flex items-center gap-3 mb-3">
-                  <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                    :class="auth?.user?.favorite_list_id === listItem.id
-                      ? 'bg-yellow-100 dark:bg-yellow-900/30'
-                      : 'bg-blue-50 dark:bg-blue-900/20'"
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-white/10"
                   >
-                    <span v-if="auth?.user?.favorite_list_id === listItem.id" class="text-xl">⭐</span>
-                    <span v-else class="text-xl">📝</span>
+                    <span>{{ auth?.user?.favorite_list_id === listItem.id ? '⭐' : '📝' }}</span>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <h3 class="font-semibold text-slate-900 dark:text-white truncate">{{ listItem.name }}</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ listItem.created_by.name }}</p>
+                    <p class="font-semibold text-white truncate">{{ listItem.name }}</p>
+                    <p class="text-xs text-slate-200">{{ i18n.t('lists.by') }} {{ listItem.created_by.name }}</p>
                   </div>
-                  <button
-                    :data-list-menu="listItem.id"
-                    class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400"
-                    @click.stop="toggleDropdown(listItem.id)"
-                  >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
-                    </svg>
-                  </button>
-
-                  <!-- Mobile Dropdown -->
-                  <div
-                    v-if="openDropdown === listItem.id"
-                    class="dropdown-menu absolute right-4 z-[99999] w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-1"
-                  >
-                    <button class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2" @click.stop="setFavoriteList(listItem.id)">
-                      <span>{{ auth?.user?.favorite_list_id === listItem.id ? '⭐' : '☆' }}</span>
-                      <span>{{ auth?.user?.favorite_list_id === listItem.id ? i18n.t('lists.menu.removeFavorite') : i18n.t('lists.menu.markFavorite') }}</span>
-                    </button>
-                    <button v-if="listItem.created_by.id == auth.user.id" class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2" @click.stop="openListSettings(listItem.id)">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                      <span>{{ i18n.t('lists.menu.edit') }}</span>
-                    </button>
-                    <button v-if="listItem.created_by.id == auth.user.id" class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2" @click.stop="shareListWithUser(listItem.id)">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-                      <span>{{ i18n.t('lists.menu.share') }}</span>
-                    </button>
-                    <div class="h-px bg-slate-100 dark:bg-slate-700 my-1"></div>
-                    <button class="w-full text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm text-red-600 dark:text-red-400 flex items-center gap-2" @click.stop="deleteListItem(listItem.id)">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                      <span>{{ listItem.created_by.id == auth.user.id ? i18n.t('lists.menu.delete') : i18n.t('lists.menu.leave') }}</span>
-                    </button>
-                  </div>
+                  <Button
+                    icon="pi pi-ellipsis-v"
+                    text
+                    rounded
+                    severity="secondary"
+                    @click.stop="openActionMenu($event, listItem)"
+                  />
                 </div>
-
-                <!-- Progress -->
-                <div class="mb-3">
-                  <div class="flex items-center justify-between text-xs mb-1">
-                    <span class="text-slate-500 dark:text-slate-400">{{ getRemainingCount(listItem) }} {{ i18n.t('lists.remaining') }}</span>
-                    <span class="font-semibold text-green-600 dark:text-green-400">{{ calculateProgress(listItem) }}%</span>
+                <div class="mt-4 space-y-2">
+                  <div class="flex justify-between text-xs text-slate-200">
+                    <span>{{ getRemainingCount(listItem) }} {{ i18n.t('lists.remaining') }}</span>
+                    <span class="font-semibold text-emerald-300">{{ calculateProgress(listItem) }}%</span>
                   </div>
-                  <div class="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div class="h-full bg-green-500 rounded-full" :style="{ width: `${calculateProgress(listItem)}%` }"></div>
+                  <div class="h-2 bg-white/15 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-emerald-300 to-emerald-500 rounded-full" :style="{ width: `${calculateProgress(listItem)}%` }"></div>
                   </div>
-                </div>
-
-                <!-- Footer -->
-                <div v-if="listItem.grocery_list_invites?.length > 0" class="flex items-center gap-2 pt-3 border-t border-slate-100 dark:border-slate-700">
-                  <div class="flex -space-x-2">
-                    <span
-                      v-for="invite in listItem.grocery_list_invites.slice(0, 3)"
-                      :key="invite.user?.id"
-                      class="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-white dark:border-slate-800 text-[10px] font-bold"
-                      :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#1e293b' }"
-                    >
-                      {{ invite.user?.name?.charAt(0)?.toUpperCase() ?? '?' }}
-                    </span>
+                  <div class="flex items-center justify-between text-xs text-slate-200">
+                    <span>{{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }} {{ i18n.t('lists.items') }}</span>
+                    <div class="flex -space-x-2">
+                      <span
+                        v-for="invite in listItem.grocery_list_invites?.slice(0, 3) || []"
+                        :key="invite.user?.id"
+                        class="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-white/60 text-[10px] font-semibold"
+                        :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#0f172a' }"
+                      >
+                        {{ invite.user?.name?.charAt(0)?.toUpperCase() ?? '?' }}
+                      </span>
+                    </div>
                   </div>
-                  <span class="text-xs text-slate-400">{{ i18n.t('lists.sharedWith') }}</span>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- List Form -->
-        <div v-else class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <ListForm :list-id="editListId" @list-added="handleList" @close="() => { openListForm = false; editListId = undefined }"/>
-        </div>
-      </div>
+            <DataTable
+              :value="sortedLists"
+              dataKey="id"
+              responsiveLayout="stack"
+              breakpoint="960px"
+              rowHover
+              @row-click="handleRowNavigate"
+              class="lists-table hidden md:block"
+            >
+              <template #empty>
+                <div class="py-8 text-center text-sm text-slate-200">
+                  {{ i18n.t('lists.emptyState.message') }}
+                </div>
+              </template>
+
+              <Column :header="i18n.t('lists.name')">
+                <template #body="{ data }">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <Avatar
+                      :icon="auth?.user?.favorite_list_id === data.id ? 'pi pi-star-fill' : 'pi pi-list'"
+                      :class="auth?.user?.favorite_list_id === data.id ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-600'"
+                      shape="circle"
+                    />
+                    <div class="min-w-0">
+                      <p class="font-semibold text-white truncate">{{ data.name }}</p>
+                      <p class="text-xs text-slate-300">
+                        {{ i18n.t('lists.by') }} {{ data.created_by.name }}
+                      </p>
+                    </div>
+                  </div>
+                </template>
+              </Column>
+
+              <Column :header="i18n.t('list.progress')" headerClass="text-center" bodyClass="align-middle">
+                <template #body="{ data }">
+                  <div class="flex items-center gap-3">
+                    <ProgressBar class="flex-1" :value="calculateProgress(data)" :showValue="false" />
+                    <span class="text-sm font-medium">{{ calculateProgress(data) }}%</span>
+                  </div>
+                </template>
+              </Column>
+
+              <Column :header="i18n.t('lists.items')" headerClass="text-center" bodyClass="text-center">
+                <template #body="{ data }">
+                  <div class="flex items-center justify-center gap-2">
+                    <Tag severity="warning" :value="getRemainingCount(data)" />
+                    <span>/</span>
+                    <Tag severity="info" :value="data.grocery_list_items_count ?? 0" />
+                  </div>
+                </template>
+              </Column>
+
+              <Column :header="i18n.t('lists.sharedWith')" headerClass="text-center" bodyClass="text-center">
+                <template #body="{ data }">
+                  <div v-if="data.grocery_list_invites?.length" class="flex items-center justify-center gap-2">
+                    <AvatarGroup>
+                      <Avatar
+                        v-for="invite in data.grocery_list_invites.slice(0, 3)"
+                        :key="invite.user?.id"
+                        :label="invite.user?.name?.charAt(0)?.toUpperCase() ?? '?'"
+                        class="font-semibold"
+                        :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#0f172a' }"
+                        shape="circle"
+                        size="small"
+                      />
+                    </AvatarGroup>
+                    <Tag
+                      v-if="data.grocery_list_invites.length > 3"
+                      :value="`+${data.grocery_list_invites.length - 3}`"
+                      severity="secondary"
+                    />
+                  </div>
+                  <span v-else class="text-xs text-slate-300">—</span>
+                </template>
+              </Column>
+
+              <Column headerClass="text-right w-10" bodyClass="text-right">
+                <template #body="{ data }">
+                  <Button
+                    icon="pi pi-ellipsis-v"
+                    text
+                    rounded
+                    @click.stop="openActionMenu($event, data)"
+                  />
+                </template>
+              </Column>
+            </DataTable>
+          </div>
+        </template>
+      </Card>
     </div>
   </div>
+
+  <Menu ref="actionMenu" popup :model="actionMenuItems" class="lists-menu min-w-[14rem]" />
 
   <ShareListModal
     :is-visible="showShareModal"
@@ -582,3 +563,173 @@ function openListSettings(id: number) {
     @confirm="handleDeleteConfirm"
   />
 </template>
+
+<style scoped>
+.lists-shell {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.lists-hero {
+  padding: 2rem;
+  border-radius: 1.75rem;
+  background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #f8fafc;
+  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(30px);
+}
+
+:deep(.lists-card .p-card-body) {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.85));
+  border-radius: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(30px);
+}
+
+:deep(.lists-card .p-card-content) {
+  padding: 0;
+}
+
+.lists-stat-card {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  padding: 0.85rem 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.lists-mobile-card {
+  background: rgba(15, 23, 42, 0.65);
+  border-radius: 1.25rem;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 15px 40px rgba(2, 6, 23, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lists-mobile-card:active {
+  transform: scale(0.99);
+  box-shadow: 0 12px 24px rgba(2, 6, 23, 0.35);
+}
+
+.lists-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.85rem 1.75rem;
+  font-weight: 600;
+  background: linear-gradient(120deg, #fbbf24, #f97316);
+  color: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 15px 30px rgba(251, 191, 36, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.lists-cta.secondary {
+  background: transparent;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: none;
+}
+
+.lists-cta:active {
+  transform: translateY(2px);
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.25);
+}
+
+.lists-meta {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 0.75rem;
+}
+
+:deep(.lists-table .p-datatable-wrapper) {
+  border-radius: 1.75rem;
+  overflow: hidden;
+}
+
+:deep(.lists-table .p-datatable) {
+  border-radius: 1.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.82);
+  color: #f8fafc;
+  backdrop-filter: blur(30px);
+  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
+}
+
+:deep(.lists-table .p-datatable-header) {
+  padding: 0;
+  border: 0;
+}
+
+:deep(.lists-table .p-datatable-thead > tr > th) {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.85rem 1.25rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #cbd5f5;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+:deep(.lists-table .p-datatable-tbody > tr > td) {
+  padding: 1rem 1.25rem;
+  border: 0;
+  color: #f8fafc;
+}
+
+:deep(.lists-table .p-datatable-tbody > tr) {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  transition: background 0.2s ease, transform 0.2s ease;
+  background: transparent;
+}
+
+:deep(.lists-table .p-datatable-tbody > tr:last-child) {
+  border-bottom: 0;
+}
+
+:deep(.lists-table .p-datatable-tbody > tr.p-highlight) {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+:deep(.lists-table .p-datatable-tbody > tr:hover) {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+:deep(.lists-table .p-progressbar) {
+  height: 0.4rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+:deep(.lists-table .p-progressbar-value) {
+  border-radius: 999px;
+  background: linear-gradient(90deg, #34d399, #10b981);
+}
+
+:deep(.lists-menu.p-menu) {
+  border-radius: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+  padding: 0.5rem;
+}
+
+:deep(.lists-menu .p-menuitem-link) {
+  border-radius: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  gap: 0.65rem;
+}
+
+:deep(.lists-menu .p-menuitem-link:hover) {
+  background: rgba(59, 130, 246, 0.08);
+}
+
+@media (max-width: 768px) {
+  :deep(.lists-hero-card .p-card-body) {
+    padding: 1.5rem;
+  }
+}
+</style>

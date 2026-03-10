@@ -1,48 +1,129 @@
 <script setup lang="ts">
-import cardsComponent from "~/components/dashboard/cards.vue";
-import { useI18nStore } from '~/stores/i18n';
+import { ref } from 'vue'
+import cardsComponent from '~/components/dashboard/cards.vue'
+import CardUploadPanel from '~/components/cards/CardUploadPanel.vue'
+import { useI18nStore } from '~/stores/i18n'
 
 definePageMeta({
   middleware: ['auth', 'terms'],
-});
+})
 
-const i18n = useI18nStore();
+const i18n = useI18nStore()
+const showUploadPanel = ref(false)
+
+function openUploadPanel() {
+  showUploadPanel.value = true
+}
+
+function closeUploadPanel() {
+  showUploadPanel.value = false
+}
 </script>
 
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
-    <!-- Fixed Header -->
-    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm touch-none">
-      <div class="max-w-6xl mx-auto px-4 py-3">
-        <div class="flex items-center gap-3">
-          <!-- Title & Stats -->
-          <div class="flex-1 min-w-0">
-            <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white">
-              {{ i18n.t('cards.available') || 'Mijn Kaarten' }}
+  <div class="cards-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
+    <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
+      <div class="cards-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div class="space-y-2">
+            <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
+              {{ i18n.t('cards.available') || 'Kaarten' }}
+            </p>
+            <h1 class="text-3xl md:text-4xl font-bold">
+              {{ i18n.t('cards.manageYourCards') || 'Beheer je kortingskaarten' }}
             </h1>
-            <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-              <span>{{ i18n.t('cards.manageYourCards') || 'Beheer je kortingskaarten' }}</span>
-            </div>
+            <p class="text-sm text-slate-300">
+              {{ i18n.t('cards.subtitle') || 'Deel en verzamel klantenpassen met je team' }}
+            </p>
           </div>
-
-          <!-- Upload Button -->
-          <NuxtLink
-            to="/cards/upload"
-            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-blue-500 hover:bg-blue-600 text-white transition-all duration-200 active:scale-95"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-            </svg>
-          </NuxtLink>
+          <div class="flex gap-3">
+            <button type="button" class="cards-cta" @click="openUploadPanel">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              <span>{{ i18n.t('cards.uploadNew') || 'Nieuwe kaart' }}</span>
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+          <div class="cards-stat">
+            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+              {{ i18n.t('cards.total') || 'Totaal' }}
+            </p>
+            <p class="text-2xl font-semibold">12</p>
+          </div>
+          <div class="cards-stat">
+            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+              {{ i18n.t('cards.shared') || 'Gedeeld' }}
+            </p>
+            <p class="text-2xl font-semibold text-emerald-300">8</p>
+          </div>
+          <div class="cards-stat">
+            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+              {{ i18n.t('cards.pending') || 'In afwachting' }}
+            </p>
+            <p class="text-2xl font-semibold text-amber-300">2</p>
+          </div>
+          <div class="cards-stat">
+            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
+              {{ i18n.t('cards.lastUpdated') || 'Laatst geupdate' }}
+            </p>
+            <p class="text-2xl font-semibold">{{ i18n.t('cards.today') || 'Vandaag' }}</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto overflow-x-hidden">
-      <div class="max-w-6xl mx-auto px-4 pb-24 pt-4">
-        <cardsComponent/>
+      <div class="cards-panel rounded-3xl border border-white/10 shadow-2xl p-4 md:p-6">
+        <CardUploadPanel
+          v-if="showUploadPanel"
+          :visible="showUploadPanel"
+          inline
+          @close="closeUploadPanel"
+          @uploaded="closeUploadPanel"
+        />
+        <cardsComponent
+          v-else
+          @upload="openUploadPanel"
+        />
       </div>
     </div>
+
   </div>
 </template>
+
+<style scoped>
+.cards-shell {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.cards-hero {
+  background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.9));
+  backdrop-filter: blur(30px);
+}
+
+.cards-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #0f172a;
+  background: linear-gradient(90deg, #fbbf24, #f97316);
+  font-weight: 600;
+}
+
+.cards-stat {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #f8fafc;
+}
+
+.cards-panel {
+  background: rgba(15, 23, 42, 0.85);
+  color: #f8fafc;
+  box-shadow: 0 25px 50px rgba(2, 6, 23, 0.35);
+}
+</style>

@@ -68,37 +68,48 @@ async function onMonthChange(month: string) {
 </script>
 
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
-    <!-- Fixed Header -->
-    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 py-3">
+  <div class="stats-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
+    <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
+      <div class="stats-hero rounded-3xl border border-white/10 shadow-2xl p-6 text-white space-y-4">
         <div class="flex items-center gap-3">
-          <!-- Back Button -->
           <NuxtLink
             to="/profile"
-            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all duration-200 active:scale-95"
+            class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/10 text-white hover:bg-white/20 transition"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
           </NuxtLink>
-
-          <!-- Title & Stats -->
-          <div class="flex-1 min-w-0">
-            <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
               {{ i18n.t('profile.myStats') || 'Mijn Statistieken' }}
+            </p>
+            <h1 class="text-3xl font-bold">
+              {{ i18n.t('profile.myStatsDescription') || 'Bekijk je item activiteit' }}
             </h1>
-            <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-              <span>{{ i18n.t('profile.myStatsDescription') || 'Bekijk je item activiteit' }}</span>
-            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+          <div class="stats-chip">
+            <p>{{ i18n.t('profile.itemsActivity') || 'Items' }}</p>
+            <span>24</span>
+          </div>
+          <div class="stats-chip">
+            <p>{{ i18n.t('profile.topItems') || 'Top Items' }}</p>
+            <span>5</span>
+          </div>
+          <div class="stats-chip">
+            <p>{{ i18n.t('profile.language') || 'Maand' }}</p>
+            <span>{{ selectedMonth?.replace('-', '/') }}</span>
+          </div>
+          <div class="stats-chip">
+            <p>{{ i18n.t('common.status') || 'Status' }}</p>
+            <span>{{ loading ? '…' : 'Live' }}</span>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto overflow-x-hidden pb-24">
-      <div class="max-w-5xl mx-auto px-4 py-4 space-y-6">
+      <div class="space-y-6">
         <!-- Initial Loading State -->
         <div v-if="initialLoading" class="flex items-center justify-center py-20">
           <div class="text-center">
@@ -115,7 +126,7 @@ async function onMonthChange(month: string) {
         <!-- Content -->
         <template v-else>
           <!-- Month Selector (always visible) -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <div class="stats-card">
             <MonthSelector
               :selected-month="selectedMonth"
               :available-months="availableMonths"
@@ -124,7 +135,7 @@ async function onMonthChange(month: string) {
           </div>
 
           <!-- Error message for month change -->
-          <div v-if="error && data" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <div v-if="error && data" class="bg-red-500/10 border border-red-500/30 text-red-200 rounded-2xl p-4">
             <p class="text-red-600 dark:text-red-400 text-sm">{{ error }}</p>
           </div>
 
@@ -135,16 +146,16 @@ async function onMonthChange(month: string) {
 
           <template v-else-if="data">
             <!-- Items Activity Section -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-              <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+            <div class="stats-card">
+              <h2 class="section-title">
                 {{ i18n.t('profile.itemsActivity') || 'Item Activiteit' }}
               </h2>
               <ProfileItemsActivity :items="data.items" :invalid_login_attempts="data.invalid_login_attempts" />
             </div>
 
             <!-- Top Items Section -->
-            <div v-if="data.top_items" class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-              <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+            <div v-if="data.top_items" class="stats-card">
+              <h2 class="section-title">
                 {{ i18n.t('profile.topItems') || 'Top Items' }}
               </h2>
               <ProfileTopItems :top-items="data.top_items" />
@@ -155,3 +166,51 @@ async function onMonthChange(month: string) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.stats-shell {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.stats-hero {
+  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.35), rgba(15, 23, 42, 0.9));
+  backdrop-filter: blur(30px);
+}
+
+.stats-chip {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #f8fafc;
+}
+
+.stats-chip p {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #cbd5f5;
+  margin-bottom: 0.4rem;
+}
+
+.stats-chip span {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.stats-card {
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.35);
+  padding: 1.5rem;
+  color: #f8fafc;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #f8fafc;
+}
+</style>

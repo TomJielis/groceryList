@@ -1,177 +1,21 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import { useCards } from "~/composables/useCards";
-import {useRouter} from "vue-router";
-import { useI18nStore } from '~/stores/i18n';
-import {useNotification} from "~/composables/useNotification";
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import CardUploadPanel from '~/components/cards/CardUploadPanel.vue'
 
 definePageMeta({
   middleware: ['auth', 'terms'],
-});
-const {showNotification} = useNotification();
-const i18n = useI18nStore();
+})
 
-const formData = ref({
-  title: "",
-  attachment: null as File | null,
-});
+const router = useRouter()
+const visible = ref(true)
 
-const { storeCard , getCards} = useCards();
-const router = useRouter();
-
-function handleFileChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  if (target.files && target.files[0]) {
-    formData.value.attachment = target.files[0];
-  }
-}
-
-function handleSubmit() {
-  if (!formData.value.attachment) return;
-
-  const reader = new FileReader();
-  reader.onload = async () => {
-    const base64 = reader.result as string;
-
-    storeCard({
-      title: formData.value.title,
-      attachment: base64,
-    }).then(() => {
-      formData.value = {
-        title: "",
-        attachment: null,
-      };
-
-      getCards();
-      router.push('/cards/');
-    }).catch(() => {
-      showNotification(i18n.t('errors.cardStoreFailed'));
-    });
-
-
-  };
-  reader.readAsDataURL(formData.value.attachment);
+function closePanel() {
+  visible.value = false
+  router.push('/cards')
 }
 </script>
 
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
-    <!-- Fixed Header -->
-    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm touch-none">
-      <div class="max-w-6xl mx-auto px-4 py-3">
-        <div class="flex items-center gap-3">
-          <!-- Back Button -->
-          <button
-            @click="router.push('/cards/')"
-            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all duration-200 active:scale-95"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-          </button>
-
-          <!-- Title & Stats -->
-          <div class="flex-1 min-w-0">
-            <h1 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white">
-              {{ i18n.t('cards.upload') || 'Kaart uploaden' }}
-            </h1>
-            <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-              <span>{{ i18n.t('cards.uploadSubtitle') || 'Upload een foto of PDF' }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto overflow-x-hidden">
-      <div class="max-w-6xl mx-auto px-4 pb-24 pt-4">
-        <form @submit.prevent="handleSubmit" class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <!-- Form Content -->
-          <div class="p-6 space-y-6">
-            <!-- Title Input -->
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                {{ i18n.t('cards.title') || 'Kaart naam' }}
-              </label>
-              <input
-                v-model="formData.title"
-                type="text"
-                :placeholder="i18n.t('cards.titlePlaceholder') || 'Bijv. Albert Heijn Bonuskaart'"
-                required
-                class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
-              />
-            </div>
-
-            <!-- File Upload -->
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                {{ i18n.t('cards.attachment') || 'Bestand' }}
-              </label>
-              <div class="relative">
-                <input
-                  @change="handleFileChange"
-                  type="file"
-                  id="attachment"
-                  accept="image/*,application/pdf"
-                  required
-                  class="block w-full text-sm text-slate-500 dark:text-slate-400
-                    file:mr-4 file:py-3 file:px-4
-                    file:rounded-lg file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-gradient-to-r file:from-blue-600 file:to-indigo-600
-                    file:text-white
-                    hover:file:from-blue-700 hover:file:to-indigo-700
-                    file:cursor-pointer file:transition-all
-                    border-2 border-dashed border-slate-300 dark:border-slate-600
-                    rounded-xl p-4
-                    hover:border-blue-400 dark:hover:border-blue-500
-                    transition-all duration-200
-                    bg-slate-50 dark:bg-slate-900"
-                />
-              </div>
-              <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span>{{ i18n.t('cards.fileTypes') || 'Ondersteunt: JPG, PNG, PDF' }}</span>
-              </p>
-
-              <!-- Preview if file selected -->
-              <div v-if="formData.attachment" class="mt-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                <div class="flex items-center gap-2">
-                  <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                  <span class="text-sm font-medium text-green-700 dark:text-green-300">
-                    {{ formData.attachment.name }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Form Actions -->
-          <div class="bg-slate-50 dark:bg-slate-900/50 px-6 py-4 border-t border-slate-200 dark:border-slate-700">
-            <div class="flex gap-3">
-              <button
-                type="button"
-                @click="router.push('/cards/')"
-                class="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-95"
-              >
-                {{ i18n.t('common.cancel') }}
-              </button>
-              <button
-                type="submit"
-                :disabled="!formData.title || !formData.attachment"
-                class="flex-1 px-4 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-95"
-              >
-                {{ i18n.t('cards.uploadBtn') }}
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  <CardUploadPanel :visible="visible" @close="closePanel" @uploaded="closePanel" />
 </template>

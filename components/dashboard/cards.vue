@@ -5,11 +5,15 @@ import {useI18nStore} from '~/stores/i18n';
 import deleteModal from '~/components/deleteModal.vue';
 import {useNotification} from "~/composables/useNotification";
 
-const {showNotification} = useNotification();
-const i18n = useI18nStore();
-const {getCards, cards, deleteCard} = useCards();
-const selectedCard = ref(null);
-const isModalOpen = ref(false);
+const emit = defineEmits<{
+  (e: 'upload'): void
+}>()
+
+const {showNotification} = useNotification()
+const i18n = useI18nStore()
+const {getCards, cards, deleteCard} = useCards()
+const selectedCard = ref(null)
+const isModalOpen = ref(false)
 
 const showDeleteModal = ref(false);
 const deleteCardId = ref<number | null>(null);
@@ -82,15 +86,16 @@ function closeModal() {
       <p class="text-slate-600 dark:text-slate-400 text-center max-w-sm mb-8">
         {{ i18n.t('cards.emptyState.message') || 'Upload je eerste kortingskaart om deze overal bij de hand te hebben' }}
       </p>
-      <NuxtLink
-        to="/cards/upload"
+      <button
+        type="button"
         class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all duration-200 flex items-center gap-2"
+        @click="emit('upload')"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
         <span>{{ i18n.t('cards.uploadFirst') }}</span>
-      </NuxtLink>
+      </button>
     </div>
 
     <!-- Cards Grid -->
@@ -245,4 +250,3 @@ function closeModal() {
   transition: transform 0.3s ease;
 }
 </style>
-
