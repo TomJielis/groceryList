@@ -184,7 +184,7 @@
     "deleteTitle": "Kaart Verwijderen",
     "deleteCardName": "Kaart",
     "deleteBtn": "Verwijder kaart",
-    "addBtn": "Kaart toevoegen",
+    "uploadNew": "Kaart toevoegen",
     "noCards": "Je hebt nog geen kaart toegevoegd.",
     "emptyState": {
       "title": "Nog geen kaarten",

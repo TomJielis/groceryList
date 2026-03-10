@@ -184,7 +184,7 @@
     "deleteTitle": "Delete Card",
     "deleteCardName": "Card",
     "deleteBtn": "Delete card",
-    "addBtn": "Add card",
+    "uploadNew": "Add card",
     "noCards": "You have not added any cards yet.",
     "uploadSuccess": "Card uploaded",
     "emptyState": {
