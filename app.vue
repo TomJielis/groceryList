@@ -49,7 +49,7 @@ onMounted(() => {
       <NotificationBar/>
 
       <div
-          class="scrollable-content flex-1 overflow-y-auto md:pt-12 pb-16 md:pb-0 bg-transparent"
+          class="scrollable-content flex-1 overflow-y-auto pb-16 md:pb-0 bg-transparent"
       >
         <NuxtPage />
       </div>
@@ -73,5 +73,15 @@ body {
 #app {
   min-height: 100%;
   background-color: #0f172a;
+}
+
+.scrollable-content {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+@media (min-width: 768px) {
+  .scrollable-content {
+    padding-top: 3rem;
+  }
 }
 </style>

@@ -133,7 +133,7 @@ const filteredSuggestions = computed(() => {
 
 <template>
   <ClientOnly>
-    <div class="list-add-shell fixed inset-0 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-6 overflow-hidden">
+    <div class="list-add-shell fixed inset-0 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 pb-6 overflow-hidden">
       <div class="w-full max-w-5xl mx-auto h-full flex flex-col gap-4">
         <div class="list-add-hero shadow-2xl border border-white/10 rounded-3xl">
           <div class="flex flex-col gap-4">
@@ -273,7 +273,7 @@ const filteredSuggestions = computed(() => {
 
                     <!-- Product Info -->
                     <div class="flex-1 min-w-0">
-                      <h3 class="font-semibold text-white truncate text-sm">
+                      <h3 class="font-semibold text-white break-words text-sm">
                         {{ item.name }}
                       </h3>
                       <p class="text-xs text-slate-200">
@@ -362,7 +362,7 @@ const filteredSuggestions = computed(() => {
 
                     <!-- Product Info -->
                     <div class="flex-1 min-w-0">
-                      <h3 class="font-semibold text-white truncate text-sm">
+                      <h3 class="font-semibold text-white break-words text-sm">
                         {{ item.name }}
                       </h3>
                       <p v-if="item.unit_price" class="text-xs text-slate-300">
@@ -395,6 +395,7 @@ const filteredSuggestions = computed(() => {
 <style scoped>
 .list-add-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem);
 }
 
 .list-add-hero {
