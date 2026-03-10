@@ -295,71 +295,42 @@ function openListSettings(id: number) {
 <template>
   <div class="lists-shell px-4 py-6">
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
-      <div class="lists-hero space-y-5">
-        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          <div class="space-y-2 text-left max-w-2xl">
+      <div class="lists-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div class="space-y-2">
             <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
               {{ i18n.t('lists.sharedWith') }}
             </p>
-            <h1 class="text-3xl md:text-4xl font-bold text-white">
+            <h1 class="text-3xl md:text-4xl font-bold">
               {{ i18n.t('lists.title') }}
             </h1>
-            <p class="text-sm text-slate-300 max-w-xl">
+            <p class="text-sm text-slate-300">
               {{ i18n.t('lists.emptyState.message') }}
             </p>
           </div>
-          <div class="flex gap-3 flex-col sm:flex-row w-full md:w-auto md:justify-end md:flex-shrink-0">
+          <div class="flex gap-3">
             <button
               v-if="openListForm"
               type="button"
-              class="lists-cta secondary w-full sm:w-auto"
+              class="lists-cta secondary"
               @click="closeListForm"
             >
-              <span class="flex items-center gap-2 justify-center">
-                <i class="pi pi-times text-base"></i>
-                {{ i18n.t('common.cancel') }}
-              </span>
+              <i class="pi pi-times"></i>
+              <span>{{ i18n.t('common.cancel') }}</span>
             </button>
             <button
               v-else
               type="button"
-              class="lists-cta w-full sm:w-auto"
+              class="lists-cta"
               @click="() => { editListId = undefined; openListForm = true }"
             >
-              <span class="flex items-center gap-2 justify-center">
-                <i class="pi pi-plus text-base"></i>
-                {{ i18n.t('lists.newList') }}
-              </span>
+              <i class="pi pi-plus"></i>
+              <span>{{ i18n.t('lists.newList') }}</span>
             </button>
           </div>
         </div>
 
-        <div class="lists-stat-grid grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-          <div class="lists-stat-card">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('lists.listCount') }}
-            </p>
-            <p class="text-2xl font-semibold text-white">{{ sortedLists.length }}</p>
-            </div>
-            <div class="lists-stat-card">
-              <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-                {{ i18n.t('lists.remaining') }}
-              </p>
-              <p class="text-2xl font-semibold text-amber-300">{{ totalItemsRemaining }}</p>
-            </div>
-            <div class="lists-stat-card">
-              <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-                {{ i18n.t('lists.completed') }}
-              </p>
-              <p class="text-2xl font-semibold text-emerald-300">{{ totalItemsChecked }}</p>
-            </div>
-            <div class="lists-stat-card">
-              <p class="text-[11px] uppercase tracking-[0.3em] text-slate-300">
-                {{ i18n.t('lists.sharedWith') }}
-              </p>
-              <p class="text-2xl font-semibold text-sky-300">{{ sharedListsCount }}</p>
-            </div>
-          </div>
+
       </div>
 
       <Card v-if="openListForm" class="lists-card border border-slate-200/60 shadow-xl">
@@ -570,12 +541,7 @@ function openListSettings(id: number) {
 }
 
 .lists-hero {
-  padding: 2rem;
-  border-radius: 1.75rem;
   background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.9));
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  color: #f8fafc;
-  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
   backdrop-filter: blur(30px);
 }
 

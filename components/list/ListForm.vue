@@ -112,122 +112,104 @@ async function removeSharedUser(invite: any) {
 }
 </script>
 <template>
-  <div class="flex flex-col h-full max-h-[80vh]">
+  <div class="flex flex-col">
     <!-- Header -->
-    <div class="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4">
-      <div class="flex items-center gap-4">
-        <!-- Close Button -->
-        <button
-          @click="emit('close')"
-          class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors active:scale-95"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-        </button>
-
-        <!-- Title -->
-        <div class="flex-1 min-w-0">
-          <h1 class="text-xl font-bold text-slate-900 dark:text-white truncate">
-            {{ props.listId ? i18n.t('lists.editList') : i18n.t('lists.newList') }}
-          </h1>
-          <p v-if="props.listId" class="text-sm text-slate-500 dark:text-slate-400 truncate">
-            {{ i18n.t('lists.editDescription') }}
-          </p>
-        </div>
+    <div class="flex items-center gap-4 mb-6">
+      <div class="flex-1 min-w-0">
+        <h1 class="text-xl font-bold text-white truncate">
+          {{ props.listId ? i18n.t('lists.editList') : i18n.t('lists.newList') }}
+        </h1>
+        <p v-if="props.listId" class="text-sm text-slate-300 truncate">
+          {{ i18n.t('lists.editDescription') }}
+        </p>
       </div>
     </div>
 
-    <!-- Content -->
-    <div class="flex-1 overflow-y-auto px-6 py-6 bg-slate-50 dark:bg-slate-900">
-      <!-- List Name Input -->
-      <div class="mb-6">
-        <label class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 block px-1">
-          {{ i18n.t('lists.form.name') }}
-        </label>
-        <input
-          v-model="newList"
-          type="text"
-          :placeholder="i18n.t('lists.form.placeholder')"
-          class="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
-          @keyup.enter="props.listId ? updateListName() : addList()"
-        />
+    <!-- List Name Input -->
+    <div class="mb-6">
+      <label class="text-xs font-semibold text-slate-300 uppercase tracking-[0.2em] mb-2 block">
+        {{ i18n.t('lists.form.name') }}
+      </label>
+      <input
+        v-model="newList"
+        type="text"
+        :placeholder="i18n.t('lists.form.placeholder')"
+        class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-amber-300/60 focus:border-transparent transition text-base font-medium text-white placeholder:text-slate-400"
+        @keyup.enter="props.listId ? updateListName() : addList()"
+      />
+    </div>
+
+    <!-- Shared Users Section -->
+    <div v-if="props.listId && sharedInvites.length > 0" class="mb-6">
+      <h3 class="text-xs font-semibold text-slate-300 uppercase tracking-[0.2em] mb-3">
+        {{ i18n.t('lists.sharedWith') }} ({{ sharedInvites.length }})
+      </h3>
+
+      <div v-if="sharedUsersLoading" class="flex items-center justify-center py-8">
+        <div class="animate-spin rounded-full h-8 w-8 border-2 border-amber-300 border-t-transparent"></div>
       </div>
 
-      <!-- Shared Users Section -->
-      <div v-if="props.listId && sharedInvites.length > 0">
-        <h3 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-1">
-          {{ i18n.t('lists.sharedWith') }} ({{ sharedInvites.length }})
-        </h3>
-
-        <div v-if="sharedUsersLoading" class="flex items-center justify-center py-8">
-          <div class="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent"></div>
-        </div>
-
-        <div v-else class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
-          <div
-            v-for="(invite, index) in sharedInvites"
-            :key="invite.id"
-            class="flex items-center justify-between px-4 py-3"
-            :class="{ 'border-b border-slate-100 dark:border-slate-700/50': index < sharedInvites.length - 1 }"
-          >
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">
-                {{ (invite.user?.name || invite.user?.email || '?').charAt(0).toUpperCase() }}
-              </div>
-              <div>
-                <p class="font-medium text-slate-900 dark:text-white">{{ invite.user?.name || invite.user?.email }}</p>
-                <p v-if="invite.user?.name" class="text-xs text-slate-500 dark:text-slate-400">{{ invite.user?.email }}</p>
-              </div>
+      <div v-else class="bg-white/5 rounded-2xl border border-white/10">
+        <div
+          v-for="(invite, index) in sharedInvites"
+          :key="invite.id"
+          class="flex items-center justify-between px-4 py-3"
+          :class="{ 'border-b border-white/10': index < sharedInvites.length - 1 }"
+        >
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-400/20 flex items-center justify-center text-sky-300 font-bold">
+              {{ (invite.user?.name || invite.user?.email || '?').charAt(0).toUpperCase() }}
             </div>
-            <button
-              v-if="invite.user?.id !== auth.user.id"
-              @click="removeSharedUser(invite)"
-              class="w-8 h-8 flex items-center justify-center hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors text-red-500"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-              </svg>
-            </button>
+            <div>
+              <p class="font-medium text-white">{{ invite.user?.name || invite.user?.email }}</p>
+              <p v-if="invite.user?.name" class="text-xs text-slate-400">{{ invite.user?.email }}</p>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Empty state for shared users -->
-      <div v-else-if="props.listId">
-        <h3 class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 px-1">
-          {{ i18n.t('lists.sharedWith') }}
-        </h3>
-        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 text-center">
-          <div class="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-xl flex items-center justify-center mx-auto mb-3">
-            <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+          <button
+            v-if="invite.user?.id !== auth.user.id"
+            @click="removeSharedUser(invite)"
+            class="w-8 h-8 flex items-center justify-center hover:bg-rose-400/20 rounded-lg transition-colors text-rose-400"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
             </svg>
-          </div>
-          <p class="text-sm text-slate-500 dark:text-slate-400">
-            {{ i18n.t('lists.noSharedUsers') }}
-          </p>
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Footer with Action Buttons -->
-    <div class="flex-shrink-0 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 px-6 py-4">
-      <div class="flex gap-3">
-        <button
-          @click="emit('close')"
-          class="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-95"
-        >
-          {{ i18n.t('common.cancel') }}
-        </button>
-        <button
-          @click="props.listId ? updateListName() : addList()"
-          :disabled="!newList.trim()"
-          class="flex-1 px-4 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-95"
-        >
-          {{ props.listId ? i18n.t('lists.form.updateBtn') : i18n.t('lists.form.createBtn') }}
-        </button>
+    <!-- Empty state for shared users -->
+    <div v-else-if="props.listId" class="mb-6">
+      <h3 class="text-xs font-semibold text-slate-300 uppercase tracking-[0.2em] mb-2">
+        {{ i18n.t('lists.sharedWith') }}
+      </h3>
+      <div class="p-6 bg-white/5 rounded-2xl border border-white/10 text-center">
+        <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+          <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+        </div>
+        <p class="text-sm text-slate-400">
+          {{ i18n.t('lists.noSharedUsers') }}
+        </p>
       </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex gap-3">
+      <button
+        @click="emit('close')"
+        class="flex-1 px-4 py-3 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold rounded-2xl transition-colors active:scale-95"
+      >
+        {{ i18n.t('common.cancel') }}
+      </button>
+      <button
+        @click="props.listId ? updateListName() : addList()"
+        :disabled="!newList.trim()"
+        class="flex-1 px-4 py-3 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed text-slate-900 disabled:text-slate-400 font-semibold rounded-2xl transition-all active:scale-95 shadow-lg shadow-amber-500/25"
+      >
+        {{ props.listId ? i18n.t('lists.form.updateBtn') : i18n.t('lists.form.createBtn') }}
+      </button>
     </div>
   </div>
 

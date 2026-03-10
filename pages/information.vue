@@ -99,27 +99,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="info-shell">
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto overflow-x-hidden w-full px-4 py-10">
+  <div class="info-shell px-4 py-6">
+    <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
       <!-- Hero Header -->
-      <header class="info-hero max-w-5xl mx-auto mb-10">
-        <div class="text-center py-12 md:py-16">
-          <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-6">
+      <div class="info-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-4">
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-4">
             <span class="text-2xl">🛒</span>
             <span class="text-sm font-semibold text-blue-300">{{ t('info.badge') }}</span>
           </div>
-          <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-6">
+          <h1 class="text-3xl md:text-4xl font-bold mb-4">
             {{ t('info.title') }}
           </h1>
-          <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          <p class="text-sm md:text-base text-slate-300 max-w-2xl mx-auto">
             {{ t('info.subtitle') }}
           </p>
         </div>
-      </header>
+      </div>
 
-    <!-- Features Section -->
-    <section class="max-w-5xl mx-auto py-16">
+      <!-- Features Section -->
+      <section class="py-10">
       <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ t('info.featuresTitle') }}</h2>
         <p class="text-slate-300 max-w-2xl mx-auto">{{ t('info.featuresSubtitle') }}</p>
@@ -143,8 +142,8 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- Screenshots Section -->
-    <section class="max-w-6xl mx-auto py-16">
+      <!-- Screenshots Section -->
+      <section class="py-10">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ t('info.screensTitle') }}</h2>
         <p class="text-slate-300 max-w-2xl mx-auto">{{ t('info.screensIntro') }}</p>
@@ -180,8 +179,8 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- Mobile Screenshots Section -->
-    <section class="max-w-6xl mx-auto py-16">
+      <!-- Mobile Screenshots Section -->
+      <section class="py-10">
       <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ t('info.screenMobileTitle') }}</h2>
         <p class="text-slate-300 max-w-2xl mx-auto">{{ t('info.screenMobileText') }}</p>
@@ -205,8 +204,8 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- Cross-Platform Section -->
-    <section class="max-w-5xl mx-auto py-16">
+      <!-- Cross-Platform Section -->
+      <section class="py-10">
       <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ t('info.crossPlatformTitle') }}</h2>
         <p class="text-slate-300 max-w-2xl mx-auto">{{ t('info.crossPlatformIntro') }}</p>
@@ -271,10 +270,9 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="max-w-5xl mx-auto pb-24" v-if="!auth.user">
-      <div class="info-hero overflow-hidden">
-        <div class="p-12 text-center">
+      <!-- CTA Section -->
+      <section v-if="!auth.user" class="info-hero overflow-hidden">
+        <div class="p-8 md:p-12 text-center">
           <div class="mb-6">
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 mb-4">
               <span class="text-4xl">🚀</span>
@@ -293,8 +291,7 @@ onMounted(() => {
             {{ t('info.ctaButton') }}
           </NuxtLink>
         </div>
-      </div>
-    </section>
+      </section>
     </div>
   </div>
 </template>
@@ -303,16 +300,10 @@ onMounted(() => {
 .info-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: transparent;
-  padding: 1.5rem 1rem;
 }
 
 .info-hero {
-  padding: 2rem;
-  border-radius: 1.75rem;
   background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.9));
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  color: #f8fafc;
-  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
   backdrop-filter: blur(30px);
 }
 
