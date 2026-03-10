@@ -13,6 +13,7 @@ const i18n = useI18nStore()
 const { getUserDetail, blockUser } = useAdminApi()
 
 const loading = ref(true)
+const loadingActivity = ref(false)
 const error = ref<string | null>(null)
 const data = ref<any>(null)
 const blocking = ref(false)
@@ -41,8 +42,12 @@ onMounted(async () => {
   await loadUserData()
 })
 
-const loadUserData = async (month?: string) => {
-  loading.value = true
+const loadUserData = async (month?: string, isMonthChange = false) => {
+  if (isMonthChange) {
+    loadingActivity.value = true
+  } else {
+    loading.value = true
+  }
   error.value = null
   try {
     data.value = await getUserDetail(userId.value, month || selectedMonth.value)
@@ -57,12 +62,13 @@ const loadUserData = async (month?: string) => {
     error.value = e.message || i18n.t('errors.failedToLoadUserDetails')
   } finally {
     loading.value = false
+    loadingActivity.value = false
   }
 }
 
 const onMonthChange = (month: string) => {
   selectedMonth.value = month
-  loadUserData(month)
+  loadUserData(month, true)
 }
 
 const formatDate = (date: string | null, includeTime = false) => {
@@ -257,7 +263,10 @@ const toggleBlockUser = async () => {
           <h2 class="text-xl font-semibold">
             {{ i18n.t('admin.itemsActivity') }}
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div v-if="loadingActivity" class="flex items-center justify-center py-8">
+            <div class="animate-spin rounded-full h-8 w-8 border-2 border-white/30 border-t-transparent"></div>
+          </div>
+          <div v-else class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <AdminStatsCard
               :title="i18n.t('admin.itemsAddedMonth')"
               :value="data.items?.current_month?.added ?? 0"
@@ -295,7 +304,10 @@ const toggleBlockUser = async () => {
           <h2 class="text-xl font-semibold">
             {{ i18n.t('admin.userTopItems') }}
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div v-if="loadingActivity" class="flex items-center justify-center py-8">
+            <div class="animate-spin rounded-full h-8 w-8 border-2 border-white/30 border-t-transparent"></div>
+          </div>
+          <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 class="text-sm font-semibold text-slate-300 mb-3">
                 {{ i18n.t('admin.mostAdded') }}
