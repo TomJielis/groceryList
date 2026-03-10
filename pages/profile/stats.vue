@@ -68,7 +68,7 @@ async function onMonthChange(month: string) {
 </script>
 
 <template>
-  <div class="stats-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
+  <div class="stats-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
       <div class="stats-hero rounded-3xl border border-white/10 shadow-2xl p-6 text-white space-y-4">
         <div class="flex items-center gap-3">
@@ -170,6 +170,7 @@ async function onMonthChange(month: string) {
 <style scoped>
 .stats-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: transparent;
 }
 
 .stats-hero {

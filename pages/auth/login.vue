@@ -65,7 +65,7 @@ function toggleLanguage() {
 
 <template>
   <div class="auth-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
-    <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center md:grid-cols-2">
+    <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center">
       <Card class="auth-card border border-white/10 shadow-2xl">
         <template #content>
           <div class="text-center text-white space-y-2 mb-6">

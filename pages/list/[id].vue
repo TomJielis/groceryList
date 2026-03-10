@@ -131,7 +131,7 @@ async function handleCheckItem(item: any) {
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>
-  <div class="list-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-8">
+  <div class="list-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
       <div class="list-hero-card shadow-2xl border border-white/10 rounded-3xl">
         <div class="flex flex-col gap-6">
@@ -387,6 +387,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 <style scoped>
 .list-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: transparent;
 }
 
 .list-hero-card {

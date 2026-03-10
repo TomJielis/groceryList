@@ -65,7 +65,7 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 
 <template>
   <div class="auth-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
-    <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center md:grid-cols-2">
+    <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center">
       <Card class="auth-card border border-white/10 shadow-2xl">
         <template #content>
           <div class="text-center text-white space-y-2 mb-6">
@@ -154,25 +154,27 @@ function handleLanguageChange(locale: 'nl' | 'en') {
         </div>
         <div
             v-else
-            class="text-center py-6 text-white space-y-4"
+            class="text-center py-6 text-white"
         >
-          <div class="text-4xl mb-3">
+          <div class="text-4xl mb-4">
             📧
           </div>
           <h3 class="text-xl font-semibold mb-2">
             {{ i18n.t('auth.verifyMailMessageTitle') }}
           </h3>
-          <p class="text-sm text-slate-200 mb-6">
+          <p class="text-sm text-slate-200 mb-8">
             {{ i18n.t('auth.verifyMailMessageBody') }}
           </p>
-          <NuxtLink to="/auth/login">
-            <Button
-                severity="secondary"
-                outlined
-                class="auth-btn alt"
-                :label="i18n.t('auth.backToLogin')"
-            />
-          </NuxtLink>
+          <div class="pt-4 border-t border-white/10">
+            <NuxtLink to="/auth/login">
+              <Button
+                  severity="secondary"
+                  outlined
+                  class="auth-btn alt"
+                  :label="i18n.t('auth.backToLogin')"
+              />
+            </NuxtLink>
+          </div>
         </div>
         <div
             v-if="!verifyMailMessage"

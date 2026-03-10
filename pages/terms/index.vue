@@ -6,21 +6,45 @@ const i18n = useI18nStore();
 </script>
 
 <style scoped>
+.terms-shell {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.terms-hero {
+  padding: 2rem;
+  border-radius: 1.75rem;
+  background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #f8fafc;
+  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(30px);
+}
+
+.terms-card {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.85));
+  border-radius: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(30px);
+}
+
 section p,
 section ul {
-  @apply text-slate-700 dark:text-slate-300;
+  @apply text-slate-300;
 }
 
 section h2 {
-  @apply text-xl font-bold text-slate-900 dark:text-white mb-3;
+  @apply text-xl font-bold text-white mb-3;
 }
 
 section h3 {
-  @apply text-lg font-semibold text-slate-800 dark:text-slate-200 mt-4 mb-2;
+  @apply text-lg font-semibold text-slate-200 mt-4 mb-2;
 }
 
 section h4 {
-  @apply text-base font-semibold text-slate-800 dark:text-slate-200 mt-3 mb-2;
+  @apply text-base font-semibold text-slate-200 mt-3 mb-2;
 }
 
 section ul {
@@ -28,26 +52,30 @@ section ul {
 }
 
 section ul li {
-  @apply text-slate-700 dark:text-slate-300;
+  @apply text-slate-300;
+}
+
+hr {
+  @apply border-slate-700/50;
 }
 </style>
 
 <template>
-  <div class="fixed inset-0 flex items-start justify-center bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 px-4 pt-4 pb-24 md:pt-20 md:pb-8 overflow-y-auto">
-    <div class="w-full max-w-3xl my-4 md:my-8">
-      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-        <!-- Header -->
-        <div class="px-6 py-8 text-center border-b border-slate-200 dark:border-slate-700">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-900/20 mb-4">
-            <span class="text-4xl">📄</span>
-          </div>
-          <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">Terms of Use & Privacy Policy</h1>
-          <p class="text-slate-500 dark:text-slate-400 text-sm">Laatste versie: 1.2 | Laatst bijgewerkt: 10-11-2025</p>
+  <div class="terms-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10 overflow-y-auto">
+    <div class="w-full max-w-3xl mx-auto flex flex-col gap-6">
+      <!-- Header -->
+      <div class="terms-hero text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 mb-4">
+          <span class="text-4xl">📄</span>
         </div>
+        <h1 class="text-2xl md:text-3xl font-bold text-white mb-1">Terms of Use & Privacy Policy</h1>
+        <p class="text-slate-300 text-sm">Laatste versie: 1.2 | Laatst bijgewerkt: 10-11-2025</p>
+      </div>
 
-        <!-- Content -->
-        <div class="p-6 md:p-8 flex flex-col gap-6">
-          <hr class="border-slate-200 dark:border-slate-700" />
+      <!-- Content -->
+      <div class="terms-card">
+        <div class="flex flex-col gap-6">
+          <hr />
       <section>
         <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">1. Over deze applicatie</h2>
         <p class="text-slate-700 dark:text-slate-300">Deze applicatie ("Grocery List") is een persoonlijke webapplicatie waarmee gebruikers boodschappenlijsten kunnen aanmaken, bekijken, delen, bewerken en verwijderen. De applicatie is ontwikkeld voor persoonlijk gebruik en heeft als doel het beheren van boodschappen overzichtelijker te maken.</p>

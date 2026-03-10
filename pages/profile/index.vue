@@ -87,7 +87,7 @@ function handleLogout() {
 </script>
 
 <template>
-  <div class="profile-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
+  <div class="profile-shell px-4 py-6">
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
       <div class="profile-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-5">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -210,6 +210,7 @@ function handleLogout() {
 <style scoped>
 .profile-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: transparent;
 }
 
 .profile-hero {

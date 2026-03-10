@@ -293,7 +293,7 @@ function openListSettings(id: number) {
 
 
 <template>
-  <div class="lists-shell min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 px-4 py-10">
+  <div class="lists-shell px-4 py-6">
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
       <div class="lists-hero space-y-5">
         <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
@@ -564,6 +564,7 @@ function openListSettings(id: number) {
 <style scoped>
 .lists-shell {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: transparent;
 }
 
 .lists-hero {
