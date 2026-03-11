@@ -70,42 +70,23 @@ async function onMonthChange(month: string) {
 <template>
   <div class="stats-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
-      <div class="stats-hero rounded-3xl border border-white/10 shadow-2xl p-6 text-white space-y-4">
-        <div class="flex items-center gap-3">
-          <NuxtLink
-            to="/profile"
-            class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/10 text-white hover:bg-white/20 transition"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-          </NuxtLink>
-          <div>
-            <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
-              {{ i18n.t('profile.myStats') }}
-            </p>
-            <h1 class="text-3xl font-bold">
-              {{ i18n.t('profile.myStatsDescription') }}
-            </h1>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-          <div class="stats-chip">
-            <p>{{ i18n.t('profile.itemsActivity') }}</p>
-            <span>24</span>
-          </div>
-          <div class="stats-chip">
-            <p>{{ i18n.t('profile.topItems') }}</p>
-            <span>5</span>
-          </div>
-          <div class="stats-chip">
-            <p>{{ i18n.t('profile.language') }}</p>
-            <span>{{ selectedMonth?.replace('-', '/') }}</span>
-          </div>
-          <div class="stats-chip">
-            <p>{{ i18n.t('common.status') }}</p>
-            <span>{{ loading ? '…' : 'Live' }}</span>
-          </div>
+      <!-- Header -->
+      <div class="py-4 border-b border-[#27272a] flex items-center gap-3">
+        <NuxtLink
+          to="/profile"
+          class="w-8 h-8 flex items-center justify-center text-[#71717a] hover:text-[#a1a1aa] transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </NuxtLink>
+        <div>
+          <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">
+            {{ i18n.t('profile.myStats') }}
+          </p>
+          <h1 class="text-[1.1rem] font-medium text-[#fafafa]">
+            {{ i18n.t('profile.myStatsDescription') }}
+          </h1>
         </div>
       </div>
 
@@ -113,20 +94,20 @@ async function onMonthChange(month: string) {
         <!-- Initial Loading State -->
         <div v-if="initialLoading" class="flex items-center justify-center py-20">
           <div class="text-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
+            <div class="animate-spin rounded h-10 w-10 border-b-2 border-[#52525b] mx-auto"></div>
+            <p class="mt-4 text-[#71717a] text-sm">{{ i18n.t('common.loading') }}</p>
           </div>
         </div>
 
         <!-- Error State (only for initial load) -->
         <div v-else-if="error && !data" class="text-center py-20">
-          <p class="text-red-600 dark:text-red-400">{{ error }}</p>
+          <p class="text-red-400 text-sm">{{ error }}</p>
         </div>
 
         <!-- Content -->
         <template v-else>
           <!-- Month Selector (always visible) -->
-          <div class="stats-card">
+          <div class="w-full">
             <MonthSelector
               :selected-month="selectedMonth"
               :available-months="availableMonths"
@@ -135,27 +116,33 @@ async function onMonthChange(month: string) {
           </div>
 
           <!-- Error message for month change -->
-          <div v-if="error && data" class="bg-red-500/10 border border-red-500/30 text-red-200 rounded-2xl p-4">
-            <p class="text-red-600 dark:text-red-400 text-sm">{{ error }}</p>
+          <div v-if="error && data" class="border border-red-800 bg-red-900/40 rounded p-4">
+            <p class="text-red-400 text-sm">{{ error }}</p>
           </div>
 
           <!-- Loading indicator for month change -->
           <div v-if="loading" class="flex items-center justify-center py-10">
-            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div class="animate-spin rounded h-8 w-8 border-b-2 border-[#52525b]"></div>
           </div>
 
           <template v-else-if="data">
             <!-- Items Activity Section -->
-            <div class="stats-card">
-              <h2 class="section-title">
+            <div class="border-t border-[#27272a] pt-5">
+              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
+                {{ i18n.t('profile.itemsActivity') }}
+              </p>
+              <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">
                 {{ i18n.t('profile.itemsActivity') }}
               </h2>
               <ProfileItemsActivity :items="data.items" :invalid_login_attempts="data.invalid_login_attempts" />
             </div>
 
             <!-- Top Items Section -->
-            <div v-if="data.top_items" class="stats-card">
-              <h2 class="section-title">
+            <div v-if="data.top_items" class="border-t border-[#27272a] pt-5">
+              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
+                {{ i18n.t('profile.topItems') }}
+              </p>
+              <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">
                 {{ i18n.t('profile.topItems') }}
               </h2>
               <ProfileTopItems :top-items="data.top_items" />
@@ -169,49 +156,7 @@ async function onMonthChange(month: string) {
 
 <style scoped>
 .stats-shell {
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'DM Sans', system-ui, sans-serif;
   background: transparent;
-}
-
-.stats-hero {
-  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.35), rgba(15, 23, 42, 0.9));
-  backdrop-filter: blur(30px);
-}
-
-.stats-chip {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 1rem;
-  padding: 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  color: #f8fafc;
-}
-
-.stats-chip p {
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #cbd5f5;
-  margin-bottom: 0.4rem;
-}
-
-.stats-chip span {
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
-.stats-card {
-  background: rgba(15, 23, 42, 0.85);
-  border-radius: 1.5rem;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.35);
-  padding: 1.5rem;
-  color: #f8fafc;
-}
-
-.section-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #f8fafc;
 }
 </style>

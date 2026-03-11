@@ -43,20 +43,20 @@ const approveTerms = async () => {
 
 <template>
   <div class="terms-shell px-4 py-6 flex items-start justify-center">
-    <div class="auth-grid w-full max-w-5xl mx-auto grid gap-6 items-center">
-      <Card class="terms-card border border-white/10 shadow-2xl">
+    <div class="w-full max-w-md mx-auto">
+      <Card class="terms-card">
         <template #content>
-          <div class="text-center text-white space-y-2 mb-6">
-            <div class="text-4xl">📋</div>
-            <h2 class="text-2xl font-semibold">
+          <div class="pb-4 border-b border-[#27272a] mb-6">
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">Grocery List</p>
+            <h2 class="text-lg font-semibold text-[#fafafa]">
               {{ i18n.t('termsApproval.title') }}
             </h2>
-            <p class="text-sm text-slate-300">
+            <p class="text-sm text-[#71717a] mt-1">
               {{ i18n.t('termsApproval.body') }}
             </p>
           </div>
 
-          <form @submit.prevent="approveTerms" class="space-y-6">
+          <form @submit.prevent="approveTerms" class="space-y-4">
             <div class="flex items-start gap-3 terms-checkbox-wrapper">
               <Checkbox
                 v-model="acceptedTerms"
@@ -66,7 +66,7 @@ const approveTerms = async () => {
               />
               <label
                 for="terms"
-                class="text-sm text-slate-200 accept-terms-link cursor-pointer"
+                class="text-sm text-[#a1a1aa] accept-terms-link cursor-pointer"
                 v-html="i18n.t('register.acceptTerms')"
               />
             </div>
@@ -87,15 +87,16 @@ const approveTerms = async () => {
 
 <style scoped>
 .terms-shell {
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'DM Sans', system-ui, sans-serif;
   background: transparent;
 }
 
 :deep(.terms-card .p-card-body) {
-  background: rgba(15, 23, 42, 0.85);
-  border-radius: 1.75rem;
-  padding: 2rem;
-  color: #f8fafc;
+  background: #1e1e21;
+  border: 1px solid #27272a;
+  border-radius: 0.25rem;
+  padding: 1.5rem;
+  color: #fafafa;
 }
 
 :deep(.terms-card .p-card-content) {
@@ -103,52 +104,61 @@ const approveTerms = async () => {
 }
 
 .terms-checkbox-wrapper {
-  padding: 1rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(15, 23, 42, 0.5);
-  transition: all 0.2s ease;
+  padding: 0.875rem;
+  border-radius: 0.25rem;
+  border: 1px solid #27272a;
+  background: transparent;
+  transition: border-color 0.15s ease;
 }
 
 .terms-checkbox-wrapper:has(.p-checkbox-checked) {
-  border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.1);
+  border-color: #3f3f46;
 }
 
 :deep(.terms-checkbox .p-checkbox-box) {
-  border-radius: 0.5rem;
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(15, 23, 42, 0.8);
+  border-radius: 0.25rem;
+  border-color: #3f3f46;
+  background: #18181b;
 }
 
 :deep(.terms-checkbox .p-checkbox-box.p-highlight) {
-  background: linear-gradient(90deg, #34d399, #10b981);
-  border-color: #34d399;
+  background: #fafafa;
+  border-color: #fafafa;
+}
+
+:deep(.terms-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon) {
+  color: #18181b;
 }
 
 .terms-btn :deep(.p-button) {
-  border-radius: 999px;
-  background: linear-gradient(90deg, #fbbf24, #f97316);
-  color: #0f172a;
+  border-radius: 0.25rem;
+  background: #fafafa;
+  color: #18181b;
   border: none;
-  font-weight: 600;
+  font-weight: 500;
   width: 100%;
+  transition: background-color 0.15s ease;
+}
+
+.terms-btn :deep(.p-button:hover:not(:disabled)) {
+  background: #d4d4d8;
 }
 
 .terms-btn :deep(.p-button:disabled) {
-  background: rgba(100, 116, 139, 0.5);
-  color: rgba(248, 250, 252, 0.5);
+  background: #27272a;
+  color: #52525b;
+  opacity: 1;
 }
 
 :deep(.accept-terms-link) a {
-  color: #60a5fa;
+  color: #a1a1aa;
   text-decoration: underline;
   text-underline-offset: 2px;
-  transition: color 0.2s;
-  font-weight: 600;
+  transition: color 0.15s;
+  font-weight: 500;
 }
 
 :deep(.accept-terms-link) a:hover {
-  color: #93c5fd;
+  color: #fafafa;
 }
 </style>

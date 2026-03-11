@@ -38,11 +38,11 @@ const i18n = useI18nStore();
       :previous-value="props?.invalid_login_attempts?.previous_month ?? 0"
       :showPercentage="true"
     />
-    <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-6">
-      <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">
+    <div class="border border-[#27272a] bg-[#1e1e21] rounded p-4">
+      <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
         {{ i18n.t('profile.previousMonth') }} ({{ items?.previous_month?.period }})
-      </h3>
-      <p class="mt-2 text-lg text-slate-700 dark:text-slate-300">
+      </p>
+      <p class="text-base text-[#a1a1aa]">
         {{ items?.previous_month?.added ?? 0 }} {{ i18n.t('profile.added') }},
         {{ items?.previous_month?.checked ?? 0 }} {{ i18n.t('profile.checked') }}
       </p>

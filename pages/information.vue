@@ -1,94 +1,33 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
 import { computed, onMounted } from 'vue';
+import { useAuthStore } from "~/stores/auth";
 
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
-import {useAuthStore} from "~/stores/auth";
 const auth = useAuthStore()
 
 const features = [
-  {
-    icon: '📝',
-    title: 'info.feature1Title',
-    text: 'info.feature1Text',
-  },
-  {
-    icon: '👨‍👩‍👧‍👦',
-    title: 'info.feature2Title',
-    text: 'info.feature2Text',
-  },
-  {
-    icon: '💳',
-    title: 'info.feature3Title',
-    text: 'info.feature3Text',
-  },
-  {
-    icon: '💡',
-    title: 'info.feature4Title',
-    text: 'info.feature4Text',
-  },
-  {
-    icon: '🔒',
-    title: 'info.feature5Title',
-    text: 'info.feature5Text',
-  },
+  { icon: '📝', title: 'info.feature1Title', text: 'info.feature1Text' },
+  { icon: '👨‍👩‍👧‍👦', title: 'info.feature2Title', text: 'info.feature2Text' },
+  { icon: '💳', title: 'info.feature3Title', text: 'info.feature3Text' },
+  { icon: '💡', title: 'info.feature4Title', text: 'info.feature4Text' },
+  { icon: '🔒', title: 'info.feature5Title', text: 'info.feature5Text' },
 ];
 
-
 const screenshotBlocks = [
-  {
-    img: '/info-screenshots/list-page.png',
-    alt: 'Overzicht van alle lijsten',
-    titleKey: 'info.screenListPageTitle',
-    textKey: 'info.screenListPageText'
-  },
-  {
-    img: '/info-screenshots/grocerylist-items-open.png',
-    alt: 'Open lijst met items',
-    titleKey: 'info.screenItemsOpenTitle',
-    textKey: 'info.screenItemsOpenText'
-  },
-  {
-    img: '/info-screenshots/grocerylist-items-open-and-checked.png',
-    alt: 'Lijst met afgevinkte en open items',
-    titleKey: 'info.screenItemsCheckedTitle',
-    textKey: 'info.screenItemsCheckedText'
-  },
-  {
-    img: '/info-screenshots/add-items-to-groceryList.png',
-    alt: 'Items toevoegen aan een lijst',
-    titleKey: 'info.screenAddItemsTitle',
-    textKey: 'info.screenAddItemsText'
-  }
+  { img: '/info-screenshots/list-page.png', alt: 'Overzicht van alle lijsten', titleKey: 'info.screenListPageTitle', textKey: 'info.screenListPageText' },
+  { img: '/info-screenshots/grocerylist-items-open.png', alt: 'Open lijst met items', titleKey: 'info.screenItemsOpenTitle', textKey: 'info.screenItemsOpenText' },
+  { img: '/info-screenshots/grocerylist-items-open-and-checked.png', alt: 'Lijst met afgevinkte en open items', titleKey: 'info.screenItemsCheckedTitle', textKey: 'info.screenItemsCheckedText' },
+  { img: '/info-screenshots/add-items-to-groceryList.png', alt: 'Items toevoegen aan een lijst', titleKey: 'info.screenAddItemsTitle', textKey: 'info.screenAddItemsText' }
 ];
 
 const phoneScreenshotBlocks = [
-  {
-    img: '/info-screenshots-mobile/groceryList.png',
-    titleKey: 'info.mobileScreenLists',
-    altKey: 'info.mobileScreenLists'
-  },
-  {
-    img: '/info-screenshots-mobile/GroceryListItems.png',
-    titleKey: 'info.mobileScreenItems',
-    altKey: 'info.mobileScreenItems'
-  },
-  {
-    img: '/info-screenshots-mobile/GroceryListAddItemsToList.png',
-    titleKey: 'info.screenAddItemsTitle',
-    altKey: 'info.screenAddItemsTitle'
-  },
-  {
-    img: '/info-screenshots-mobile/Cards.png',
-    titleKey: 'info.mobileScreenCards',
-    altKey: 'info.mobileScreenCards'
-  },
-  {
-    img: '/info-screenshots-mobile/profile.png',
-    titleKey: 'info.mobileScreenProfile',
-    altKey: 'info.mobileScreenProfile'
-  }
+  { img: '/info-screenshots-mobile/groceryList.png', titleKey: 'info.mobileScreenLists', altKey: 'info.mobileScreenLists' },
+  { img: '/info-screenshots-mobile/GroceryListItems.png', titleKey: 'info.mobileScreenItems', altKey: 'info.mobileScreenItems' },
+  { img: '/info-screenshots-mobile/GroceryListAddItemsToList.png', titleKey: 'info.screenAddItemsTitle', altKey: 'info.screenAddItemsTitle' },
+  { img: '/info-screenshots-mobile/Cards.png', titleKey: 'info.mobileScreenCards', altKey: 'info.mobileScreenCards' },
+  { img: '/info-screenshots-mobile/profile.png', titleKey: 'info.mobileScreenProfile', altKey: 'info.mobileScreenProfile' }
 ];
 
 onMounted(() => {
@@ -99,244 +38,105 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="info-shell px-4 py-6">
-    <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
-      <!-- Hero Header -->
-      <div class="info-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-4">
-        <div class="text-center">
-          <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-4">
-            <span class="text-2xl">🛒</span>
-            <span class="text-sm font-semibold text-blue-300">{{ t('info.badge') }}</span>
+  <div class="px-6 py-16 font-['DM_Sans',system-ui,sans-serif]">
+    <div class="w-full max-w-2xl mx-auto flex flex-col gap-16">
+
+      <!-- Header -->
+      <div>
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-2 font-medium">grocery list</p>
+        <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight mb-3">{{ t('info.title') }}</h1>
+        <p class="text-sm text-[#71717a] leading-relaxed">{{ t('info.subtitle') }}</p>
+      </div>
+
+      <!-- Features -->
+      <div>
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-2 font-medium">grocery list</p>
+        <h2 class="text-[1.4rem] font-light text-[#fafafa] tracking-tight mb-6">{{ t('info.featuresTitle') }}</h2>
+        <div class="flex flex-col">
+          <div
+            v-for="feature in features"
+            :key="feature.title"
+            class="flex gap-4 py-4 border-t border-[#27272a]"
+          >
+            <span class="text-lg flex-shrink-0 w-6 text-center">{{ feature.icon }}</span>
+            <div>
+              <p class="text-sm font-medium text-[#fafafa] mb-0.5">{{ t(feature.title) }}</p>
+              <p class="text-sm text-[#71717a] leading-relaxed">{{ t(feature.text) }}</p>
+            </div>
           </div>
-          <h1 class="text-3xl md:text-4xl font-bold mb-4">
-            {{ t('info.title') }}
-          </h1>
-          <p class="text-sm md:text-base text-slate-300 max-w-2xl mx-auto">
-            {{ t('info.subtitle') }}
-          </p>
+          <div class="border-t border-[#27272a]"></div>
         </div>
       </div>
 
-      <!-- Features Section -->
-      <section class="py-10">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ t('info.featuresTitle') }}</h2>
-        <p class="text-slate-300 max-w-2xl mx-auto">{{ t('info.featuresSubtitle') }}</p>
-      </div>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div
-          v-for="feature in features"
-          :key="feature.title"
-          class="info-card p-6 group"
-        >
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-              {{ feature.icon }}
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-lg font-bold text-white mb-2">{{ t(feature.title) }}</h3>
-              <p class="text-sm text-slate-300 leading-relaxed">{{ t(feature.text) }}</p>
-            </div>
+      <!-- Desktop Screenshots -->
+      <div>
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-2 font-medium">grocery list</p>
+        <h2 class="text-[1.4rem] font-light text-[#fafafa] tracking-tight mb-6">{{ t('info.screensTitle') }}</h2>
+        <div class="flex flex-col gap-12">
+          <div v-for="block in screenshotBlocks" :key="block.titleKey">
+            <img
+              :src="block.img"
+              :alt="block.alt"
+              loading="lazy"
+              class="info-img w-full rounded border border-[#27272a] mb-4 opacity-0 transition-opacity duration-700"
+            />
+            <p class="text-sm font-medium text-[#fafafa] mb-1">{{ t(block.titleKey) }}</p>
+            <p class="text-sm text-[#71717a] leading-relaxed">{{ t(block.textKey) }}</p>
           </div>
         </div>
       </div>
-    </section>
 
-      <!-- Screenshots Section -->
-      <section class="py-10">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ t('info.screensTitle') }}</h2>
-        <p class="text-slate-300 max-w-2xl mx-auto">{{ t('info.screensIntro') }}</p>
-      </div>
-
-      <div class="space-y-24">
-        <div
-          v-for="(block, idx) in screenshotBlocks"
-          :key="block.titleKey"
-          class="flex flex-col lg:flex-row gap-8 items-center"
-          :class="{ 'lg:flex-row-reverse': idx % 2 === 1 }"
-        >
-          <div class="flex-1 lg:max-w-2xl">
-            <div class="info-card overflow-hidden group hover:shadow-2xl transition-shadow duration-300 p-0">
-              <img
-                :src="block.img"
-                :alt="block.alt"
-                loading="lazy"
-                class="info-img w-full object-cover opacity-0 transition-opacity duration-700"
-              />
-            </div>
-          </div>
-          <div class="flex-1">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-1 h-12 bg-gradient-to-b from-amber-400 to-orange-500 rounded-full"></div>
-              <h3 class="text-2xl font-bold text-white">
-                {{ t(block.titleKey) }}
-              </h3>
-            </div>
-            <p class="text-lg text-slate-300 leading-relaxed">{{ t(block.textKey) }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-      <!-- Mobile Screenshots Section -->
-      <section class="py-10">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ t('info.screenMobileTitle') }}</h2>
-        <p class="text-slate-300 max-w-2xl mx-auto">{{ t('info.screenMobileText') }}</p>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        <div
-          v-for="m in phoneScreenshotBlocks"
-          :key="m.img"
-          class="group flex flex-col items-center gap-3"
-        >
-          <div class="relative w-full info-card overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:scale-105 p-0">
+      <!-- Mobile Screenshots -->
+      <div>
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-2 font-medium">grocery list</p>
+        <h2 class="text-[1.4rem] font-light text-[#fafafa] tracking-tight mb-6">{{ t('info.screenMobileTitle') }}</h2>
+        <p class="text-sm text-[#71717a] leading-relaxed mb-6">{{ t('info.screenMobileText') }}</p>
+        <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
+          <div v-for="m in phoneScreenshotBlocks" :key="m.img" class="flex flex-col gap-2">
             <img
               :src="m.img"
               :alt="t(m.altKey)"
-              class="info-img w-full aspect-[9/19] object-contain p-3 opacity-0 transition-opacity duration-700"
+              class="info-img w-full rounded border border-[#27272a] aspect-[9/19] object-contain opacity-0 transition-opacity duration-700"
               loading="lazy"
             />
+            <span class="text-[0.6rem] uppercase tracking-[0.08em] text-[#71717a] text-center font-medium">{{ t(m.titleKey) }}</span>
           </div>
-          <span class="text-xs font-semibold text-slate-300 text-center">{{ t(m.titleKey) }}</span>
         </div>
       </div>
-    </section>
 
-      <!-- Cross-Platform Section -->
-      <section class="py-10">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ t('info.crossPlatformTitle') }}</h2>
-        <p class="text-slate-300 max-w-2xl mx-auto">{{ t('info.crossPlatformIntro') }}</p>
-      </div>
-      <div class="grid md:grid-cols-3 gap-6 mb-6">
-        <div class="info-card p-6 hover:shadow-xl transition-shadow">
-          <div class="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center text-2xl mb-4">
-            💻
+      <!-- PWA / Cross-platform -->
+      <div>
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-2 font-medium">grocery list</p>
+        <h2 class="text-[1.4rem] font-light text-[#fafafa] tracking-tight mb-6">{{ t('info.crossPlatformTitle') }}</h2>
+        <p class="text-sm text-[#71717a] leading-relaxed mb-6">{{ t('info.pwaIntro') }}</p>
+        <div class="flex flex-col">
+          <div v-for="key in ['info.pwaDesktop', 'info.pwaAndroid', 'info.pwaIOS', 'info.pwaUpdates']" :key="key"
+               class="flex items-center gap-3 py-3 border-t border-[#27272a] text-sm text-[#71717a]">
+            <span class="w-1 h-1 rounded-full bg-[#3f3f46] flex-shrink-0"></span>
+            {{ t(key) }}
           </div>
-          <h3 class="font-bold text-lg text-white mb-2">{{ t('info.desktopTitle') }}</h3>
-          <p class="text-sm text-slate-300">{{ t('info.desktopText') }}</p>
-        </div>
-        <div class="info-card p-6 hover:shadow-xl transition-shadow">
-          <div class="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center text-2xl mb-4">
-            📱
-          </div>
-          <h3 class="font-bold text-lg text-white mb-2">{{ t('info.mobileTitle') }}</h3>
-          <p class="text-sm text-slate-300">{{ t('info.mobileText') }}</p>
-        </div>
-        <div class="info-card p-6 hover:shadow-xl transition-shadow">
-          <div class="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center text-2xl mb-4">
-            🧩
-          </div>
-          <h3 class="font-bold text-lg text-white mb-2">{{ t('info.tabletTitle') }}</h3>
-          <p class="text-sm text-slate-300">{{ t('info.tabletText') }}</p>
+          <div class="border-t border-[#27272a]"></div>
         </div>
       </div>
-      <div class="info-card p-6">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center text-2xl">
-            🌐
-          </div>
-          <h3 class="font-bold text-xl text-white">{{ t('info.pwaTitle') }}</h3>
-        </div>
-        <p class="text-slate-300 mb-4">{{ t('info.pwaIntro') }}</p>
-        <ul class="space-y-2">
-          <li class="flex items-start gap-2 text-sm text-slate-300">
-            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>{{ t('info.pwaDesktop') }}</span>
-          </li>
-          <li class="flex items-start gap-2 text-sm text-slate-300">
-            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>{{ t('info.pwaAndroid') }}</span>
-          </li>
-          <li class="flex items-start gap-2 text-sm text-slate-300">
-            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>{{ t('info.pwaIOS') }}</span>
-          </li>
-          <li class="flex items-start gap-2 text-sm text-slate-300">
-            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>{{ t('info.pwaUpdates') }}</span>
-          </li>
-        </ul>
-      </div>
-    </section>
 
-      <!-- CTA Section -->
-      <section v-if="!auth.user" class="info-hero overflow-hidden">
-        <div class="p-8 md:p-12 text-center">
-          <div class="mb-6">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 mb-4">
-              <span class="text-4xl">🚀</span>
-            </div>
-            <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">
-              {{ t('info.ctaTitle') }}
-            </h2>
-            <p class="text-slate-300 max-w-2xl mx-auto">
-              {{ t('info.ctaSubtitle') }}
-            </p>
-          </div>
-          <NuxtLink
-            to="/auth/register"
-            class="info-cta inline-block"
-          >
-            {{ t('info.ctaButton') }}
-          </NuxtLink>
-        </div>
-      </section>
+      <!-- CTA -->
+      <div v-if="!auth.user" class="border-t border-[#27272a] pt-10">
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-2 font-medium">grocery list</p>
+        <h2 class="text-[1.4rem] font-light text-[#fafafa] tracking-tight mb-3">{{ t('info.ctaTitle') }}</h2>
+        <p class="text-sm text-[#71717a] leading-relaxed mb-6">{{ t('info.ctaSubtitle') }}</p>
+        <NuxtLink
+          to="/auth/register"
+          class="inline-block bg-[#fafafa] text-[#18181b] py-3 px-6 rounded font-semibold text-[0.7rem] uppercase tracking-[0.08em] hover:bg-[#d4d4d8] transition-colors"
+        >
+          {{ t('info.ctaButton') }}
+        </NuxtLink>
+      </div>
+
     </div>
   </div>
 </template>
 
 <style scoped>
-.info-shell {
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: transparent;
-}
-
-.info-hero {
-  background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.9));
-  backdrop-filter: blur(30px);
-}
-
-.info-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.85));
-  border-radius: 1.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #f8fafc;
-  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
-  backdrop-filter: blur(30px);
-}
-
-.info-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 999px;
-  padding: 0.85rem 1.75rem;
-  font-weight: 600;
-  background: linear-gradient(120deg, #fbbf24, #f97316);
-  color: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 15px 30px rgba(251, 191, 36, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-}
-
-.info-cta:active {
-  transform: translateY(2px);
-  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.25);
-}
-
 .info-img { opacity: 0; }
 .info-img.loaded { opacity: 1; }
-.screenshot-row { scroll-margin-top: 5rem; }
 </style>

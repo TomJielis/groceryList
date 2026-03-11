@@ -4,7 +4,7 @@ const emit = defineEmits(['click']);
 
 <template>
   <button
-      class="fixed bottom-24 right-6 z-60 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg w-14 h-14 flex items-center justify-center text-white transition-all active:scale-95"
+      class="fixed bottom-24 right-6 z-60 bg-[#fafafa] hover:bg-[#d4d4d8] text-[#18181b] rounded font-medium w-14 h-14 flex items-center justify-center transition-all active:scale-95"
       style="padding-bottom: env(safe-area-inset-bottom)"
       aria-label="Add item"
       @click="emit('click')"

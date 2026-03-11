@@ -46,35 +46,35 @@ function goNewer() {
 </script>
 
 <template>
-  <div class="flex items-center justify-center gap-3 text-white">
+  <div class="w-full flex items-center border border-[#27272a] rounded overflow-hidden">
     <button
       type="button"
       :disabled="!canGoOlder"
-      class="p-2 rounded-2xl border transition focus:outline-none focus:ring-2 focus:ring-amber-300/40"
+      class="px-4 py-3 border-r border-[#27272a] transition focus:outline-none flex-shrink-0"
       :class="canGoOlder
-        ? 'text-white/90 border-white/20 bg-white/5 hover:bg-white/20'
-        : 'text-white/40 border-white/5 cursor-not-allowed'"
+        ? 'text-[#a1a1aa] hover:bg-[#1e1e21] hover:text-[#fafafa]'
+        : 'text-[#3f3f46] cursor-not-allowed'"
       @click="goOlder"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
       </svg>
     </button>
 
-    <span class="text-lg font-semibold text-white min-w-[160px] text-center capitalize tracking-wide">
+    <span class="flex-1 text-sm font-medium text-[#fafafa] text-center capitalize px-3 py-3">
       {{ formatMonth(selectedMonth) }}
     </span>
 
     <button
       type="button"
       :disabled="!canGoNewer"
-      class="p-2 rounded-2xl border transition focus:outline-none focus:ring-2 focus:ring-amber-300/40"
+      class="px-4 py-3 border-l border-[#27272a] transition focus:outline-none flex-shrink-0"
       :class="canGoNewer
-        ? 'text-white/90 border-white/20 bg-white/5 hover:bg-white/20'
-        : 'text-white/40 border-white/5 cursor-not-allowed'"
+        ? 'text-[#a1a1aa] hover:bg-[#1e1e21] hover:text-[#fafafa]'
+        : 'text-[#3f3f46] cursor-not-allowed'"
       @click="goNewer"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
       </svg>
     </button>

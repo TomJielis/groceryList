@@ -32,66 +32,55 @@ function handleConfirm() {
     leave-from-class="opacity-100"
     leave-to-class="opacity-0"
   >
-    <div v-if="isVisible" class="fixed inset-0 bg-black/60 flex items-center justify-center z-[99999] p-4 backdrop-blur-sm" @click.self="handleClose">
+    <div v-if="isVisible" class="fixed inset-0 bg-black/60 flex items-end sm:items-center justify-center z-[99999] p-0 sm:p-4" @click.self="handleClose">
       <transition
         enter-active-class="transition-all duration-300 ease-out"
-        enter-from-class="opacity-0 scale-95 translate-y-4"
-        enter-to-class="opacity-100 scale-100 translate-y-0"
+        enter-from-class="opacity-0 translate-y-4"
+        enter-to-class="opacity-100 translate-y-0"
         leave-active-class="transition-all duration-200 ease-in"
-        leave-from-class="opacity-100 scale-100 translate-y-0"
-        leave-to-class="opacity-0 scale-95 translate-y-4"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 translate-y-4"
       >
-        <div v-if="isVisible" class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden" @click.stop>
+        <div v-if="isVisible" class="bg-[#18181b] border border-[#27272a] rounded-t sm:rounded max-w-md w-full overflow-hidden" style="font-family: 'DM Sans', system-ui, sans-serif;" @click.stop>
           <!-- Header -->
-          <div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4">
-            <div class="flex items-center gap-4">
-              <button
-                @click="handleClose"
-                class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors active:scale-95"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>
-              <div class="flex-1 min-w-0">
-                <h1 class="text-xl font-bold text-slate-900 dark:text-white truncate">
-                  {{ itemType === 'list' ? i18n.t('lists.deleteTitle') : i18n.t('cards.deleteTitle') }}
-                </h1>
-                <p v-if="itemName" class="text-sm text-slate-500 dark:text-slate-400 truncate">
-                  {{ itemName }}
-                </p>
-              </div>
-              <div class="flex-shrink-0 w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                </svg>
-              </div>
+          <div class="flex items-center justify-between px-6 py-4 border-b border-[#27272a]">
+            <div class="min-w-0">
+              <h2 class="text-base font-medium text-[#fafafa] truncate">
+                {{ itemType === 'list' ? i18n.t('lists.deleteTitle') : i18n.t('cards.deleteTitle') }}
+              </h2>
+              <p v-if="itemName" class="text-sm text-[#71717a] truncate mt-0.5">{{ itemName }}</p>
             </div>
+            <button
+              @click="handleClose"
+              class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-[#52525b] hover:text-[#a1a1aa] transition-colors ml-4"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
           </div>
 
           <!-- Content -->
-          <div class="p-6 bg-slate-50 dark:bg-slate-900">
-            <p class="text-slate-600 dark:text-slate-400">
+          <div class="px-6 py-4">
+            <p class="text-sm text-[#71717a]">
               {{ itemType === 'list' ? i18n.t('lists.confirmDelete') : i18n.t('cards.confirmDelete') }}
             </p>
           </div>
 
           <!-- Footer -->
-          <div class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 px-6 py-4">
-            <div class="flex gap-3">
-              <button
-                @click="handleClose"
-                class="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-95"
-              >
-                {{ i18n.t('common.cancel') }}
-              </button>
-              <button
-                @click="handleConfirm"
-                class="flex-1 px-4 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl transition-all active:scale-95"
-              >
-                {{ itemType === 'list' ? i18n.t('lists.deleteBtn') : i18n.t('cards.deleteBtn') }}
-              </button>
-            </div>
+          <div class="px-6 py-4 border-t border-[#27272a] flex gap-2">
+            <button
+              @click="handleClose"
+              class="flex-1 px-4 py-2.5 border border-[#27272a] hover:border-[#52525b] text-[#71717a] hover:text-[#a1a1aa] font-medium rounded transition active:scale-95 text-sm"
+            >
+              {{ i18n.t('common.cancel') }}
+            </button>
+            <button
+              @click="handleConfirm"
+              class="flex-1 px-4 py-2.5 bg-red-900/40 border border-red-800 text-red-400 hover:bg-red-900/60 font-medium rounded transition active:scale-95 text-sm"
+            >
+              {{ itemType === 'list' ? i18n.t('lists.deleteBtn') : i18n.t('cards.deleteBtn') }}
+            </button>
           </div>
         </div>
       </transition>

@@ -88,114 +88,88 @@ function handleLogout() {
 
 <template>
   <div class="profile-shell px-4 py-6">
-    <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
-      <div class="profile-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-5">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div class="space-y-2">
-            <p class="text-xs uppercase tracking-[0.3em] text-slate-300">
-              {{ i18n.t('profile.title') }}
-            </p>
-            <h1 class="text-3xl md:text-4xl font-bold">
-              {{ authStore.user?.name || i18n.t('profile.hello') }}
-            </h1>
-            <p class="text-sm text-slate-300">
-              {{ authStore.user?.email }}
-            </p>
-          </div>
-        </div>
+    <div class="w-full max-w-2xl mx-auto flex flex-col">
+
+      <!-- Header -->
+      <div class="py-4 border-b border-[#27272a]">
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
+        <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">
+          {{ authStore.user?.name || i18n.t('profile.hello') }}
+        </h1>
+        <p class="text-sm text-[#71717a] mt-1">{{ authStore.user?.email }}</p>
       </div>
 
-      <div class="space-y-6">
-        <div class="profile-card">
-          <div class="profile-card-header">
-            <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <h2>{{ i18n.t('profile.information') }}</h2>
-          </div>
-          <div class="profile-card-body">
-            <ProfileInformation
-              :user="authStore.user"
-              @update="handleProfileUpdate"
-            />
-          </div>
-        </div>
-
-        <div class="profile-card">
-          <PendingLists />
-        </div>
-
-        <NuxtLink to="/profile/stats" class="profile-link">
-          <div class="profile-link-content">
-            <div class="flex items-center gap-3">
-              <div class="p-2 bg-white/10 rounded-xl text-emerald-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
-              </div>
-              <div>
-                <h2>{{ i18n.t('profile.myStats') }}</h2>
-                <p>{{ i18n.t('profile.myStatsDescription') }}</p>
-              </div>
-            </div>
-            <svg class="w-5 h-5 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </NuxtLink>
-
-        <NuxtLink
-            v-if="authStore.user?.is_admin"
-            to="/admin"
-            class="profile-link secondary"
-        >
-          <div class="profile-link-content">
-            <div class="flex items-center gap-3">
-              <div class="p-2 bg-purple-500/20 rounded-xl text-purple-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-              </div>
-              <div>
-                <h2>{{ i18n.t('profile.adminDashboard') }}</h2>
-                <p>{{ i18n.t('profile.adminDashboardDescription') }}</p>
-              </div>
-            </div>
-            <svg class="w-5 h-5 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </NuxtLink>
-
-        <div class="profile-card">
-          <div class="profile-card-header">
-            <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-            </svg>
-            <h2>{{ i18n.t('profile.language') }}</h2>
-          </div>
-          <div class="profile-card-body">
-            <LanguageSettings @language-change="handleLanguageChange" />
-          </div>
-        </div>
-
-        <div class="profile-card">
-          <div class="profile-card-header">
-            <svg class="w-5 h-5 text-rose-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-            <h2>{{ i18n.t('profile.accountActions') }}</h2>
-          </div>
-          <div class="profile-card-body">
-            <AccountActions
-              @logout="handleLogout"
-              @deactivate-account="openDeactivateModal"
-            />
-          </div>
-        </div>
+      <!-- Profile Information -->
+      <div class="py-6 border-b border-[#27272a]">
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
+        <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">{{ i18n.t('profile.information') }}</h2>
+        <ProfileInformation
+          :user="authStore.user"
+          @update="handleProfileUpdate"
+        />
       </div>
+
+      <!-- Pending Lists -->
+      <div class="py-6 border-b border-[#27272a]">
+        <PendingLists />
+      </div>
+
+      <!-- Navigation Links -->
+      <NuxtLink
+        to="/profile/stats"
+        class="flex items-center justify-between py-4 border-b border-[#27272a] group"
+      >
+        <div class="flex items-center gap-3">
+          <svg class="w-4 h-4 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+          <div>
+            <p class="text-sm font-medium text-[#fafafa] group-hover:text-[#a1a1aa] transition-colors">{{ i18n.t('profile.myStats') }}</p>
+            <p class="text-xs text-[#71717a]">{{ i18n.t('profile.myStatsDescription') }}</p>
+          </div>
+        </div>
+        <svg class="w-4 h-4 text-[#3f3f46]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </NuxtLink>
+
+      <NuxtLink
+        v-if="authStore.user?.is_admin"
+        to="/admin"
+        class="flex items-center justify-between py-4 border-b border-[#27272a] group"
+      >
+        <div class="flex items-center gap-3">
+          <svg class="w-4 h-4 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <div>
+            <p class="text-sm font-medium text-[#fafafa] group-hover:text-[#a1a1aa] transition-colors">{{ i18n.t('profile.adminDashboard') }}</p>
+            <p class="text-xs text-[#71717a]">{{ i18n.t('profile.adminDashboardDescription') }}</p>
+          </div>
+        </div>
+        <svg class="w-4 h-4 text-[#3f3f46]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </NuxtLink>
+
+      <!-- Language Settings -->
+      <div class="py-6 border-b border-[#27272a]">
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
+        <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">{{ i18n.t('profile.language') }}</h2>
+        <LanguageSettings @language-change="handleLanguageChange" />
+      </div>
+
+      <!-- Account Actions -->
+      <div class="py-6">
+        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
+        <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">{{ i18n.t('profile.accountActions') }}</h2>
+        <AccountActions
+          @logout="handleLogout"
+          @deactivate-account="openDeactivateModal"
+        />
+      </div>
+
     </div>
 
     <DeactivateAccountModal
@@ -209,87 +183,7 @@ function handleLogout() {
 
 <style scoped>
 .profile-shell {
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
   background: transparent;
-}
-
-.profile-hero {
-  background: radial-gradient(circle at top right, rgba(249, 115, 22, 0.35), rgba(15, 23, 42, 0.9));
-  backdrop-filter: blur(30px);
-  color: #f8fafc;
-}
-
-.profile-cta {
-  padding: 0.65rem 1.5rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: #f8fafc;
-  font-weight: 600;
-}
-
-.profile-cta.secondary {
-  border-color: rgba(168, 85, 247, 0.6);
-  color: #e9d5ff;
-}
-
-.profile-stat {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 1rem;
-  padding: 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-}
-
-.profile-card {
-  background: rgba(15, 23, 42, 0.8);
-  border-radius: 1.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 25px 50px rgba(2, 6, 23, 0.35);
-}
-
-.profile-card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.5rem 1.5rem 0 1.5rem;
-  color: #f8fafc;
-}
-
-.profile-card-header h2 {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.profile-card-body {
-  padding: 1.5rem;
-}
-
-.profile-link {
-  display: block;
-  border-radius: 1.5rem;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  background: rgba(15, 23, 42, 0.8);
-  color: #f8fafc;
-  padding: 1.25rem 1.5rem;
-  transition: border 0.2s ease;
-}
-
-.profile-link.secondary {
-  border-color: rgba(147, 51, 234, 0.4);
-}
-
-.profile-link-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.profile-link-content h2 {
-  font-weight: 600;
-}
-
-.profile-link-content p {
-  font-size: 0.875rem;
-  color: #cbd5f5;
 }
 </style>

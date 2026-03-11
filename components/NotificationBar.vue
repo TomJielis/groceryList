@@ -18,18 +18,18 @@ const {message, visible, type} = useNotification();
       class="fixed top-0 left-0 right-0 z-[9999] w-full flex items-center justify-center px-4 pt-4 md:pt-20 pointer-events-none"
     >
       <div
-        class="flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg font-medium text-sm pointer-events-auto max-w-md w-full"
+        class="flex items-center gap-3 px-5 py-3 rounded font-medium text-sm pointer-events-auto max-w-md w-full border"
         :class="[
           type === 'success'
-            ? 'bg-green-500 text-white'
-            : 'bg-red-500 text-white'
+            ? 'bg-[#1e1e21] border-[#27272a] text-[#fafafa]'
+            : 'bg-red-900/40 border-red-800 text-red-400'
         ]"
       >
         <!-- Icon -->
         <div class="flex-shrink-0">
           <svg
             v-if="type === 'success'"
-            class="w-5 h-5"
+            class="w-5 h-5 text-[#52525b]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

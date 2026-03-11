@@ -110,105 +110,104 @@ const toggleBlockUser = async () => {
 <template>
   <div class="admin-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6 pb-16">
-      <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl text-white p-6 md:p-8 shadow-2xl space-y-4">
-        <div class="flex items-center gap-4">
+      <!-- Page header -->
+      <div class="border-b border-[#27272a] pb-6">
+        <div class="flex items-center gap-4 mb-4">
           <NuxtLink
             to="/admin/users"
-            class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/10 border border-white/10 text-white hover:bg-white/20 transition"
+            class="w-9 h-9 flex items-center justify-center border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] transition rounded"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
           </NuxtLink>
           <div>
-            <p class="text-[11px] uppercase tracking-[0.4em] text-slate-300">
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">
               {{ i18n.t('admin.userDetail') }}
             </p>
-            <h1 class="text-3xl font-bold truncate">
+            <h1 class="text-2xl md:text-3xl font-medium text-[#fafafa] truncate">
               {{ data?.user?.name || '...' }}
             </h1>
-            <p class="text-sm text-slate-300">
+            <p class="text-sm text-[#71717a]">
               {{ data?.user?.email || '' }}
             </p>
           </div>
         </div>
-        <div class="flex flex-wrap items-center gap-3 text-sm text-white/80">
-          <span class="px-3 py-1 rounded-full border border-white/20 bg-white/5">
+        <div class="flex flex-wrap items-center gap-2 text-sm">
+          <span class="px-2 py-1 border border-[#27272a] text-[#71717a] rounded text-xs">
             {{ i18n.t('admin.lastActive') }}: {{ formatDate(data?.user?.last_active, true) }}
           </span>
-          <span class="px-3 py-1 rounded-full border border-emerald-300/20 bg-emerald-400/20 text-emerald-100" v-if="data?.user?.email_verified_at">
+          <span v-if="data?.user?.email_verified_at" class="px-2 py-1 border border-[#3f3f46] text-[#a1a1aa] rounded text-xs">
             {{ i18n.t('admin.emailVerified') }}
           </span>
-          <span class="px-3 py-1 rounded-full border border-rose-300/20 bg-rose-400/20 text-rose-100" v-if="data?.user?.blocked">
+          <span v-if="data?.user?.blocked" class="px-2 py-1 border border-[#3f3f46] text-[#a1a1aa] rounded text-xs">
             {{ i18n.t('admin.blocked') }}
           </span>
         </div>
       </div>
 
-      <div v-if="loading" class="flex items-center justify-center py-20 text-white/80">
+      <div v-if="loading" class="flex items-center justify-center py-20 text-[#71717a]">
         <div class="text-center space-y-3">
-          <div class="animate-spin rounded-full h-12 w-12 border-2 border-white/30 border-t-transparent mx-auto"></div>
+          <div class="animate-spin h-8 w-8 border border-[#3f3f46] border-t-[#a1a1aa] rounded mx-auto"></div>
           <p>{{ i18n.t('common.loading') }}</p>
         </div>
       </div>
 
-      <div v-else-if="error" class="rounded-3xl border border-white/10 bg-rose-500/10 text-rose-100 p-6 text-center">
+      <div v-else-if="error" class="border border-[#27272a] text-[#a1a1aa] p-6 text-center rounded">
         {{ error }}
       </div>
 
       <template v-else-if="data">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl text-white shadow-2xl p-6 space-y-4">
-            <h2 class="text-xl font-semibold">
+          <!-- User info -->
+          <div class="border-t border-[#27272a] pt-4 space-y-4">
+            <h2 class="text-base font-medium text-[#fafafa]">
               {{ i18n.t('admin.userInfo') }}
             </h2>
             <dl class="space-y-3 text-sm">
-              <div class="flex justify-between gap-4">
-                <dt class="text-slate-300">{{ i18n.t('admin.email') }}</dt>
-                <dd class="font-semibold">{{ data.user.email }}</dd>
+              <div class="flex justify-between gap-4 border-b border-[#27272a] pb-3">
+                <dt class="text-[#71717a]">{{ i18n.t('admin.email') }}</dt>
+                <dd class="font-medium text-[#fafafa]">{{ data.user.email }}</dd>
               </div>
-              <div class="flex justify-between gap-4">
-                <dt class="text-slate-300">{{ i18n.t('admin.registered') }}</dt>
-                <dd>{{ formatDate(data.user.created_at) }}</dd>
+              <div class="flex justify-between gap-4 border-b border-[#27272a] pb-3">
+                <dt class="text-[#71717a]">{{ i18n.t('admin.registered') }}</dt>
+                <dd class="text-[#a1a1aa]">{{ formatDate(data.user.created_at) }}</dd>
               </div>
-              <div class="flex justify-between gap-4">
-                <dt class="text-slate-300">{{ i18n.t('admin.emailVerified') }}</dt>
-                <dd>{{ data.user.email_verified_at ? formatDate(data.user.email_verified_at, true) : i18n.t('admin.no') }}</dd>
+              <div class="flex justify-between gap-4 border-b border-[#27272a] pb-3">
+                <dt class="text-[#71717a]">{{ i18n.t('admin.emailVerified') }}</dt>
+                <dd class="text-[#a1a1aa]">{{ data.user.email_verified_at ? formatDate(data.user.email_verified_at, true) : i18n.t('admin.no') }}</dd>
               </div>
-              <div class="flex justify-between gap-4">
-                <dt class="text-slate-300">{{ i18n.t('admin.lastActive') }}</dt>
-                <dd>{{ formatDate(data.user.last_active, true) }}</dd>
+              <div class="flex justify-between gap-4 border-b border-[#27272a] pb-3">
+                <dt class="text-[#71717a]">{{ i18n.t('admin.lastActive') }}</dt>
+                <dd class="text-[#a1a1aa]">{{ formatDate(data.user.last_active, true) }}</dd>
               </div>
-              <div class="flex justify-between gap-4">
-                <dt class="text-slate-300">{{ i18n.t('admin.appVersion') }}</dt>
-                <dd>{{ data.user.terms_version || '-' }}</dd>
+              <div class="flex justify-between gap-4 border-b border-[#27272a] pb-3">
+                <dt class="text-[#71717a]">{{ i18n.t('admin.appVersion') }}</dt>
+                <dd class="text-[#a1a1aa]">{{ data.user.terms_version || '-' }}</dd>
               </div>
               <div class="flex justify-between items-center gap-4">
-                <dt class="text-slate-300">{{ i18n.t('admin.status') }}</dt>
+                <dt class="text-[#71717a]">{{ i18n.t('admin.status') }}</dt>
                 <dd>
                   <span
                     v-if="data.user.blocked"
-                    class="px-3 py-1 text-xs font-semibold rounded-full bg-rose-500/20 text-rose-100 border border-rose-400/30"
+                    class="px-2 py-1 text-xs font-medium rounded border border-[#3f3f46] text-[#a1a1aa]"
                   >
                     {{ i18n.t('admin.blocked') }}
                   </span>
                   <span
                     v-else
-                    class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/20 text-emerald-100 border border-emerald-400/30"
+                    class="px-2 py-1 text-xs font-medium rounded border border-[#3f3f46] text-[#a1a1aa]"
                   >
                     {{ i18n.t('admin.active') }}
                   </span>
                 </dd>
               </div>
             </dl>
-            <div class="pt-4 border-t border-white/10">
+            <div class="pt-4 border-t border-[#27272a]">
               <button
                 @click="toggleBlockUser"
                 :disabled="blocking"
-                class="w-full py-3 rounded-2xl font-semibold transition border"
-                :class="data.user.blocked
-                  ? 'border-emerald-300/40 bg-emerald-400/20 text-emerald-50 hover:bg-emerald-400/30'
-                  : 'border-rose-300/40 bg-rose-400/20 text-rose-50 hover:bg-rose-400/30'"
+                class="w-full py-2 font-medium transition border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] rounded"
               >
                 <span v-if="blocking">...</span>
                 <span v-else>{{ data.user.blocked ? i18n.t('admin.unblock') : i18n.t('admin.block') }}</span>
@@ -216,42 +215,30 @@ const toggleBlockUser = async () => {
             </div>
           </div>
 
-          <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl text-white shadow-2xl p-6 space-y-4">
-            <h2 class="text-xl font-semibold">
+          <!-- Lists info -->
+          <div class="border-t border-[#27272a] pt-4 space-y-4">
+            <h2 class="text-base font-medium text-[#fafafa]">
               {{ i18n.t('admin.listsInfo') }}
             </h2>
-            <dl class="space-y-3 text-sm">
-              <div class="flex justify-between">
-                <dt class="text-slate-300">{{ i18n.t('admin.ownedLists') }}</dt>
-                <dd class="font-semibold">{{ data.lists.owned }}</dd>
+            <!-- Flat stats row -->
+            <div class="flex divide-x divide-[#27272a] border-t border-[#27272a]">
+              <div class="flex-1 px-4 py-3 first:pl-0">
+                <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">{{ i18n.t('admin.ownedLists') }}</p>
+                <p class="text-xl font-light text-[#fafafa]">{{ data.lists.owned }}</p>
               </div>
-              <div class="flex justify-between">
-                <dt class="text-slate-300">{{ i18n.t('admin.sharedWithUser') }}</dt>
-                <dd class="font-semibold">{{ data.lists.shared_with_user }}</dd>
+              <div class="flex-1 px-4 py-3">
+                <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">{{ i18n.t('admin.sharedWithUser') }}</p>
+                <p class="text-xl font-light text-[#fafafa]">{{ data.lists.shared_with_user }}</p>
               </div>
-              <div class="flex justify-between text-base font-semibold">
-                <dt class="text-slate-200">{{ i18n.t('admin.totalAccess') }}</dt>
-                <dd>{{ data.lists.total_access }}</dd>
-              </div>
-            </dl>
-            <div class="grid grid-cols-3 gap-3 text-center">
-              <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-slate-300">{{ i18n.t('admin.ownedLists') }}</p>
-                <p class="text-xl font-semibold">{{ data.lists.owned }}</p>
-              </div>
-              <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-slate-300">{{ i18n.t('admin.sharedWithUser') }}</p>
-                <p class="text-xl font-semibold">{{ data.lists.shared_with_user }}</p>
-              </div>
-              <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-slate-300">{{ i18n.t('admin.totalAccess') }}</p>
-                <p class="text-xl font-semibold text-amber-300">{{ data.lists.total_access }}</p>
+              <div class="flex-1 px-4 py-3">
+                <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">{{ i18n.t('admin.totalAccess') }}</p>
+                <p class="text-xl font-light text-[#fafafa]">{{ data.lists.total_access }}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div v-if="availableMonths.length" class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl text-white shadow-2xl p-4">
+        <div v-if="availableMonths.length" class="border-t border-[#27272a] pt-4">
           <MonthSelector
             :selected-month="selectedMonth"
             :available-months="availableMonths"
@@ -259,14 +246,15 @@ const toggleBlockUser = async () => {
           />
         </div>
 
-        <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl text-white shadow-2xl p-6 space-y-6">
-          <h2 class="text-xl font-semibold">
+        <!-- Items activity -->
+        <div class="border-t border-[#27272a] pt-4 space-y-4">
+          <h2 class="text-base font-medium text-[#fafafa]">
             {{ i18n.t('admin.itemsActivity') }}
           </h2>
           <div v-if="loadingActivity" class="flex items-center justify-center py-8">
-            <div class="animate-spin rounded-full h-8 w-8 border-2 border-white/30 border-t-transparent"></div>
+            <div class="animate-spin h-6 w-6 border border-[#3f3f46] border-t-[#a1a1aa] rounded"></div>
           </div>
-          <div v-else class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div v-else class="grid grid-cols-1 md:grid-cols-4 gap-x-6">
             <AdminStatsCard
               :title="i18n.t('admin.itemsAddedMonth')"
               :value="data.items?.current_month?.added ?? 0"
@@ -285,73 +273,74 @@ const toggleBlockUser = async () => {
               :previous-value="data.invalid_loggin_attempts?.previous_month ?? 0"
               :showPercentage="true"
             />
-            <div class="rounded-3xl border border-white/10 bg-white/5 px-4 py-5">
-              <h3 class="text-sm font-semibold text-slate-300">
+            <div class="border-b border-[#27272a] py-4">
+              <h3 class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">
                 {{ i18n.t('admin.previousMonth') }}
               </h3>
-              <p class="mt-3 text-lg">
+              <p class="mt-2 text-base text-[#a1a1aa]">
                 {{ data.items?.previous_month?.added ?? 0 }} {{ i18n.t('admin.added') }},
                 {{ data.items?.previous_month?.checked ?? 0 }} {{ i18n.t('admin.checked') }}
               </p>
-              <p class="text-xs text-slate-400 mt-1">
+              <p class="text-xs text-[#71717a] mt-1">
                 {{ data.items?.previous_month?.period }}
               </p>
             </div>
           </div>
         </div>
 
-        <div v-if="data.top_items" class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl text-white shadow-2xl p-6 space-y-6">
-          <h2 class="text-xl font-semibold">
+        <!-- User top items -->
+        <div v-if="data.top_items" class="border-t border-[#27272a] pt-4 space-y-4">
+          <h2 class="text-base font-medium text-[#fafafa]">
             {{ i18n.t('admin.userTopItems') }}
           </h2>
           <div v-if="loadingActivity" class="flex items-center justify-center py-8">
-            <div class="animate-spin rounded-full h-8 w-8 border-2 border-white/30 border-t-transparent"></div>
+            <div class="animate-spin h-6 w-6 border border-[#3f3f46] border-t-[#a1a1aa] rounded"></div>
           </div>
           <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 class="text-sm font-semibold text-slate-300 mb-3">
+              <h3 class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-3">
                 {{ i18n.t('admin.mostAdded') }}
               </h3>
-              <ul v-if="data.top_items.current_month?.most_added?.length > 0" class="space-y-2">
+              <ul v-if="data.top_items.current_month?.most_added?.length > 0" class="divide-y divide-[#27272a]">
                 <li
                   v-for="(item, index) in data.top_items.current_month.most_added.slice(0, 5)"
                   :key="index"
-                  class="flex justify-between items-center py-2 px-4 rounded-2xl border border-white/10 bg-white/5"
+                  class="flex justify-between items-center py-2 text-sm"
                 >
-                  <span class="text-white">
-                    <span class="text-slate-400 font-semibold mr-2">{{ index + 1 }}.</span>
+                  <span class="text-[#a1a1aa]">
+                    <span class="text-[#52525b] font-medium mr-2">{{ index + 1 }}.</span>
                     {{ item.name }}
                   </span>
-                  <span class="text-sm text-emerald-200 font-semibold">
+                  <span class="text-sm text-[#71717a] font-medium">
                     {{ item.count }}x
                   </span>
                 </li>
               </ul>
-              <p v-else class="text-slate-300 text-sm">
+              <p v-else class="text-[#71717a] text-sm">
                 {{ i18n.t('admin.noTopItems') }}
               </p>
             </div>
 
             <div>
-              <h3 class="text-sm font-semibold text-slate-300 mb-3">
+              <h3 class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-3">
                 {{ i18n.t('admin.mostChecked') }}
               </h3>
-              <ul v-if="data.top_items.current_month?.most_checked?.length > 0" class="space-y-2">
+              <ul v-if="data.top_items.current_month?.most_checked?.length > 0" class="divide-y divide-[#27272a]">
                 <li
                   v-for="(item, index) in data.top_items.current_month.most_checked.slice(0, 5)"
                   :key="index"
-                  class="flex justify-between items-center py-2 px-4 rounded-2xl border border-white/10 bg-white/5"
+                  class="flex justify-between items-center py-2 text-sm"
                 >
-                  <span class="text-white">
-                    <span class="text-slate-400 font-semibold mr-2">{{ index + 1 }}.</span>
+                  <span class="text-[#a1a1aa]">
+                    <span class="text-[#52525b] font-medium mr-2">{{ index + 1 }}.</span>
                     {{ item.name }}
                   </span>
-                  <span class="text-sm text-sky-200 font-semibold">
+                  <span class="text-sm text-[#71717a] font-medium">
                     {{ item.count }}x
                   </span>
                 </li>
               </ul>
-              <p v-else class="text-slate-300 text-sm">
+              <p v-else class="text-[#71717a] text-sm">
                 {{ i18n.t('admin.noTopItems') }}
               </p>
             </div>

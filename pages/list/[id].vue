@@ -133,25 +133,25 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 <template>
   <div class="list-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
-      <div class="list-hero-card shadow-2xl border border-white/10 rounded-3xl">
+      <div class="py-4 border-b border-[#27272a]">
         <div class="flex flex-col gap-6">
           <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div class="flex flex-col gap-4">
               <NuxtLink
                 to="/"
-                class="inline-flex w-12 h-12 items-center justify-center rounded-2xl bg-white/10 text-white hover:bg-white/20 transition-colors"
+                class="inline-flex w-10 h-10 items-center justify-center rounded border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
               </NuxtLink>
               <div>
-                <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
-                  <span>📝</span>
-                  <span>{{ list?.name }}</span>
+                <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
+                <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">
+                  {{ list?.name }}
                 </h1>
-                <p class="text-sm text-slate-300 mt-2">
-                  {{ uncheckedItems.length }} {{ i18n.t('list.remaining') }} • {{ checkedItems.length }} {{ i18n.t('list.done') }}
+                <p class="text-sm text-[#71717a] mt-1">
+                  {{ uncheckedItems.length }} {{ i18n.t('list.remaining') }} · {{ checkedItems.length }} {{ i18n.t('list.done') }}
                 </p>
               </div>
             </div>
@@ -159,14 +159,14 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
               <button
                 v-if="showAddItem"
                 @click="showAddItem = false"
-                class="w-full sm:w-auto px-5 py-3 rounded-2xl border border-white/20 text-white bg-white/5 hover:bg-white/10 transition-colors text-sm font-semibold"
+                class="w-full sm:w-auto px-5 py-2.5 rounded border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors text-sm font-medium"
               >
                 {{ i18n.t('common.cancel') }}
               </button>
               <button
                 v-else
                 @click="showAddItem = true"
-                class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-amber-300 text-slate-900 font-semibold flex items-center justify-center gap-2 shadow-lg hover:-translate-y-0.5 transition"
+                class="w-full sm:w-auto px-5 py-2.5 rounded bg-[#fafafa] text-[#18181b] font-medium flex items-center justify-center gap-2 hover:bg-[#d4d4d8] transition-colors text-sm"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
@@ -176,35 +176,35 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             </div>
           </div>
 
-          <div class="grid grid-cols-3 gap-3 text-center">
-            <div class="list-stat-card">
-              <p class="text-[11px] uppercase tracking-[0.2em] text-slate-200/80">
+          <div class="grid grid-cols-3 divide-x divide-[#27272a] border-t border-[#27272a] pt-4">
+            <div class="text-center px-3 first:pl-0 last:pr-0">
+              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
                 {{ i18n.t('items.total') }}
               </p>
-              <p class="text-2xl font-bold text-white">€{{ totalPrice.toFixed(2) }}</p>
+              <p class="text-xl font-light text-[#fafafa]">€{{ totalPrice.toFixed(2) }}</p>
             </div>
-            <div class="list-stat-card">
-              <p class="text-[11px] uppercase tracking-[0.2em] text-slate-200/80">
+            <div class="text-center px-3">
+              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
                 {{ i18n.t('list.remaining') }}
               </p>
-              <p class="text-2xl font-bold text-amber-200">{{ uncheckedItems.length }}</p>
+              <p class="text-xl font-light text-[#a1a1aa]">{{ uncheckedItems.length }}</p>
             </div>
-            <div class="list-stat-card">
-              <p class="text-[11px] uppercase tracking-[0.2em] text-slate-200/80">
+            <div class="text-center px-3 first:pl-0 last:pr-0">
+              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
                 {{ i18n.t('list.done') }}
               </p>
-              <p class="text-2xl font-bold text-emerald-200">{{ checkedItems.length }}</p>
+              <p class="text-xl font-light text-[#a1a1aa]">{{ checkedItems.length }}</p>
             </div>
           </div>
 
-          <div v-if="items.length > 0" class="space-y-1">
-            <div class="flex items-center justify-between text-xs text-slate-200">
+          <div v-if="items.length > 0" class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs text-[#71717a]">
               <span>{{ i18n.t('list.progress') }}</span>
-              <span class="font-semibold">{{ Math.round((checkedItems.length / items.length) * 100) }}%</span>
+              <span class="text-[#a1a1aa]">{{ Math.round((checkedItems.length / items.length) * 100) }}%</span>
             </div>
-            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+            <div class="h-1.5 bg-[#27272a] rounded-full overflow-hidden">
               <div
-                class="h-full bg-gradient-to-r from-emerald-300 to-emerald-500 rounded-full transition-all duration-500"
+                class="h-full bg-[#52525b] rounded-full transition-all duration-500"
                 :style="{ width: `${(checkedItems.length / items.length) * 100}%` }"
               ></div>
             </div>
@@ -212,22 +212,22 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
         </div>
       </div>
 
-      <div class="list-card rounded-3xl shadow-2xl border border-white/10 p-4 md:p-6 text-white">
+      <div class="pt-4 text-[#fafafa]">
         <Loader v-if="loading" />
 
         <div v-else-if="items.length === 0 && !showAddItem" class="flex flex-col items-center justify-center py-12 px-6 text-center space-y-4">
           <div class="text-5xl">🛒</div>
-          <h2 class="text-2xl font-semibold text-white">
+          <h2 class="text-xl font-light text-[#fafafa]">
             {{ i18n.t('items.emptyState.title') }}
           </h2>
-          <p class="text-sm text-slate-200 max-w-md">
+          <p class="text-sm text-[#71717a] max-w-md">
             {{ i18n.t('items.emptyState.message') }}
           </p>
           <button
             @click="showAddItem = true"
-            class="px-6 py-3 bg-white/10 border border-white/20 text-white rounded-2xl font-semibold flex items-center gap-2 transition hover:-translate-y-0.5"
+            class="px-5 py-2.5 bg-[#fafafa] text-[#18181b] rounded font-medium flex items-center gap-2 hover:bg-[#d4d4d8] transition-colors text-sm"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
             <span>{{ i18n.t('items.addFirst') }}</span>
@@ -239,8 +239,8 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <!-- Active Items Section -->
           <div v-if="uncheckedItems.length > 0">
             <!-- Desktop Table View -->
-            <div class="hidden md:block bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
-              <div class="grid grid-cols-12 gap-4 px-6 py-3 bg-white/5 border-b border-white/10 text-xs font-semibold text-slate-200 uppercase tracking-wider">
+            <div class="hidden md:block bg-[#1e1e21] rounded border border-[#27272a] overflow-hidden">
+              <div class="grid grid-cols-12 gap-4 px-6 py-3 border-b border-[#27272a] text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em]">
                 <div class="col-span-5">{{ i18n.t('items.name') }}</div>
                 <div class="col-span-2 text-center">{{ i18n.t('items.quantity') }}</div>
                 <div class="col-span-2 text-center">{{ i18n.t('items.price') }}</div>
@@ -261,9 +261,9 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
               </transition-group>
             </div>
 
-            <!-- Mobile Card View -->
-            <div class="md:hidden space-y-2">
-              <transition-group name="list" tag="div" class="space-y-2">
+            <!-- Mobile List View -->
+            <div class="md:hidden">
+              <transition-group name="list" tag="div">
                 <GroceryListItem
                   v-for="item in uncheckedItems"
                   :key="item.id"
@@ -279,13 +279,13 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
           <!-- All Done State -->
           <div v-else-if="checkedItems.length > 0" class="flex flex-col items-center justify-center py-12 px-6">
-            <div class="w-20 h-20 bg-gradient-to-br from-emerald-400/30 to-emerald-500/10 rounded-full flex items-center justify-center mb-4">
-              <span class="text-4xl">🎉</span>
+            <div class="w-16 h-16 bg-[#27272a] rounded-full flex items-center justify-center mb-4">
+              <span class="text-3xl">🎉</span>
             </div>
-            <h2 class="text-lg font-bold text-white mb-1 text-center">
+            <h2 class="text-lg font-light text-[#fafafa] mb-1 text-center">
               {{ i18n.t('list.allDone') }}
             </h2>
-            <p class="text-slate-200 text-center text-sm">
+            <p class="text-[#71717a] text-center text-sm">
               {{ i18n.t('list.allDoneMessage') }}
             </p>
           </div>
@@ -294,23 +294,23 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <div v-if="checkedItems.length > 0" class="mt-6">
             <button
               @click="showCheckedItems = !showCheckedItems"
-              class="w-full flex items-center justify-between px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors duration-200 group border border-white/10"
+              class="w-full flex items-center justify-between py-3 border-t border-[#27272a] transition-colors duration-200 group"
             >
               <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-emerald-400/20 flex items-center justify-center">
-                  <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-7 h-7 rounded bg-[#27272a] flex items-center justify-center">
+                  <svg class="w-3.5 h-3.5 text-[#71717a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                   </svg>
                 </div>
-                <span class="font-medium text-white">
+                <span class="text-sm font-medium text-[#a1a1aa]">
                   {{ i18n.t('list.completed') }}
                 </span>
-                <span class="text-xs bg-emerald-400/20 text-emerald-100 px-2 py-0.5 rounded-full font-medium">
+                <span class="text-xs bg-[#27272a] text-[#71717a] px-2 py-0.5 rounded font-medium">
                   {{ checkedItems.length }}
                 </span>
               </div>
               <svg
-                class="w-5 h-5 text-slate-200 transition-transform duration-200"
+                class="w-4 h-4 text-[#52525b] transition-transform duration-200"
                 :class="{ 'rotate-180': showCheckedItems }"
                 fill="none"
                 stroke="currentColor"
@@ -330,7 +330,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             >
               <div v-if="showCheckedItems" class="mt-3 overflow-hidden">
                 <!-- Desktop Table View -->
-                <div class="hidden md:block bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+                <div class="hidden md:block bg-[#1e1e21] rounded border border-[#27272a] overflow-hidden">
                   <transition-group name="list" tag="div">
                     <GroceryListItem
                       v-for="item in checkedItems"
@@ -345,9 +345,9 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
                   </transition-group>
                 </div>
 
-                <!-- Mobile Card View -->
-                <div class="md:hidden space-y-2">
-                  <transition-group name="list" tag="div" class="space-y-2">
+                <!-- Mobile List View -->
+                <div class="md:hidden">
+                  <transition-group name="list" tag="div">
                     <GroceryListItem
                       v-for="item in checkedItems"
                       :key="item.id"
@@ -374,7 +374,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           leave-from-class="opacity-100 scale-100"
           leave-to-class="opacity-0 scale-95"
         >
-          <div v-if="showAddItem" class="bg-slate-900/40 rounded-2xl shadow-xl border border-white/10 overflow-hidden">
+          <div v-if="showAddItem" class="bg-[#1e1e21] rounded border border-[#27272a] overflow-hidden">
             <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
           </div>
         </transition>
@@ -386,35 +386,8 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
 <style scoped>
 .list-shell {
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
   background: transparent;
 }
 
-.list-hero-card {
-  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.25), rgba(15, 23, 42, 0.9));
-  padding: 2rem;
-}
-
-.list-stat-card {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 1.2rem;
-  padding: 0.9rem 0.5rem;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-}
-
-.list-card {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-  border: 1px solid rgba(148, 163, 184, 0.2);
-}
-
-.list-card table {
-  width: 100%;
-  color: #f8fafc;
-}
-
-@media (max-width: 768px) {
-  .list-hero-card {
-    padding: 1.5rem;
-  }
-}
 </style>

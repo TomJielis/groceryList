@@ -87,35 +87,35 @@ const formatValue = (column: Column, row: any) => {
 </script>
 
 <template>
-  <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl overflow-hidden text-white/90">
+  <div class="border-t border-[#27272a] overflow-hidden text-[#fafafa]">
     <!-- Header -->
-    <div v-if="title || showViewAll" class="flex items-center justify-between p-4 border-b border-white/10 bg-white/5">
-      <h2 v-if="title" class="text-lg font-semibold text-white flex items-center gap-2">
+    <div v-if="title || showViewAll" class="flex items-center justify-between py-4 border-b border-[#27272a]">
+      <h2 v-if="title" class="text-lg font-medium text-[#fafafa] flex items-center gap-2">
         <span v-if="icon" class="text-xl">{{ icon }}</span>
         {{ title }}
       </h2>
       <NuxtLink
         v-if="showViewAll && viewAllLink"
         :to="viewAllLink"
-        class="text-sm text-emerald-300 hover:text-emerald-200 transition"
+        class="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition"
       >
         {{ i18n.t('admin.viewAll') }}
       </NuxtLink>
     </div>
 
     <!-- Empty State -->
-    <div v-if="displayData.length === 0" class="text-center py-12 text-slate-300">
+    <div v-if="displayData.length === 0" class="text-center py-12 text-[#71717a]">
       <p>{{ emptyMessage }}</p>
     </div>
 
     <!-- Desktop Table -->
-    <table v-else class="min-w-full divide-y divide-white/10 hidden md:table">
-      <thead class="bg-white/5">
+    <table v-else class="min-w-full hidden md:table">
+      <thead>
         <tr>
           <th
             v-for="column in columns.filter(c => !c.hideOnTablet)"
             :key="column.key"
-            class="px-6 py-3 text-left text-[11px] font-semibold text-slate-300 uppercase tracking-[0.3em]"
+            class="px-6 py-3 text-left text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em]"
             :class="{ 'hidden lg:table-cell': column.hideOnMobile }"
           >
             {{ column.label }}
@@ -123,18 +123,18 @@ const formatValue = (column: Column, row: any) => {
           <th v-if="rowLink" class="px-6 py-3"></th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-white/10">
+      <tbody>
         <tr
           v-for="(row, rowIndex) in displayData"
           :key="rowIndex"
-          class="hover:bg-white/5 transition-colors"
+          class="border-b border-[#27272a] hover:bg-[#1e1e21] transition-colors"
         >
           <td
             v-for="column in columns.filter(c => !c.hideOnTablet)"
             :key="column.key"
             class="px-6 py-4 whitespace-nowrap text-sm"
             :class="[
-              column.class || 'text-slate-200',
+              column.class || 'text-[#a1a1aa]',
               { 'hidden lg:table-cell': column.hideOnMobile }
             ]"
           >
@@ -142,7 +142,7 @@ const formatValue = (column: Column, row: any) => {
             <div v-if="column.type === 'link' && column.linkTo" class="flex items-center gap-2">
               <NuxtLink
                 :to="column.linkTo(row)"
-                class="font-medium text-white hover:text-emerald-200 transition"
+                class="font-medium text-[#fafafa] hover:text-[#a1a1aa] transition"
               >
                 {{ formatValue(column, row) }}
               </NuxtLink>
@@ -151,13 +151,7 @@ const formatValue = (column: Column, row: any) => {
                 <span
                   v-for="(badge, idx) in column.badges(row)"
                   :key="idx"
-                  class="px-2 py-0.5 text-xs font-medium rounded-full"
-                  :class="{
-                    'bg-emerald-400/20 text-emerald-100 border border-emerald-300/20': badge.color === 'green',
-                    'bg-rose-400/20 text-rose-100 border border-rose-300/20': badge.color === 'red',
-                    'bg-sky-400/20 text-sky-100 border border-sky-300/20': badge.color === 'blue',
-                    'bg-amber-400/20 text-amber-100 border border-amber-300/20': badge.color === 'yellow'
-                  }"
+                  class="px-2 py-0.5 text-xs font-medium rounded border border-[#3f3f46] text-[#a1a1aa]"
                 >
                   {{ badge.text }}
                 </span>
@@ -169,7 +163,7 @@ const formatValue = (column: Column, row: any) => {
           <td v-if="rowLink" class="px-6 py-4 whitespace-nowrap">
             <NuxtLink
               :to="rowLink(row)"
-              class="text-emerald-300 hover:text-emerald-200 text-sm font-medium"
+              class="text-[#a1a1aa] hover:text-[#fafafa] text-sm font-medium"
             >
               {{ rowLinkLabel || i18n.t('admin.details') }}
             </NuxtLink>
@@ -179,16 +173,16 @@ const formatValue = (column: Column, row: any) => {
     </table>
 
     <!-- Mobile Cards -->
-    <div v-if="displayData.length > 0" class="md:hidden divide-y divide-white/10">
+    <div v-if="displayData.length > 0" class="md:hidden divide-y divide-[#27272a]">
       <div
         v-for="(row, rowIndex) in displayData"
         :key="rowIndex"
-        class="p-4"
+        class="py-4"
       >
         <!-- Primary Row (title + action) -->
         <div class="flex items-center justify-between mb-3">
           <div class="flex items-center gap-2 flex-wrap">
-            <span class="font-semibold text-white">
+            <span class="font-medium text-[#fafafa]">
               {{ formatValue(primaryColumn!, row) }}
             </span>
             <!-- Badges from primary column -->
@@ -196,13 +190,7 @@ const formatValue = (column: Column, row: any) => {
               <span
                 v-for="(badge, idx) in primaryColumn.badges(row)"
                 :key="idx"
-                class="px-2 py-0.5 text-xs font-medium rounded-full border"
-                :class="{
-                  'bg-emerald-400/20 text-emerald-100 border-emerald-300/20': badge.color === 'green',
-                  'bg-rose-400/20 text-rose-100 border-rose-300/20': badge.color === 'red',
-                  'bg-sky-400/20 text-sky-100 border-sky-300/20': badge.color === 'blue',
-                  'bg-amber-400/20 text-amber-100 border-amber-300/20': badge.color === 'yellow'
-                }"
+                class="px-2 py-0.5 text-xs font-medium rounded border border-[#3f3f46] text-[#a1a1aa]"
               >
                 {{ badge.text }}
               </span>
@@ -211,7 +199,7 @@ const formatValue = (column: Column, row: any) => {
           <NuxtLink
             v-if="rowLink"
             :to="rowLink(row)"
-            class="text-emerald-300 hover:text-emerald-200 text-sm font-medium flex-shrink-0"
+            class="text-[#a1a1aa] hover:text-[#fafafa] text-sm font-medium flex-shrink-0"
           >
             {{ rowLinkLabel || i18n.t('admin.details') }}
           </NuxtLink>
@@ -220,7 +208,7 @@ const formatValue = (column: Column, row: any) => {
         <!-- Secondary info (like email) - show second column if it exists -->
         <p
           v-if="columns[1] && !columns[1].hideOnMobile"
-          class="text-slate-300 text-sm mb-3 break-all"
+          class="text-[#71717a] text-sm mb-3 break-all"
         >
           {{ formatValue(columns[1], row) }}
         </p>
@@ -230,10 +218,10 @@ const formatValue = (column: Column, row: any) => {
           <div
             v-for="column in mobileColumns.slice(1)"
             :key="column.key"
-            class="bg-white/5 rounded-2xl p-3 border border-white/10"
+            class="p-3 border-b border-[#27272a]"
           >
-            <p class="text-[10px] uppercase tracking-[0.2em] text-slate-400">{{ column.label }}</p>
-            <p class="text-white font-medium">{{ formatValue(column, row) }}</p>
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">{{ column.label }}</p>
+            <p class="text-[#fafafa] font-medium">{{ formatValue(column, row) }}</p>
           </div>
         </div>
       </div>

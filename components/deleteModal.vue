@@ -46,7 +46,7 @@ function handleConfirm() {
     leave-from-class="opacity-100"
     leave-to-class="opacity-0"
   >
-    <div v-if="isVisible" class="fixed inset-0 bg-black/60 flex items-center justify-center z-[99999] p-4 backdrop-blur-sm" @click.self="handleClose">
+    <div v-if="isVisible" class="fixed inset-0 bg-black/60 flex items-center justify-center z-[99999] p-4" @click.self="handleClose">
       <transition
         enter-active-class="transition-all duration-300 ease-out"
         enter-from-class="opacity-0 scale-95 translate-y-4"
@@ -55,14 +55,14 @@ function handleConfirm() {
         leave-from-class="opacity-100 scale-100 translate-y-0"
         leave-to-class="opacity-0 scale-95 translate-y-4"
       >
-        <div v-if="isVisible" class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden" @click.stop>
+        <div v-if="isVisible" class="bg-[#18181b] rounded max-w-md w-full border border-[#27272a] overflow-hidden" @click.stop>
           <!-- Header -->
-          <div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4">
+          <div class="bg-[#18181b] border-b border-[#27272a] px-6 py-4">
             <div class="flex items-center gap-4">
               <!-- Close Button -->
               <button
                 @click="handleClose"
-                class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors active:scale-95"
+                class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors active:scale-95"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -71,17 +71,17 @@ function handleConfirm() {
 
               <!-- Title -->
               <div class="flex-1 min-w-0">
-                <h1 class="text-xl font-bold text-slate-900 dark:text-white truncate">
+                <h1 class="text-xl font-medium text-[#fafafa] truncate">
                   {{ title }}
                 </h1>
-                <p v-if="itemName" class="text-sm text-slate-500 dark:text-slate-400 truncate">
+                <p v-if="itemName" class="text-sm text-[#71717a] truncate">
                   {{ itemName }}
                 </p>
               </div>
 
               <!-- Delete Icon -->
-              <div class="flex-shrink-0 w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="flex-shrink-0 w-10 h-10 bg-red-900/40 rounded flex items-center justify-center">
+                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                 </svg>
               </div>
@@ -89,40 +89,40 @@ function handleConfirm() {
           </div>
 
           <!-- Content -->
-          <div class="p-6 bg-slate-50 dark:bg-slate-900">
-            <p class="text-slate-600 dark:text-slate-400 mb-4">
+          <div class="p-6 bg-[#18181b]">
+            <p class="text-[#71717a] text-sm mb-4">
               {{ content }}
             </p>
 
             <div v-if="withValidation">
-              <p class="text-sm text-slate-600 dark:text-slate-400 mb-2 px-1">
+              <p class="text-sm text-[#71717a] mb-2">
                 {{ i18n.t('deleteModal.typeListNameToDelete') }}
               </p>
-              <p class="text-base font-bold text-red-600 dark:text-red-400 mb-3 px-1">
+              <p class="text-base font-medium text-red-400 mb-3">
                 {{ itemName }}
               </p>
               <input
                 v-model="confirmText"
                 type="text"
                 :placeholder="itemName"
-                class="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
+                class="w-full py-2 border-b border-[#27272a] focus:border-[#52525b] bg-transparent text-[#fafafa] placeholder:text-[#3f3f46] outline-none transition text-base"
               />
             </div>
           </div>
 
           <!-- Footer -->
-          <div class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 px-6 py-4">
+          <div class="bg-[#18181b] border-t border-[#27272a] px-6 py-4">
             <div class="flex gap-3">
               <button
                 @click="handleClose"
-                class="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-95"
+                class="flex-1 px-4 py-3 border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] font-medium rounded transition-colors active:scale-95"
               >
                 {{ i18n.t('common.cancel') }}
               </button>
               <button
                 @click="handleConfirm"
                 :disabled="!isDeleteEnabled"
-                class="flex-1 px-4 py-3 bg-red-500 hover:bg-red-600 disabled:bg-slate-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all active:scale-95"
+                class="flex-1 px-4 py-3 border border-red-800 text-red-400 bg-red-900/40 hover:bg-red-900/60 disabled:opacity-40 disabled:cursor-not-allowed font-medium rounded transition-all active:scale-95"
               >
                 {{ deleteButtonText || i18n.t('common.delete') }}
               </button>

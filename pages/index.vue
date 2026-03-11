@@ -11,7 +11,6 @@ import {useListStore} from "~/stores/lists";
 import { useI18nStore } from '~/stores/i18n';
 import { useSocket } from '~/composables/useSocket';
 import Button from 'primevue/button'
-import Card from 'primevue/card'
 import Tag from 'primevue/tag'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
@@ -295,68 +294,59 @@ function openListSettings(id: number) {
 <template>
   <div class="lists-shell px-4 py-6">
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
-      <div class="lists-hero rounded-3xl border border-white/10 shadow-2xl p-8 text-white space-y-5">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div class="space-y-2">
-            <p class="text-xs uppercase tracking-[0.4em] text-slate-300">
-              {{ i18n.t('lists.sharedWith') }}
-            </p>
-            <h1 class="text-3xl md:text-4xl font-bold">
-              {{ i18n.t('lists.title') }}
-            </h1>
-            <p class="text-sm text-slate-300">
-              {{ i18n.t('lists.emptyState.message') }}
-            </p>
-          </div>
-          <div class="flex gap-3">
-            <button
-              v-if="openListForm"
-              type="button"
-              class="lists-cta secondary"
-              @click="closeListForm"
-            >
-              <i class="pi pi-times"></i>
-              <span>{{ i18n.t('common.cancel') }}</span>
-            </button>
-            <button
-              v-else
-              type="button"
-              class="lists-cta"
-              @click="() => { editListId = undefined; openListForm = true }"
-            >
-              <i class="pi pi-plus"></i>
-              <span>{{ i18n.t('lists.newList') }}</span>
-            </button>
-          </div>
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 py-4 border-b border-[#27272a]">
+        <div class="space-y-1">
+          <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
+          <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">
+            {{ i18n.t('lists.title') }}
+          </h1>
+          <p class="text-sm text-[#71717a]">
+            {{ i18n.t('lists.emptyState.message') }}
+          </p>
         </div>
-
-
+        <div class="flex gap-3">
+          <button
+            v-if="openListForm"
+            type="button"
+            class="lists-cta secondary"
+            @click="closeListForm"
+          >
+            <i class="pi pi-times"></i>
+            <span>{{ i18n.t('common.cancel') }}</span>
+          </button>
+          <button
+            v-else
+            type="button"
+            class="lists-cta"
+            @click="() => { editListId = undefined; openListForm = true }"
+          >
+            <i class="pi pi-plus"></i>
+            <span>{{ i18n.t('lists.newList') }}</span>
+          </button>
+        </div>
       </div>
 
-      <Card v-if="openListForm" class="lists-card border border-slate-200/60 shadow-xl">
-        <template #content>
-          <ListForm
-            :list-id="editListId"
-            @list-added="handleList"
-            @close="closeListForm"
-          />
-        </template>
-      </Card>
+      <div v-if="openListForm" class="py-4">
+        <ListForm
+          :list-id="editListId"
+          @list-added="handleList"
+          @close="closeListForm"
+        />
+      </div>
 
-      <Card v-else class="lists-card border border-slate-200/60 shadow-xl">
-        <template #content>
+      <div v-else class="py-4">
           <div v-if="loading" class="space-y-3">
-            <Skeleton height="48px" class="rounded-2xl" />
-            <Skeleton height="48px" class="rounded-2xl" />
-            <Skeleton height="48px" class="rounded-2xl" />
+            <Skeleton height="48px" class="rounded" />
+            <Skeleton height="48px" class="rounded" />
+            <Skeleton height="48px" class="rounded" />
           </div>
 
-          <div v-else-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-12 gap-4 text-center text-white">
+          <div v-else-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-12 gap-4 text-center">
             <div class="text-5xl">🛒</div>
-            <h2 class="text-2xl font-semibold">
+            <h2 class="text-2xl font-light text-[#fafafa]">
               {{ i18n.t('lists.emptyState.title') }}
             </h2>
-            <p class="text-sm text-slate-200 max-w-md">
+            <p class="text-sm text-[#71717a] max-w-md">
               {{ i18n.t('lists.emptyState.message') }}
             </p>
             <Button
@@ -367,22 +357,17 @@ function openListSettings(id: number) {
           </div>
 
           <div v-else class="space-y-6">
-            <div class="md:hidden space-y-3">
+            <div class="md:hidden">
               <div
                 v-for="listItem in sortedLists"
                 :key="listItem.id"
-                class="lists-mobile-card text-white"
+                class="border-b border-[#27272a] py-4 cursor-pointer"
                 @click="router.push(`/list/${listItem.id}`)"
               >
                 <div class="flex items-center gap-3">
-                  <div
-                    class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl bg-white/10"
-                  >
-                    <span>{{ auth?.user?.favorite_list_id === listItem.id ? '⭐' : '📝' }}</span>
-                  </div>
                   <div class="flex-1 min-w-0">
-                    <p class="font-semibold text-white truncate">{{ listItem.name }}</p>
-                    <p class="text-xs text-slate-200">{{ i18n.t('lists.by') }} {{ listItem.created_by.name }}</p>
+                    <p class="font-medium text-[#fafafa] truncate">{{ listItem.name }}</p>
+                    <p class="text-xs text-[#71717a] mt-0.5">{{ i18n.t('lists.by') }} {{ listItem.created_by.name }}</p>
                   </div>
                   <Button
                     icon="pi pi-ellipsis-v"
@@ -392,22 +377,22 @@ function openListSettings(id: number) {
                     @click.stop="openActionMenu($event, listItem)"
                   />
                 </div>
-                <div class="mt-4 space-y-2">
-                  <div class="flex justify-between text-xs text-slate-200">
+                <div class="mt-3 space-y-2">
+                  <div class="flex justify-between text-xs text-[#71717a]">
                     <span>{{ getRemainingCount(listItem) }} {{ i18n.t('lists.remaining') }}</span>
-                    <span class="font-semibold text-emerald-300">{{ calculateProgress(listItem) }}%</span>
+                    <span class="text-[#a1a1aa]">{{ calculateProgress(listItem) }}%</span>
                   </div>
-                  <div class="h-2 bg-white/15 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-emerald-300 to-emerald-500 rounded-full" :style="{ width: `${calculateProgress(listItem)}%` }"></div>
+                  <div class="h-1.5 bg-[#27272a] rounded-full overflow-hidden">
+                    <div class="h-full bg-[#52525b] rounded-full transition-all duration-500" :style="{ width: `${calculateProgress(listItem)}%` }"></div>
                   </div>
-                  <div class="flex items-center justify-between text-xs text-slate-200">
+                  <div class="flex items-center justify-between text-xs text-[#71717a]">
                     <span>{{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }} {{ i18n.t('lists.items') }}</span>
                     <div class="flex -space-x-2">
                       <span
                         v-for="invite in listItem.grocery_list_invites?.slice(0, 3) || []"
                         :key="invite.user?.id"
-                        class="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-white/60 text-[10px] font-semibold"
-                        :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#0f172a' }"
+                        class="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#18181b] text-[10px] font-semibold"
+                        :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#18181b' }"
                       >
                         {{ invite.user?.name?.charAt(0)?.toUpperCase() ?? '?' }}
                       </span>
@@ -428,7 +413,7 @@ function openListSettings(id: number) {
                 class="lists-table"
               >
               <template #empty>
-                <div class="py-8 text-center text-sm text-slate-200">
+                <div class="py-8 text-center text-sm text-[#71717a]">
                   {{ i18n.t('lists.emptyState.message') }}
                 </div>
               </template>
@@ -438,12 +423,12 @@ function openListSettings(id: number) {
                   <div class="flex items-center gap-3 min-w-0">
                     <Avatar
                       :icon="auth?.user?.favorite_list_id === data.id ? 'pi pi-star-fill' : 'pi pi-list'"
-                      :class="auth?.user?.favorite_list_id === data.id ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-600'"
+                      :style="auth?.user?.favorite_list_id === data.id ? 'background:#27272a;color:#fafafa' : 'background:#27272a;color:#a1a1aa'"
                       shape="circle"
                     />
                     <div class="min-w-0">
-                      <p class="font-semibold text-white truncate">{{ data.name }}</p>
-                      <p class="text-xs text-slate-300">
+                      <p class="font-medium text-[#fafafa] truncate">{{ data.name }}</p>
+                      <p class="text-xs text-[#71717a]">
                         {{ i18n.t('lists.by') }} {{ data.created_by.name }}
                       </p>
                     </div>
@@ -455,7 +440,7 @@ function openListSettings(id: number) {
                 <template #body="{ data }">
                   <div class="flex items-center gap-3">
                     <ProgressBar class="flex-1" :value="calculateProgress(data)" :showValue="false" />
-                    <span class="text-sm font-medium">{{ calculateProgress(data) }}%</span>
+                    <span class="text-sm text-[#a1a1aa]">{{ calculateProgress(data) }}%</span>
                   </div>
                 </template>
               </Column>
@@ -464,7 +449,7 @@ function openListSettings(id: number) {
                 <template #body="{ data }">
                   <div class="flex items-center justify-center gap-2">
                     <Tag severity="warning" :value="getRemainingCount(data)" />
-                    <span>/</span>
+                    <span class="text-[#52525b]">/</span>
                     <Tag severity="info" :value="data.grocery_list_items_count ?? 0" />
                   </div>
                 </template>
@@ -479,7 +464,7 @@ function openListSettings(id: number) {
                         :key="invite.user?.id"
                         :label="invite.user?.name?.charAt(0)?.toUpperCase() ?? '?'"
                         class="font-semibold"
-                        :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#0f172a' }"
+                        :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#18181b' }"
                         shape="circle"
                         size="small"
                       />
@@ -490,7 +475,7 @@ function openListSettings(id: number) {
                       severity="secondary"
                     />
                   </div>
-                  <span v-else class="text-xs text-slate-300">—</span>
+                  <span v-else class="text-xs text-[#52525b]">—</span>
                 </template>
               </Column>
 
@@ -507,8 +492,7 @@ function openListSettings(id: number) {
               </DataTable>
             </div>
           </div>
-        </template>
-      </Card>
+      </div>
     </div>
   </div>
 
@@ -536,48 +520,8 @@ function openListSettings(id: number) {
 
 <style scoped>
 .lists-shell {
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
   background: transparent;
-}
-
-.lists-hero {
-  background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.9));
-  backdrop-filter: blur(30px);
-}
-
-:deep(.lists-card .p-card-body) {
-  padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.85));
-  border-radius: 1.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #f8fafc;
-  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
-  backdrop-filter: blur(30px);
-}
-
-:deep(.lists-card .p-card-content) {
-  padding: 0;
-}
-
-.lists-stat-card {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 1rem;
-  padding: 0.85rem 0.5rem;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-}
-
-.lists-mobile-card {
-  background: rgba(15, 23, 42, 0.65);
-  border-radius: 1.25rem;
-  padding: 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 15px 40px rgba(2, 6, 23, 0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.lists-mobile-card:active {
-  transform: scale(0.99);
-  box-shadow: 0 12px 24px rgba(2, 6, 23, 0.35);
 }
 
 .lists-cta {
@@ -585,45 +529,40 @@ function openListSettings(id: number) {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 999px;
-  padding: 0.85rem 1.75rem;
-  font-weight: 600;
-  background: linear-gradient(120deg, #fbbf24, #f97316);
-  color: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 15px 30px rgba(251, 191, 36, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: #fafafa;
+  color: #18181b;
+  border: 1px solid transparent;
+  transition: background 0.15s ease;
+}
+
+.lists-cta:hover {
+  background: #d4d4d8;
 }
 
 .lists-cta.secondary {
   background: transparent;
-  color: #f8fafc;
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: none;
+  color: #71717a;
+  border: 1px solid #27272a;
 }
 
-.lists-cta:active {
-  transform: translateY(2px);
-  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.25);
-}
-
-.lists-meta {
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  padding-top: 0.75rem;
+.lists-cta.secondary:hover {
+  border-color: #52525b;
+  color: #a1a1aa;
 }
 
 :deep(.lists-table .p-datatable-wrapper) {
-  border-radius: 1.75rem;
   overflow: hidden;
 }
 
 :deep(.lists-table .p-datatable) {
-  border-radius: 1.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  background: rgba(15, 23, 42, 0.82);
-  color: #f8fafc;
-  backdrop-filter: blur(30px);
-  box-shadow: 0 25px 55px rgba(2, 6, 23, 0.55);
+  border-top: 1px solid #27272a;
+  background: #1e1e21;
+  color: #fafafa;
+  box-shadow: none;
 }
 
 :deep(.lists-table .p-datatable-header) {
@@ -632,24 +571,25 @@ function openListSettings(id: number) {
 }
 
 :deep(.lists-table .p-datatable-thead > tr > th) {
-  background: rgba(255, 255, 255, 0.04);
-  padding: 0.85rem 1.25rem;
-  font-size: 0.7rem;
+  background: #1e1e21;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: #cbd5f5;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  letter-spacing: 0.14em;
+  color: #52525b;
+  font-weight: 500;
+  border-bottom: 1px solid #27272a;
 }
 
 :deep(.lists-table .p-datatable-tbody > tr > td) {
   padding: 1rem 1.25rem;
   border: 0;
-  color: #f8fafc;
+  color: #fafafa;
 }
 
 :deep(.lists-table .p-datatable-tbody > tr) {
-  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
-  transition: background 0.2s ease, transform 0.2s ease;
+  border-bottom: 1px solid #27272a;
+  transition: background 0.15s ease;
   background: transparent;
 }
 
@@ -658,44 +598,49 @@ function openListSettings(id: number) {
 }
 
 :deep(.lists-table .p-datatable-tbody > tr.p-highlight) {
-  background: rgba(59, 130, 246, 0.15);
+  background: #27272a;
 }
 
 :deep(.lists-table .p-datatable-tbody > tr:hover) {
-  background: rgba(59, 130, 246, 0.1);
+  background: #1e1e21;
 }
 
 :deep(.lists-table .p-progressbar) {
-  height: 0.4rem;
+  height: 0.375rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #27272a;
 }
 
 :deep(.lists-table .p-progressbar-value) {
   border-radius: 999px;
-  background: linear-gradient(90deg, #34d399, #10b981);
+  background: #52525b;
 }
 
 :deep(.lists-menu.p-menu) {
-  border-radius: 1rem;
-  border: 1px solid rgba(15, 23, 42, 0.1);
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
-  padding: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #27272a;
+  background: #1e1e21;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  padding: 0.4rem;
 }
 
 :deep(.lists-menu .p-menuitem-link) {
-  border-radius: 0.75rem;
-  padding: 0.6rem 0.85rem;
-  gap: 0.65rem;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  gap: 0.6rem;
+  color: #a1a1aa;
 }
 
 :deep(.lists-menu .p-menuitem-link:hover) {
-  background: rgba(59, 130, 246, 0.08);
+  background: #27272a;
+  color: #fafafa;
 }
 
-@media (max-width: 768px) {
-  :deep(.lists-hero-card .p-card-body) {
-    padding: 1.5rem;
-  }
+:deep(.lists-menu .p-menuitem-link .p-menuitem-text) {
+  color: inherit;
+}
+
+:deep(.lists-menu .p-menuitem-link .p-menuitem-icon) {
+  color: inherit;
 }
 </style>

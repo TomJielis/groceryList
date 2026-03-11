@@ -40,22 +40,18 @@ onMounted(() => {
 <template>
   <NuxtLayout>
     <div
-        :class="['min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 text-slate-100 font-inter flex flex-col relative transition-colors',
+        :class="['app-shell min-h-screen flex flex-col relative',
         { 'pwa-standalone': pwa }]"
     >
-      <Navbar
-          class="hidden md:block fixed top-0 left-0 right-0 z-50 h-12 border-b border-white/10 bg-slate-900/60 backdrop-blur-lg text-white"/>
+      <Navbar class="fixed top-0 left-0 right-0 z-50"/>
 
       <NotificationBar/>
 
-      <div
-          class="scrollable-content flex-1 overflow-y-auto pb-16 md:pb-0 bg-transparent"
-      >
+      <div class="scrollable-content flex-1 overflow-y-auto pb-16 md:pb-0">
         <NuxtPage />
       </div>
 
-      <BottomBar
-          class="md:hidden fixed bottom-0 left-0 right-0 z-50 h-16 shadow-xl border-t border-white/10 bg-slate-900/80 backdrop-blur-lg text-white"/>
+      <BottomBar class="fixed bottom-0 left-0 right-0 z-50"/>
     </div>
   </NuxtLayout>
 </template>
@@ -65,14 +61,21 @@ html,
 body {
   overflow: hidden;
   height: 100%;
-  background-color: #0f172a;
+  background-color: #18181b;
   overscroll-behavior: contain;
+  font-family: 'DM Sans', system-ui, sans-serif;
 }
 
 #__nuxt,
 #app {
   min-height: 100%;
-  background-color: #0f172a;
+  background-color: #18181b;
+}
+
+.app-shell {
+  background-color: #18181b;
+  color: #fafafa;
+  font-family: 'DM Sans', system-ui, sans-serif;
 }
 
 .scrollable-content {

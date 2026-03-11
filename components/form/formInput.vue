@@ -14,7 +14,7 @@ const emit = defineEmits<{
 
 <template>
   <div>
-    <label v-if="label" class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 block px-1">{{ label }}</label>
+    <label v-if="label" class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-2 block">{{ label }}</label>
     <input
         :type="inputType"
         :value="modelValue"
@@ -22,10 +22,10 @@ const emit = defineEmits<{
         :placeholder="placeholder"
         :disabled="disabled"
         :class="[
-          'w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base font-medium placeholder:text-slate-400 transition',
+          'w-full py-2 border-b border-[#27272a] focus:border-[#52525b] bg-transparent text-[#fafafa] placeholder:text-[#3f3f46] outline-none text-base transition',
           disabled
-            ? 'bg-slate-100 dark:bg-slate-800 text-slate-500 cursor-not-allowed'
-            : 'bg-slate-50 dark:bg-slate-900'
+            ? 'text-[#52525b] cursor-not-allowed'
+            : ''
         ]"
     />
   </div>

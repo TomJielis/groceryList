@@ -8,7 +8,10 @@ export default defineNuxtConfig({
                 {
                     rel: 'manifest',
                     href: '/manifest.json'
-                } as any
+                } as any,
+                { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+                { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' } as any,
+                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap' },
             ]
         }
     },

@@ -29,10 +29,13 @@ const props = defineProps<Props>()
 
 const chartData = computed(() => ({
   labels: props.labels,
-  datasets: props.datasets.map(ds => ({
+  datasets: props.datasets.map((ds, i) => ({
     ...ds,
-    borderColor: ds.borderColor || '#3B82F6',
-    backgroundColor: ds.backgroundColor || 'rgba(59, 130, 246, 0.1)',
+    borderColor: ds.borderColor || (i === 0 ? '#a1a1aa' : '#52525b'),
+    backgroundColor: ds.backgroundColor || (i === 0 ? 'rgba(161,161,170,0.08)' : 'rgba(82,82,91,0.08)'),
+    borderWidth: 1.5,
+    pointRadius: 2,
+    pointHoverRadius: 4,
     tension: 0.3,
     fill: true,
   }))
@@ -42,8 +45,30 @@ const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
-    legend: { position: 'top' as const },
-    title: { display: !!props.title, text: props.title }
+    legend: {
+      position: 'top' as const,
+      labels: { color: '#71717a', font: { family: 'DM Sans', size: 12 }, boxWidth: 12 }
+    },
+    title: { display: !!props.title, text: props.title, color: '#a1a1aa' },
+    tooltip: {
+      backgroundColor: '#1e1e21',
+      titleColor: '#fafafa',
+      bodyColor: '#a1a1aa',
+      borderColor: '#27272a',
+      borderWidth: 1,
+    }
+  },
+  scales: {
+    x: {
+      grid: { color: '#27272a' },
+      ticks: { color: '#52525b', font: { family: 'DM Sans' } },
+      border: { color: '#27272a' }
+    },
+    y: {
+      grid: { color: '#27272a' },
+      ticks: { color: '#52525b', font: { family: 'DM Sans' } },
+      border: { color: '#27272a' }
+    }
   }
 }
 </script>

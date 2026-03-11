@@ -13,19 +13,19 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 </script>
 
 <template>
-  <div class="space-y-3">
+  <div class="space-y-2">
     <!-- Dutch Option -->
     <label
-      class="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-xl border cursor-pointer transition-all"
+      class="flex items-center gap-4 p-4 border cursor-pointer transition-colors rounded"
       :class="i18n.locale === 'nl'
-        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-        : 'border-slate-200 dark:border-slate-700 hover:border-blue-300'"
+        ? 'border-[#27272a] bg-[#1e1e21]'
+        : 'border-[#27272a] bg-transparent hover:border-[#3f3f46]'"
     >
-      <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-xl">
+      <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-lg">
         🇳🇱
       </div>
       <div class="flex-1">
-        <p class="font-semibold text-slate-900 dark:text-white">{{ i18n.t('nav.dutch') }}</p>
+        <p class="font-medium text-[#fafafa]">{{ i18n.t('nav.dutch') }}</p>
       </div>
       <input
         type="radio"
@@ -33,25 +33,23 @@ function handleLanguageChange(locale: 'nl' | 'en') {
         @change="handleLanguageChange('nl')"
         class="sr-only"
       />
-      <div v-if="i18n.locale === 'nl'" class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-        </svg>
-      </div>
+      <svg v-if="i18n.locale === 'nl'" class="w-4 h-4 text-[#a1a1aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+      </svg>
     </label>
 
     <!-- English Option -->
     <label
-      class="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-xl border cursor-pointer transition-all"
+      class="flex items-center gap-4 p-4 border cursor-pointer transition-colors rounded"
       :class="i18n.locale === 'en'
-        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-        : 'border-slate-200 dark:border-slate-700 hover:border-blue-300'"
+        ? 'border-[#27272a] bg-[#1e1e21]'
+        : 'border-[#27272a] bg-transparent hover:border-[#3f3f46]'"
     >
-      <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-xl">
+      <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-lg">
         🇬🇧
       </div>
       <div class="flex-1">
-        <p class="font-semibold text-slate-900 dark:text-white">{{ i18n.t('nav.english') }}</p>
+        <p class="font-medium text-[#fafafa]">{{ i18n.t('nav.english') }}</p>
       </div>
       <input
         type="radio"
@@ -59,11 +57,9 @@ function handleLanguageChange(locale: 'nl' | 'en') {
         @change="handleLanguageChange('en')"
         class="sr-only"
       />
-      <div v-if="i18n.locale === 'en'" class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-        </svg>
-      </div>
+      <svg v-if="i18n.locale === 'en'" class="w-4 h-4 text-[#a1a1aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+      </svg>
     </label>
   </div>
 </template>

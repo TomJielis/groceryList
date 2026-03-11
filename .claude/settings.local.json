@@ -3,7 +3,10 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(npm run build:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Read(//Users/tomjielisvanwijgerden/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.1/**)",
+      "Bash(bash scripts/start-server.sh --project-dir /Users/tomjielisvanwijgerden/own-projects/groceryList)",
+      "Bash(cd /Users/tomjielisvanwijgerden/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.1 && bash skills/brainstorming/scripts/start-server.sh --project-dir /Users/tomjielisvanwijgerden/own-projects/groceryList 2>&1)"
     ]
   }
 }

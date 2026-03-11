@@ -88,6 +88,7 @@ async function handleSubmit() {
 </script>
 
 <template>
+  <!-- Inline mode -->
   <template v-if="inline">
     <transition
       enter-active-class="transition duration-200 ease-out"
@@ -97,33 +98,11 @@ async function handleSubmit() {
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-2"
     >
-      <div
-        v-if="visible"
-        class="w-full bg-slate-900/80 border border-white/10 rounded-3xl shadow-2xl text-white overflow-hidden mb-6"
-      >
-        <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <div v-if="visible" class="upload-form" style="font-family: 'DM Sans', system-ui, sans-serif;">
+        <form @submit.prevent="handleSubmit" class="flex flex-col gap-6">
+          <!-- Title -->
           <div>
-            <p class="text-xs uppercase tracking-[0.4em] text-slate-400">
-              {{ i18n.t('cards.upload') }}
-            </p>
-            <h2 class="text-2xl font-semibold">
-              {{ i18n.t('cards.subtitle') }}
-            </h2>
-          </div>
-          <button
-            type="button"
-            class="w-11 h-11 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center transition"
-            @click="emit('close')"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </button>
-        </div>
-
-        <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
-          <div>
-            <label class="block text-sm font-semibold text-slate-300 mb-2">
+            <label class="block text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em] mb-1.5">
               {{ i18n.t('cards.title') }}
             </label>
             <input
@@ -131,73 +110,65 @@ async function handleSubmit() {
               type="text"
               :placeholder="i18n.t('cards.titlePlaceholder')"
               required
-              class="w-full px-4 py-3 bg-white/5 border border-white/15 rounded-2xl focus:ring-2 focus:ring-emerald-300/60 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
+              class="w-full px-0 py-2 bg-transparent border-b border-[#27272a] focus:border-[#52525b] outline-none transition text-base font-medium text-[#fafafa] placeholder:text-[#3f3f46]"
             />
           </div>
 
+          <!-- File -->
           <div>
-            <label class="block text-sm font-semibold text-slate-300 mb-2">
+            <label class="block text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em] mb-1.5">
               {{ i18n.t('cards.attachment') }}
             </label>
-            <div class="relative">
-              <input
-                @change="handleFileChange"
-                type="file"
-                id="inline-attachment"
-                accept="image/*,application/pdf"
-                required
-                class="block w-full text-sm text-slate-300
-                  file:mr-4 file:py-3 file:px-4
-                  file:rounded-xl file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-gradient-to-r file:from-emerald-400 file:to-emerald-500
-                  file:text-slate-900
-                  hover:file:from-emerald-300 hover:file:to-emerald-400
-                  file:cursor-pointer file:transition-all
-                  border-2 border-dashed border-white/15
-                  rounded-2xl p-4
-                  hover:border-emerald-300/60
-                  bg-white/5 backdrop-blur"
-              />
-            </div>
-            <p class="mt-2 text-xs text-slate-400 flex items-center gap-1">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              <span>{{ i18n.t('cards.fileTypes') }}</span>
-            </p>
+            <input
+              @change="handleFileChange"
+              type="file"
+              id="inline-attachment"
+              accept="image/*,application/pdf"
+              required
+              class="block w-full text-sm text-[#71717a]
+                file:mr-4 file:py-2 file:px-4
+                file:rounded file:border file:border-[#27272a]
+                file:text-sm file:font-medium
+                file:bg-transparent file:text-[#a1a1aa]
+                hover:file:border-[#52525b] hover:file:text-[#fafafa]
+                file:cursor-pointer file:transition-all
+                border border-dashed border-[#27272a]
+                rounded p-3
+                hover:border-[#52525b]"
+            />
+            <p class="mt-2 text-xs text-[#52525b]">{{ i18n.t('cards.fileTypes') }}</p>
 
-            <div
-              v-if="formData.attachment"
-              class="mt-3 p-3 bg-emerald-400/10 rounded-xl border border-emerald-400/20 flex items-center gap-2 text-sm"
-            >
-              <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div v-if="formData.attachment" class="mt-3 flex items-center gap-2 text-sm text-[#a1a1aa]">
+              <svg class="w-4 h-4 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               <span>{{ formData.attachment.name }}</span>
             </div>
           </div>
 
-          <div class="flex flex-col md:flex-row gap-3 pt-2">
+          <!-- Buttons -->
+          <div class="flex gap-2 pt-2">
             <button
               type="button"
-              class="flex-1 px-4 py-3 rounded-2xl border border-white/15 bg-white/5 text-white hover:bg-white/10 transition"
+              class="flex-1 px-4 py-2.5 border border-[#27272a] hover:border-[#52525b] text-[#71717a] hover:text-[#a1a1aa] font-medium rounded transition active:scale-95 text-sm"
               @click="emit('close')"
             >
               {{ i18n.t('common.cancel') }}
             </button>
             <button
               type="submit"
-              class="flex-1 px-4 py-3 rounded-2xl bg-gradient-to-r from-emerald-400 to-emerald-500 text-slate-900 font-semibold hover:from-emerald-300 hover:to-emerald-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              class="flex-1 px-4 py-2.5 bg-[#fafafa] text-[#18181b] font-medium rounded transition active:scale-95 text-sm hover:bg-[#d4d4d8] disabled:opacity-30 disabled:cursor-not-allowed"
               :disabled="!formData.title || !formData.attachment || uploading"
             >
-              {{ uploading ? (i18n.t('common.loading')) : (i18n.t('cards.uploadBtn')) }}
+              {{ uploading ? i18n.t('common.loading') : i18n.t('cards.uploadBtn') }}
             </button>
           </div>
         </form>
       </div>
     </transition>
   </template>
+
+  <!-- Modal (teleport) mode -->
   <Teleport v-else to="body">
     <transition
       enter-active-class="transition duration-200 ease-out"
@@ -209,8 +180,9 @@ async function handleSubmit() {
     >
       <div
         v-if="visible"
-        class="fixed inset-0 z-[9999] bg-slate-950/60 backdrop-blur-lg flex items-center justify-center p-4 md:p-8"
+        class="fixed inset-0 z-[9999] bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-6"
         @click.self="emit('close')"
+        style="font-family: 'DM Sans', system-ui, sans-serif;"
       >
         <transition
           enter-active-class="transition duration-300 ease-out"
@@ -222,20 +194,17 @@ async function handleSubmit() {
         >
           <div
             v-if="visible"
-            class="w-full max-w-2xl bg-slate-900/90 border border-white/10 rounded-3xl shadow-2xl text-white overflow-hidden"
+            class="w-full sm:max-w-lg bg-[#18181b] border border-[#27272a] rounded-t sm:rounded overflow-hidden"
           >
-            <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#27272a]">
               <div>
-                <p class="text-xs uppercase tracking-[0.4em] text-slate-400">
-                  {{ i18n.t('cards.upload') }}
-                </p>
-                <h2 class="text-2xl font-semibold">
-                  {{ i18n.t('cards.subtitle') }}
-                </h2>
+                <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-0.5 font-medium">grocery list</p>
+                <h2 class="text-[1.1rem] font-medium text-[#fafafa]">{{ i18n.t('cards.subtitle') }}</h2>
               </div>
               <button
                 type="button"
-                class="w-11 h-11 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center transition"
+                class="w-9 h-9 flex items-center justify-center text-[#52525b] hover:text-[#a1a1aa] transition-colors"
                 @click="emit('close')"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,9 +213,10 @@ async function handleSubmit() {
               </button>
             </div>
 
-            <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
+            <form @submit.prevent="handleSubmit" class="p-6 flex flex-col gap-6">
+              <!-- Title -->
               <div>
-                <label class="block text-sm font-semibold text-slate-300 mb-2">
+                <label class="block text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em] mb-1.5">
                   {{ i18n.t('cards.title') }}
                 </label>
                 <input
@@ -254,64 +224,54 @@ async function handleSubmit() {
                   type="text"
                   :placeholder="i18n.t('cards.titlePlaceholder')"
                   required
-                  class="w-full px-4 py-3 bg-white/5 border border-white/15 rounded-2xl focus:ring-2 focus:ring-emerald-300/60 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
+                  class="w-full px-0 py-2 bg-transparent border-b border-[#27272a] focus:border-[#52525b] outline-none transition text-base font-medium text-[#fafafa] placeholder:text-[#3f3f46]"
                 />
               </div>
 
+              <!-- File -->
               <div>
-                <label class="block text-sm font-semibold text-slate-300 mb-2">
+                <label class="block text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em] mb-1.5">
                   {{ i18n.t('cards.attachment') }}
                 </label>
-                <div class="relative">
-                  <input
-                    @change="handleFileChange"
-                    type="file"
-                    id="attachment"
-                    accept="image/*,application/pdf"
-                    required
-                    class="block w-full text-sm text-slate-300
-                      file:mr-4 file:py-3 file:px-4
-                      file:rounded-xl file:border-0
-                      file:text-sm file:font-semibold
-                      file:bg-gradient-to-r file:from-emerald-400 file:to-emerald-500
-                      file:text-slate-900
-                      hover:file:from-emerald-300 hover:file:to-emerald-400
-                      file:cursor-pointer file:transition-all
-                      border-2 border-dashed border-white/15
-                      rounded-2xl p-4
-                      hover:border-emerald-300/60
-                      bg-white/5 backdrop-blur"
-                  />
-                </div>
-                <p class="mt-2 text-xs text-slate-400 flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                  <span>{{ i18n.t('cards.fileTypes') }}</span>
-                </p>
+                <input
+                  @change="handleFileChange"
+                  type="file"
+                  id="attachment"
+                  accept="image/*,application/pdf"
+                  required
+                  class="block w-full text-sm text-[#71717a]
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded file:border file:border-[#27272a]
+                    file:text-sm file:font-medium
+                    file:bg-transparent file:text-[#a1a1aa]
+                    hover:file:border-[#52525b] hover:file:text-[#fafafa]
+                    file:cursor-pointer file:transition-all
+                    border border-dashed border-[#27272a]
+                    rounded p-3
+                    hover:border-[#52525b]"
+                />
+                <p class="mt-2 text-xs text-[#52525b]">{{ i18n.t('cards.fileTypes') }}</p>
 
-                <div
-                  v-if="formData.attachment"
-                  class="mt-3 p-3 bg-emerald-400/10 rounded-xl border border-emerald-400/20 flex items-center gap-2 text-sm"
-                >
-                  <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div v-if="formData.attachment" class="mt-3 flex items-center gap-2 text-sm text-[#a1a1aa]">
+                  <svg class="w-4 h-4 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                   <span>{{ formData.attachment.name }}</span>
                 </div>
               </div>
 
-              <div class="flex flex-col md:flex-row gap-3 pt-2">
+              <!-- Buttons -->
+              <div class="flex gap-2 pt-2">
                 <button
                   type="button"
-                  class="flex-1 px-4 py-3 rounded-2xl border border-white/15 bg-white/5 text-white hover:bg-white/10 transition"
+                  class="flex-1 px-4 py-2.5 border border-[#27272a] hover:border-[#52525b] text-[#71717a] hover:text-[#a1a1aa] font-medium rounded transition active:scale-95 text-sm"
                   @click="emit('close')"
                 >
                   {{ i18n.t('common.cancel') }}
                 </button>
                 <button
                   type="submit"
-                  class="flex-1 px-4 py-3 rounded-2xl bg-gradient-to-r from-emerald-400 to-emerald-500 text-slate-900 font-semibold hover:from-emerald-300 hover:to-emerald-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="flex-1 px-4 py-2.5 bg-[#fafafa] text-[#18181b] font-medium rounded transition active:scale-95 text-sm hover:bg-[#d4d4d8] disabled:opacity-30 disabled:cursor-not-allowed"
                   :disabled="!formData.title || !formData.attachment || uploading"
                 >
                   {{ uploading ? i18n.t('common.loading') : i18n.t('cards.uploadBtn') }}
