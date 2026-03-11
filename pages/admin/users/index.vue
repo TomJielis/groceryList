@@ -50,7 +50,7 @@ const userColumns = [
   { key: 'email', label: i18n.t('admin.email') },
   { key: 'created_at', label: i18n.t('admin.registered'), type: 'date' as const },
   { key: 'last_active', label: i18n.t('admin.lastActive'), type: 'datetime' as const, hideOnMobile: true },
-  { key: 'lists_count', label: i18n.t('admin.lists'), type: 'number' as const },
+  { key: 'lists_count', label: i18n.t('admin.lists'), type: 'number' as const, hideOnMobile: true },
   { key: 'terms_version', label: i18n.t('admin.version'), hideOnMobile: true },
 ]
 </script>
@@ -82,8 +82,8 @@ const userColumns = [
           </div>
         </div>
         <!-- Stats row -->
-        <div class="flex divide-x divide-[#27272a] border-t border-[#27272a]">
-          <div class="flex-1 px-4 py-3 first:pl-0">
+        <div class="grid grid-cols-2 md:grid-cols-4 border-t border-[#27272a]">
+          <div class="px-0 pr-4 py-3 border-r border-b md:border-b-0 border-[#27272a]">
             <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">
               {{ i18n.t('admin.activeUsers') }}
             </p>
@@ -91,7 +91,7 @@ const userColumns = [
               {{ users.filter(user => user.last_active).length }}
             </p>
           </div>
-          <div class="flex-1 px-4 py-3">
+          <div class="px-4 py-3 border-b md:border-b-0 md:border-r border-[#27272a]">
             <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">
               {{ i18n.t('admin.verifiedEmails') }}
             </p>
@@ -99,7 +99,7 @@ const userColumns = [
               {{ users.filter(user => user.email_verified).length }}
             </p>
           </div>
-          <div class="flex-1 px-4 py-3">
+          <div class="px-0 pr-4 py-3 border-r border-[#27272a]">
             <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">
               {{ i18n.t('admin.blocked') }}
             </p>
@@ -107,7 +107,7 @@ const userColumns = [
               {{ users.filter(user => user.blocked).length }}
             </p>
           </div>
-          <div class="flex-1 px-4 py-3">
+          <div class="px-4 py-3">
             <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">
               {{ i18n.t('admin.lists') }}
             </p>
