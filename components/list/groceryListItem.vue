@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { useI18nStore } from '~/stores/i18n';
 import { useGroceryList } from '~/composables/useGroceryList';
+import Button from 'primevue/button';
 
 const props = defineProps<{
   item: any,
@@ -106,14 +107,20 @@ const handleSave = () => {
         >
           Annuleren
         </button>
-        <button
+        <Button
+          v-if="localItem.quantity === 0"
           @click="handleSave"
-          class="flex-1 px-4 py-2.5 font-medium rounded transition active:scale-95 text-sm"
-          :class="localItem.quantity === 0
-            ? 'bg-red-100 border border-red-300 text-red-600 hover:bg-red-200'
-            : 'bg-primary text-white hover:bg-primary-emphasis'"
+          severity="danger"
+          outlined
+          class="flex-1 active:scale-95 text-sm"
+          :label="i18n.t('common.delete')"
+        />
+        <button
+          v-else
+          @click="handleSave"
+          class="flex-1 px-4 py-2.5 font-medium rounded transition active:scale-95 text-sm bg-primary text-white hover:bg-primary-emphasis"
         >
-          {{ localItem.quantity === 0 ? i18n.t('common.delete') : i18n.t('common.save') }}
+          {{ i18n.t('common.save') }}
         </button>
       </div>
     </div>
