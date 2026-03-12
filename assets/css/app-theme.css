@@ -1,0 +1,188 @@
+/* ============================================================
+   App Theme — custom styles buiten PrimeVue componenten
+   Gebruik uitsluitend var(--p-*) of var(--app-*) tokens.
+   Geen hardcoded hexwaarden buiten :root.
+   ============================================================ */
+
+:root {
+  --app-bg:        #f0f4f8;
+  --app-bg-auth:   #e8ecf2;
+  --app-navy:      #1e3a5f;
+  --app-navy-dark: #16304f;
+  --app-success:   #10b981;
+  --app-error:     #ef4444;
+  --app-warning:   #f59e0b;
+  --app-info:      #3b82f6;
+}
+
+/* ----- Globaal ----- */
+body {
+  background-color: var(--app-bg);
+  color: var(--p-surface-900);
+}
+
+/* ----- Navbar (desktop) ----- */
+.app-navbar {
+  background: var(--app-navy);
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+
+.app-navbar-logo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--p-primary-color);
+  flex-shrink: 0;
+}
+
+.app-navbar-brand {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.app-navbar-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 5px 10px;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.app-navbar-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.app-navbar-link.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ----- BottomBar (mobile) ----- */
+.app-bottombar {
+  background: var(--p-surface-0);
+  border-top: 1px solid var(--p-surface-200);
+}
+
+.app-bottombar-tab {
+  color: var(--p-surface-400);
+  transition: color 0.15s;
+}
+
+.app-bottombar-tab.active {
+  color: var(--app-navy);
+}
+
+.app-bottombar-tab-icon.active {
+  background: var(--app-navy);
+  color: #fff;
+}
+
+/* ----- Auth pagina's ----- */
+.auth-page {
+  background: var(--app-bg-auth);
+}
+
+.auth-card-header {
+  background: var(--app-navy);
+  color: #fff;
+  border-radius: 4px 4px 0 0;
+  padding: 1.75rem 2rem 1.5rem;
+}
+
+.auth-card-header .auth-logo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--p-primary-color);
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.auth-card-header .auth-brand {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-card-header .auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-top: 0.75rem;
+  line-height: 1.2;
+}
+
+.auth-card-header .auth-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 4px;
+}
+
+/* ----- Stat kaarten (list detail + admin) ----- */
+.stat-card-item {
+  background: var(--p-surface-0);
+  border-radius: 4px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+}
+
+.stat-card-accent-orange { border-left: 3px solid var(--p-primary-color); }
+.stat-card-accent-blue   { border-left: 3px solid var(--app-info); }
+.stat-card-accent-green  { border-left: 3px solid var(--app-success); }
+
+.stat-card-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--p-surface-400);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.stat-card-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p-surface-900);
+  letter-spacing: -0.02em;
+}
+
+/* ----- List item rijen ----- */
+.list-item-row {
+  background: var(--p-surface-0);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ----- Pagina sectie headers ----- */
+.page-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--p-surface-400);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.page-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--p-surface-900);
+  letter-spacing: -0.02em;
+}
+
+/* ----- Notification kleuren ----- */
+.notification-success { background: var(--app-success); }
+.notification-error   { background: var(--app-error); }
+.notification-warning { background: var(--app-warning); }
+.notification-info    { background: var(--app-info); }

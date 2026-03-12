@@ -1,5 +1,5 @@
 import {defineNuxtConfig} from 'nuxt/config'
-import Aura from '@primevue/themes/aura'
+import BusinessPreset from './assets/theme/business'
 
 export default defineNuxtConfig({
     app: {
@@ -25,12 +25,12 @@ export default defineNuxtConfig({
         '/socket.io/**': {ssr: false},
     },
     modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
-    css: ['@/assets/css/tailwind.css', '@/assets/css/main.css', 'primeicons/primeicons.css'],
+    css: ['@/assets/css/tailwind.css', '@/assets/css/main.css', '@/assets/css/app-theme.css', 'primeicons/primeicons.css'],
     primevue: {
         options: {
             ripple: true,
             theme: {
-                preset: Aura
+                preset: BusinessPreset
             }
         }
     },

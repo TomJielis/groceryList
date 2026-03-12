@@ -61,7 +61,6 @@ html,
 body {
   overflow: hidden;
   height: 100%;
-  background-color: #18181b;
   overscroll-behavior: contain;
   font-family: 'DM Sans', system-ui, sans-serif;
 }
@@ -69,12 +68,9 @@ body {
 #__nuxt,
 #app {
   min-height: 100%;
-  background-color: #18181b;
 }
 
 .app-shell {
-  background-color: #18181b;
-  color: #fafafa;
   font-family: 'DM Sans', system-ui, sans-serif;
 }
 
