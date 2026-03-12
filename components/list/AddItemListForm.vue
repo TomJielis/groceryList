@@ -134,7 +134,7 @@ const filteredSuggestions = computed(() => {
 
 <template>
   <ClientOnly>
-    <div class="list-add-shell fixed inset-0 z-50 px-4 pb-6 overflow-hidden">
+    <div class="list-add-shell fixed inset-0 z-50 px-4 pb-6 overflow-hidden" style="background: var(--app-bg)">
       <div class="w-full max-w-5xl mx-auto h-full flex flex-col gap-4">
         <div class="pt-6 pb-4">
           <div class="flex flex-col gap-4">
