@@ -115,13 +115,13 @@ const handleSave = () => {
           class="flex-1 active:scale-95 text-sm"
           :label="i18n.t('common.delete')"
         />
-        <button
+        <Button
           v-else
+          severity="primary"
           @click="handleSave"
-          class="flex-1 px-4 py-2.5 font-medium rounded transition active:scale-95 text-sm bg-primary text-white hover:bg-primary-emphasis"
-        >
-          {{ i18n.t('common.save') }}
-        </button>
+          class="flex-1 active:scale-95 text-sm"
+          :label="i18n.t('common.save')"
+        />
       </div>
     </div>
   </div>
