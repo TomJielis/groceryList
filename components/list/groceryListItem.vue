@@ -18,8 +18,7 @@ const emit = defineEmits<{
 }>();
 
 const i18n = useI18nStore();
-const { decreaseItems, fetchItems } = useGroceryList();
-await fetchItems();
+const { decreaseItems } = useGroceryList();
 const localItem = ref({ ...props.item });
 
 watch(() => props.item, (newVal) => {
