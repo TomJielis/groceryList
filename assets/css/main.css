@@ -4,7 +4,7 @@ html, body {
     height: 100%;
     touch-action: none;
     -webkit-overflow-scrolling: auto;
-    background: #f3f4f6;
+    background: #f4f6f3;
 }
 
 html.pwa-standalone,

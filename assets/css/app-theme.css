@@ -5,10 +5,10 @@
    ============================================================ */
 
 :root {
-  --app-bg:        #f0f4f8;
-  --app-bg-auth:   #e8ecf2;
-  --app-navy:      #1e3a5f;
-  --app-navy-dark: #16304f;
+  --app-bg:        #f4f6f3;
+  --app-bg-auth:   #edf0ec;
+  --app-navy:      #1c2b2b;
+  --app-navy-dark: #152121;
   --app-success:   #10b981;
   --app-error:     #ef4444;
   --app-warning:   #f59e0b;
