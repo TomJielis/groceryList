@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { useI18nStore } from '~/stores/i18n';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
+import InputText from 'primevue/inputtext';
 
 const props = defineProps<{
   user: {
@@ -56,12 +57,12 @@ function handleSubmit() {
         <label class="block text-[0.65rem] uppercase tracking-[0.14em] font-medium mb-2">
           {{ i18n.t('profile.form.name') }}
         </label>
-        <input
+        <InputText
           v-model="userData.name"
           type="text"
           :placeholder="i18n.t('profile.namePlaceholder')"
           required
-          class="w-full pb-2 border-b bg-transparent outline-none text-base transition-colors"
+          class="w-full"
         />
       </div>
 
@@ -70,12 +71,12 @@ function handleSubmit() {
         <label class="block text-[0.65rem] uppercase tracking-[0.14em] font-medium mb-2">
           {{ i18n.t('profile.form.email') }}
         </label>
-        <input
+        <InputText
           v-model="userData.email"
           type="email"
           :placeholder="i18n.t('profile.emailPlaceholder')"
-          disabled
-          class="w-full pb-2 border-b bg-transparent outline-none text-base cursor-not-allowed"
+          :disabled="true"
+          class="w-full"
         />
         <p class="mt-2 text-xs flex items-center gap-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

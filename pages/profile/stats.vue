@@ -132,7 +132,7 @@ async function onMonthChange(month: string) {
               <p class="page-eyebrow mb-1">
                 {{ i18n.t('profile.itemsActivity') }}
               </p>
-              <h2 class="text-[1.1rem] font-medium mb-4">
+              <h2 class="page-heading mb-4">
                 {{ i18n.t('profile.itemsActivity') }}
               </h2>
               <ProfileItemsActivity :items="data.items" :invalid_login_attempts="data.invalid_login_attempts" />
@@ -143,7 +143,7 @@ async function onMonthChange(month: string) {
               <p class="page-eyebrow mb-1">
                 {{ i18n.t('profile.topItems') }}
               </p>
-              <h2 class="text-[1.1rem] font-medium mb-4">
+              <h2 class="page-heading mb-4">
                 {{ i18n.t('profile.topItems') }}
               </h2>
               <ProfileTopItems :top-items="data.top_items" />
