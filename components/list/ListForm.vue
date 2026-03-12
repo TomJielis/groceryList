@@ -7,6 +7,7 @@ import {useI18nStore} from '~/stores/i18n';
 import {useAuthStore} from "~/stores/auth";
 import deleteModal from '~/components/deleteModal.vue';
 import type { TGroceryListInvite } from '~/types/TGroceryList';
+import Button from 'primevue/button';
 
 const listStore = useListStore();
 const {showNotification, showSuccess} = useNotification();
@@ -163,15 +164,17 @@ async function removeSharedUser(invite: any) {
               <p v-if="invite.user?.name" class="text-xs text-surface-500">{{ invite.user?.email }}</p>
             </div>
           </div>
-          <button
+          <Button
             v-if="invite.user?.id !== auth.user.id"
+            severity="secondary"
+            text
             @click="removeSharedUser(invite)"
-            class="w-8 h-8 flex items-center justify-center transition-colors"
+            class="w-8 h-8 p-0"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
             </svg>
-          </button>
+          </Button>
         </div>
         <div class="border-t border-surface-200"></div>
       </div>
@@ -187,19 +190,22 @@ async function removeSharedUser(invite: any) {
 
     <!-- Action Buttons -->
     <div class="flex gap-2 pt-2">
-      <button
+      <Button
+        severity="secondary"
+        outlined
         @click="emit('close')"
-        class="flex-1 px-4 py-2.5 border border-surface-200 hover:border-surface-400 font-medium rounded transition active:scale-95 text-sm"
+        class="flex-1"
       >
         {{ i18n.t('common.cancel') }}
-      </button>
-      <button
+      </Button>
+      <Button
+        severity="primary"
         @click="props.listId ? updateListName() : addList()"
         :disabled="!newList.trim()"
-        class="flex-1 px-4 py-2.5 bg-primary text-white font-medium rounded transition active:scale-95 text-sm hover:bg-primary-emphasis disabled:opacity-30 disabled:cursor-not-allowed"
+        class="flex-1"
       >
         {{ props.listId ? i18n.t('lists.form.updateBtn') : i18n.t('lists.form.createBtn') }}
-      </button>
+      </Button>
     </div>
   </div>
 
