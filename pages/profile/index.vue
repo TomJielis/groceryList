@@ -10,6 +10,7 @@ import AccountActions from '~/components/profile/AccountActions.vue';
 import DeactivateAccountModal from '~/components/profile/DeactivateAccountModal.vue';
 import {useAuth} from "~/composables/useAuth";
 import PendingLists from "~/components/list/PendingGroceryList.vue";
+import Card from 'primevue/card';
 
 definePageMeta({
   middleware: ['auth', 'terms'],
@@ -91,44 +92,48 @@ function handleLogout() {
     <div class="w-full max-w-2xl mx-auto flex flex-col">
 
       <!-- Header -->
-      <div class="py-4 border-b border-[#27272a]">
-        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-        <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">
+      <div class="py-4 mb-4">
+        <p class="page-eyebrow">grocery list</p>
+        <h1 class="page-heading">
           {{ authStore.user?.name || i18n.t('profile.hello') }}
         </h1>
-        <p class="text-sm text-[#71717a] mt-1">{{ authStore.user?.email }}</p>
+        <p class="text-sm mt-1">{{ authStore.user?.email }}</p>
       </div>
 
       <!-- Profile Information -->
-      <div class="py-6 border-b border-[#27272a]">
-        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-        <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">{{ i18n.t('profile.information') }}</h2>
-        <ProfileInformation
-          :user="authStore.user"
-          @update="handleProfileUpdate"
-        />
+      <div class="py-6">
+        <p class="page-eyebrow">grocery list</p>
+        <h2 class="text-[1.1rem] font-medium mb-4">{{ i18n.t('profile.information') }}</h2>
+        <Card>
+          <template #content>
+            <ProfileInformation
+              :user="authStore.user"
+              @update="handleProfileUpdate"
+            />
+          </template>
+        </Card>
       </div>
 
       <!-- Pending Lists -->
-      <div class="py-6 border-b border-[#27272a]">
+      <div class="py-6">
         <PendingLists />
       </div>
 
       <!-- Navigation Links -->
       <NuxtLink
         to="/profile/stats"
-        class="flex items-center justify-between py-4 border-b border-[#27272a] group"
+        class="flex items-center justify-between py-4 border-b group"
       >
         <div class="flex items-center gap-3">
-          <svg class="w-4 h-4 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
           </svg>
           <div>
-            <p class="text-sm font-medium text-[#fafafa] group-hover:text-[#a1a1aa] transition-colors">{{ i18n.t('profile.myStats') }}</p>
-            <p class="text-xs text-[#71717a]">{{ i18n.t('profile.myStatsDescription') }}</p>
+            <p class="text-sm font-medium transition-colors">{{ i18n.t('profile.myStats') }}</p>
+            <p class="text-xs">{{ i18n.t('profile.myStatsDescription') }}</p>
           </div>
         </div>
-        <svg class="w-4 h-4 text-[#3f3f46]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
       </NuxtLink>
@@ -136,38 +141,42 @@ function handleLogout() {
       <NuxtLink
         v-if="authStore.user?.is_admin"
         to="/admin"
-        class="flex items-center justify-between py-4 border-b border-[#27272a] group"
+        class="flex items-center justify-between py-4 border-b group"
       >
         <div class="flex items-center gap-3">
-          <svg class="w-4 h-4 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
           <div>
-            <p class="text-sm font-medium text-[#fafafa] group-hover:text-[#a1a1aa] transition-colors">{{ i18n.t('profile.adminDashboard') }}</p>
-            <p class="text-xs text-[#71717a]">{{ i18n.t('profile.adminDashboardDescription') }}</p>
+            <p class="text-sm font-medium transition-colors">{{ i18n.t('profile.adminDashboard') }}</p>
+            <p class="text-xs">{{ i18n.t('profile.adminDashboardDescription') }}</p>
           </div>
         </div>
-        <svg class="w-4 h-4 text-[#3f3f46]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
       </NuxtLink>
 
       <!-- Language Settings -->
-      <div class="py-6 border-b border-[#27272a]">
-        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-        <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">{{ i18n.t('profile.language') }}</h2>
+      <div class="py-6">
+        <p class="page-eyebrow">grocery list</p>
+        <h2 class="text-[1.1rem] font-medium mb-4">{{ i18n.t('profile.language') }}</h2>
         <LanguageSettings @language-change="handleLanguageChange" />
       </div>
 
       <!-- Account Actions -->
       <div class="py-6">
-        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-        <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">{{ i18n.t('profile.accountActions') }}</h2>
-        <AccountActions
-          @logout="handleLogout"
-          @deactivate-account="openDeactivateModal"
-        />
+        <p class="page-eyebrow">grocery list</p>
+        <h2 class="text-[1.1rem] font-medium mb-4">{{ i18n.t('profile.accountActions') }}</h2>
+        <Card>
+          <template #content>
+            <AccountActions
+              @logout="handleLogout"
+              @deactivate-account="openDeactivateModal"
+            />
+          </template>
+        </Card>
       </div>
 
     </div>

@@ -4,6 +4,7 @@ import { useI18nStore } from '~/stores/i18n'
 import MonthSelector from '~/components/profile/MonthSelector.vue'
 import ProfileItemsActivity from '~/components/profile/ProfileItemsActivity.vue'
 import ProfileTopItems from '~/components/profile/ProfileTopItems.vue'
+import Card from 'primevue/card'
 
 definePageMeta({
   middleware: ['auth', 'terms']
@@ -71,20 +72,20 @@ async function onMonthChange(month: string) {
   <div class="stats-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
       <!-- Header -->
-      <div class="py-4 border-b border-[#27272a] flex items-center gap-3">
+      <div class="py-4 flex items-center gap-3">
         <NuxtLink
           to="/profile"
-          class="w-8 h-8 flex items-center justify-center text-[#71717a] hover:text-[#a1a1aa] transition-colors"
+          class="w-8 h-8 flex items-center justify-center transition-colors"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
           </svg>
         </NuxtLink>
         <div>
-          <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">
+          <p class="page-eyebrow">
             {{ i18n.t('profile.myStats') }}
           </p>
-          <h1 class="text-[1.1rem] font-medium text-[#fafafa]">
+          <h1 class="page-heading">
             {{ i18n.t('profile.myStatsDescription') }}
           </h1>
         </div>
@@ -94,8 +95,8 @@ async function onMonthChange(month: string) {
         <!-- Initial Loading State -->
         <div v-if="initialLoading" class="flex items-center justify-center py-20">
           <div class="text-center">
-            <div class="animate-spin rounded h-10 w-10 border-b-2 border-[#52525b] mx-auto"></div>
-            <p class="mt-4 text-[#71717a] text-sm">{{ i18n.t('common.loading') }}</p>
+            <div class="animate-spin rounded h-10 w-10 border-b-2 mx-auto"></div>
+            <p class="mt-4 text-sm">{{ i18n.t('common.loading') }}</p>
           </div>
         </div>
 
@@ -122,27 +123,27 @@ async function onMonthChange(month: string) {
 
           <!-- Loading indicator for month change -->
           <div v-if="loading" class="flex items-center justify-center py-10">
-            <div class="animate-spin rounded h-8 w-8 border-b-2 border-[#52525b]"></div>
+            <div class="animate-spin rounded h-8 w-8 border-b-2"></div>
           </div>
 
           <template v-else-if="data">
             <!-- Items Activity Section -->
-            <div class="border-t border-[#27272a] pt-5">
-              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
+            <div class="pt-5">
+              <p class="page-eyebrow mb-1">
                 {{ i18n.t('profile.itemsActivity') }}
               </p>
-              <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">
+              <h2 class="text-[1.1rem] font-medium mb-4">
                 {{ i18n.t('profile.itemsActivity') }}
               </h2>
               <ProfileItemsActivity :items="data.items" :invalid_login_attempts="data.invalid_login_attempts" />
             </div>
 
             <!-- Top Items Section -->
-            <div v-if="data.top_items" class="border-t border-[#27272a] pt-5">
-              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
+            <div v-if="data.top_items" class="pt-5">
+              <p class="page-eyebrow mb-1">
                 {{ i18n.t('profile.topItems') }}
               </p>
-              <h2 class="text-[1.1rem] font-medium text-[#fafafa] mb-4">
+              <h2 class="text-[1.1rem] font-medium mb-4">
                 {{ i18n.t('profile.topItems') }}
               </h2>
               <ProfileTopItems :top-items="data.top_items" />

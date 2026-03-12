@@ -46,14 +46,12 @@ function goNewer() {
 </script>
 
 <template>
-  <div class="w-full flex items-center border border-[#27272a] rounded overflow-hidden">
+  <div class="w-full flex items-center border rounded overflow-hidden">
     <button
       type="button"
       :disabled="!canGoOlder"
-      class="px-4 py-3 border-r border-[#27272a] transition focus:outline-none flex-shrink-0"
-      :class="canGoOlder
-        ? 'text-[#a1a1aa] hover:bg-[#1e1e21] hover:text-[#fafafa]'
-        : 'text-[#3f3f46] cursor-not-allowed'"
+      class="px-4 py-3 border-r transition focus:outline-none flex-shrink-0"
+      :class="canGoOlder ? '' : 'opacity-40 cursor-not-allowed'"
       @click="goOlder"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -61,17 +59,15 @@ function goNewer() {
       </svg>
     </button>
 
-    <span class="flex-1 text-sm font-medium text-[#fafafa] text-center capitalize px-3 py-3">
+    <span class="flex-1 text-sm font-medium text-center capitalize px-3 py-3">
       {{ formatMonth(selectedMonth) }}
     </span>
 
     <button
       type="button"
       :disabled="!canGoNewer"
-      class="px-4 py-3 border-l border-[#27272a] transition focus:outline-none flex-shrink-0"
-      :class="canGoNewer
-        ? 'text-[#a1a1aa] hover:bg-[#1e1e21] hover:text-[#fafafa]'
-        : 'text-[#3f3f46] cursor-not-allowed'"
+      class="px-4 py-3 border-l transition focus:outline-none flex-shrink-0"
+      :class="canGoNewer ? '' : 'opacity-40 cursor-not-allowed'"
       @click="goNewer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
