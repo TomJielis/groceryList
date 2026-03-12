@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18nStore } from '~/stores/i18n'
+import Button from 'primevue/button'
 
 const props = defineProps<{
   label?: string;
@@ -25,15 +26,16 @@ function onClick(e: MouseEvent) {
 <template>
   <div class="fixed left-0 mt-6 space-y-3 p-4 bottom-20 md:bottom-3 z-50 flex justify-center w-full">
     <div class="w-full max-w-md">
-      <button
+      <Button
         :type="props.type || 'button'"
         :aria-label="ariaLabel || labelText"
-        class="py-3 px-6 rounded border font-medium text-base transition-all active:scale-95 w-full"
-        style="border-color: var(--p-surface-300); color: var(--p-surface-500);"
+        severity="secondary"
+        outlined
+        class="w-full active:scale-95"
         @click="onClick"
       >
         <slot>{{ labelText }}</slot>
-      </button>
+      </Button>
     </div>
   </div>
 </template>
