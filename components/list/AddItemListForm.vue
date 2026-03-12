@@ -133,41 +133,41 @@ const filteredSuggestions = computed(() => {
 
 <template>
   <ClientOnly>
-    <div class="list-add-shell fixed inset-0 z-50 bg-[#18181b] px-4 pb-6 overflow-hidden">
+    <div class="list-add-shell fixed inset-0 z-50 px-4 pb-6 overflow-hidden">
       <div class="w-full max-w-5xl mx-auto h-full flex flex-col gap-4">
         <div class="pt-6 pb-4">
           <div class="flex flex-col gap-4">
             <div class="flex items-center gap-3">
               <button
                 @click="emit('close')"
-                class="w-10 h-10 flex items-center justify-center rounded border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors flex-shrink-0"
+                class="w-10 h-10 flex items-center justify-center rounded border border-surface-200 transition-colors flex-shrink-0"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
               </button>
               <div class="flex-1 min-w-0">
-                <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-0.5 font-medium">
+                <p class="page-eyebrow mb-0.5">
                   {{ listStore.lists.find((list: any) => list.id == listId)?.name }}
                 </p>
-                <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">
+                <h1 class="page-heading">
                   {{ i18n.t('items.addNew') }}
                 </h1>
               </div>
-              <div class="px-3 py-1.5 rounded border border-[#27272a] text-[#a1a1aa] text-sm font-medium flex-shrink-0">
+              <div class="px-3 py-1.5 rounded border border-surface-200 text-sm font-medium flex-shrink-0">
                 €{{ items.filter(item => !item.checked).reduce((sum, item) => sum + ((item.unit_price || 0) * item.quantity), 0).toFixed(2) }}
               </div>
             </div>
 
             <div class="relative">
-              <svg class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
               </svg>
               <input
                 v-model="newItem"
                 type="text"
                 :placeholder="i18n.t('items.addPlaceholder')"
-                class="w-full pl-7 pr-0 py-3 bg-transparent border-b border-[#27272a] focus:border-[#52525b] outline-none transition text-[#fafafa] placeholder:text-[#3f3f46] text-base"
+                class="w-full pl-7 pr-0 py-3 bg-transparent border-b border-surface-200 focus:border-surface-400 outline-none transition placeholder:text-surface-300 text-base"
                 autofocus
               />
             </div>
@@ -178,18 +178,18 @@ const filteredSuggestions = computed(() => {
           <div class="list-add-scroll h-full overflow-y-auto">
             <div v-if="loading" class="flex items-center justify-center py-20">
               <div class="text-center">
-                <div class="animate-spin rounded-full h-8 w-8 border-2 border-[#3f3f46] border-t-[#a1a1aa] mx-auto"></div>
-                <p class="mt-4 text-sm text-[#71717a]">{{ i18n.t('common.loading') }}</p>
+                <div class="animate-spin rounded-full h-8 w-8 border-2 border-surface-200 border-t-surface-500 mx-auto"></div>
+                <p class="mt-4 text-sm text-surface-500">{{ i18n.t('common.loading') }}</p>
               </div>
             </div>
 
             <div v-else-if="filteredSuggestions.length === 0" class="flex flex-col items-center justify-center py-20 space-y-4">
-              <div class="w-14 h-14 bg-[#1e1e21] border border-[#27272a] rounded flex items-center justify-center">
-                <svg class="w-6 h-6 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-14 h-14 border border-surface-200 rounded flex items-center justify-center">
+                <svg class="w-6 h-6 text-surface-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
               </div>
-              <p class="text-[#71717a] text-center text-sm">
+              <p class="text-surface-500 text-center text-sm">
                 {{ i18n.t('items.noSuggestions') }}
               </p>
             </div>
@@ -197,22 +197,22 @@ const filteredSuggestions = computed(() => {
             <div v-else class="pb-24">
             <!-- Section: Items in List -->
             <div v-if="filteredSuggestions.some(item => isInListUnchecked(item.name))" class="mb-6">
-              <h3 class="text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em] mb-3 px-1">
+              <h3 class="text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-3 px-1 text-surface-400">
                 {{ i18n.t('items.inList') }}
               </h3>
 
               <!-- Desktop Table -->
-              <div class="hidden md:block border border-[#27272a] rounded overflow-hidden">
+              <div class="hidden md:block border border-surface-200 rounded overflow-hidden">
                 <div
                   v-for="(item, index) in filteredSuggestions.filter(i => isInListUnchecked(i.name))"
                   :key="item.name"
                   class="flex items-center gap-4 px-4 py-3"
-                  :class="{ 'border-b border-[#27272a]': index < filteredSuggestions.filter(i => isInListUnchecked(i.name)).length - 1 }"
+                  :class="{ 'border-b border-surface-200': index < filteredSuggestions.filter(i => isInListUnchecked(i.name)).length - 1 }"
                 >
                   <!-- Check Button -->
                   <button
                     @click="toggleSuggestion(item.name)"
-                    class="flex-shrink-0 w-7 h-7 rounded bg-[#fafafa] text-[#18181b] flex items-center justify-center transition-transform active:scale-95 hover:bg-[#d4d4d8]"
+                    class="flex-shrink-0 w-7 h-7 rounded bg-primary text-white flex items-center justify-center transition-transform active:scale-95 hover:bg-primary-emphasis"
                     :disabled="processing.has(item.name.toLowerCase())"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -222,31 +222,31 @@ const filteredSuggestions = computed(() => {
 
                   <!-- Product Name -->
                   <div class="flex-1 min-w-0">
-                    <span class="font-medium text-[#fafafa]">{{ item.name }}</span>
+                    <span class="font-medium">{{ item.name }}</span>
                   </div>
 
                   <!-- Unit Price -->
-                  <div class="w-24 text-right text-sm text-[#71717a]">
+                  <div class="w-24 text-right text-sm text-surface-500">
                     €{{ (getListItem(item.name)?.unit_price || 0).toFixed(2) }}
                   </div>
 
                   <!-- Quantity Controls -->
-                  <div class="flex items-center bg-[#27272a] rounded overflow-hidden border border-[#3f3f46]">
+                  <div class="flex items-center rounded overflow-hidden border border-surface-200">
                     <button
                       @click.stop="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
-                      class="w-8 h-8 flex items-center justify-center text-[#a1a1aa] hover:text-[#fafafa] hover:bg-[#3f3f46] transition-colors"
+                      class="w-8 h-8 flex items-center justify-center transition-colors"
                     >−</button>
-                    <span class="w-8 text-center font-medium text-[#fafafa] text-sm">
+                    <span class="w-8 text-center font-medium text-sm">
                       {{ getListItem(item.name)?.quantity || 1 }}
                     </span>
                     <button
                       @click.stop="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
-                      class="w-8 h-8 flex items-center justify-center text-[#a1a1aa] hover:text-[#fafafa] hover:bg-[#3f3f46] transition-colors"
+                      class="w-8 h-8 flex items-center justify-center transition-colors"
                     >+</button>
                   </div>
 
                   <!-- Total -->
-                  <div class="w-20 text-right font-medium text-[#fafafa]">
+                  <div class="w-20 text-right font-medium">
                     €{{ ((getListItem(item.name)?.unit_price || 0) * (getListItem(item.name)?.quantity || 1)).toFixed(2) }}
                   </div>
                 </div>
@@ -257,13 +257,13 @@ const filteredSuggestions = computed(() => {
                 <div
                   v-for="item in filteredSuggestions.filter(i => isInListUnchecked(i.name))"
                   :key="item.name"
-                  class="border-b border-[#27272a] py-3"
+                  class="border-b border-surface-200 py-3"
                 >
                   <div class="flex items-center gap-3">
                     <!-- Check Button -->
                     <button
                       @click="toggleSuggestion(item.name)"
-                      class="flex-shrink-0 w-8 h-8 rounded bg-[#fafafa] text-[#18181b] flex items-center justify-center active:scale-95 hover:bg-[#d4d4d8]"
+                      class="flex-shrink-0 w-8 h-8 rounded bg-primary text-white flex items-center justify-center active:scale-95 hover:bg-primary-emphasis"
                       :disabled="processing.has(item.name.toLowerCase())"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -273,29 +273,29 @@ const filteredSuggestions = computed(() => {
 
                     <!-- Product Info -->
                     <div class="flex-1 min-w-0">
-                      <h3 class="font-medium text-[#fafafa] break-words text-sm">
+                      <h3 class="font-medium break-words text-sm">
                         {{ item.name }}
                       </h3>
-                      <p class="text-xs text-[#71717a]">
+                      <p class="text-xs text-surface-500">
                         €{{ (getListItem(item.name)?.unit_price || 0).toFixed(2) }} × {{ getListItem(item.name)?.quantity }}
                       </p>
                     </div>
 
                     <!-- Total & Controls -->
                     <div class="flex items-center gap-2">
-                      <span class="text-sm font-medium text-[#fafafa]">
+                      <span class="text-sm font-medium">
                         €{{ ((getListItem(item.name)?.unit_price || 0) * (getListItem(item.name)?.quantity || 1)).toFixed(2) }}
                       </span>
 
-                      <div class="flex items-center bg-[#27272a] rounded border border-[#3f3f46]">
+                      <div class="flex items-center rounded border border-surface-200">
                         <button
                           @click.stop="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
-                          class="w-8 h-8 flex items-center justify-center text-[#a1a1aa]"
+                          class="w-8 h-8 flex items-center justify-center"
                         >−</button>
-                        <span class="w-6 text-center font-medium text-sm text-[#fafafa]">{{ getListItem(item.name)?.quantity || 1 }}</span>
+                        <span class="w-6 text-center font-medium text-sm">{{ getListItem(item.name)?.quantity || 1 }}</span>
                         <button
                           @click.stop="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
-                          class="w-8 h-8 flex items-center justify-center text-[#a1a1aa]"
+                          class="w-8 h-8 flex items-center justify-center"
                         >+</button>
                       </div>
                     </div>
@@ -306,21 +306,21 @@ const filteredSuggestions = computed(() => {
 
             <!-- Section: Suggestions -->
             <div>
-              <h3 v-if="filteredSuggestions.some(item => isInListUnchecked(item.name))" class="text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em] mb-3 px-1">
+              <h3 v-if="filteredSuggestions.some(item => isInListUnchecked(item.name))" class="text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-3 px-1 text-surface-400">
                 {{ i18n.t('items.suggestions') }}
               </h3>
 
               <!-- Desktop Table -->
-              <div class="hidden md:block border border-[#27272a] rounded overflow-hidden">
+              <div class="hidden md:block border border-surface-200 rounded overflow-hidden">
                 <div
                   v-for="(item, index) in filteredSuggestions.filter(i => !isInListUnchecked(i.name))"
                   :key="item.name"
                   @click="toggleSuggestion(item.name)"
-                  class="flex items-center gap-4 px-4 py-3 cursor-pointer hover:bg-[#1e1e21] transition-colors"
-                  :class="{ 'border-b border-[#27272a]': index < filteredSuggestions.filter(i => !isInListUnchecked(i.name)).length - 1 }"
+                  class="flex items-center gap-4 px-4 py-3 cursor-pointer transition-colors"
+                  :class="{ 'border-b border-surface-200': index < filteredSuggestions.filter(i => !isInListUnchecked(i.name)).length - 1 }"
                 >
                   <!-- Add Icon -->
-                  <div class="flex-shrink-0 w-7 h-7 rounded bg-[#27272a] border border-[#3f3f46] text-[#a1a1aa] flex items-center justify-center">
+                  <div class="flex-shrink-0 w-7 h-7 rounded border border-surface-200 flex items-center justify-center">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
@@ -328,17 +328,17 @@ const filteredSuggestions = computed(() => {
 
                   <!-- Product Name -->
                   <div class="flex-1 min-w-0">
-                    <span class="font-medium text-[#fafafa]">{{ item.name }}</span>
+                    <span class="font-medium">{{ item.name }}</span>
                   </div>
 
                   <!-- Price -->
-                  <div class="w-24 text-right text-sm text-[#71717a]">
+                  <div class="w-24 text-right text-sm text-surface-500">
                     <span v-if="item.unit_price">€{{ item.unit_price.toFixed(2) }}</span>
-                    <span v-else class="text-[#52525b]">—</span>
+                    <span v-else class="text-surface-300">—</span>
                   </div>
 
                   <!-- Arrow -->
-                  <svg class="w-4 h-4 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4 text-surface-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                   </svg>
                 </div>
@@ -350,11 +350,11 @@ const filteredSuggestions = computed(() => {
                   v-for="item in filteredSuggestions.filter(i => !isInListUnchecked(i.name))"
                   :key="item.name"
                   @click="toggleSuggestion(item.name)"
-                  class="border-b border-[#27272a] py-3 cursor-pointer active:opacity-70 transition-opacity"
+                  class="border-b border-surface-200 py-3 cursor-pointer active:opacity-70 transition-opacity"
                 >
                   <div class="flex items-center gap-3">
                     <!-- Add Button -->
-                    <div class="flex-shrink-0 w-8 h-8 rounded bg-[#27272a] border border-[#3f3f46] text-[#a1a1aa] flex items-center justify-center">
+                    <div class="flex-shrink-0 w-8 h-8 rounded border border-surface-200 flex items-center justify-center">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                       </svg>
@@ -362,16 +362,16 @@ const filteredSuggestions = computed(() => {
 
                     <!-- Product Info -->
                     <div class="flex-1 min-w-0">
-                      <h3 class="font-medium text-[#fafafa] break-words text-sm">
+                      <h3 class="font-medium break-words text-sm">
                         {{ item.name }}
                       </h3>
-                      <p v-if="item.unit_price" class="text-xs text-[#71717a]">
+                      <p v-if="item.unit_price" class="text-xs text-surface-500">
                         €{{ item.unit_price.toFixed(2) }}
                       </p>
                     </div>
 
                     <!-- Arrow -->
-                    <svg class="w-4 h-4 text-[#52525b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 text-surface-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                   </div>
@@ -384,9 +384,9 @@ const filteredSuggestions = computed(() => {
       </div>
     </div>
     <template #fallback>
-      <div class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#18181b]">
-        <div class="animate-spin rounded-full h-8 w-8 border-2 border-[#3f3f46] border-t-[#a1a1aa]"></div>
-        <p class="mt-4 text-sm text-[#71717a]">{{ i18n.t('common.loading') }}</p>
+      <div class="fixed inset-0 z-50 flex flex-col items-center justify-center">
+        <div class="animate-spin rounded-full h-8 w-8 border-2 border-surface-200 border-t-surface-500"></div>
+        <p class="mt-4 text-sm text-surface-500">{{ i18n.t('common.loading') }}</p>
       </div>
     </template>
   </ClientOnly>

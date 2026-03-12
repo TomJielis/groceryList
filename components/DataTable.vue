@@ -87,24 +87,24 @@ const formatValue = (column: Column, row: any) => {
 </script>
 
 <template>
-  <div class="border-t border-[#27272a] overflow-hidden text-[#fafafa]">
+  <div class="border-t border-surface-200 overflow-hidden">
     <!-- Header -->
-    <div v-if="title || showViewAll" class="flex items-center justify-between py-4 border-b border-[#27272a]">
-      <h2 v-if="title" class="text-lg font-medium text-[#fafafa] flex items-center gap-2">
+    <div v-if="title || showViewAll" class="flex items-center justify-between py-4 border-b border-surface-200">
+      <h2 v-if="title" class="text-lg font-medium flex items-center gap-2">
         <span v-if="icon" class="text-xl">{{ icon }}</span>
         {{ title }}
       </h2>
       <NuxtLink
         v-if="showViewAll && viewAllLink"
         :to="viewAllLink"
-        class="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition"
+        class="text-sm transition"
       >
         {{ i18n.t('admin.viewAll') }}
       </NuxtLink>
     </div>
 
     <!-- Empty State -->
-    <div v-if="displayData.length === 0" class="text-center py-12 text-[#71717a]">
+    <div v-if="displayData.length === 0" class="text-center py-12 text-surface-500">
       <p>{{ emptyMessage }}</p>
     </div>
 
@@ -115,7 +115,7 @@ const formatValue = (column: Column, row: any) => {
           <th
             v-for="column in columns.filter(c => !c.hideOnTablet)"
             :key="column.key"
-            class="px-6 py-3 text-left text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em]"
+            class="px-6 py-3 text-left text-[0.65rem] font-medium uppercase tracking-[0.14em]"
             :class="{ 'hidden lg:table-cell': column.hideOnMobile }"
           >
             {{ column.label }}
@@ -127,14 +127,14 @@ const formatValue = (column: Column, row: any) => {
         <tr
           v-for="(row, rowIndex) in displayData"
           :key="rowIndex"
-          class="border-b border-[#27272a] hover:bg-[#1e1e21] transition-colors"
+          class="border-b border-surface-200 transition-colors"
         >
           <td
             v-for="column in columns.filter(c => !c.hideOnTablet)"
             :key="column.key"
             class="px-6 py-4 whitespace-nowrap text-sm"
             :class="[
-              column.class || 'text-[#a1a1aa]',
+              column.class,
               { 'hidden lg:table-cell': column.hideOnMobile }
             ]"
           >
@@ -142,7 +142,7 @@ const formatValue = (column: Column, row: any) => {
             <div v-if="column.type === 'link' && column.linkTo" class="flex items-center gap-2">
               <NuxtLink
                 :to="column.linkTo(row)"
-                class="font-medium text-[#fafafa] hover:text-[#a1a1aa] transition"
+                class="font-medium transition"
               >
                 {{ formatValue(column, row) }}
               </NuxtLink>
@@ -151,7 +151,7 @@ const formatValue = (column: Column, row: any) => {
                 <span
                   v-for="(badge, idx) in column.badges(row)"
                   :key="idx"
-                  class="px-2 py-0.5 text-xs font-medium rounded border border-[#3f3f46] text-[#a1a1aa]"
+                  class="px-2 py-0.5 text-xs font-medium rounded border border-surface-200"
                 >
                   {{ badge.text }}
                 </span>
@@ -163,7 +163,7 @@ const formatValue = (column: Column, row: any) => {
           <td v-if="rowLink" class="px-6 py-4 whitespace-nowrap">
             <NuxtLink
               :to="rowLink(row)"
-              class="text-[#a1a1aa] hover:text-[#fafafa] text-sm font-medium"
+              class="text-sm font-medium"
             >
               {{ rowLinkLabel || i18n.t('admin.details') }}
             </NuxtLink>
@@ -173,7 +173,7 @@ const formatValue = (column: Column, row: any) => {
     </table>
 
     <!-- Mobile Cards -->
-    <div v-if="displayData.length > 0" class="md:hidden divide-y divide-[#27272a]">
+    <div v-if="displayData.length > 0" class="md:hidden divide-y divide-surface-200">
       <div
         v-for="(row, rowIndex) in displayData"
         :key="rowIndex"
@@ -182,7 +182,7 @@ const formatValue = (column: Column, row: any) => {
         <!-- Primary Row (title + action) -->
         <div class="flex items-center justify-between mb-3">
           <div class="flex items-center gap-2 flex-wrap">
-            <span class="font-medium text-[#fafafa]">
+            <span class="font-medium">
               {{ formatValue(primaryColumn!, row) }}
             </span>
             <!-- Badges from primary column -->
@@ -190,7 +190,7 @@ const formatValue = (column: Column, row: any) => {
               <span
                 v-for="(badge, idx) in primaryColumn.badges(row)"
                 :key="idx"
-                class="px-2 py-0.5 text-xs font-medium rounded border border-[#3f3f46] text-[#a1a1aa]"
+                class="px-2 py-0.5 text-xs font-medium rounded border border-surface-200"
               >
                 {{ badge.text }}
               </span>
@@ -199,7 +199,7 @@ const formatValue = (column: Column, row: any) => {
           <NuxtLink
             v-if="rowLink"
             :to="rowLink(row)"
-            class="text-[#a1a1aa] hover:text-[#fafafa] text-sm font-medium flex-shrink-0"
+            class="text-sm font-medium flex-shrink-0"
           >
             {{ rowLinkLabel || i18n.t('admin.details') }}
           </NuxtLink>
@@ -208,7 +208,7 @@ const formatValue = (column: Column, row: any) => {
         <!-- Secondary info (like email) - show second column if it exists -->
         <p
           v-if="columns[1] && !columns[1].hideOnMobile"
-          class="text-[#71717a] text-sm mb-3 break-all"
+          class="text-surface-500 text-sm mb-3 break-all"
         >
           {{ formatValue(columns[1], row) }}
         </p>
@@ -218,10 +218,10 @@ const formatValue = (column: Column, row: any) => {
           <div
             v-for="column in mobileColumns.slice(1)"
             :key="column.key"
-            class="p-3 border-b border-[#27272a]"
+            class="p-3 border-b border-surface-200"
           >
-            <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">{{ column.label }}</p>
-            <p class="text-[#fafafa] font-medium">{{ formatValue(column, row) }}</p>
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] font-medium text-surface-400">{{ column.label }}</p>
+            <p class="font-medium">{{ formatValue(column, row) }}</p>
           </div>
         </div>
       </div>

@@ -9,6 +9,8 @@ import {useI18nStore} from '~/stores/i18n';
 import {useAuthStore} from '~/stores/auth';
 import {useSocket} from '~/composables/useSocket';
 import Loader from '~/components/Loader.vue';
+import Button from 'primevue/button';
+import ProgressBar from 'primevue/progressbar';
 
 
 definePageMeta({
@@ -133,105 +135,87 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 <template>
   <div class="list-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
-      <div class="py-4 border-b border-[#27272a]">
+      <div class="py-4 border-b border-surface-200">
         <div class="flex flex-col gap-6">
           <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div class="flex flex-col gap-4">
               <NuxtLink
                 to="/"
-                class="inline-flex w-10 h-10 items-center justify-center rounded border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors"
+                class="inline-flex w-10 h-10 items-center justify-center rounded border border-surface-200 transition-colors"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
               </NuxtLink>
               <div>
-                <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-                <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">
+                <p class="page-eyebrow mb-1">grocery list</p>
+                <h1 class="page-heading">
                   {{ list?.name }}
                 </h1>
-                <p class="text-sm text-[#71717a] mt-1">
+                <p class="text-sm text-surface-500 mt-1">
                   {{ uncheckedItems.length }} {{ i18n.t('list.remaining') }} · {{ checkedItems.length }} {{ i18n.t('list.done') }}
                 </p>
               </div>
             </div>
             <div class="flex flex-col sm:flex-row gap-3">
-              <button
+              <Button
                 v-if="showAddItem"
+                :label="i18n.t('common.cancel')"
+                severity="secondary"
                 @click="showAddItem = false"
-                class="w-full sm:w-auto px-5 py-2.5 rounded border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors text-sm font-medium"
-              >
-                {{ i18n.t('common.cancel') }}
-              </button>
-              <button
+              />
+              <Button
                 v-else
+                icon="pi pi-plus"
+                :label="i18n.t('items.addNew')"
+                severity="primary"
                 @click="showAddItem = true"
-                class="w-full sm:w-auto px-5 py-2.5 rounded bg-[#fafafa] text-[#18181b] font-medium flex items-center justify-center gap-2 hover:bg-[#d4d4d8] transition-colors text-sm"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-                </svg>
-                <span>{{ i18n.t('items.addNew') }}</span>
-              </button>
+              />
             </div>
           </div>
 
-          <div class="grid grid-cols-3 divide-x divide-[#27272a] border-t border-[#27272a] pt-4">
-            <div class="text-center px-3 first:pl-0 last:pr-0">
-              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
-                {{ i18n.t('items.total') }}
-              </p>
-              <p class="text-xl font-light text-[#fafafa]">€{{ totalPrice.toFixed(2) }}</p>
+          <div class="grid grid-cols-3 gap-3 pt-4">
+            <div class="stat-card-item stat-card-accent-orange">
+              <div class="stat-card-label">{{ i18n.t('items.total') }}</div>
+              <div class="stat-card-value">€{{ totalPrice.toFixed(2) }}</div>
             </div>
-            <div class="text-center px-3">
-              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
-                {{ i18n.t('list.remaining') }}
-              </p>
-              <p class="text-xl font-light text-[#a1a1aa]">{{ uncheckedItems.length }}</p>
+            <div class="stat-card-item stat-card-accent-blue">
+              <div class="stat-card-label">{{ i18n.t('list.remaining') }}</div>
+              <div class="stat-card-value">{{ uncheckedItems.length }}</div>
             </div>
-            <div class="text-center px-3 first:pl-0 last:pr-0">
-              <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-1">
-                {{ i18n.t('list.done') }}
-              </p>
-              <p class="text-xl font-light text-[#a1a1aa]">{{ checkedItems.length }}</p>
+            <div class="stat-card-item stat-card-accent-green">
+              <div class="stat-card-label">{{ i18n.t('list.done') }}</div>
+              <div class="stat-card-value">{{ checkedItems.length }}</div>
             </div>
           </div>
 
           <div v-if="items.length > 0" class="space-y-1.5">
-            <div class="flex items-center justify-between text-xs text-[#71717a]">
+            <div class="flex items-center justify-between text-xs text-surface-500">
               <span>{{ i18n.t('list.progress') }}</span>
-              <span class="text-[#a1a1aa]">{{ Math.round((checkedItems.length / items.length) * 100) }}%</span>
+              <span>{{ Math.round((checkedItems.length / items.length) * 100) }}%</span>
             </div>
-            <div class="h-1.5 bg-[#27272a] rounded-full overflow-hidden">
-              <div
-                class="h-full bg-[#52525b] rounded-full transition-all duration-500"
-                :style="{ width: `${(checkedItems.length / items.length) * 100}%` }"
-              ></div>
-            </div>
+            <ProgressBar :value="Math.round((checkedItems.length / items.length) * 100)" :showValue="false" />
           </div>
         </div>
       </div>
 
-      <div class="pt-4 text-[#fafafa]">
+      <div class="pt-4">
         <Loader v-if="loading" />
 
         <div v-else-if="items.length === 0 && !showAddItem" class="flex flex-col items-center justify-center py-12 px-6 text-center space-y-4">
           <div class="text-5xl">🛒</div>
-          <h2 class="text-xl font-light text-[#fafafa]">
+          <h2 class="text-xl font-light">
             {{ i18n.t('items.emptyState.title') }}
           </h2>
-          <p class="text-sm text-[#71717a] max-w-md">
+          <p class="text-sm text-surface-500 max-w-md">
             {{ i18n.t('items.emptyState.message') }}
           </p>
-          <button
+          <Button
+            icon="pi pi-plus"
+            :label="i18n.t('items.addFirst')"
+            severity="primary"
             @click="showAddItem = true"
-            class="px-5 py-2.5 bg-[#fafafa] text-[#18181b] rounded font-medium flex items-center gap-2 hover:bg-[#d4d4d8] transition-colors text-sm"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            <span>{{ i18n.t('items.addFirst') }}</span>
-          </button>
+          />
         </div>
 
         <div v-else class="space-y-5">
@@ -239,8 +223,8 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <!-- Active Items Section -->
           <div v-if="uncheckedItems.length > 0">
             <!-- Desktop Table View -->
-            <div class="hidden md:block bg-[#1e1e21] rounded border border-[#27272a] overflow-hidden">
-              <div class="grid grid-cols-12 gap-4 px-6 py-3 border-b border-[#27272a] text-[0.65rem] font-medium text-[#52525b] uppercase tracking-[0.14em]">
+            <div class="hidden md:block rounded overflow-hidden">
+              <div class="grid grid-cols-12 gap-4 px-6 py-3 text-[0.65rem] font-medium uppercase tracking-[0.14em] text-surface-400">
                 <div class="col-span-5">{{ i18n.t('items.name') }}</div>
                 <div class="col-span-2 text-center">{{ i18n.t('items.quantity') }}</div>
                 <div class="col-span-2 text-center">{{ i18n.t('items.price') }}</div>
@@ -279,13 +263,13 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
           <!-- All Done State -->
           <div v-else-if="checkedItems.length > 0" class="flex flex-col items-center justify-center py-12 px-6">
-            <div class="w-16 h-16 bg-[#27272a] rounded-full flex items-center justify-center mb-4">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4">
               <span class="text-3xl">🎉</span>
             </div>
-            <h2 class="text-lg font-light text-[#fafafa] mb-1 text-center">
+            <h2 class="text-lg font-light mb-1 text-center">
               {{ i18n.t('list.allDone') }}
             </h2>
-            <p class="text-[#71717a] text-center text-sm">
+            <p class="text-surface-500 text-center text-sm">
               {{ i18n.t('list.allDoneMessage') }}
             </p>
           </div>
@@ -294,23 +278,23 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           <div v-if="checkedItems.length > 0" class="mt-6">
             <button
               @click="showCheckedItems = !showCheckedItems"
-              class="w-full flex items-center justify-between py-3 border-t border-[#27272a] transition-colors duration-200 group"
+              class="w-full flex items-center justify-between py-3 border-t border-surface-200 transition-colors duration-200 group"
             >
               <div class="flex items-center gap-3">
-                <div class="w-7 h-7 rounded bg-[#27272a] flex items-center justify-center">
-                  <svg class="w-3.5 h-3.5 text-[#71717a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-7 h-7 rounded flex items-center justify-center">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                   </svg>
                 </div>
-                <span class="text-sm font-medium text-[#a1a1aa]">
+                <span class="text-sm font-medium text-surface-500">
                   {{ i18n.t('list.completed') }}
                 </span>
-                <span class="text-xs bg-[#27272a] text-[#71717a] px-2 py-0.5 rounded font-medium">
+                <span class="text-xs px-2 py-0.5 rounded font-medium">
                   {{ checkedItems.length }}
                 </span>
               </div>
               <svg
-                class="w-4 h-4 text-[#52525b] transition-transform duration-200"
+                class="w-4 h-4 transition-transform duration-200"
                 :class="{ 'rotate-180': showCheckedItems }"
                 fill="none"
                 stroke="currentColor"
@@ -330,7 +314,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
             >
               <div v-if="showCheckedItems" class="mt-3 overflow-hidden">
                 <!-- Desktop Table View -->
-                <div class="hidden md:block bg-[#1e1e21] rounded border border-[#27272a] overflow-hidden">
+                <div class="hidden md:block rounded overflow-hidden">
                   <transition-group name="list" tag="div">
                     <GroceryListItem
                       v-for="item in checkedItems"
@@ -374,7 +358,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           leave-from-class="opacity-100 scale-100"
           leave-to-class="opacity-0 scale-95"
         >
-          <div v-if="showAddItem" class="bg-[#1e1e21] rounded border border-[#27272a] overflow-hidden">
+          <div v-if="showAddItem" class="rounded overflow-hidden">
             <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
           </div>
         </transition>

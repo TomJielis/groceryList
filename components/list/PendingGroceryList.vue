@@ -5,6 +5,7 @@ import { useI18nStore } from "~/stores/i18n";
 import { useNotification } from '~/composables/useNotification';
 import type { TGroceryList } from '@/types/TGroceryList';
 import { useGroceryList } from "~/composables/useGroceryList";
+import Button from 'primevue/button';
 
 const emit = defineEmits(['refresh']);
 
@@ -41,23 +42,23 @@ function getCreatorName(list: TGroceryList): string {
 <template>
   <div v-if="pendingLists && pendingLists.length > 0" class="space-y-4">
     <!-- Header -->
-    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#27272a]">
+    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-surface-200">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 bg-[#27272a] flex items-center justify-center rounded">
-          <svg class="w-4 h-4 text-[#a1a1aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-8 h-8 flex items-center justify-center rounded">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
         <div>
-          <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">
+          <p class="page-eyebrow">
             {{ i18n.t('lists.pendingInvites') }}
           </p>
-          <p class="text-xs text-[#71717a]">
+          <p class="text-xs text-surface-500">
             {{ i18n.t('lists.approveOrDecline') }}
           </p>
         </div>
       </div>
-      <span class="px-2 py-0.5 border border-[#27272a] text-xs font-medium text-[#71717a] rounded">
+      <span class="px-2 py-0.5 border border-surface-200 text-xs font-medium rounded">
         {{ pendingLists.length }}
       </span>
     </div>
@@ -68,39 +69,39 @@ function getCreatorName(list: TGroceryList): string {
         <div
           v-for="list in pendingLists"
           :key="list.id"
-          class="border-b border-[#27272a] py-4"
+          class="list-item-row border-b border-surface-100 py-4 mb-1"
         >
           <!-- List Info -->
           <div class="flex items-start gap-3 mb-4">
-            <div class="w-9 h-9 bg-[#27272a] flex items-center justify-center flex-shrink-0 rounded">
-              <svg class="w-5 h-5 text-[#a1a1aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0 rounded">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
               </svg>
             </div>
             <div class="flex-1 min-w-0">
-              <h4 class="text-sm font-medium text-[#fafafa] truncate">
+              <h4 class="text-sm font-medium truncate">
                 {{ list.name }}
               </h4>
-              <p class="text-xs text-[#71717a] mt-0.5">
-                {{ i18n.t('lists.invitedBy') }} <span class="font-medium text-[#a1a1aa]">{{ getCreatorName(list) }}</span>
+              <p class="text-xs text-surface-500 mt-0.5">
+                {{ i18n.t('lists.invitedBy') }} <span class="font-medium">{{ getCreatorName(list) }}</span>
               </p>
             </div>
           </div>
 
           <!-- Action Buttons -->
           <div class="flex gap-2 flex-col sm:flex-row">
-            <button
+            <Button
+              :label="i18n.t('lists.approve')"
+              severity="success"
+              class="flex-1"
               @click="handleAction(list.id, 'accepted')"
-              class="flex-1 pending-btn primary"
-            >
-              {{ i18n.t('lists.approve') }}
-            </button>
-            <button
+            />
+            <Button
+              :label="i18n.t('lists.decline')"
+              severity="danger"
+              class="flex-1"
               @click="handleAction(list.id, 'declined')"
-              class="flex-1 pending-btn secondary"
-            >
-              {{ i18n.t('lists.decline') }}
-            </button>
+            />
           </div>
         </div>
       </transition-group>
@@ -117,43 +118,6 @@ function getCreatorName(list: TGroceryList): string {
 
 .pending-scroll::-webkit-scrollbar {
   width: 4px;
-}
-
-.pending-scroll::-webkit-scrollbar-track {
-  background: #18181b;
-}
-
-.pending-scroll::-webkit-scrollbar-thumb {
-  background: #3f3f46;
-  border-radius: 2px;
-}
-
-.pending-btn {
-  padding: 0.6rem 1rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.pending-btn.primary {
-  background: #fafafa;
-  color: #18181b;
-}
-
-.pending-btn.primary:hover {
-  background: #d4d4d8;
-}
-
-.pending-btn.secondary {
-  border: 1px solid #27272a;
-  color: #71717a;
-  background: transparent;
-}
-
-.pending-btn.secondary:hover {
-  border-color: #52525b;
-  color: #a1a1aa;
 }
 
 /* List animations */

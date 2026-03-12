@@ -19,6 +19,7 @@ import Avatar from 'primevue/avatar'
 import AvatarGroup from 'primevue/avatargroup'
 import Menu from 'primevue/menu'
 import Skeleton from 'primevue/skeleton'
+import Card from 'primevue/card'
 import type { MenuItem } from 'primevue/menuitem'
 
 const listStore = useListStore();
@@ -294,35 +295,31 @@ function openListSettings(id: number) {
 <template>
   <div class="lists-shell px-4 py-6">
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 py-4 border-b border-[#27272a]">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 py-4 border-b border-surface-200">
         <div class="space-y-1">
-          <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-          <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">
+          <p class="page-eyebrow mb-1">grocery list</p>
+          <h1 class="page-heading">
             {{ i18n.t('lists.title') }}
           </h1>
-          <p class="text-sm text-[#71717a]">
+          <p class="text-sm text-surface-500">
             {{ i18n.t('lists.emptyState.message') }}
           </p>
         </div>
         <div class="flex gap-3">
-          <button
+          <Button
             v-if="openListForm"
-            type="button"
-            class="lists-cta secondary"
+            icon="pi pi-times"
+            :label="i18n.t('common.cancel')"
+            severity="secondary"
             @click="closeListForm"
-          >
-            <i class="pi pi-times"></i>
-            <span>{{ i18n.t('common.cancel') }}</span>
-          </button>
-          <button
+          />
+          <Button
             v-else
-            type="button"
-            class="lists-cta"
+            icon="pi pi-plus"
+            :label="i18n.t('lists.newList')"
+            severity="primary"
             @click="() => { editListId = undefined; openListForm = true }"
-          >
-            <i class="pi pi-plus"></i>
-            <span>{{ i18n.t('lists.newList') }}</span>
-          </button>
+          />
         </div>
       </div>
 
@@ -343,15 +340,16 @@ function openListSettings(id: number) {
 
           <div v-else-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-12 gap-4 text-center">
             <div class="text-5xl">🛒</div>
-            <h2 class="text-2xl font-light text-[#fafafa]">
+            <h2 class="text-2xl font-light">
               {{ i18n.t('lists.emptyState.title') }}
             </h2>
-            <p class="text-sm text-[#71717a] max-w-md">
+            <p class="text-sm text-surface-500 max-w-md">
               {{ i18n.t('lists.emptyState.message') }}
             </p>
             <Button
               icon="pi pi-plus"
               :label="i18n.t('lists.createFirst')"
+              severity="primary"
               @click="() => { editListId = undefined; openListForm = true }"
             />
           </div>
@@ -361,13 +359,13 @@ function openListSettings(id: number) {
               <div
                 v-for="listItem in sortedLists"
                 :key="listItem.id"
-                class="border-b border-[#27272a] py-4 cursor-pointer"
+                class="border-b border-surface-200 py-4 cursor-pointer"
                 @click="router.push(`/list/${listItem.id}`)"
               >
                 <div class="flex items-center gap-3">
                   <div class="flex-1 min-w-0">
-                    <p class="font-medium text-[#fafafa] truncate">{{ listItem.name }}</p>
-                    <p class="text-xs text-[#71717a] mt-0.5">{{ i18n.t('lists.by') }} {{ listItem.created_by.name }}</p>
+                    <p class="font-medium truncate">{{ listItem.name }}</p>
+                    <p class="text-xs text-surface-500 mt-0.5">{{ i18n.t('lists.by') }} {{ listItem.created_by.name }}</p>
                   </div>
                   <Button
                     icon="pi pi-ellipsis-v"
@@ -378,21 +376,19 @@ function openListSettings(id: number) {
                   />
                 </div>
                 <div class="mt-3 space-y-2">
-                  <div class="flex justify-between text-xs text-[#71717a]">
+                  <div class="flex justify-between text-xs text-surface-500">
                     <span>{{ getRemainingCount(listItem) }} {{ i18n.t('lists.remaining') }}</span>
-                    <span class="text-[#a1a1aa]">{{ calculateProgress(listItem) }}%</span>
+                    <span>{{ calculateProgress(listItem) }}%</span>
                   </div>
-                  <div class="h-1.5 bg-[#27272a] rounded-full overflow-hidden">
-                    <div class="h-full bg-[#52525b] rounded-full transition-all duration-500" :style="{ width: `${calculateProgress(listItem)}%` }"></div>
-                  </div>
-                  <div class="flex items-center justify-between text-xs text-[#71717a]">
+                  <ProgressBar :value="calculateProgress(listItem)" :showValue="false" class="h-1.5" />
+                  <div class="flex items-center justify-between text-xs text-surface-500">
                     <span>{{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }} {{ i18n.t('lists.items') }}</span>
                     <div class="flex -space-x-2">
                       <span
                         v-for="invite in listItem.grocery_list_invites?.slice(0, 3) || []"
                         :key="invite.user?.id"
-                        class="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#18181b] text-[10px] font-semibold"
-                        :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#18181b' }"
+                        class="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-surface-0 text-[10px] font-semibold"
+                        :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
                       >
                         {{ invite.user?.name?.charAt(0)?.toUpperCase() ?? '?' }}
                       </span>
@@ -403,93 +399,97 @@ function openListSettings(id: number) {
             </div>
 
             <div class="hidden md:block">
-              <DataTable
-                :value="sortedLists"
-                dataKey="id"
-                responsiveLayout="stack"
-                breakpoint="960px"
-                rowHover
-                @row-click="handleRowNavigate"
-                class="lists-table"
-              >
-              <template #empty>
-                <div class="py-8 text-center text-sm text-[#71717a]">
-                  {{ i18n.t('lists.emptyState.message') }}
-                </div>
-              </template>
-
-              <Column :header="i18n.t('lists.name')">
-                <template #body="{ data }">
-                  <div class="flex items-center gap-3 min-w-0">
-                    <Avatar
-                      :icon="auth?.user?.favorite_list_id === data.id ? 'pi pi-star-fill' : 'pi pi-list'"
-                      :style="auth?.user?.favorite_list_id === data.id ? 'background:#27272a;color:#fafafa' : 'background:#27272a;color:#a1a1aa'"
-                      shape="circle"
-                    />
-                    <div class="min-w-0">
-                      <p class="font-medium text-[#fafafa] truncate">{{ data.name }}</p>
-                      <p class="text-xs text-[#71717a]">
-                        {{ i18n.t('lists.by') }} {{ data.created_by.name }}
-                      </p>
+              <Card>
+                <template #content>
+                  <DataTable
+                    :value="sortedLists"
+                    dataKey="id"
+                    responsiveLayout="stack"
+                    breakpoint="960px"
+                    rowHover
+                    @row-click="handleRowNavigate"
+                    class="lists-table"
+                  >
+                  <template #empty>
+                    <div class="py-8 text-center text-sm text-surface-500">
+                      {{ i18n.t('lists.emptyState.message') }}
                     </div>
-                  </div>
-                </template>
-              </Column>
+                  </template>
 
-              <Column :header="i18n.t('list.progress')" headerClass="text-center" bodyClass="align-middle">
-                <template #body="{ data }">
-                  <div class="flex items-center gap-3">
-                    <ProgressBar class="flex-1" :value="calculateProgress(data)" :showValue="false" />
-                    <span class="text-sm text-[#a1a1aa]">{{ calculateProgress(data) }}%</span>
-                  </div>
-                </template>
-              </Column>
+                  <Column :header="i18n.t('lists.name')">
+                    <template #body="{ data }">
+                      <div class="flex items-center gap-3 min-w-0">
+                        <Avatar
+                          :icon="auth?.user?.favorite_list_id === data.id ? 'pi pi-star-fill' : 'pi pi-list'"
+                          shape="circle"
+                        />
+                        <div class="min-w-0">
+                          <p class="font-medium truncate">{{ data.name }}</p>
+                          <p class="text-xs text-surface-500">
+                            {{ i18n.t('lists.by') }} {{ data.created_by.name }}
+                          </p>
+                        </div>
+                      </div>
+                    </template>
+                  </Column>
 
-              <Column :header="i18n.t('lists.items')" headerClass="text-center" bodyClass="text-center">
-                <template #body="{ data }">
-                  <div class="flex items-center justify-center gap-2">
-                    <Tag severity="warning" :value="getRemainingCount(data)" />
-                    <span class="text-[#52525b]">/</span>
-                    <Tag severity="info" :value="data.grocery_list_items_count ?? 0" />
-                  </div>
-                </template>
-              </Column>
+                  <Column :header="i18n.t('list.progress')" headerClass="text-center" bodyClass="align-middle">
+                    <template #body="{ data }">
+                      <div class="flex items-center gap-3">
+                        <ProgressBar class="flex-1" :value="calculateProgress(data)" :showValue="false" />
+                        <span class="text-sm">{{ calculateProgress(data) }}%</span>
+                      </div>
+                    </template>
+                  </Column>
 
-              <Column :header="i18n.t('lists.sharedWith')" headerClass="text-center" bodyClass="text-center">
-                <template #body="{ data }">
-                  <div v-if="data.grocery_list_invites?.length" class="flex items-center justify-center gap-2">
-                    <AvatarGroup>
-                      <Avatar
-                        v-for="invite in data.grocery_list_invites.slice(0, 3)"
-                        :key="invite.user?.id"
-                        :label="invite.user?.name?.charAt(0)?.toUpperCase() ?? '?'"
-                        class="font-semibold"
-                        :style="{ backgroundColor: stringToColor(invite?.user?.name), color: '#18181b' }"
-                        shape="circle"
-                        size="small"
+                  <Column :header="i18n.t('lists.items')" headerClass="text-center" bodyClass="text-center">
+                    <template #body="{ data }">
+                      <div class="flex items-center justify-center gap-2">
+                        <Tag severity="warning" :value="getRemainingCount(data)" />
+                        <span>/</span>
+                        <Tag severity="info" :value="data.grocery_list_items_count ?? 0" />
+                      </div>
+                    </template>
+                  </Column>
+
+                  <Column :header="i18n.t('lists.sharedWith')" headerClass="text-center" bodyClass="text-center">
+                    <template #body="{ data }">
+                      <div v-if="data.grocery_list_invites?.length" class="flex items-center justify-center gap-2">
+                        <AvatarGroup>
+                          <Avatar
+                            v-for="invite in data.grocery_list_invites.slice(0, 3)"
+                            :key="invite.user?.id"
+                            :label="invite.user?.name?.charAt(0)?.toUpperCase() ?? '?'"
+                            class="font-semibold"
+                            :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
+                            shape="circle"
+                            size="small"
+                          />
+                        </AvatarGroup>
+                        <Tag
+                          v-if="data.grocery_list_invites.length > 3"
+                          :value="`+${data.grocery_list_invites.length - 3}`"
+                          severity="secondary"
+                        />
+                      </div>
+                      <span v-else class="text-xs text-surface-400">—</span>
+                    </template>
+                  </Column>
+
+                  <Column headerClass="text-right w-10" bodyClass="text-right">
+                    <template #body="{ data }">
+                      <Button
+                        icon="pi pi-ellipsis-v"
+                        text
+                        rounded
+                        severity="secondary"
+                        @click.stop="openActionMenu($event, data)"
                       />
-                    </AvatarGroup>
-                    <Tag
-                      v-if="data.grocery_list_invites.length > 3"
-                      :value="`+${data.grocery_list_invites.length - 3}`"
-                      severity="secondary"
-                    />
-                  </div>
-                  <span v-else class="text-xs text-[#52525b]">—</span>
+                    </template>
+                  </Column>
+                  </DataTable>
                 </template>
-              </Column>
-
-              <Column headerClass="text-right w-10" bodyClass="text-right">
-                <template #body="{ data }">
-                  <Button
-                    icon="pi pi-ellipsis-v"
-                    text
-                    rounded
-                    @click.stop="openActionMenu($event, data)"
-                  />
-                </template>
-              </Column>
-              </DataTable>
+              </Card>
             </div>
           </div>
       </div>
@@ -524,45 +524,8 @@ function openListSettings(id: number) {
   background: transparent;
 }
 
-.lists-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 0.5rem;
-  padding: 0.6rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  background: #fafafa;
-  color: #18181b;
-  border: 1px solid transparent;
-  transition: background 0.15s ease;
-}
-
-.lists-cta:hover {
-  background: #d4d4d8;
-}
-
-.lists-cta.secondary {
-  background: transparent;
-  color: #71717a;
-  border: 1px solid #27272a;
-}
-
-.lists-cta.secondary:hover {
-  border-color: #52525b;
-  color: #a1a1aa;
-}
-
 :deep(.lists-table .p-datatable-wrapper) {
   overflow: hidden;
-}
-
-:deep(.lists-table .p-datatable) {
-  border-top: 1px solid #27272a;
-  background: #1e1e21;
-  color: #fafafa;
-  box-shadow: none;
 }
 
 :deep(.lists-table .p-datatable-header) {
@@ -571,76 +534,24 @@ function openListSettings(id: number) {
 }
 
 :deep(.lists-table .p-datatable-thead > tr > th) {
-  background: #1e1e21;
   padding: 0.75rem 1.25rem;
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: #52525b;
   font-weight: 500;
-  border-bottom: 1px solid #27272a;
 }
 
 :deep(.lists-table .p-datatable-tbody > tr > td) {
   padding: 1rem 1.25rem;
   border: 0;
-  color: #fafafa;
-}
-
-:deep(.lists-table .p-datatable-tbody > tr) {
-  border-bottom: 1px solid #27272a;
-  transition: background 0.15s ease;
-  background: transparent;
-}
-
-:deep(.lists-table .p-datatable-tbody > tr:last-child) {
-  border-bottom: 0;
-}
-
-:deep(.lists-table .p-datatable-tbody > tr.p-highlight) {
-  background: #27272a;
-}
-
-:deep(.lists-table .p-datatable-tbody > tr:hover) {
-  background: #1e1e21;
 }
 
 :deep(.lists-table .p-progressbar) {
   height: 0.375rem;
   border-radius: 999px;
-  background: #27272a;
 }
 
 :deep(.lists-table .p-progressbar-value) {
   border-radius: 999px;
-  background: #52525b;
-}
-
-:deep(.lists-menu.p-menu) {
-  border-radius: 0.75rem;
-  border: 1px solid #27272a;
-  background: #1e1e21;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  padding: 0.4rem;
-}
-
-:deep(.lists-menu .p-menuitem-link) {
-  border-radius: 0.5rem;
-  padding: 0.55rem 0.75rem;
-  gap: 0.6rem;
-  color: #a1a1aa;
-}
-
-:deep(.lists-menu .p-menuitem-link:hover) {
-  background: #27272a;
-  color: #fafafa;
-}
-
-:deep(.lists-menu .p-menuitem-link .p-menuitem-text) {
-  color: inherit;
-}
-
-:deep(.lists-menu .p-menuitem-link .p-menuitem-icon) {
-  color: inherit;
 }
 </style>
