@@ -4,17 +4,17 @@ import Aura from '@primevue/themes/aura'
 export default definePreset(Aura, {
   semantic: {
     primary: {
-      50:  '#fff7ed',
-      100: '#ffedd5',
-      200: '#fed7aa',
-      300: '#fdba74',
-      400: '#fb923c',
-      500: '#f97316',
-      600: '#ea580c',
-      700: '#c2410c',
-      800: '#9a3412',
-      900: '#7c2d12',
-      950: '#431407',
+      50:  '#f0faf5',
+      100: '#d9f2e5',
+      200: '#b3e5cc',
+      300: '#7dcfaa',
+      400: '#5ebd8a',
+      500: '#44a872',
+      600: '#33895a',
+      700: '#276946',
+      800: '#1e5237',
+      900: '#173d2a',
+      950: '#0c2419',
     },
     colorScheme: {
       light: {
@@ -33,16 +33,16 @@ export default definePreset(Aura, {
           950: '#020617',
         },
         primary: {
-          color:         '#f97316',
+          color:         '#5ebd8a',
           contrastColor: '#ffffff',
-          hoverColor:    '#ea580c',
-          activeColor:   '#c2410c',
+          hoverColor:    '#4aad78',
+          activeColor:   '#3a9a66',
         },
         highlight: {
-          background:      '#fff7ed',
-          focusBackground: '#ffedd5',
-          color:           '#c2410c',
-          focusColor:      '#9a3412',
+          background:      '#e8f5ee',
+          focusBackground: '#d1edd9',
+          color:           '#276946',
+          focusColor:      '#1e5237',
         },
       },
     },
@@ -53,7 +53,7 @@ export default definePreset(Aura, {
         style:  'none',
         color:  'transparent',
         offset: '0',
-        shadow: '0 0 0 3px rgba(30,58,95,0.12)',
+        shadow: '0 0 0 3px rgba(28,43,43,0.12)',
       },
     },
   },
@@ -74,7 +74,7 @@ export default definePreset(Aura, {
       root: {
         borderColor:      '{surface.300}',
         hoverBorderColor: '{surface.400}',
-        focusBorderColor: '#1e3a5f',
+        focusBorderColor: '#1c2b2b',
         background:       '{surface.50}',
         color:            '{surface.900}',
         placeholderColor: '{surface.400}',
@@ -85,7 +85,7 @@ export default definePreset(Aura, {
       root: {
         borderColor:      '{surface.300}',
         hoverBorderColor: '{surface.400}',
-        focusBorderColor: '#1e3a5f',
+        focusBorderColor: '#1c2b2b',
         background:       '{surface.50}',
         borderRadius:     '4px',
       },
@@ -93,9 +93,9 @@ export default definePreset(Aura, {
     checkbox: {
       root: {
         borderColor:            '{surface.300}',
-        checkedBackground:      '#1e3a5f',
-        checkedBorderColor:     '#1e3a5f',
-        checkedHoverBackground: '#16304f',
+        checkedBackground:      '#1c2b2b',
+        checkedBorderColor:     '#1c2b2b',
+        checkedHoverBackground: '#152121',
         borderRadius:           '3px',
       },
       icon: {
