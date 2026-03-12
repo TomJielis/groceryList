@@ -5,6 +5,7 @@ import {useGroceryList} from '~/composables/useGroceryList';
 import {useSuggestionStore} from '~/stores/suggestions'
 import { useI18nStore } from '~/stores/i18n';
 import {useListStore} from '~/stores/lists';
+import Button from 'primevue/button';
 
 const {
   addItem,
@@ -138,14 +139,16 @@ const filteredSuggestions = computed(() => {
         <div class="pt-6 pb-4">
           <div class="flex flex-col gap-4">
             <div class="flex items-center gap-3">
-              <button
+              <Button
+                severity="secondary"
+                outlined
                 @click="emit('close')"
-                class="w-10 h-10 flex items-center justify-center rounded border border-surface-200 transition-colors flex-shrink-0"
+                class="w-10 h-10 p-0 flex-shrink-0"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
-              </button>
+              </Button>
               <div class="flex-1 min-w-0">
                 <p class="page-eyebrow mb-0.5">
                   {{ listStore.lists.find((list: any) => list.id == listId)?.name }}
@@ -210,15 +213,16 @@ const filteredSuggestions = computed(() => {
                   :class="{ 'border-b border-surface-200': index < filteredSuggestions.filter(i => isInListUnchecked(i.name)).length - 1 }"
                 >
                   <!-- Check Button -->
-                  <button
+                  <Button
+                    severity="primary"
                     @click="toggleSuggestion(item.name)"
-                    class="flex-shrink-0 w-7 h-7 rounded bg-primary text-white flex items-center justify-center transition-transform active:scale-95 hover:bg-primary-emphasis"
                     :disabled="processing.has(item.name.toLowerCase())"
+                    class="flex-shrink-0 w-7 h-7 p-0"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
                     </svg>
-                  </button>
+                  </Button>
 
                   <!-- Product Name -->
                   <div class="flex-1 min-w-0">
@@ -232,17 +236,21 @@ const filteredSuggestions = computed(() => {
 
                   <!-- Quantity Controls -->
                   <div class="flex items-center rounded overflow-hidden border border-surface-200">
-                    <button
+                    <Button
+                      severity="secondary"
+                      text
                       @click.stop="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
-                      class="w-8 h-8 flex items-center justify-center transition-colors"
-                    >−</button>
+                      class="w-8 h-8 p-0"
+                    >−</Button>
                     <span class="w-8 text-center font-medium text-sm">
                       {{ getListItem(item.name)?.quantity || 1 }}
                     </span>
-                    <button
+                    <Button
+                      severity="secondary"
+                      text
                       @click.stop="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
-                      class="w-8 h-8 flex items-center justify-center transition-colors"
-                    >+</button>
+                      class="w-8 h-8 p-0"
+                    >+</Button>
                   </div>
 
                   <!-- Total -->
@@ -261,15 +269,16 @@ const filteredSuggestions = computed(() => {
                 >
                   <div class="flex items-center gap-3">
                     <!-- Check Button -->
-                    <button
+                    <Button
+                      severity="primary"
                       @click="toggleSuggestion(item.name)"
-                      class="flex-shrink-0 w-8 h-8 rounded bg-primary text-white flex items-center justify-center active:scale-95 hover:bg-primary-emphasis"
                       :disabled="processing.has(item.name.toLowerCase())"
+                      class="flex-shrink-0 w-8 h-8 p-0"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
                       </svg>
-                    </button>
+                    </Button>
 
                     <!-- Product Info -->
                     <div class="flex-1 min-w-0">
@@ -288,15 +297,19 @@ const filteredSuggestions = computed(() => {
                       </span>
 
                       <div class="flex items-center rounded border border-surface-200">
-                        <button
+                        <Button
+                          severity="secondary"
+                          text
                           @click.stop="() => { const found = getListItem(item.name); if (found) decreaseItems(found); }"
-                          class="w-8 h-8 flex items-center justify-center"
-                        >−</button>
+                          class="w-8 h-8 p-0"
+                        >−</Button>
                         <span class="w-6 text-center font-medium text-sm">{{ getListItem(item.name)?.quantity || 1 }}</span>
-                        <button
+                        <Button
+                          severity="secondary"
+                          text
                           @click.stop="() => { const found = getListItem(item.name); if (found) increaseItems(found); }"
-                          class="w-8 h-8 flex items-center justify-center"
-                        >+</button>
+                          class="w-8 h-8 p-0"
+                        >+</Button>
                       </div>
                     </div>
                   </div>
