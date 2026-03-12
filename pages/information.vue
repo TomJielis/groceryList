@@ -45,14 +45,12 @@ onMounted(() => {
 
       <!-- Header -->
       <div>
-        <p class="page-eyebrow">grocery list</p>
         <h1 class="page-heading mb-3">{{ t('info.title') }}</h1>
         <p class="text-sm text-color-secondary leading-relaxed">{{ t('info.subtitle') }}</p>
       </div>
 
       <!-- Features -->
       <div>
-        <p class="page-eyebrow">grocery list</p>
         <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.featuresTitle') }}</h2>
         <div class="flex flex-col gap-4">
           <Card
@@ -74,7 +72,6 @@ onMounted(() => {
 
       <!-- Desktop Screenshots -->
       <div>
-        <p class="page-eyebrow">grocery list</p>
         <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.screensTitle') }}</h2>
         <div class="flex flex-col gap-12">
           <div v-for="block in screenshotBlocks" :key="block.titleKey">
@@ -92,7 +89,6 @@ onMounted(() => {
 
       <!-- Mobile Screenshots -->
       <div>
-        <p class="page-eyebrow">grocery list</p>
         <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.screenMobileTitle') }}</h2>
         <p class="text-sm text-color-secondary leading-relaxed mb-6">{{ t('info.screenMobileText') }}</p>
         <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
@@ -110,7 +106,6 @@ onMounted(() => {
 
       <!-- PWA / Cross-platform -->
       <div>
-        <p class="page-eyebrow">grocery list</p>
         <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.crossPlatformTitle') }}</h2>
         <p class="text-sm text-color-secondary leading-relaxed mb-6">{{ t('info.pwaIntro') }}</p>
         <div class="flex flex-col">
@@ -125,7 +120,6 @@ onMounted(() => {
 
       <!-- CTA -->
       <div v-if="!auth.user" class="border-t border-surface-200 pt-10">
-        <p class="page-eyebrow">grocery list</p>
         <h2 class="text-[1.4rem] font-light tracking-tight mb-3">{{ t('info.ctaTitle') }}</h2>
         <p class="text-sm text-color-secondary leading-relaxed mb-6">{{ t('info.ctaSubtitle') }}</p>
         <NuxtLink to="/auth/register">

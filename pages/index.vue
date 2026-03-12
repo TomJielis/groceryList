@@ -297,7 +297,6 @@ function openListSettings(id: number) {
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 py-4 border-b border-surface-200">
         <div class="space-y-1">
-          <p class="page-eyebrow mb-1">grocery list</p>
           <h1 class="page-heading">
             {{ i18n.t('lists.title') }}
           </h1>
