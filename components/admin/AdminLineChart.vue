@@ -51,23 +51,23 @@ const chartOptions = {
     },
     title: { display: !!props.title, text: props.title, color: '#a1a1aa' },
     tooltip: {
-      backgroundColor: '#1e1e21',
-      titleColor: '#fafafa',
-      bodyColor: '#a1a1aa',
-      borderColor: '#27272a',
+      backgroundColor: '#ffffff',
+      titleColor: '#18181b',
+      bodyColor: '#52525b',
+      borderColor: '#e4e4e7',
       borderWidth: 1,
     }
   },
   scales: {
     x: {
-      grid: { color: '#27272a' },
-      ticks: { color: '#52525b', font: { family: 'DM Sans' } },
-      border: { color: '#27272a' }
+      grid: { color: '#f4f4f5' },
+      ticks: { color: '#71717a', font: { family: 'DM Sans' } },
+      border: { color: '#e4e4e7' }
     },
     y: {
-      grid: { color: '#27272a' },
-      ticks: { color: '#52525b', font: { family: 'DM Sans' } },
-      border: { color: '#27272a' }
+      grid: { color: '#f4f4f5' },
+      ticks: { color: '#71717a', font: { family: 'DM Sans' } },
+      border: { color: '#e4e4e7' }
     }
   }
 }

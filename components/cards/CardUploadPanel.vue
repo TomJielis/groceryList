@@ -103,7 +103,7 @@ async function handleSubmit() {
         <form @submit.prevent="handleSubmit" class="flex flex-col gap-6">
           <!-- Title -->
           <div>
-            <label class="block text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-1.5" style="color: var(--p-surface-500)">
+            <label class="block text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-1.5 text-color-secondary">
               {{ i18n.t('cards.title') }}
             </label>
             <input
@@ -117,7 +117,7 @@ async function handleSubmit() {
 
           <!-- File -->
           <div>
-            <label class="block text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-1.5" style="color: var(--p-surface-500)">
+            <label class="block text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-1.5 text-color-secondary">
               {{ i18n.t('cards.attachment') }}
             </label>
             <input
@@ -194,12 +194,12 @@ async function handleSubmit() {
         >
           <div
             v-if="visible"
-            class="w-full sm:max-w-lg bg-surface-900 border border-surface-200 rounded-t sm:rounded overflow-hidden"
+            class="w-full sm:max-w-lg bg-surface-0 border border-surface-200 rounded-t sm:rounded overflow-hidden"
           >
             <!-- Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-surface-200">
               <div>
-                <p class="text-[0.65rem] uppercase tracking-[0.14em] font-medium mb-0.5" style="color: var(--p-surface-500)">grocery list</p>
+                <p class="text-[0.65rem] uppercase tracking-[0.14em] font-medium mb-0.5 text-color-secondary">grocery list</p>
                 <h2 class="text-[1.1rem] font-medium">{{ i18n.t('cards.subtitle') }}</h2>
               </div>
               <button
@@ -216,7 +216,7 @@ async function handleSubmit() {
             <form @submit.prevent="handleSubmit" class="p-6 flex flex-col gap-6">
               <!-- Title -->
               <div>
-                <label class="block text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-1.5" style="color: var(--p-surface-500)">
+                <label class="block text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-1.5 text-color-secondary">
                   {{ i18n.t('cards.title') }}
                 </label>
                 <input
@@ -230,7 +230,7 @@ async function handleSubmit() {
 
               <!-- File -->
               <div>
-                <label class="block text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-1.5" style="color: var(--p-surface-500)">
+                <label class="block text-[0.65rem] font-medium uppercase tracking-[0.14em] mb-1.5 text-color-secondary">
                   {{ i18n.t('cards.attachment') }}
                 </label>
                 <input

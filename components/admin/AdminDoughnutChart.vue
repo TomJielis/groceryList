@@ -34,10 +34,10 @@ const chartOptions = {
     },
     title: { display: !!props.title, text: props.title, color: '#a1a1aa' },
     tooltip: {
-      backgroundColor: '#1e1e21',
-      titleColor: '#fafafa',
-      bodyColor: '#a1a1aa',
-      borderColor: '#27272a',
+      backgroundColor: '#ffffff',
+      titleColor: '#18181b',
+      bodyColor: '#52525b',
+      borderColor: '#e4e4e7',
       borderWidth: 1,
     }
   }

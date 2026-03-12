@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
 import Card from 'primevue/card'
-const config = useRuntimeConfig()
 
 const i18n = useI18nStore();
 </script>
