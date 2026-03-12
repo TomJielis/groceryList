@@ -27,7 +27,6 @@ function closeUploadPanel() {
 
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 py-4 border-b border-surface-200">
         <div class="space-y-1">
-          <p class="page-eyebrow">grocery list</p>
           <h1 class="page-heading">
             {{ i18n.t('cards.manageYourCards') }}
           </h1>

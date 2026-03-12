@@ -82,9 +82,6 @@ async function onMonthChange(month: string) {
           </svg>
         </NuxtLink>
         <div>
-          <p class="page-eyebrow">
-            {{ i18n.t('profile.myStats') }}
-          </p>
           <h1 class="page-heading">
             {{ i18n.t('profile.myStatsDescription') }}
           </h1>
@@ -129,9 +126,6 @@ async function onMonthChange(month: string) {
           <template v-else-if="data">
             <!-- Items Activity Section -->
             <div class="pt-5">
-              <p class="page-eyebrow mb-1">
-                {{ i18n.t('profile.itemsActivity') }}
-              </p>
               <h2 class="page-heading mb-4">
                 {{ i18n.t('profile.itemsActivity') }}
               </h2>
@@ -140,9 +134,6 @@ async function onMonthChange(month: string) {
 
             <!-- Top Items Section -->
             <div v-if="data.top_items" class="pt-5">
-              <p class="page-eyebrow mb-1">
-                {{ i18n.t('profile.topItems') }}
-              </p>
               <h2 class="page-heading mb-4">
                 {{ i18n.t('profile.topItems') }}
               </h2>

@@ -78,7 +78,6 @@ const periodLabel = computed(() => {
               </svg>
             </NuxtLink>
             <div>
-              <p class="page-eyebrow">{{ i18n.t('admin.analytics') }}</p>
               <h1 class="page-heading">
                 {{ i18n.t('admin.topItems') }}
               </h1>

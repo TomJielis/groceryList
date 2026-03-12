@@ -148,7 +148,6 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
                 </svg>
               </NuxtLink>
               <div>
-                <p class="page-eyebrow mb-1">grocery list</p>
                 <h1 class="page-heading">
                   {{ list?.name }}
                 </h1>

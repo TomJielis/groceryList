@@ -124,7 +124,6 @@ const toggleBlockUser = async () => {
             </svg>
           </NuxtLink>
           <div>
-            <p class="page-eyebrow">{{ i18n.t('admin.userDetail') }}</p>
             <h1 class="page-heading truncate">
               {{ data?.user?.name || '...' }}
             </h1>

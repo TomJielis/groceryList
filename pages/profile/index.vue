@@ -93,7 +93,6 @@ function handleLogout() {
 
       <!-- Header -->
       <div class="py-4 mb-4">
-        <p class="page-eyebrow">grocery list</p>
         <h1 class="page-heading">
           {{ authStore.user?.name || i18n.t('profile.hello') }}
         </h1>
@@ -102,7 +101,6 @@ function handleLogout() {
 
       <!-- Profile Information -->
       <div class="py-6">
-        <p class="page-eyebrow">grocery list</p>
         <h2 class="page-heading mb-4">{{ i18n.t('profile.information') }}</h2>
         <Card>
           <template #content>
@@ -160,14 +158,12 @@ function handleLogout() {
 
       <!-- Language Settings -->
       <div class="py-6">
-        <p class="page-eyebrow">grocery list</p>
         <h2 class="page-heading mb-4">{{ i18n.t('profile.language') }}</h2>
         <LanguageSettings @language-change="handleLanguageChange" />
       </div>
 
       <!-- Account Actions -->
       <div class="py-6">
-        <p class="page-eyebrow">grocery list</p>
         <h2 class="page-heading mb-4">{{ i18n.t('profile.accountActions') }}</h2>
         <Card>
           <template #content>

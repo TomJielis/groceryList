@@ -55,7 +55,6 @@ hr {
         <template #content>
           <!-- Header -->
           <div class="py-4 border-b border-surface-200 mb-6">
-            <p class="page-eyebrow mb-1">Grocery List</p>
             <h1 class="text-xl font-semibold">Terms of Use &amp; Privacy Policy</h1>
             <p class="text-xs text-color-secondary mt-1">Laatste versie: 1.2 | Laatst bijgewerkt: 10-11-2025</p>
           </div>

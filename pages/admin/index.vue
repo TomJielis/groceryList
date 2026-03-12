@@ -171,7 +171,6 @@ const userColumns = [
               </svg>
             </NuxtLink>
             <div>
-              <p class="page-eyebrow">{{ i18n.t('admin.dashboard') }}</p>
               <h1 class="page-heading">
                 {{ i18n.t('admin.title') }}
               </h1>

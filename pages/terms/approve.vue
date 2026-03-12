@@ -47,7 +47,6 @@ const approveTerms = async () => {
       <Card>
         <template #content>
           <div class="pb-4 border-b border-surface-200 mb-6">
-            <p class="page-eyebrow mb-1">Grocery List</p>
             <h2 class="text-lg font-semibold">
               {{ i18n.t('termsApproval.title') }}
             </h2>
