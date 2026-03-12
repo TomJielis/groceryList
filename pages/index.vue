@@ -150,7 +150,7 @@ const actionMenuItems = computed<MenuItem[]>(() => {
     label: isOwner ? i18n.t('lists.menu.delete') : i18n.t('lists.menu.leave'),
     icon: 'pi pi-trash',
     command: () => deleteListItem(current.id),
-    class: 'text-red-500'
+    class: 'menu-item-danger'
   });
 
   return items;
@@ -553,5 +553,9 @@ function openListSettings(id: number) {
 
 :deep(.lists-table .p-progressbar-value) {
   border-radius: 999px;
+}
+
+:deep(.menu-item-danger) {
+  color: var(--app-error) !important;
 }
 </style>
