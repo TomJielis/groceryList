@@ -40,15 +40,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="px-6 py-16">
-    <div class="w-full max-w-2xl mx-auto flex flex-col gap-16">
-
+  <div class="px-4 py-6">
+    <div class="w-full max-w-6xl mx-auto flex flex-col gap-12 ">
       <!-- Header -->
-      <div>
-        <h1 class="page-heading mb-3">{{ t('info.title') }}</h1>
-        <p class="text-sm text-color-secondary leading-relaxed">{{ t('info.subtitle') }}</p>
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 py-4 border-b border-surface-200">
+        <div class="space-y-1">
+          <h1 class="page-heading">
+            {{ t('info.title') }}
+          </h1>
+          <p class="text-sm text-surface-500">
+            {{ t('info.subtitle') }}
+          </p>
+        </div>
       </div>
-
       <!-- Features -->
       <div>
         <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.featuresTitle') }}</h2>
@@ -72,17 +76,37 @@ onMounted(() => {
 
       <!-- Desktop Screenshots -->
       <div>
-        <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.screensTitle') }}</h2>
-        <div class="flex flex-col gap-12">
-          <div v-for="block in screenshotBlocks" :key="block.titleKey">
-            <img
-              :src="block.img"
-              :alt="block.alt"
-              loading="lazy"
-              class="info-img w-full rounded border border-surface-200 mb-4 opacity-0 transition-opacity duration-700"
-            />
-            <p class="text-sm font-medium mb-1">{{ t(block.titleKey) }}</p>
-            <p class="text-sm text-color-secondary leading-relaxed">{{ t(block.textKey) }}</p>
+        <h2 class="text-[1.4rem] font-light tracking-tight mb-10">
+          {{ t('info.screensTitle') }}
+        </h2>
+
+        <div class="flex flex-col gap-20">
+          <div
+              v-for="(block, index) in screenshotBlocks"
+              :key="block.titleKey"
+              class="grid md:grid-cols-2 gap-10 items-center"
+          >
+
+            <!-- Image -->
+            <div :class="index % 2 === 1 ? 'md:order-2' : ''">
+              <img
+                  :src="block.img"
+                  :alt="block.alt"
+                  loading="lazy"
+                  class="info-img w-full rounded-xl border border-surface-200 shadow-sm opacity-0 transition-opacity duration-700"
+              />
+            </div>
+
+            <!-- Text -->
+            <div class="max-w-md">
+              <p class="text-lg font-medium mb-2">
+                {{ t(block.titleKey) }}
+              </p>
+              <p class="text-sm text-color-secondary leading-relaxed">
+                {{ t(block.textKey) }}
+              </p>
+            </div>
+
           </div>
         </div>
       </div>
@@ -137,4 +161,16 @@ onMounted(() => {
 <style scoped>
 .info-img { opacity: 0; }
 .info-img.loaded { opacity: 1; }
+
+.info-img {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.info-img.loaded {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all .6s ease;
+}
 </style>
+
