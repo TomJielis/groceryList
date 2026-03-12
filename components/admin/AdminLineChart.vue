@@ -31,8 +31,8 @@ const chartData = computed(() => ({
   labels: props.labels,
   datasets: props.datasets.map((ds, i) => ({
     ...ds,
-    borderColor: ds.borderColor || (i === 0 ? '#f97316' : '#1e3a5f'),
-    backgroundColor: ds.backgroundColor || (i === 0 ? 'rgba(249,115,22,0.1)' : 'rgba(30,58,95,0.1)'),
+    borderColor: ds.borderColor || (i === 0 ? '#5ebd8a' : '#1c2b2b'),
+    backgroundColor: ds.backgroundColor || (i === 0 ? 'rgba(94,189,138,0.1)' : 'rgba(28,43,43,0.1)'),
     borderWidth: 1.5,
     pointRadius: 2,
     pointHoverRadius: 4,

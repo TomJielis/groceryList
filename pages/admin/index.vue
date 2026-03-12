@@ -91,14 +91,14 @@ const activityDatasets = computed(() => {
     {
       label: i18n.t('admin.itemsAdded'),
       data: statsActivity.value.current_month.daily.map((d: any) => d.items_added),
-      borderColor: '#f97316',
-      backgroundColor: 'rgba(249,115,22,0.1)',
+      borderColor: '#5ebd8a',
+      backgroundColor: 'rgba(94,189,138,0.1)',
     },
     {
       label: i18n.t('admin.itemsChecked'),
       data: statsActivity.value.current_month.daily.map((d: any) => d.items_checked),
-      borderColor: '#1e3a5f',
-      backgroundColor: 'rgba(30,58,95,0.1)',
+      borderColor: '#1c2b2b',
+      backgroundColor: 'rgba(28,43,43,0.1)',
     }
   ]
 })

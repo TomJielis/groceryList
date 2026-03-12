@@ -176,14 +176,6 @@ body {
 }
 
 /* ----- Pagina sectie headers ----- */
-.page-eyebrow {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--p-surface-400);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
 .page-heading {
   font-size: 20px;
   font-weight: 700;

@@ -12,7 +12,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const colors = ['#f97316', '#1e3a5f', '#10b981', '#94a3b8']
+const colors = ['#5ebd8a', '#1c2b2b', '#10b981', '#94a3b8']
 
 const chartData = computed(() => ({
   labels: props.labels,
