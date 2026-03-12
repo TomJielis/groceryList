@@ -30,7 +30,10 @@ export default defineNuxtConfig({
         options: {
             ripple: true,
             theme: {
-                preset: BusinessPreset
+                preset: BusinessPreset,
+                options: {
+                    darkModeSelector: 'none'
+                }
             }
         }
     },
