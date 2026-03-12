@@ -89,7 +89,7 @@ function handleLogout() {
 
 <template>
   <div class="profile-shell px-4 py-6">
-    <div class="w-full max-w-2xl mx-auto flex flex-col">
+    <div class="w-full max-w-6xl mx-auto flex flex-col">
 
       <!-- Header -->
       <div class="py-4 mb-4">
