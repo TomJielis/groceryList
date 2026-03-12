@@ -116,7 +116,6 @@ async function removeSharedUser(invite: any) {
   <div class="flex flex-col gap-6" style="font-family: 'DM Sans', system-ui, sans-serif;">
     <!-- Header -->
     <div>
-      <p class="page-eyebrow mb-1">grocery list</p>
       <h2 class="page-heading">
         {{ props.listId ? i18n.t('lists.editList') : i18n.t('lists.newList') }}
       </h2>

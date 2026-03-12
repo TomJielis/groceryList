@@ -150,9 +150,6 @@ const filteredSuggestions = computed(() => {
                 </svg>
               </Button>
               <div class="flex-1 min-w-0">
-                <p class="page-eyebrow mb-0.5">
-                  {{ listStore.lists.find((list: any) => list.id == listId)?.name }}
-                </p>
                 <h1 class="page-heading">
                   {{ i18n.t('items.addNew') }}
                 </h1>

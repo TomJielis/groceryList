@@ -50,9 +50,6 @@ function getCreatorName(list: TGroceryList): string {
           </svg>
         </div>
         <div>
-          <p class="page-eyebrow">
-            {{ i18n.t('lists.pendingInvites') }}
-          </p>
           <p class="text-xs text-surface-500">
             {{ i18n.t('lists.approveOrDecline') }}
           </p>
