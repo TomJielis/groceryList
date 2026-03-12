@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useAuthStore} from "~/stores/auth";
 import { useI18nStore } from "~/stores/i18n";
-import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const authStore = useAuthStore();
@@ -9,12 +9,15 @@ const i18n = useI18nStore();
 const t = computed(() => i18n.t);
 const route = useRoute();
 
-const languageDropdownOpen = ref(false);
+const localeOptions = [
+  { label: '🇳🇱 NL', value: 'nl' },
+  { label: '🇺🇸 EN', value: 'en' },
+];
 
-function setLocale(locale: 'nl' | 'en') {
-  i18n.setLocale(locale);
-  languageDropdownOpen.value = false;
-}
+const selectedLocale = computed({
+  get: () => i18n.locale,
+  set: (val) => i18n.setLocale(val as 'nl' | 'en'),
+});
 
 function isActiveTab(path: string) {
   if (path === '/') {
@@ -22,35 +25,23 @@ function isActiveTab(path: string) {
   }
   return route.path.startsWith(path);
 }
-
-function handleClickOutside(event: MouseEvent) {
-  const target = event.target as HTMLElement;
-  if (!target.closest('.language-dropdown')) {
-    languageDropdownOpen.value = false;
-  }
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
 </script>
 
 <template>
-  <nav class="navbar">
+  <nav class="navbar app-navbar">
     <div class="navbar-inner">
-      <nuxt-link to="/" class="navbar-brand">
-        {{ t('nav.brand') }}
+      <nuxt-link to="/" class="navbar-brand-link">
+        <div class="flex items-center gap-2">
+          <span class="app-navbar-logo-dot"></span>
+          <span class="app-navbar-brand">GroceryList</span>
+        </div>
       </nuxt-link>
 
       <div class="navbar-links">
         <nuxt-link
           to="/information"
-          class="navbar-link"
-          :class="{ 'navbar-link--active': isActiveTab('/information') }"
+          class="app-navbar-link"
+          :class="{ active: isActiveTab('/information') }"
         >
           {{ t('nav.info') }}
         </nuxt-link>
@@ -58,8 +49,8 @@ onUnmounted(() => {
         <nuxt-link
           v-if="authStore.user"
           to="/"
-          class="navbar-link"
-          :class="{ 'navbar-link--active': isActiveTab('/') }"
+          class="app-navbar-link"
+          :class="{ active: isActiveTab('/') }"
         >
           {{ t('nav.lists') }}
         </nuxt-link>
@@ -67,8 +58,8 @@ onUnmounted(() => {
         <nuxt-link
           v-if="authStore.user"
           to="/cards"
-          class="navbar-link"
-          :class="{ 'navbar-link--active': isActiveTab('/cards') }"
+          class="app-navbar-link"
+          :class="{ active: isActiveTab('/cards') }"
         >
           {{ t('nav.cards') }}
         </nuxt-link>
@@ -77,8 +68,8 @@ onUnmounted(() => {
           v-if="!authStore.user"
           to="/auth/login"
           replace
-          class="navbar-link"
-          :class="{ 'navbar-link--active': isActiveTab('/auth/login') }"
+          class="app-navbar-link"
+          :class="{ active: isActiveTab('/auth/login') }"
         >
           {{ t('nav.login') }}
         </nuxt-link>
@@ -86,8 +77,8 @@ onUnmounted(() => {
         <nuxt-link
           v-if="authStore.user"
           to="/profile"
-          class="navbar-link"
-          :class="{ 'navbar-link--active': isActiveTab('/profile') }"
+          class="app-navbar-link"
+          :class="{ active: isActiveTab('/profile') }"
         >
           {{ t('nav.profile') }}
         </nuxt-link>
@@ -101,21 +92,13 @@ onUnmounted(() => {
           {{ t('nav.register') }}
         </nuxt-link>
 
-        <div class="relative language-dropdown">
-          <button class="navbar-lang" @click="languageDropdownOpen = !languageDropdownOpen">
-            {{ i18n.locale.toUpperCase() }}
-          </button>
-          <div v-if="languageDropdownOpen" class="navbar-dropdown">
-            <a @click.prevent="setLocale('nl')" href="#" class="navbar-dropdown-item">
-              <span>🇳🇱</span>
-              <span>{{ t('nav.dutch') }}</span>
-            </a>
-            <a @click.prevent="setLocale('en')" href="#" class="navbar-dropdown-item">
-              <span>🇺🇸</span>
-              <span>{{ t('nav.english') }}</span>
-            </a>
-          </div>
-        </div>
+        <Select
+          v-model="selectedLocale"
+          :options="localeOptions"
+          optionLabel="label"
+          optionValue="value"
+          class="navbar-locale-select"
+        />
       </div>
     </div>
   </nav>
@@ -128,10 +111,7 @@ onUnmounted(() => {
 
 @media (min-width: 768px) {
   .navbar {
-    display: block;
-    height: 3rem;
-    background: #18181b;
-    border-bottom: 1px solid #27272a;
+    display: flex;
     font-family: 'DM Sans', system-ui, sans-serif;
   }
 }
@@ -141,23 +121,14 @@ onUnmounted(() => {
   margin: 0 auto;
   padding: 0 1.5rem;
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
 }
 
-.navbar-brand {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #fafafa;
+.navbar-brand-link {
   text-decoration: none;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   flex-shrink: 0;
-  transition: color 0.15s;
-}
-
-.navbar-brand:hover {
-  color: #a1a1aa;
 }
 
 .navbar-links {
@@ -167,30 +138,11 @@ onUnmounted(() => {
   margin-left: auto;
 }
 
-.navbar-link {
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: #52525b;
-  text-decoration: none;
-  padding: 0.35rem 0.75rem;
-  border-radius: 3px;
-  transition: color 0.15s;
-  letter-spacing: 0.01em;
-}
-
-.navbar-link:hover {
-  color: #a1a1aa;
-}
-
-.navbar-link--active {
-  color: #fafafa;
-}
-
 .navbar-cta {
   font-size: 0.68rem;
   font-weight: 600;
-  color: #18181b;
-  background: #fafafa;
+  color: var(--app-navy);
+  background: var(--p-primary-color);
   text-decoration: none;
   padding: 0.4rem 0.9rem;
   border-radius: 3px;
@@ -201,53 +153,11 @@ onUnmounted(() => {
 }
 
 .navbar-cta:hover {
-  background: #d4d4d8;
+  background: var(--p-primary-400);
 }
 
-.navbar-lang {
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: #52525b;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.35rem 0.5rem;
-  font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0.08em;
-  transition: color 0.15s;
-}
-
-.navbar-lang:hover {
-  color: #a1a1aa;
-}
-
-.navbar-dropdown {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 0.5rem);
-  width: 10rem;
-  background: #1e1e21;
-  border: 1px solid #27272a;
-  border-radius: 4px;
-  padding: 0.25rem;
-  z-index: 100;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-}
-
-.navbar-dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.78rem;
-  color: #a1a1aa;
-  text-decoration: none;
-  border-radius: 3px;
-  transition: background 0.1s, color 0.1s;
-}
-
-.navbar-dropdown-item:hover {
-  background: #27272a;
-  color: #fafafa;
+.navbar-locale-select {
+  margin-left: 0.5rem;
+  min-width: 5rem;
 }
 </style>

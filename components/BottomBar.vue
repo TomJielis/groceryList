@@ -32,73 +32,87 @@ function isActiveTab(path: string) {
 </script>
 
 <template>
-  <nav class="bottombar">
+  <nav class="bottombar app-bottombar">
     <nuxtLink
       v-if="!authStore.user"
       to="/information"
-      class="bottombar-tab"
-      :class="{ 'bottombar-tab--active': isActiveTab('/information') }"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/information') }"
     >
-      <i class="pi pi-info-circle bottombar-icon"></i>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/information') }">
+        <i class="pi pi-info-circle bottombar-icon"></i>
+      </span>
       <span class="bottombar-label">{{ t('nav.info') }}</span>
     </nuxtLink>
 
     <nuxtLink
       v-if="authStore.user"
       to="/"
-      class="bottombar-tab"
-      :class="{ 'bottombar-tab--active': isActiveTab('/') }"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/') }"
     >
-      <i class="pi pi-list bottombar-icon"></i>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/') }">
+        <i class="pi pi-list bottombar-icon"></i>
+      </span>
       <span class="bottombar-label">{{ t('nav.lists') }}</span>
     </nuxtLink>
 
     <nuxtLink
       v-if="authStore.user"
       to="/cards"
-      class="bottombar-tab"
-      :class="{ 'bottombar-tab--active': isActiveTab('/cards') }"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/cards') }"
     >
-      <i class="pi pi-credit-card bottombar-icon"></i>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/cards') }">
+        <i class="pi pi-credit-card bottombar-icon"></i>
+      </span>
       <span class="bottombar-label">{{ t('nav.cards') }}</span>
     </nuxtLink>
 
     <nuxtLink
       v-if="!authStore.user"
       to="/auth/login"
-      class="bottombar-tab"
-      :class="{ 'bottombar-tab--active': isActiveTab('/auth/login') }"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/auth/login') }"
     >
-      <i class="pi pi-sign-in bottombar-icon"></i>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/auth/login') }">
+        <i class="pi pi-sign-in bottombar-icon"></i>
+      </span>
       <span class="bottombar-label">{{ t('nav.login') }}</span>
     </nuxtLink>
 
     <nuxtLink
       v-if="!authStore.user"
       to="/auth/register"
-      class="bottombar-tab"
-      :class="{ 'bottombar-tab--active': isActiveTab('/auth/register') }"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/auth/register') }"
     >
-      <i class="pi pi-user-plus bottombar-icon"></i>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/auth/register') }">
+        <i class="pi pi-user-plus bottombar-icon"></i>
+      </span>
       <span class="bottombar-label">{{ t('nav.register') }}</span>
     </nuxtLink>
 
     <nuxtLink
       v-if="authStore.user"
       to="/profile"
-      class="bottombar-tab"
-      :class="{ 'bottombar-tab--active': isActiveTab('/profile') }"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/profile') }"
     >
-      <i class="pi pi-user bottombar-icon"></i>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/profile') }">
+        <i class="pi pi-user bottombar-icon"></i>
+      </span>
       <span class="bottombar-label">
         {{ t('nav.profile') }}
         <span v-if="pendingCount > 0" class="bottombar-badge">{{ pendingCount }}</span>
       </span>
     </nuxtLink>
 
-    <div v-if="!authStore.user" class="bottombar-tab">
+    <div v-if="!authStore.user" class="bottombar-tab app-bottombar-tab">
       <button class="bottombar-lang-btn" @click="setLocale(i18n.locale === 'nl' ? 'en' : 'nl')">
-        <span class="bottombar-lang-flag">{{ i18n.locale === 'nl' ? '🇳🇱' : '🇬🇧' }}</span>
+        <span class="app-bottombar-tab-icon">
+          <span class="bottombar-lang-flag">{{ i18n.locale === 'nl' ? '🇳🇱' : '🇬🇧' }}</span>
+        </span>
         <span class="bottombar-label">{{ i18n.locale === 'nl' ? 'NL' : 'EN' }}</span>
       </button>
     </div>
@@ -108,8 +122,6 @@ function isActiveTab(path: string) {
 <style scoped>
 .bottombar {
   height: 4rem;
-  background: #18181b;
-  border-top: 1px solid #27272a;
   display: flex;
   justify-content: space-around;
   align-items: stretch;
@@ -131,29 +143,8 @@ function isActiveTab(path: string) {
   justify-content: center;
   gap: 0.2rem;
   text-decoration: none;
-  color: #52525b;
   padding: 0.5rem 0.25rem;
-  transition: color 0.15s;
   position: relative;
-}
-
-.bottombar-tab:hover {
-  color: #a1a1aa;
-}
-
-.bottombar-tab--active {
-  color: #fafafa;
-}
-
-.bottombar-tab--active::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1.25rem;
-  height: 1px;
-  background: #fafafa;
 }
 
 .bottombar-icon {
@@ -177,8 +168,8 @@ function isActiveTab(path: string) {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #fafafa;
-  color: #18181b;
+  background: var(--p-primary-color);
+  color: #fff;
   font-size: 0.45rem;
   font-weight: 700;
 }
@@ -192,15 +183,9 @@ function isActiveTab(path: string) {
   background: none;
   border: none;
   cursor: pointer;
-  color: #52525b;
   font-family: 'DM Sans', sans-serif;
   padding: 0.5rem 0.25rem;
   width: 100%;
-  transition: color 0.15s;
-}
-
-.bottombar-lang-btn:hover {
-  color: #a1a1aa;
 }
 
 .bottombar-lang-flag {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
-import { watch, onUnmounted } from 'vue';
+import { computed, watch, onUnmounted } from 'vue';
 
 const props = defineProps<{
   isVisible: boolean;
@@ -51,128 +51,52 @@ function isValidEmail(email: string): boolean {
   return emailRegex.test(email);
 }
 
-// Prevent touch scroll on backdrop
-function preventScroll(event: TouchEvent) {
-  event.preventDefault();
-}
+const visible = computed({
+  get: () => props.isVisible,
+  set: (val) => { if (!val) handleClose(); },
+});
 </script>
 
 <template>
-  <transition
-    enter-active-class="transition-all duration-200 ease-out"
-    enter-from-class="opacity-0"
-    enter-to-class="opacity-100"
-    leave-active-class="transition-all duration-150 ease-in"
-    leave-from-class="opacity-100"
-    leave-to-class="opacity-0"
+  <Dialog
+    v-model:visible="visible"
+    :header="i18n.t('lists.shareTitle')"
+    modal
+    :style="{ width: '400px', maxWidth: '90vw' }"
+    @hide="handleClose"
   >
-    <div v-if="isVisible" class="fixed inset-0 bg-black/60 flex items-center justify-center z-[99999] p-4 overflow-hidden overscroll-none touch-none" @click.self="handleClose" @touchmove.prevent>
-      <transition
-        enter-active-class="transition-all duration-300 ease-out"
-        enter-from-class="opacity-0 scale-95 translate-y-4"
-        enter-to-class="opacity-100 scale-100 translate-y-0"
-        leave-active-class="transition-all duration-200 ease-in"
-        leave-from-class="opacity-100 scale-100 translate-y-0"
-        leave-to-class="opacity-0 scale-95 translate-y-4"
-      >
-        <div v-if="isVisible" class="bg-[#18181b] rounded max-w-md w-full border border-[#27272a] overflow-hidden max-h-[90vh]" @click.stop>
-          <!-- Header -->
-          <div class="bg-[#18181b] border-b border-[#27272a] px-6 py-4">
-            <div class="flex items-center gap-4">
-              <!-- Close Button -->
-              <button
-                @click="handleClose"
-                class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors active:scale-95"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>
+    <p v-if="listName" style="color: var(--p-surface-500); font-size: 13px; margin-bottom: 12px;">{{ listName }}</p>
 
-              <!-- Title -->
-              <div class="flex-1 min-w-0">
-                <h1 class="text-xl font-medium text-[#fafafa] truncate">
-                  {{ i18n.t('lists.shareTitle') }}
-                </h1>
-                <p v-if="listName" class="text-sm text-[#71717a] truncate">
-                  {{ listName }}
-                </p>
-              </div>
+    <p style="color: var(--p-surface-600); font-size: 14px; margin-bottom: 16px;">
+      {{ i18n.t('lists.sharePrompt') }}
+    </p>
 
-              <!-- Share Icon -->
-              <div class="flex-shrink-0 w-10 h-10 bg-[#1e1e21] border border-[#27272a] rounded flex items-center justify-center">
-                <svg class="w-5 h-5 text-[#a1a1aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- Content -->
-          <div class="p-6 bg-[#18181b]">
-            <!-- Instructions -->
-            <p class="text-sm text-[#71717a] mb-4">
-              {{ i18n.t('lists.sharePrompt') }}
-            </p>
-
-            <!-- Email Input -->
-            <div class="mb-6">
-              <label class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium mb-2 block">
-                {{ i18n.t('lists.emailAddress') }}
-              </label>
-              <input
-                :value="email"
-                @input="updateEmail"
-                type="email"
-                :placeholder="i18n.t('lists.shareEmailPlaceholder')"
-                class="w-full py-2 border-b border-[#27272a] focus:border-[#52525b] bg-transparent text-[#fafafa] placeholder:text-[#3f3f46] outline-none transition text-base"
-                @keyup.enter="isValidEmail(email) && handleConfirm()"
-              />
-              <p v-if="email && !isValidEmail(email)" class="mt-2 text-xs text-red-400 flex items-center gap-1">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span>{{ i18n.t('validation.invalidEmail') }}</span>
-              </p>
-            </div>
-          </div>
-
-          <!-- Footer -->
-          <div class="bg-[#18181b] border-t border-[#27272a] px-6 py-4">
-            <div class="flex gap-3">
-              <button
-                @click="handleClose"
-                class="flex-1 px-4 py-3 border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] font-medium rounded transition-colors active:scale-95"
-              >
-                {{ i18n.t('common.cancel') }}
-              </button>
-              <button
-                @click="handleConfirm"
-                :disabled="!isValidEmail(email)"
-                class="flex-1 px-4 py-3 bg-[#fafafa] text-[#18181b] hover:bg-[#d4d4d8] disabled:opacity-40 disabled:cursor-not-allowed font-medium rounded transition-all active:scale-95"
-              >
-                {{ i18n.t('lists.shareBtn') }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </transition>
+    <div>
+      <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--p-surface-400); font-weight: 600; display: block; margin-bottom: 8px;">
+        {{ i18n.t('lists.emailAddress') }}
+      </label>
+      <InputText
+        :value="email"
+        @input="updateEmail"
+        type="email"
+        :placeholder="i18n.t('lists.shareEmailPlaceholder')"
+        class="w-full"
+        @keyup.enter="isValidEmail(email) && handleConfirm()"
+      />
+      <p v-if="email && !isValidEmail(email)" style="margin-top: 8px; font-size: 12px; color: var(--app-error); display: flex; align-items: center; gap: 4px;">
+        <i class="pi pi-exclamation-circle"></i>
+        <span>{{ i18n.t('validation.invalidEmail') }}</span>
+      </p>
     </div>
-  </transition>
+
+    <template #footer>
+      <Button :label="i18n.t('common.cancel')" severity="secondary" @click="handleClose" />
+      <Button
+        :label="i18n.t('lists.shareBtn')"
+        severity="primary"
+        :disabled="!isValidEmail(email)"
+        @click="handleConfirm"
+      />
+    </template>
+  </Dialog>
 </template>
-
-<style scoped>
-/* Prevent any scrolling or overscroll on modal backdrop */
-.fixed.inset-0 {
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.touch-none {
-  touch-action: none;
-}
-
-.overscroll-none {
-  overscroll-behavior: none;
-}
-</style>
