@@ -1,23 +1,13 @@
 <template>
-  <div class="fixed inset-0 flex justify-center items-center pb-20">
-    <div class="w-12 h-12 border-4 border-[#27272a] border-t-[#52525b] rounded-full animate-spin"></div>
+  <div class="flex items-center justify-center w-full h-full">
+    <ProgressSpinner
+      style="width: 40px; height: 40px"
+      strokeWidth="3"
+      animationDuration=".8s"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import ProgressSpinner from 'primevue/progressspinner'
 </script>
-
-<style scoped>
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>
-

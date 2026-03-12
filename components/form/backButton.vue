@@ -28,7 +28,8 @@ function onClick(e: MouseEvent) {
       <button
         :type="props.type || 'button'"
         :aria-label="ariaLabel || labelText"
-        class="py-3 px-6 rounded border border-[#27272a] text-[#71717a] hover:border-[#52525b] hover:text-[#a1a1aa] font-medium text-base transition-all active:scale-95 w-full"
+        class="py-3 px-6 rounded border font-medium text-base transition-all active:scale-95 w-full"
+        style="border-color: var(--p-surface-300); color: var(--p-surface-500);"
         @click="onClick"
       >
         <slot>{{ labelText }}</slot>
