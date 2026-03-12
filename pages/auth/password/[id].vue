@@ -7,6 +7,7 @@ import { useI18nStore } from '~/stores/i18n';
 import Password from 'primevue/password'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
+import Card from 'primevue/card'
 
 const i18n = useI18nStore();
 const { showNotification } = useNotification();
@@ -29,66 +30,74 @@ function triggerNewPassword() {
 </script>
 
 <template>
-  <div class="min-h-full flex items-center justify-center py-16 px-6">
-    <div class="w-full max-w-xs">
+  <div class="auth-page min-h-full flex items-center justify-center py-16 px-6">
 
-      <!-- Brand -->
-      <div class="mb-10">
-        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-        <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">New password.</h1>
-      </div>
-
-      <!-- Success -->
-      <div v-if="passwordUpdated" class="flex flex-col gap-5">
-        <p class="text-4xl font-light text-[#fafafa]">✓</p>
-        <h3 class="text-lg font-medium text-[#fafafa]">{{ i18n.t('auth.passwordUpdatedTitle') }}</h3>
-        <p class="text-sm text-[#71717a] leading-relaxed">{{ i18n.t('auth.passwordUpdatedBody') }}</p>
-        <div class="pt-5 border-t border-[#27272a]">
-          <NuxtLink to="/auth/login" class="block">
-            <Button :label="i18n.t('auth.goToLogin')" unstyled
-              class="w-full bg-transparent border border-[#27272a] text-[#71717a] py-3 rounded font-semibold text-[0.7rem] uppercase tracking-[0.08em] cursor-pointer hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors text-center block" />
-          </NuxtLink>
+    <Card class="w-full max-w-xs overflow-hidden shadow-lg" :pt="{ body: { class: 'p-0' }, content: { class: 'p-0' } }">
+      <template #header>
+        <div class="auth-card-header">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="auth-logo-dot"></span>
+            <span class="auth-brand">GroceryList</span>
+          </div>
+          <div class="auth-title">{{ i18n.t('auth.newPasswordTitle') }}</div>
+          <div class="auth-subtitle">{{ i18n.t('auth.newPasswordSubtitle') }}</div>
         </div>
-      </div>
+      </template>
+      <template #content>
+        <div class="p-8 flex flex-col gap-5">
 
-      <!-- Form -->
-      <form v-else @submit.prevent="triggerNewPassword" class="flex flex-col gap-7">
-        <input type="hidden" v-model="userData.token" />
+          <!-- Success -->
+          <div v-if="passwordUpdated" class="flex flex-col gap-5">
+            <p class="text-4xl font-light">✓</p>
+            <h3 class="text-lg font-medium">{{ i18n.t('auth.passwordUpdatedTitle') }}</h3>
+            <p class="text-sm leading-relaxed">{{ i18n.t('auth.passwordUpdatedBody') }}</p>
+            <NuxtLink to="/auth/login" class="block">
+              <Button :label="i18n.t('auth.goToLogin')" severity="secondary" outlined class="w-full" />
+            </NuxtLink>
+          </div>
 
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[0.65rem] uppercase tracking-[0.1em] text-[#52525b] font-medium">{{ i18n.t('auth.email') }}</label>
-          <InputText v-model="userData.email" type="email" :placeholder="i18n.t('auth.emailPlaceholder')" unstyled
-            class="w-full bg-transparent border-b border-[#27272a] px-0 py-2 text-[#fafafa] text-sm outline-none focus:border-[#71717a] transition-colors placeholder:text-[#3f3f46]" />
+          <!-- Form -->
+          <form v-else @submit.prevent="triggerNewPassword" class="flex flex-col gap-5">
+            <input type="hidden" v-model="userData.token" />
+
+            <div class="flex flex-col gap-1.5">
+              <label>{{ i18n.t('auth.email') }}</label>
+              <InputText
+                v-model="userData.email"
+                type="email"
+                :placeholder="i18n.t('auth.emailPlaceholder')"
+                class="w-full"
+              />
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label>{{ i18n.t('auth.newPassword') }}</label>
+              <Password
+                v-model="userData.password"
+                :placeholder="i18n.t('auth.passwordPlaceholder')"
+                toggleMask
+                :feedback="false"
+                class="w-full"
+              />
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label>{{ i18n.t('auth.repeatPassword') }}</label>
+              <Password
+                v-model="userData.repeatPassword"
+                :placeholder="i18n.t('auth.repeatPasswordPlaceholder')"
+                toggleMask
+                :feedback="false"
+                class="w-full"
+              />
+            </div>
+
+            <Button type="submit" :label="i18n.t('auth.resetPasswordBtn')" class="w-full" />
+          </form>
+
         </div>
+      </template>
+    </Card>
 
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[0.65rem] uppercase tracking-[0.1em] text-[#52525b] font-medium">{{ i18n.t('auth.newPassword') }}</label>
-          <Password v-model="userData.password" :placeholder="i18n.t('auth.passwordPlaceholder')" toggleMask
-            :feedback="false" unstyled class="w-full"
-            :pt="{
-              root: { class: 'block w-full relative' },
-              input: { class: 'w-full !bg-transparent border-b border-[#27272a] px-0 pr-6 py-2 text-[#fafafa] text-sm outline-none focus:border-[#71717a] transition-colors placeholder:text-[#3f3f46]' },
-              hideIcon: { class: 'absolute right-0 top-1/2 -translate-y-1/2 text-[#52525b] cursor-pointer text-base leading-none' },
-              showIcon: { class: 'absolute right-0 top-1/2 -translate-y-1/2 text-[#52525b] cursor-pointer text-base leading-none' },
-            }" />
-        </div>
-
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[0.65rem] uppercase tracking-[0.1em] text-[#52525b] font-medium">{{ i18n.t('auth.repeatPassword') }}</label>
-          <Password v-model="userData.repeatPassword" :placeholder="i18n.t('auth.repeatPasswordPlaceholder')"
-            toggleMask :feedback="false" unstyled class="w-full"
-            :pt="{
-              root: { class: 'block w-full relative' },
-              input: { class: 'w-full !bg-transparent border-b border-[#27272a] px-0 pr-6 py-2 text-[#fafafa] text-sm outline-none focus:border-[#71717a] transition-colors placeholder:text-[#3f3f46]' },
-              hideIcon: { class: 'absolute right-0 top-1/2 -translate-y-1/2 text-[#52525b] cursor-pointer text-base leading-none' },
-              showIcon: { class: 'absolute right-0 top-1/2 -translate-y-1/2 text-[#52525b] cursor-pointer text-base leading-none' },
-            }" />
-        </div>
-
-        <Button type="submit" :label="i18n.t('auth.resetPasswordBtn')" unstyled
-          class="w-full bg-[#fafafa] text-[#18181b] py-3 rounded font-semibold text-[0.7rem] uppercase tracking-[0.08em] cursor-pointer hover:bg-[#d4d4d8] transition-colors text-center" />
-      </form>
-
-    </div>
   </div>
 </template>

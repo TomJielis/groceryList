@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
+import Card from 'primevue/card'
 import { useAuth } from '~/composables/useAuth'
 import { useAuthStore } from '~/stores/auth'
 import { useNotification } from '~/composables/useNotification'
@@ -44,80 +45,82 @@ function toggleLanguage() {
 </script>
 
 <template>
-  <div class="min-h-full flex items-center justify-center py-16 px-6">
-    <div class="w-full max-w-xs">
+  <div class="auth-page min-h-full flex items-center justify-center py-16 px-6">
 
-      <!-- Brand -->
-      <div class="mb-10">
-        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-        <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">Welcome back.</h1>
-      </div>
-
-      <!-- Form -->
-      <form @submit.prevent="handleLogin" class="flex flex-col gap-7">
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[0.65rem] uppercase tracking-[0.1em] text-[#52525b] font-medium">{{ t('auth.email') }}</label>
-          <InputText
-            v-model="userData.email"
-            type="email"
-            :placeholder="t('auth.emailPlaceholder')"
-            unstyled
-            class="w-full bg-transparent border-b border-[#27272a] px-0 py-2 text-[#fafafa] text-sm outline-none focus:border-[#71717a] transition-colors placeholder:text-[#3f3f46]"
-          />
+    <Card class="w-full max-w-xs overflow-hidden shadow-lg" :pt="{ body: { class: 'p-0' }, content: { class: 'p-0' } }">
+      <template #header>
+        <div class="auth-card-header">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="auth-logo-dot"></span>
+            <span class="auth-brand">GroceryList</span>
+          </div>
+          <div class="auth-title">{{ t('auth.loginTitle') }}</div>
+          <div class="auth-subtitle">{{ t('auth.loginSubtitle') }}</div>
         </div>
+      </template>
+      <template #content>
+        <div class="p-8 flex flex-col gap-5">
 
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[0.65rem] uppercase tracking-[0.1em] text-[#52525b] font-medium">{{ t('auth.password') }}</label>
-          <Password
-            v-model="userData.password"
-            :placeholder="t('auth.passwordPlaceholder')"
-            toggleMask
-            :feedback="false"
-            unstyled
-            class="w-full"
-            :pt="{
-              root: { class: 'block w-full relative' },
-              input: { class: 'w-full !bg-transparent border-b border-[#27272a] px-0 pr-6 py-2 text-[#fafafa] text-sm outline-none focus:border-[#71717a] transition-colors placeholder:text-[#3f3f46]' },
-              hideIcon: { class: 'absolute right-0 top-1/2 -translate-y-1/2 text-[#52525b] cursor-pointer text-base leading-none' },
-              showIcon: { class: 'absolute right-0 top-1/2 -translate-y-1/2 text-[#52525b] cursor-pointer text-base leading-none' },
-            }"
-          />
+          <!-- Form -->
+          <form @submit.prevent="handleLogin" class="flex flex-col gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label>{{ t('auth.email') }}</label>
+              <InputText
+                v-model="userData.email"
+                type="email"
+                :placeholder="t('auth.emailPlaceholder')"
+                class="w-full"
+              />
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label>{{ t('auth.password') }}</label>
+              <Password
+                v-model="userData.password"
+                :placeholder="t('auth.passwordPlaceholder')"
+                toggleMask
+                :feedback="false"
+                class="w-full"
+              />
+            </div>
+
+            <Button
+              type="submit"
+              :label="t('auth.loginBtn')"
+              class="w-full"
+            />
+          </form>
+
+          <!-- Divider -->
+          <div class="flex items-center gap-3 text-sm">
+            <span class="flex-1 h-px bg-surface-200"></span>
+            <span>{{ t('auth.or') }}</span>
+            <span class="flex-1 h-px bg-surface-200"></span>
+          </div>
+
+          <!-- Register -->
+          <NuxtLink to="/auth/register" class="block">
+            <Button
+              :label="t('auth.createAccount')"
+              severity="secondary"
+              outlined
+              class="w-full"
+            />
+          </NuxtLink>
+
+          <!-- Footer -->
+          <div class="flex justify-between">
+            <NuxtLink to="/auth/password/reset" class="text-sm">
+              {{ t('auth.forgotPassword') }}
+            </NuxtLink>
+            <button @click="toggleLanguage" class="text-sm bg-transparent border-0 cursor-pointer p-0">
+              {{ languageToggleLabel }}
+            </button>
+          </div>
+
         </div>
+      </template>
+    </Card>
 
-        <Button
-          type="submit"
-          :label="t('auth.loginBtn')"
-          unstyled
-          class="w-full bg-[#fafafa] text-[#18181b] py-3 rounded font-semibold text-[0.7rem] uppercase tracking-[0.08em] cursor-pointer hover:bg-[#d4d4d8] transition-colors text-center"
-        />
-      </form>
-
-      <!-- Divider -->
-      <div class="flex items-center gap-3 my-5 text-[#3f3f46] text-[0.7rem]">
-        <span class="flex-1 h-px bg-[#27272a]"></span>
-        <span>{{ t('auth.or') }}</span>
-        <span class="flex-1 h-px bg-[#27272a]"></span>
-      </div>
-
-      <!-- Register -->
-      <NuxtLink to="/auth/register" class="block">
-        <Button
-          :label="t('auth.createAccount')"
-          unstyled
-          class="w-full bg-transparent border border-[#27272a] text-[#71717a] py-3 rounded font-semibold text-[0.7rem] uppercase tracking-[0.08em] cursor-pointer hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors text-center block"
-        />
-      </NuxtLink>
-
-      <!-- Footer -->
-      <div class="flex justify-between mt-7">
-        <NuxtLink to="/auth/password/reset" class="text-[0.72rem] text-[#52525b] hover:text-[#a1a1aa] transition-colors">
-          {{ t('auth.forgotPassword') }}
-        </NuxtLink>
-        <button @click="toggleLanguage" class="text-[0.72rem] text-[#52525b] hover:text-[#a1a1aa] transition-colors bg-transparent border-0 cursor-pointer p-0">
-          {{ languageToggleLabel }}
-        </button>
-      </div>
-
-    </div>
   </div>
 </template>

@@ -6,6 +6,7 @@ import Password from 'primevue/password'
 import Button from 'primevue/button'
 import Checkbox from 'primevue/checkbox'
 import SelectButton from 'primevue/selectbutton'
+import Card from 'primevue/card'
 import { useAuth } from '~/composables/useAuth'
 import { useNotification } from '~/composables/useNotification'
 import { useI18nStore } from '~/stores/i18n'
@@ -52,95 +53,88 @@ function handleLanguageChange(locale: 'nl' | 'en') {
 </script>
 
 <template>
-  <div class="min-h-full flex items-center justify-center py-16 px-6">
-    <div class="w-full max-w-xs">
+  <div class="auth-page min-h-full flex items-center justify-center py-16 px-6">
 
-      <!-- Brand -->
-      <div class="mb-10">
-        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-        <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">Create account.</h1>
-      </div>
-
-      <!-- Success state -->
-      <div v-if="verifyMailMessage" class="flex flex-col gap-5">
-        <p class="text-4xl font-light text-[#fafafa]">✓</p>
-        <h3 class="text-lg font-medium text-[#fafafa]">{{ i18n.t('auth.verifyMailMessageTitle') }}</h3>
-        <p class="text-sm text-[#71717a] leading-relaxed">{{ i18n.t('auth.verifyMailMessageBody') }}</p>
-        <div class="pt-5 border-t border-[#27272a]">
-          <NuxtLink to="/auth/login" class="block">
-            <Button :label="i18n.t('auth.backToLogin')" unstyled
-              class="w-full bg-transparent border border-[#27272a] text-[#71717a] py-3 rounded font-semibold text-[0.7rem] uppercase tracking-[0.08em] cursor-pointer hover:border-[#52525b] hover:text-[#a1a1aa] transition-colors text-center block" />
-          </NuxtLink>
+    <Card class="w-full max-w-xs overflow-hidden shadow-lg" :pt="{ body: { class: 'p-0' }, content: { class: 'p-0' } }">
+      <template #header>
+        <div class="auth-card-header">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="auth-logo-dot"></span>
+            <span class="auth-brand">GroceryList</span>
+          </div>
+          <div class="auth-title">{{ i18n.t('auth.registerTitle') }}</div>
+          <div class="auth-subtitle">{{ i18n.t('auth.registerSubtitle') }}</div>
         </div>
-      </div>
+      </template>
+      <template #content>
+        <div class="p-8 flex flex-col gap-5">
 
-      <!-- Form -->
-      <form v-else @submit.prevent="handleRegister" class="flex flex-col gap-7">
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[0.65rem] uppercase tracking-[0.1em] text-[#52525b] font-medium">{{ i18n.t('auth.name') }}</label>
-          <InputText v-model="userData.name" :placeholder="i18n.t('auth.namePlaceholder')" unstyled
-            class="w-full bg-transparent border-b border-[#27272a] px-0 py-2 text-[#fafafa] text-sm outline-none focus:border-[#71717a] transition-colors placeholder:text-[#3f3f46]" />
+          <!-- Success state -->
+          <div v-if="verifyMailMessage" class="flex flex-col gap-5">
+            <p class="text-4xl font-light">✓</p>
+            <h3 class="text-lg font-medium">{{ i18n.t('auth.verifyMailMessageTitle') }}</h3>
+            <p class="text-sm leading-relaxed">{{ i18n.t('auth.verifyMailMessageBody') }}</p>
+            <NuxtLink to="/auth/login" class="block">
+              <Button :label="i18n.t('auth.backToLogin')" severity="secondary" outlined class="w-full" />
+            </NuxtLink>
+          </div>
+
+          <!-- Form -->
+          <form v-else @submit.prevent="handleRegister" class="flex flex-col gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label>{{ i18n.t('auth.name') }}</label>
+              <InputText v-model="userData.name" :placeholder="i18n.t('auth.namePlaceholder')" class="w-full" />
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label>{{ i18n.t('auth.email') }}</label>
+              <InputText
+                v-model="userData.email"
+                type="email"
+                :placeholder="i18n.t('auth.emailPlaceholder')"
+                :disabled="isEmailDisabled"
+                class="w-full"
+              />
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label>{{ i18n.t('auth.password') }}</label>
+              <Password
+                v-model="userData.password"
+                :placeholder="i18n.t('auth.passwordPlaceholder')"
+                toggleMask
+                :feedback="false"
+                class="w-full"
+              />
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label>{{ i18n.t('profile.language') }}</label>
+              <SelectButton
+                v-model="userData.language"
+                :options="languageOptions"
+                optionLabel="label"
+                optionValue="value"
+                @change="handleLanguageChange($event.value)"
+              />
+            </div>
+
+            <div class="flex items-start gap-3">
+              <Checkbox v-model="userData.acceptedTerms" binary inputId="terms" />
+              <label for="terms" class="text-sm leading-relaxed cursor-pointer" v-html="i18n.t('register.acceptTerms')" />
+            </div>
+
+            <Button type="submit" :label="i18n.t('auth.registerBtn')" class="w-full" />
+
+            <p class="text-sm text-center">
+              {{ i18n.t('auth.alreadyHaveAccount') }}
+              <NuxtLink to="/auth/login" class="ml-1">{{ i18n.t('nav.login') }}</NuxtLink>
+            </p>
+          </form>
+
         </div>
+      </template>
+    </Card>
 
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[0.65rem] uppercase tracking-[0.1em] text-[#52525b] font-medium">{{ i18n.t('auth.email') }}</label>
-          <InputText v-model="userData.email" type="email" :placeholder="i18n.t('auth.emailPlaceholder')"
-            :disabled="isEmailDisabled" unstyled
-            class="w-full bg-transparent border-b border-[#27272a] px-0 py-2 text-[#fafafa] text-sm outline-none focus:border-[#71717a] transition-colors placeholder:text-[#3f3f46] disabled:opacity-40" />
-        </div>
-
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[0.65rem] uppercase tracking-[0.1em] text-[#52525b] font-medium">{{ i18n.t('auth.password') }}</label>
-          <Password v-model="userData.password" :placeholder="i18n.t('auth.passwordPlaceholder')" toggleMask
-            :feedback="false" unstyled class="w-full"
-            :pt="{
-              root: { class: 'block w-full relative' },
-              input: { class: 'w-full !bg-transparent border-b border-[#27272a] px-0 pr-6 py-2 text-[#fafafa] text-sm outline-none focus:border-[#71717a] transition-colors placeholder:text-[#3f3f46]' },
-              hideIcon: { class: 'absolute right-0 top-1/2 -translate-y-1/2 text-[#52525b] cursor-pointer text-base leading-none' },
-              showIcon: { class: 'absolute right-0 top-1/2 -translate-y-1/2 text-[#52525b] cursor-pointer text-base leading-none' },
-            }" />
-        </div>
-
-        <div class="flex flex-col gap-1.5">
-          <label class="text-[0.65rem] uppercase tracking-[0.1em] text-[#52525b] font-medium">{{ i18n.t('profile.language') }}</label>
-          <SelectButton v-model="userData.language" :options="languageOptions" optionLabel="label" optionValue="value"
-            unstyled @change="handleLanguageChange($event.value)"
-            :pt="{
-              root: { class: 'flex gap-2' },
-              button: ({ context }: any) => ({
-                class: [
-                  'flex-1 py-2 rounded text-[0.7rem] font-medium border cursor-pointer transition-colors text-center',
-                  context.active
-                    ? 'bg-[#fafafa] text-[#18181b] border-[#fafafa]'
-                    : 'bg-transparent text-[#71717a] border-[#27272a] hover:border-[#52525b] hover:text-[#a1a1aa]'
-                ]
-              })
-            }" />
-        </div>
-
-        <div class="flex items-start gap-3">
-          <Checkbox v-model="userData.acceptedTerms" binary inputId="terms" unstyled
-            :pt="{
-              box: ({ instance }: any) => ({
-                class: [
-                  'w-4 h-4 rounded-sm border flex items-center justify-center flex-shrink-0 mt-0.5 cursor-pointer transition-colors',
-                  instance?.checked ? 'bg-[#fafafa] border-[#fafafa]' : 'bg-transparent border-[#3f3f46]'
-                ]
-              }),
-              icon: { class: 'text-[#18181b] text-[0.5rem]' }
-            }" />
-          <label for="terms" class="text-sm text-[#71717a] leading-relaxed cursor-pointer" v-html="i18n.t('register.acceptTerms')" />
-        </div>
-
-        <Button type="submit" :label="i18n.t('auth.registerBtn')" unstyled
-          class="w-full bg-[#fafafa] text-[#18181b] py-3 rounded font-semibold text-[0.7rem] uppercase tracking-[0.08em] cursor-pointer hover:bg-[#d4d4d8] transition-colors text-center" />
-
-        <p class="text-[0.72rem] text-[#52525b] text-center">
-          {{ i18n.t('auth.alreadyHaveAccount') }}
-          <NuxtLink to="/auth/login" class="text-[#a1a1aa] hover:text-[#fafafa] transition-colors ml-1">{{ i18n.t('nav.login') }}</NuxtLink>
-        </p>
-      </form>
-
-    </div>
   </div>
 </template>

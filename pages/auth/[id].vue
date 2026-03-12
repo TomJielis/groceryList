@@ -4,6 +4,7 @@ import { useRoute } from "vue-router";
 import { useAuth } from "~/composables/useAuth";
 import { useI18nStore } from '~/stores/i18n';
 import Button from 'primevue/button'
+import Card from 'primevue/card'
 import ProgressSpinner from 'primevue/progressspinner'
 
 const i18n = useI18nStore();
@@ -31,35 +32,38 @@ auth.verifyEmail(form.value.token).then(() => {
 </script>
 
 <template>
-  <div class="min-h-full flex items-center justify-center py-16 px-6">
-    <div class="w-full max-w-xs">
+  <div class="auth-page min-h-full flex items-center justify-center py-16 px-6">
 
-      <!-- Brand -->
-      <div class="mb-10">
-        <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] mb-1 font-medium">grocery list</p>
-        <h1 class="text-[1.8rem] font-light text-[#fafafa] tracking-tight leading-tight">{{ title }}</h1>
-      </div>
-
-      <div class="flex flex-col gap-5">
-        <div v-if="!hasError && !verified">
-          <ProgressSpinner style="width:28px;height:28px" strokeWidth="3"
-            :pt="{ circle: { style: 'stroke: #52525b' } }" />
+    <Card class="w-full max-w-xs overflow-hidden shadow-lg" :pt="{ body: { class: 'p-0' }, content: { class: 'p-0' } }">
+      <template #header>
+        <div class="auth-card-header">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="auth-logo-dot"></span>
+            <span class="auth-brand">GroceryList</span>
+          </div>
+          <div class="auth-title">{{ title }}</div>
         </div>
+      </template>
+      <template #content>
+        <div class="p-8 flex flex-col gap-5">
 
-        <p class="text-sm text-[#71717a] leading-relaxed">{{ body }}</p>
+          <div v-if="!hasError && !verified">
+            <ProgressSpinner style="width:28px;height:28px" strokeWidth="3" />
+          </div>
 
-        <div v-if="hasError" class="px-4 py-3 border border-[#3f1515] rounded bg-[#1f0a0a]">
-          <p class="text-sm text-[#f87171]">{{ errorText }}</p>
-        </div>
+          <p class="text-sm leading-relaxed">{{ body }}</p>
 
-        <div class="pt-5 border-t border-[#27272a]">
+          <div v-if="hasError" class="px-4 py-3 border rounded">
+            <p class="text-sm" style="color: var(--p-red-500)">{{ errorText }}</p>
+          </div>
+
           <NuxtLink to="/auth/login" class="block">
-            <Button :label="i18n.t('auth.goToLogin')" unstyled
-              class="w-full bg-[#fafafa] text-[#18181b] py-3 rounded font-semibold text-[0.7rem] uppercase tracking-[0.08em] cursor-pointer hover:bg-[#d4d4d8] transition-colors text-center block" />
+            <Button :label="i18n.t('auth.goToLogin')" class="w-full" />
           </NuxtLink>
-        </div>
-      </div>
 
-    </div>
+        </div>
+      </template>
+    </Card>
+
   </div>
 </template>
