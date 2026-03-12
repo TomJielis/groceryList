@@ -20,8 +20,8 @@ const change = computed(() => {
 })
 
 const changeColor = computed(() => {
-  if (change.value.isZero) return 'text-[#a1a1aa]'
-  return change.value.isPositive ? 'text-[#a1a1aa]' : 'text-[#71717a]'
+  if (change.value.isZero) return 'text-surface-500'
+  return change.value.isPositive ? 'text-surface-500' : 'text-surface-500'
 })
 
 const changeIcon = computed(() => {
@@ -31,15 +31,15 @@ const changeIcon = computed(() => {
 </script>
 
 <template>
-  <div class="border-b border-[#27272a] py-4 space-y-1">
-    <p class="text-[0.65rem] uppercase tracking-[0.14em] text-[#52525b] font-medium">{{ title }}</p>
+  <div class="border-b border-surface-200 py-4 space-y-1">
+    <p class="text-[0.65rem] uppercase tracking-[0.14em] font-medium" style="color: var(--p-surface-500)">{{ title }}</p>
     <div class="flex items-baseline gap-2">
-      <p class="text-xl font-light text-[#fafafa]">{{ value }}</p>
+      <p class="text-xl font-light" style="color: var(--p-surface-900)">{{ value }}</p>
       <p v-if="change.percentage !== null && showPercentage" :class="['text-sm font-medium', changeColor]">
         {{ changeIcon }} {{ Math.abs(change.percentage) }}%
       </p>
     </div>
-    <p v-if="showPercentage" class="text-xs text-[#71717a]">
+    <p v-if="showPercentage" class="text-xs text-surface-500">
       {{ i18n.t('profile.previousMonth') }} · {{ previousValue ?? 0 }}
     </p>
   </div>
