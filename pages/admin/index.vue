@@ -159,34 +159,22 @@ const userColumns = [
   <div class="px-4 py-6">
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-6 pb-20">
       <!-- Page header -->
-      <div class="border-b border-surface-200 pb-6">
-        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div class="flex items-center gap-4">
-            <NuxtLink
-              to="/profile"
-              class="w-9 h-9 flex items-center justify-center border border-surface-200 text-color-secondary hover:border-surface-400 hover:text-color transition rounded"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-            </NuxtLink>
-            <div>
-              <h1 class="page-heading">
-                {{ i18n.t('admin.title') }}
-              </h1>
-              <p v-if="statsActivity?.current_month?.period" class="text-sm text-color-secondary">
-                {{ statsActivity.current_month.period }}
-              </p>
+      <div class="pb-6">
+        <PageHeader
+          back-to="/profile"
+          :title="i18n.t('admin.title')"
+          :subtitle="statsActivity?.current_month?.period"
+        >
+          <template v-if="availableMonths.length" #actions>
+            <div class="w-full md:w-64">
+              <MonthSelector
+                :selected-month="selectedMonth"
+                :available-months="availableMonths"
+                @change="onMonthChange"
+              />
             </div>
-          </div>
-          <div v-if="availableMonths.length" class="w-full md:w-64">
-            <MonthSelector
-              :selected-month="selectedMonth"
-              :available-months="availableMonths"
-              @change="onMonthChange"
-            />
-          </div>
-        </div>
+          </template>
+        </PageHeader>
         <!-- Quick stats row -->
         <div class="grid grid-cols-2 md:grid-cols-4 border-t border-surface-200 mt-6">
           <div class="px-0 pr-4 py-3 border-r border-b md:border-b-0 border-surface-200">
