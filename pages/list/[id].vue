@@ -135,43 +135,31 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 <template>
   <div class="list-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
-      <div class="py-4 border-b border-surface-200">
+      <div>
         <div class="flex flex-col gap-6">
-          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div class="flex flex-col gap-4">
-              <NuxtLink
-                to="/"
-                class="inline-flex w-10 h-10 items-center justify-center rounded border border-surface-200 transition-colors"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-              </NuxtLink>
-              <div>
-                <h1 class="page-heading">
-                  {{ list?.name }}
-                </h1>
-                <p class="text-sm text-surface-500 mt-1">
-                  {{ uncheckedItems.length }} {{ i18n.t('list.remaining') }} · {{ checkedItems.length }} {{ i18n.t('list.done') }}
-                </p>
+          <PageHeader
+            back-to="/"
+            :title="list?.name || ''"
+            :subtitle="`${uncheckedItems.length} ${i18n.t('list.remaining')} · ${checkedItems.length} ${i18n.t('list.done')}`"
+          >
+            <template #actions>
+              <div class="flex flex-col sm:flex-row gap-3">
+                <Button
+                  v-if="showAddItem"
+                  :label="i18n.t('common.cancel')"
+                  severity="secondary"
+                  @click="showAddItem = false"
+                />
+                <Button
+                  v-else
+                  icon="pi pi-plus"
+                  :label="i18n.t('items.addNew')"
+                  severity="primary"
+                  @click="showAddItem = true"
+                />
               </div>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-3">
-              <Button
-                v-if="showAddItem"
-                :label="i18n.t('common.cancel')"
-                severity="secondary"
-                @click="showAddItem = false"
-              />
-              <Button
-                v-else
-                icon="pi pi-plus"
-                :label="i18n.t('items.addNew')"
-                severity="primary"
-                @click="showAddItem = true"
-              />
-            </div>
-          </div>
+            </template>
+          </PageHeader>
 
           <div class="grid grid-cols-3 gap-3 pt-4">
             <div class="stat-card-item stat-card-accent-orange">
