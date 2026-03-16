@@ -113,25 +113,12 @@ const toggleBlockUser = async () => {
   <div class="px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6 pb-16">
       <!-- Page header -->
-      <div class="border-b border-surface-200 pb-6">
-        <div class="flex items-center gap-4 mb-4">
-          <NuxtLink
-            to="/admin/users"
-            class="w-9 h-9 flex items-center justify-center border border-surface-200 text-color-secondary hover:border-surface-400 hover:text-color transition rounded"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-          </NuxtLink>
-          <div>
-            <h1 class="page-heading truncate">
-              {{ data?.user?.name || '...' }}
-            </h1>
-            <p class="text-sm text-color-secondary">
-              {{ data?.user?.email || '' }}
-            </p>
-          </div>
-        </div>
+      <div class="pb-6">
+        <PageHeader
+          back-to="/admin/users"
+          :title="data?.user?.name || '...'"
+          :subtitle="data?.user?.email || undefined"
+        />
         <div class="flex flex-wrap items-center gap-2 text-sm">
           <span class="px-2 py-1 border border-surface-200 text-color-secondary rounded text-xs">
             {{ i18n.t('admin.lastActive') }}: {{ formatDate(data?.user?.last_active, true) }}
