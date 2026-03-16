@@ -72,21 +72,10 @@ async function onMonthChange(month: string) {
   <div class="stats-shell px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
       <!-- Header -->
-      <div class="py-4 flex items-center gap-3">
-        <NuxtLink
-          to="/profile"
-          class="w-8 h-8 flex items-center justify-center transition-colors"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-          </svg>
-        </NuxtLink>
-        <div>
-          <h1 class="page-heading">
-            {{ i18n.t('profile.myStatsDescription') }}
-          </h1>
-        </div>
-      </div>
+      <PageHeader
+        back-to="/profile"
+        :title="i18n.t('profile.myStatsDescription')"
+      />
 
       <div class="space-y-6">
         <!-- Initial Loading State -->
