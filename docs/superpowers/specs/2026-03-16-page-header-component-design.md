@@ -21,9 +21,9 @@ Create a single reusable `components/PageHeader.vue` component and replace the h
 ## Component API
 
 ```vue
-<PageHeader back-to="/profile" title="Statistieken" subtitle="Optionele subtitel">
+<PageHeader back-to="/profile" title="Statistieken" :subtitle="dynamicValue">
   <template #actions>
-    <!-- optional right-side content -->
+    <!-- optional right-side content (buttons, selectors) -->
   </template>
 </PageHeader>
 ```
@@ -32,33 +32,65 @@ Create a single reusable `components/PageHeader.vue` component and replace the h
 
 | Prop | Type | Required | Description |
 |---|---|---|---|
-| `backTo` | `string` | yes | Route for the back navigation link |
+| `backTo` | `string` | yes | Static route string for the back navigation link. Programmatic navigation (`router.back()`) is out of scope — all four target pages use static routes. |
 | `title` | `string` | yes | Page title shown to the right of the back button |
-| `subtitle` | `string` | no | Optional secondary line below the title |
+| `subtitle` | `string` | no | Optional secondary line below the title. Can be a dynamic/conditional binding (e.g. `:subtitle="data?.period"`) |
 
 ### Slot
 
-- `#actions` — optional slot for right-side content (buttons, selectors). Rendered only when provided.
+- `#actions` — optional slot for right-side content. On mobile, actions render below the button+title row. On desktop (`md:` breakpoint), they align to the right on the same row.
+
+### Accessibility
+
+The back button is icon-only. It must include an `aria-label` bound to the existing i18n key `common.back` via `useI18nStore`.
+
+### Title truncation
+
+The component root element must be `w-full` and the left group must use `min-w-0` to allow the `truncate` class on the title to function correctly. Tailwind's `truncate` requires all ancestors to have bounded widths.
+
+## Layout (responsive)
+
+```
+Mobile:
+┌─────────────────────────────┐
+│ [←]  Page Title             │
+│      subtitle               │
+│                             │
+│ [actions if present]        │
+└─────────────────────────────┘
+
+Desktop (md+):
+┌─────────────────────────────┐
+│ [←]  Page Title    [actions]│
+│      subtitle               │
+└─────────────────────────────┘
+```
+
+Implemented with: `flex flex-col gap-3 md:flex-row md:items-center md:justify-between`
 
 ## Visual Design
 
 Based on the existing admin pages (the most complete implementation):
 
-- **Back button:** `w-9 h-9`, `border border-surface-200`, `rounded`, `text-color-secondary`, hover: `hover:border-surface-400 hover:text-color`, `transition`
+- **Back button:** `w-9 h-9`, `border border-surface-200`, `rounded`, `text-color-secondary`, hover: `hover:border-surface-400 hover:text-color`, `transition`, `flex-shrink-0`
 - **Icon:** chevron-left SVG, `w-4 h-4`
-- **Layout:** `flex items-center justify-between gap-4 py-4 border-b border-surface-200`
+- **Separator line:** `border-b border-surface-200` on the component's outer wrapper — **this adds a bottom border to `stats.vue` and `list/[id].vue` which do not currently have one. This is an intentional visual change to unify the header style.**
+- **Vertical padding:** `py-4`
 - **Title:** `page-heading truncate` (existing CSS class)
-- **Subtitle:** `text-sm text-color-secondary`
-- **Left group:** `flex items-center gap-3 min-w-0` (allows title to truncate on small screens)
+- **Subtitle:** `text-sm text-color-secondary`, only rendered when prop is provided
 
 ## Pages Updated
 
-| Page | Change | Actions slot |
-|---|---|---|
-| `pages/profile/stats.vue` | Replace custom header div | No |
-| `pages/admin/index.vue` | Replace custom header div | Yes (MonthSelector) |
-| `pages/admin/users/[id].vue` | Replace custom header div | No (subtitle = user email) |
-| `pages/list/[id].vue` | Replace stacked layout (back above title) with inline layout | Yes (add item button) |
+| Page | Back target | Subtitle | Actions slot |
+|---|---|---|---|
+| `pages/profile/stats.vue` | `/profile` | none | No |
+| `pages/admin/index.vue` | `/profile` | `statsActivity.current_month.period` (dynamic, conditional) | Yes — `MonthSelector` (`w-full md:w-64`) |
+| `pages/admin/users/[id].vue` | `/admin/users` | `data?.user?.email` (dynamic) | No |
+| `pages/list/[id].vue` | `/` | `uncheckedItems.length remaining · checkedItems.length done` (dynamic) | Yes — add item `Button` |
+
+### Note on `list/[id].vue`
+
+The list page header currently contains more than just the back button and title — it also has a stats row (stat cards) and a `ProgressBar`. The `PageHeader` component replaces **only the top row** (back button + title + subtitle + actions). The stats row and progress bar remain as page-specific content below the `PageHeader`.
 
 ## Out of Scope
 
