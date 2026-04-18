@@ -1,11 +1,11 @@
 {
   "nl": {
     "app": {
-      "title": "Boodschappenlijst",
+      "title": "TomJielis.com",
       "metaDescription": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik."
     },
     "nav": {
-      "brand": "Boodschappenlijst",
+      "brand": "TomJielis.com",
       "cards": "Kaarten",
       "login": "Login",
       "register": "Registreren",
@@ -16,7 +16,7 @@
       "english": "Engels"
     },
     "auth": {
-      "loginTitle": "Inloggen - Boodschappenlijstje",
+      "loginTitle": "Inloggen - TomJielis.com",
       "email": "Email",
       "password": "Wachtwoord",
       "emailPlaceholder": "voorbeeld@gmail.com",
@@ -27,11 +27,11 @@
   },
   "en": {
     "app": {
-      "title": "Grocery List",
+      "title": "TomJielis.com",
       "metaDescription": "Log in to manage your personal grocery lists. Free and easy to use."
     },
     "nav": {
-      "brand": "Grocery List",
+      "brand": "TomJielis.com",
       "cards": "Cards",
       "login": "Login",
       "register": "Register",
@@ -42,7 +42,7 @@
       "english": "English"
     },
     "auth": {
-      "loginTitle": "Login - Grocery List",
+      "loginTitle": "Login - TomJielis.com",
       "email": "Email",
       "password": "Password",
       "emailPlaceholder": "example@gmail.com",

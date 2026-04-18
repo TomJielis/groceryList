@@ -1,11 +1,11 @@
 {
   "app": {
-    "title": "Boodschappenlijst",
+    "title": "TomJielis.com",
     "metaDescription": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik.",
     "tagline": "Boodschappen Flow"
   },
   "nav": {
-    "brand": "Boodschappenlijst",
+    "brand": "TomJielis.com",
     "cards": "Kaarten",
     "login": "Login",
     "register": "Registreren",
@@ -19,8 +19,8 @@
     "admin": "Admin"
   },
   "auth": {
-    "loginTitle": "Inloggen - Boodschappenlijstje",
-    "loginSubtitle": "Welkom terug bij Boodschappenlijst",
+    "loginTitle": "Inloggen - TomJielis.com",
+    "loginSubtitle": "Welkom terug bij TomJielis.com",
     "realTime": "Realtime",
     "joinCommunity": "Nodig vrienden uit",
     "freeForever": "Gratis account",
@@ -268,7 +268,7 @@
     "invalidEmail": "Voer een geldig e-mailadres in"
   },
   "terms": {
-    "title": "Algemene Voorwaarden & Privacyverklaring – Grocery List",
+    "title": "Algemene Voorwaarden & Privacyverklaring – TomJielis.com",
     "lastUpdated": "Laatst bijgewerkt: {date}"
   },
   "admin": {
@@ -342,8 +342,8 @@
     "active": "Actief"
   },
   "info": {
-    "badge": "Boodschappenlijst App",
-    "title": "Welkom bij Boodschappenlijst!",
+    "badge": "TomJielis.com App",
+    "title": "Welkom bij TomJielis.com!",
     "subtitle": "Jouw slimme hulp voor al je boodschappen.",
     "featuresTitle": "Ontdek de functies",
     "featuresSubtitle": "Ontdek wat je allemaal kunt met onze app",
@@ -358,7 +358,7 @@
     "feature5Title": "Alles op Jouw Account",
     "feature5Text": "Al je lijsten, producten en kaarten worden veilig opgeslagen op jouw persoonlijke account. Altijd en overal beschikbaar.",
     "ctaTitle": "Klaar om te beginnen?",
-    "ctaSubtitle": "Word lid van Boodschappenlijst om je boodschappen te organiseren, lijsten te delen en niets meer te vergeten.",
+    "ctaSubtitle": "Word lid van TomJielis.com om je boodschappen te organiseren, lijsten te delen en niets meer te vergeten.",
     "ctaButton": "Maak een gratis account",
     "screensTitle": "Een kijkje in de app",
     "screensIntro": "Zo ziet het er uit wanneer je lijsten beheert, producten toevoegt en items afvinkt.",
@@ -377,7 +377,7 @@
     "mobileScreenCards": "Kaarten",
     "mobileScreenProfile": "Profiel",
     "crossPlatformTitle": "Werkt overal",
-    "crossPlatformIntro": "Gebruik Boodschappenlijst op PC, laptop, tablet (iPad) en telefoon. Dankzij het responsive ontwerp past alles zich automatisch aan.",
+    "crossPlatformIntro": "Gebruik TomJielis.com op PC, laptop, tablet (iPad) en telefoon. Dankzij het responsive ontwerp past alles zich automatisch aan.",
     "pwaTitle": "Installeren als PWA (Web App)",
     "pwaIntro": "Je kunt de app installeren zodat hij als een echte native app voelt, inclusief snelkoppeling en fullscreen ervaring.",
     "pwaDesktop": "Desktop (Chrome / Edge / Brave): Klik op het installatie‑pictogram (📥) rechts van de adresbalk of via het menu ⋮ > Installeren.",

@@ -1,11 +1,11 @@
 {
   "app": {
-    "title": "Grocery List",
+    "title": "TomJielis.com",
     "metaDescription": "Log in to manage your personal grocery lists. Free and easy to use.",
     "tagline": "Grocery Flow"
   },
   "nav": {
-    "brand": "Grocery List",
+    "brand": "TomJielis.com",
     "cards": "Cards",
     "login": "Login",
     "register": "Register",
@@ -19,8 +19,8 @@
     "admin": "Admin"
   },
   "auth": {
-    "loginTitle": "Login - Grocery List",
-    "loginSubtitle": "Welcome back to Grocery List",
+    "loginTitle": "Login - TomJielis.com",
+    "loginSubtitle": "Welcome back to TomJielis.com",
     "realTime": "Realtime sync",
     "joinCommunity": "Invite friends",
     "freeForever": "Free account",
@@ -269,7 +269,7 @@
     "invalidEmail": "Please enter a valid email address"
   },
   "terms": {
-    "title": "Terms of Use & Privacy Policy – Grocery List",
+    "title": "Terms of Use & Privacy Policy – TomJielis.com",
     "lastUpdated": "Last updated: {date}"
   },
   "termsApproval": {
@@ -348,8 +348,8 @@
     "userTopItems": "Top Items of this User"
   },
   "info": {
-    "badge": "Grocery List App",
-    "title": "Welcome to Grocery List!",
+    "badge": "TomJielis.com App",
+    "title": "Welcome to TomJielis.com!",
     "subtitle": "Your smart assistant for all your groceries.",
     "featuresTitle": "Discover the features",
     "featuresSubtitle": "Discover everything you can do with our app",
@@ -364,7 +364,7 @@
     "feature5Title": "Everything on Your Account",
     "feature5Text": "All your lists, products, and cards are securely stored on your personal account. Available anytime, anywhere.",
     "ctaTitle": "Ready to get started?",
-    "ctaSubtitle": "Join Grocery List to organize shopping, share lists, and never miss an item.",
+    "ctaSubtitle": "Join TomJielis.com to organize shopping, share lists, and never miss an item.",
     "ctaButton": "Create a free account",
     "screensTitle": "A glimpse inside the app",
     "screensIntro": "Here's how it looks while managing lists, adding products and checking items off.",
@@ -383,7 +383,7 @@
     "mobileScreenCards": "Cards",
     "mobileScreenProfile": "Profile",
     "crossPlatformTitle": "Works Everywhere",
-    "crossPlatformIntro": "Use Grocery List on PC, laptop, tablet (iPad) and phone. The responsive design adapts automatically.",
+    "crossPlatformIntro": "Use TomJielis.com on PC, laptop, tablet (iPad) and phone. The responsive design adapts automatically.",
     "pwaTitle": "Install as a PWA (Web App)",
     "pwaIntro": "You can install the app so it behaves like a native app – with a shortcut and fullscreen feel.",
     "pwaDesktop": "Desktop (Chrome / Edge / Brave): Click the install icon (📥) near the address bar or use the ⋮ menu > Install.",
