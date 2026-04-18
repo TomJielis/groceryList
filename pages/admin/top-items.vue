@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAdminApi } from '~/composables/useAdminApi'
 import { useI18nStore } from '~/stores/i18n'
+import SelectButton from 'primevue/selectbutton'
 
 definePageMeta({
   middleware: ['auth', 'admin']
@@ -14,13 +15,18 @@ const error = ref<string | null>(null)
 const data = ref<any>(null)
 const selectedMonth = ref<'current' | 'previous'>('current')
 
+const monthOptions = [
+  { label: i18n.t('admin.currentMonth'), value: 'current' },
+  { label: i18n.t('admin.previousMonth'), value: 'previous' },
+]
+
 const loadData = async () => {
   loading.value = true
   error.value = null
   try {
     data.value = await getStatsTopItems(selectedMonth.value === 'previous' ? 'previous' : undefined)
   } catch (e: any) {
-    error.value = e.message || 'Failed to load top items data'
+    error.value = e.message || i18n.t('errors.failedToLoadTopItems')
   } finally {
     loading.value = false
   }
@@ -57,159 +63,139 @@ const periodLabel = computed(() => {
 </script>
 
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
-    <!-- Fixed Header -->
-    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-          <div>
+  <div class="px-4 py-6">
+    <div class="w-full max-w-5xl mx-auto flex flex-col gap-6 pb-16">
+      <!-- Page header -->
+      <div class="border-b border-surface-200 pb-6">
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div class="flex items-center gap-4">
             <NuxtLink
               to="/admin"
-              class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium flex items-center gap-1 mb-2"
+              class="w-9 h-9 flex items-center justify-center border border-surface-200 text-color-secondary hover:border-surface-400 hover:text-color transition rounded"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
-              {{ i18n.t('admin.backToDashboard') }}
             </NuxtLink>
-            <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <span class="text-2xl">📊</span>
-              <span>{{ i18n.t('admin.topItems') }}</span>
-            </h1>
+            <div>
+              <h1 class="page-heading">
+                {{ i18n.t('admin.topItems') }}
+              </h1>
+              <p class="text-sm text-color-secondary">
+                {{ periodLabel }}
+              </p>
+            </div>
           </div>
-
-          <!-- Month Toggle -->
-          <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
-            <button
-              @click="selectedMonth = 'current'"
-              :class="[
-                'px-3 py-1.5 text-sm font-medium rounded-md transition-colors',
-                selectedMonth === 'current'
-                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              ]"
-            >
-              {{ i18n.t('admin.currentMonth') }}
-            </button>
-            <button
-              @click="selectedMonth = 'previous'"
-              :class="[
-                'px-3 py-1.5 text-sm font-medium rounded-md transition-colors',
-                selectedMonth === 'previous'
-                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              ]"
-            >
-              {{ i18n.t('admin.previousMonth') }}
-            </button>
+          <!-- Month toggle -->
+          <div class="self-start">
+            <SelectButton
+              v-model="selectedMonth"
+              :options="monthOptions"
+              optionLabel="label"
+              optionValue="value"
+            />
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto overflow-x-hidden pb-24">
-      <div class="max-w-7xl mx-auto px-4 py-6">
-        <!-- Loading State -->
-        <div v-if="loading" class="flex items-center justify-center py-20">
-          <div class="text-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
-          </div>
+      <div v-if="loading" class="flex items-center justify-center py-20 text-color-secondary">
+        <div class="text-center space-y-3">
+          <div class="animate-spin h-8 w-8 border border-surface-200 border-t-surface-400 rounded mx-auto"></div>
+          <p>{{ i18n.t('common.loading') }}</p>
         </div>
-
-        <!-- Error State -->
-        <div v-else-if="error" class="text-center py-20">
-          <p class="text-red-600 dark:text-red-400">{{ error }}</p>
-        </div>
-
-        <!-- Content -->
-        <template v-else>
-          <p v-if="periodLabel" class="text-sm text-slate-500 dark:text-slate-400 mb-6">
-            {{ periodLabel }}
-          </p>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Most Added Table -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-              <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-                <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
-                  {{ i18n.t('admin.mostAdded') }}
-                </h2>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
-                  <thead class="bg-slate-50 dark:bg-slate-900">
-                    <tr>
-                      <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        {{ i18n.t('admin.name') }}
-                      </th>
-                      <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        {{ i18n.t('admin.count') }}
-                      </th>
-                      <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        {{ i18n.t('admin.lists') }}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-                    <tr v-for="(item, index) in mostAddedItems" :key="index" class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="font-medium text-slate-900 dark:text-white">{{ item.name }}</span>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400">
-                        {{ item.count }}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400">
-                        {{ item.lists_count }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div v-if="mostAddedItems.length === 0" class="text-center py-8">
-                <p class="text-slate-500 dark:text-slate-400">{{ i18n.t('admin.noTopItems') }}</p>
-              </div>
-            </div>
-
-            <!-- Most Checked Table -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-              <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-                <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
-                  {{ i18n.t('admin.mostChecked') }}
-                </h2>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
-                  <thead class="bg-slate-50 dark:bg-slate-900">
-                    <tr>
-                      <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        {{ i18n.t('admin.name') }}
-                      </th>
-                      <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        {{ i18n.t('admin.count') }}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-                    <tr v-for="(item, index) in mostCheckedItems" :key="index" class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="font-medium text-slate-900 dark:text-white">{{ item.name }}</span>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-slate-500 dark:text-slate-400">
-                        {{ item.count }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div v-if="mostCheckedItems.length === 0" class="text-center py-8">
-                <p class="text-slate-500 dark:text-slate-400">{{ i18n.t('admin.noTopItems') }}</p>
-              </div>
-            </div>
-          </div>
-        </template>
       </div>
+
+      <div v-else-if="error" class="border border-surface-200 text-color-secondary p-6 text-center rounded">
+        {{ error }}
+      </div>
+
+      <template v-else>
+        <p v-if="periodLabel" class="text-sm text-color-secondary text-center">
+          {{ periodLabel }}
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Most added table -->
+          <div class="overflow-hidden">
+            <div class="flex items-center justify-between py-3 border-b border-surface-200">
+              <h2 class="text-base font-medium">
+                {{ i18n.t('admin.mostAdded') }}
+              </h2>
+              <span class="text-color-secondary text-sm">{{ mostAddedItems.length }} {{ i18n.t('admin.items') }}</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full">
+                <thead>
+                  <tr>
+                    <th class="px-0 pr-6 py-3 text-left text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
+                      {{ i18n.t('admin.name') }}
+                    </th>
+                    <th class="px-6 py-3 text-left text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
+                      {{ i18n.t('admin.count') }}
+                    </th>
+                    <th class="px-6 py-3 text-left text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
+                      {{ i18n.t('admin.lists') }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in mostAddedItems" :key="index" class="border-b border-surface-200 hover:bg-surface-50">
+                    <td class="px-0 pr-6 py-3 whitespace-nowrap font-medium text-sm">
+                      {{ item.name }}
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap text-color-secondary text-sm">
+                      {{ item.count }}
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap text-color-secondary text-sm">
+                      {{ item.lists_count }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div v-if="mostAddedItems.length === 0" class="text-center py-8 text-color-secondary">
+              {{ i18n.t('admin.noTopItems') }}
+            </div>
+          </div>
+
+          <!-- Most checked table -->
+          <div class="overflow-hidden">
+            <div class="flex items-center justify-between py-3 border-b border-surface-200">
+              <h2 class="text-base font-medium">
+                {{ i18n.t('admin.mostChecked') }}
+              </h2>
+              <span class="text-color-secondary text-sm">{{ mostCheckedItems.length }} {{ i18n.t('admin.items') }}</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full">
+                <thead>
+                  <tr>
+                    <th class="px-0 pr-6 py-3 text-left text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
+                      {{ i18n.t('admin.name') }}
+                    </th>
+                    <th class="px-6 py-3 text-left text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
+                      {{ i18n.t('admin.count') }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in mostCheckedItems" :key="index" class="border-b border-surface-200 hover:bg-surface-50">
+                    <td class="px-0 pr-6 py-3 whitespace-nowrap font-medium text-sm">
+                      {{ item.name }}
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap text-color-secondary text-sm">
+                      {{ item.count }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div v-if="mostCheckedItems.length === 0" class="text-center py-8 text-color-secondary">
+              {{ i18n.t('admin.noTopItems') }}
+            </div>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>

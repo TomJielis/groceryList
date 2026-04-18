@@ -4,6 +4,7 @@ import { useI18nStore } from '~/stores/i18n'
 import MonthSelector from '~/components/profile/MonthSelector.vue'
 import ProfileItemsActivity from '~/components/profile/ProfileItemsActivity.vue'
 import ProfileTopItems from '~/components/profile/ProfileTopItems.vue'
+import Card from 'primevue/card'
 
 definePageMeta({
   middleware: ['auth', 'terms']
@@ -46,7 +47,7 @@ onMounted(async () => {
       selectedMonth.value = response.selected_month || response.available_months[0]
     }
   } catch (e: any) {
-    error.value = e.message || 'Failed to load stats'
+    error.value = e.message || i18n.t('errors.failedToLoadStats')
   } finally {
     initialLoading.value = false
   }
@@ -60,7 +61,7 @@ async function onMonthChange(month: string) {
     const response = await getStats(month)
     data.value = response
   } catch (e: any) {
-    error.value = e.message || 'Failed to load stats'
+    error.value = e.message || i18n.t('errors.failedToLoadStats')
   } finally {
     loading.value = false
   }
@@ -68,46 +69,32 @@ async function onMonthChange(month: string) {
 </script>
 
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
-    <!-- Fixed Header -->
-    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 py-4">
-        <NuxtLink
-          to="/profile"
-          class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium flex items-center gap-1 mb-2"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-          </svg>
-          {{ i18n.t('profile.backToProfile') || 'Terug naar profiel' }}
-        </NuxtLink>
-        <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <span class="text-2xl">📊</span>
-          <span>{{ i18n.t('profile.myStats') || 'Mijn Statistieken' }}</span>
-        </h1>
-      </div>
-    </div>
+  <div class="stats-shell px-4 py-6">
+    <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
+      <!-- Header -->
+      <PageHeader
+        back-to="/profile"
+        :title="i18n.t('profile.myStatsDescription')"
+      />
 
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto overflow-x-hidden pb-24">
-      <div class="max-w-5xl mx-auto px-4 py-6 space-y-6">
+      <div class="space-y-6">
         <!-- Initial Loading State -->
         <div v-if="initialLoading" class="flex items-center justify-center py-20">
           <div class="text-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') || 'Laden...' }}</p>
+            <div class="animate-spin rounded h-10 w-10 border-b-2 mx-auto"></div>
+            <p class="mt-4 text-sm">{{ i18n.t('common.loading') }}</p>
           </div>
         </div>
 
         <!-- Error State (only for initial load) -->
         <div v-else-if="error && !data" class="text-center py-20">
-          <p class="text-red-600 dark:text-red-400">{{ error }}</p>
+          <p class="text-red-400 text-sm">{{ error }}</p>
         </div>
 
         <!-- Content -->
         <template v-else>
           <!-- Month Selector (always visible) -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <div class="w-full">
             <MonthSelector
               :selected-month="selectedMonth"
               :available-months="availableMonths"
@@ -116,28 +103,28 @@ async function onMonthChange(month: string) {
           </div>
 
           <!-- Error message for month change -->
-          <div v-if="error && data" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-            <p class="text-red-600 dark:text-red-400 text-sm">{{ error }}</p>
+          <div v-if="error && data" class="border border-red-800 bg-red-900/40 rounded p-4">
+            <p class="text-red-400 text-sm">{{ error }}</p>
           </div>
 
           <!-- Loading indicator for month change -->
           <div v-if="loading" class="flex items-center justify-center py-10">
-            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div class="animate-spin rounded h-8 w-8 border-b-2"></div>
           </div>
 
           <template v-else-if="data">
             <!-- Items Activity Section -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-              <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-                {{ i18n.t('profile.itemsActivity') || 'Item Activiteit' }}
+            <div class="pt-5">
+              <h2 class="page-heading mb-4">
+                {{ i18n.t('profile.itemsActivity') }}
               </h2>
               <ProfileItemsActivity :items="data.items" :invalid_login_attempts="data.invalid_login_attempts" />
             </div>
 
             <!-- Top Items Section -->
-            <div v-if="data.top_items" class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-              <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-                {{ i18n.t('profile.topItems') || 'Top Items' }}
+            <div v-if="data.top_items" class="pt-5">
+              <h2 class="page-heading mb-4">
+                {{ i18n.t('profile.topItems') }}
               </h2>
               <ProfileTopItems :top-items="data.top_items" />
             </div>
@@ -147,3 +134,10 @@ async function onMonthChange(month: string) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.stats-shell {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: transparent;
+}
+</style>

@@ -3,7 +3,6 @@ import {defineStore} from 'pinia'
 import grocerySuggestions from '~/data/suggestions.json';
 import {useGroceryList} from "~/composables/useGroceryList";
 import {useI18nStore} from "~/stores/i18n";
-import {useAuthStore} from "~/stores/auth";
 const { items, fetchItems } = useGroceryList();
 
 export const useSuggestionStore = defineStore('suggestions', {
@@ -56,6 +55,18 @@ export const useSuggestionStore = defineStore('suggestions', {
                         checked: false
                     }))
                     : []
+            } catch (error) {
+                console.error('Fout bij ophalen suggesties:', error)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        // Fetch only default suggestions without re-fetching items (for parallel loading)
+        async fetchSuggestionsOnly() {
+            this.loading = true
+            try {
+                this.defaultSuggestions = grocerySuggestions
             } catch (error) {
                 console.error('Fout bij ophalen suggesties:', error)
             } finally {

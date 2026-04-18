@@ -1,4 +1,5 @@
 import {defineNuxtConfig} from 'nuxt/config'
+import BusinessPreset from './assets/theme/business'
 
 export default defineNuxtConfig({
     app: {
@@ -7,16 +8,35 @@ export default defineNuxtConfig({
                 {
                     rel: 'manifest',
                     href: '/manifest.json'
-                } as any
+                } as any,
+                { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+                { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' } as any,
+                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap' },
             ]
+        }
+    },
+    router: {
+        options: {
+            scrollBehaviorType: 'smooth'
         }
     },
     // Exclude Socket.io paths from Nuxt router
     routeRules: {
         '/socket.io/**': {ssr: false},
     },
-    modules: ['@pinia/nuxt'],
-    css: ['@/assets/css/tailwind.css', '@/assets/css/main.css'],
+    modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
+    css: ['@/assets/css/tailwind.css', '@/assets/css/main.css', '@/assets/css/app-theme.css', 'primeicons/primeicons.css'],
+    primevue: {
+        options: {
+            ripple: true,
+            theme: {
+                preset: BusinessPreset,
+                options: {
+                    darkModeSelector: 'none'
+                }
+            }
+        }
+    },
     postcss: {
         plugins: {
             tailwindcss: {},
@@ -36,9 +56,10 @@ export default defineNuxtConfig({
     nitro: {
         preset: 'node-server',
         errorHandler: '~/server/utils/globalErrorHandler.ts',
-        compatibilityDate: '2025-12-30',
     },
     devtools: {
         enabled: false // Zet Nuxt DevTools volledig uit
-    }
+    },
+    compatibilityDate: '2025-12-30',
+
 })

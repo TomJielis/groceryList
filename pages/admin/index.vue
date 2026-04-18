@@ -69,7 +69,7 @@ const loadData = async (month?: string) => {
     statsTopItems.value = topItems
     allUsers.value = usersData.users || []
   } catch (e: any) {
-    error.value = e.message || 'Failed to load admin data'
+    error.value = e.message || i18n.t('errors.failedToLoadAdminData')
   } finally {
     loading.value = false
   }
@@ -91,12 +91,14 @@ const activityDatasets = computed(() => {
     {
       label: i18n.t('admin.itemsAdded'),
       data: statsActivity.value.current_month.daily.map((d: any) => d.items_added),
-      borderColor: '#3B82F6',
+      borderColor: '#5ebd8a',
+      backgroundColor: 'rgba(94,189,138,0.1)',
     },
     {
       label: i18n.t('admin.itemsChecked'),
       data: statsActivity.value.current_month.daily.map((d: any) => d.items_checked),
-      borderColor: '#10B981',
+      borderColor: '#1c2b2b',
+      backgroundColor: 'rgba(28,43,43,0.1)',
     }
   ]
 })
@@ -154,246 +156,271 @@ const userColumns = [
 </script>
 
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
-    <!-- Fixed Header -->
-    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 py-4">
-        <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <span class="text-2xl">⚙️</span>
-          <span>{{ i18n.t('admin.title') }}</span>
-        </h1>
+  <div class="px-4 py-6">
+    <div class="w-full max-w-6xl mx-auto flex flex-col gap-6 pb-20">
+      <!-- Page header -->
+      <div class="pb-6">
+        <PageHeader
+          back-to="/profile"
+          :title="i18n.t('admin.title')"
+          :subtitle="statsActivity?.current_month?.period"
+        >
+          <template v-if="availableMonths.length" #actions>
+            <div class="w-full md:w-64">
+              <MonthSelector
+                :selected-month="selectedMonth"
+                :available-months="availableMonths"
+                @change="onMonthChange"
+              />
+            </div>
+          </template>
+        </PageHeader>
+        <!-- Quick stats row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 border-t border-surface-200 mt-6">
+          <div class="px-0 pr-4 py-3 border-r border-b md:border-b-0 border-surface-200">
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
+              {{ i18n.t('admin.totalUsers') }}
+            </p>
+            <p class="text-xl font-light">{{ statsUsers?.current_month?.value ?? 0 }}</p>
+          </div>
+          <div class="px-4 py-3 border-b md:border-b-0 md:border-r border-surface-200">
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
+              {{ i18n.t('admin.itemsAdded') }}
+            </p>
+            <p class="text-xl font-light">
+              {{ statsItems?.current_month?.breakdown?.added ?? 0 }}
+            </p>
+          </div>
+          <div class="px-0 pr-4 py-3 border-r border-surface-200">
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
+              {{ i18n.t('admin.listsCreated') }}
+            </p>
+            <p class="text-xl font-light">
+              {{ statsLists?.current_month?.breakdown?.created ?? 0 }}
+            </p>
+          </div>
+          <div class="px-4 py-3">
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
+              {{ i18n.t('admin.activeUsers') }}
+            </p>
+            <p class="text-xl font-light">
+              {{ statsUsers?.current_month?.breakdown?.active ?? 0 }}
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto overflow-x-hidden pb-24">
-      <div class="max-w-7xl mx-auto px-4 py-6">
-        <!-- Loading State -->
-        <div v-if="loading" class="flex items-center justify-center py-20">
-          <div class="text-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p class="mt-4 text-slate-600 dark:text-slate-400">{{ i18n.t('common.loading') }}</p>
-          </div>
+      <div v-if="loading" class="flex items-center justify-center py-20 text-color-secondary">
+        <div class="text-center space-y-3">
+          <div class="animate-spin h-8 w-8 border border-surface-200 border-t-surface-400 rounded mx-auto"></div>
+          <p>{{ i18n.t('common.loading') }}</p>
+        </div>
+      </div>
+
+      <div v-else-if="error" class="border border-surface-200 text-color-secondary p-6 text-center rounded">
+        {{ error }}
+      </div>
+
+      <template v-else>
+        <!-- Stats cards grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
+          <AdminStatsCard
+            :title="i18n.t('admin.totalUsers')"
+            :value="statsUsers?.current_month?.value ?? 0"
+            :previous-value="statsUsers?.previous_month?.value"
+            :showPercentage="true"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.newUsers')"
+            :value="statsUsers?.current_month?.breakdown?.new_registrations ?? 0"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.activeUsers')"
+            :value="statsUsers?.current_month?.breakdown?.active ?? 0"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.verifiedEmails')"
+            :value="statsUsers?.current_month?.breakdown?.verified_email ?? 0"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.invalidLoginAttempts')"
+            :value="statsUsers?.current_month?.breakdown?.invalid_login_attempts ?? 0"
+            :previous-value="statsUsers?.previous_month?.breakdown?.invalid_login_attempts"
+            :showPercentage="true"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.itemsAdded')"
+            :value="statsItems?.current_month?.breakdown?.added ?? 0"
+            :previous-value="statsItems?.previous_month?.breakdown?.added"
+            :showPercentage="true"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.itemsChecked')"
+            :value="statsItems?.current_month?.breakdown?.checked ?? 0"
+            :previous-value="statsItems?.previous_month?.breakdown?.checked"
+            :showPercentage="true"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.listsCreated')"
+            :value="statsLists?.current_month?.breakdown?.created ?? 0"
+            :previous-value="statsLists?.previous_month?.breakdown?.created"
+            :showPercentage="true"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.sharedLists')"
+            :value="statsLists?.current_month?.breakdown?.shared ?? 0"
+            :previous-value="statsLists?.previous_month?.breakdown?.shared"
+            :showPercentage="true"
+          />
         </div>
 
-        <!-- Error State -->
-        <div v-else-if="error" class="text-center py-20">
-          <p class="text-red-600 dark:text-red-400">{{ error }}</p>
-        </div>
-
-        <!-- Content -->
-        <template v-else>
-          <!-- Month Selector -->
-          <div v-if="availableMonths.length" class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-8">
-            <MonthSelector
-              :selected-month="selectedMonth"
-              :available-months="availableMonths"
-              @change="onMonthChange"
-            />
-          </div>
-
-          <!-- User Stats Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            <AdminStatsCard
-              :title="i18n.t('admin.totalUsers')"
-              :value="statsUsers?.current_month?.value ?? 0"
-              :previous-value="statsUsers?.previous_month?.value"
-              :showPercentage="true"
-            />
-            <AdminStatsCard
-              :title="i18n.t('admin.newUsers')"
-              :value="statsUsers?.current_month?.breakdown?.new_registrations ?? 0"
-            />
-            <AdminStatsCard
-              :title="i18n.t('admin.activeUsers')"
-              :value="statsUsers?.current_month?.breakdown?.active ?? 0"
-            />
-            <AdminStatsCard
-              :title="i18n.t('admin.verifiedEmails')"
-              :value="statsUsers?.current_month?.breakdown?.verified_email ?? 0"
-            />
-            <AdminStatsCard
-                :title="i18n.t('admin.invalidLoginAttempts')"
-                :value="statsUsers?.current_month?.breakdown?.invalid_login_attempts ?? 0"
-                :previous-value="statsUsers?.previous_month?.breakdown?.invalid_login_attempts"
-                :showPercentage="true"
-            />
-
-            <AdminStatsCard
-                :title="i18n.t('admin.itemsAdded')"
-                :value="statsItems?.current_month?.breakdown?.added ?? 0"
-                :previous-value="statsItems?.previous_month?.breakdown?.added"
-                :showPercentage="true"
-            />
-            <AdminStatsCard
-                :title="i18n.t('admin.itemsChecked')"
-                :value="statsItems?.current_month?.breakdown?.checked ?? 0"
-                :previous-value="statsItems?.previous_month?.breakdown?.checked"
-                :showPercentage="true"
-            />
-            <AdminStatsCard
-                :title="i18n.t('admin.listsCreated')"
-                :value="statsLists?.current_month?.breakdown?.created ?? 0"
-                :previous-value="statsLists?.previous_month?.breakdown?.created"
-                :showPercentage="true"
-            />
-            <AdminStatsCard
-                :title="i18n.t('admin.sharedLists')"
-                :value="statsLists?.current_month?.breakdown?.shared ?? 0"
-                :previous-value="statsLists?.previous_month?.breakdown?.shared"
-                :showPercentage="true"
-            />
-          </div>
-
-          <!-- Activity Chart -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-8">
-            <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-              {{ i18n.t('admin.dailyActivity') }} - {{ statsActivity?.current_month?.period }}
+        <!-- Daily activity chart -->
+        <div class="border-t border-surface-200 pt-6">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+            <h2 class="text-base font-medium">
+              {{ i18n.t('admin.dailyActivity') }}
             </h2>
-            <AdminLineChart
-              v-if="activityLabels.length > 0"
-              :labels="activityLabels"
-              :datasets="activityDatasets"
+            <p class="text-sm text-color-secondary">
+              {{ statsActivity?.current_month?.period }}
+            </p>
+          </div>
+          <AdminLineChart
+            v-if="activityLabels.length > 0"
+            :labels="activityLabels"
+            :datasets="activityDatasets"
+          />
+          <p v-else class="text-color-secondary text-center py-8">
+            {{ i18n.t('admin.noActivityData') }}
+          </p>
+        </div>
+
+        <!-- Version + Top Lists -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="border-t border-surface-200 pt-6">
+            <h2 class="text-base font-medium mb-2">
+              {{ i18n.t('admin.versionDistribution') }}
+            </h2>
+            <p v-if="statsVersions?.current_month?.on_latest" class="text-sm text-color-secondary mb-4">
+              {{ statsVersions.current_month.on_latest.percentage }}% {{ i18n.t('admin.onLatestVersion') }}
+              ({{ statsVersions.current_month.latest_version }})
+            </p>
+            <AdminDoughnutChart
+              v-if="versionLabels.length > 0"
+              :labels="versionLabels"
+              :data="versionData"
             />
-            <p v-else class="text-slate-500 dark:text-slate-400 text-center py-8">
-              {{ i18n.t('admin.noActivityData') }}
+            <p v-else class="text-color-secondary text-center py-8">
+              {{ i18n.t('admin.noVersionData') }}
             </p>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <!-- Versions Chart -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-              <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-                {{ i18n.t('admin.versionDistribution') }}
-              </h2>
-              <p v-if="statsVersions?.current_month?.on_latest" class="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                {{ statsVersions.current_month.on_latest.percentage }}% {{ i18n.t('admin.onLatestVersion') }} ({{ statsVersions.current_month.latest_version }})
-              </p>
-              <AdminDoughnutChart
-                v-if="versionLabels.length > 0"
-                :labels="versionLabels"
-                :data="versionData"
-              />
-              <p v-else class="text-slate-500 dark:text-slate-400 text-center py-8">
-                {{ i18n.t('admin.noVersionData') }}
-              </p>
-            </div>
+          <div class="border-t border-surface-200 pt-6">
+            <h2 class="text-base font-medium mb-4">
+              {{ i18n.t('admin.topLists') }}
+            </h2>
+            <ul v-if="statsActivity?.current_month?.top_lists?.length > 0" class="divide-y divide-surface-200">
+              <li
+                v-for="(list, index) in statsActivity.current_month.top_lists"
+                :key="list.id"
+                class="py-3 flex justify-between items-center text-sm"
+              >
+                <span class="flex items-center gap-2 text-color-secondary">
+                  <span class="text-color-secondary font-medium w-5 text-right">{{ index + 1 }}.</span>
+                  {{ list.name }}
+                </span>
+                <span class="text-xs text-color-secondary border border-surface-200 px-2 py-1 rounded font-medium">
+                  {{ list.items_added }} {{ i18n.t('admin.itemsAdded') }}
+                </span>
+              </li>
+            </ul>
+            <p v-else class="text-color-secondary text-center py-8">
+              {{ i18n.t('admin.noTopLists') }}
+            </p>
+          </div>
+        </div>
 
-            <!-- Top Lists -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-              <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-                {{ i18n.t('admin.topLists') }}
-              </h2>
-              <ul v-if="statsActivity?.current_month?.top_lists?.length > 0" class="divide-y divide-slate-200 dark:divide-slate-700">
+        <!-- Recently active users table -->
+        <DataTable
+          :columns="userColumns"
+          :data="recentlyActiveUsers"
+          :title="i18n.t('admin.recentlyActiveUsers')"
+          icon="👥"
+          :show-view-all="true"
+          view-all-link="/admin/users"
+          :empty-message="i18n.t('admin.noActiveUsers')"
+          :limit="10"
+          :row-link="(row) => `/admin/users/${row.id}`"
+        />
+
+        <!-- Top items section -->
+        <div class="border-t border-surface-200 pt-6">
+          <div class="flex items-center justify-between mb-4 gap-3 flex-wrap">
+            <h2 class="text-base font-medium">
+              {{ i18n.t('admin.topItems') }}
+            </h2>
+            <NuxtLink
+              to="/admin/top-items"
+              class="text-sm text-color-secondary hover:text-color transition"
+            >
+              {{ i18n.t('admin.viewAll') }}
+            </NuxtLink>
+          </div>
+
+          <p v-if="topItemsPeriod" class="text-xs text-color-secondary mb-4">
+            {{ topItemsPeriod }}
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium mb-3">
+                {{ i18n.t('admin.mostAdded') }}
+              </h3>
+              <ol v-if="topItemsMostAdded.length > 0" class="divide-y divide-surface-200">
                 <li
-                  v-for="(list, index) in statsActivity.current_month.top_lists"
-                  :key="list.id"
-                  class="py-3 flex justify-between items-center"
+                  v-for="(item, index) in topItemsMostAdded.slice(0, 5)"
+                  :key="index"
+                  class="flex items-center justify-between text-sm py-2"
                 >
-                  <span class="text-slate-700 dark:text-slate-300">
-                    <span class="font-medium text-slate-500 dark:text-slate-400 mr-2">{{ index + 1 }}.</span>
-                    {{ list.name }}
+                  <span class="flex items-center gap-2 truncate">
+                    <span class="text-color-secondary font-medium w-4">{{ index + 1 }}.</span>
+                    <span class="text-color-secondary truncate">{{ item.name }}</span>
                   </span>
-                  <span class="text-sm text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">
-                    {{ list.items_added }} items
+                  <span class="text-xs font-medium text-color-secondary">
+                    {{ item.count }}×
                   </span>
                 </li>
-              </ul>
-              <p v-else class="text-slate-500 dark:text-slate-400 text-center py-8">
-                {{ i18n.t('admin.noTopLists') }}
+              </ol>
+              <p v-else class="text-sm text-color-secondary">
+                {{ i18n.t('admin.noTopItems') }}
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium mb-3">
+                {{ i18n.t('admin.mostChecked') }}
+              </h3>
+              <ol v-if="topItemsMostChecked.length > 0" class="divide-y divide-surface-200">
+                <li
+                  v-for="(item, index) in topItemsMostChecked.slice(0, 5)"
+                  :key="index"
+                  class="flex items-center justify-between text-sm py-2"
+                >
+                  <span class="flex items-center gap-2 truncate">
+                    <span class="text-color-secondary font-medium w-4">{{ index + 1 }}.</span>
+                    <span class="text-color-secondary truncate">{{ item.name }}</span>
+                  </span>
+                  <span class="text-xs font-medium text-color-secondary">
+                    {{ item.count }}×
+                  </span>
+                </li>
+              </ol>
+              <p v-else class="text-sm text-color-secondary">
+                {{ i18n.t('admin.noTopItems') }}
               </p>
             </div>
           </div>
-
-          <!-- Active Users (Full Width) -->
-          <DataTable
-            :columns="userColumns"
-            :data="recentlyActiveUsers"
-            :title="i18n.t('admin.recentlyActiveUsers')"
-            icon="👥"
-            :show-view-all="true"
-            view-all-link="/admin/users"
-            :empty-message="i18n.t('admin.noActiveUsers')"
-            :limit="10"
-            :row-link="(row) => `/admin/users/${row.id}`"
-            class="mb-8"
-          />
-
-          <!-- Top Items Widget -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-8">
-            <div class="flex items-center justify-between mb-4">
-              <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                <span class="text-xl">🏆</span>
-                {{ i18n.t('admin.topItems') }}
-              </h2>
-              <NuxtLink
-                to="/admin/top-items"
-                class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                {{ i18n.t('admin.viewAll') }}
-              </NuxtLink>
-            </div>
-
-            <p v-if="topItemsPeriod" class="text-xs text-slate-500 dark:text-slate-400 mb-4">
-              {{ topItemsPeriod }}
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Most Added -->
-              <div>
-                <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1">
-                  <span class="text-green-500">+</span>
-                  {{ i18n.t('admin.mostAdded') }}
-                </h3>
-                <ol v-if="topItemsMostAdded.length > 0" class="space-y-2">
-                  <li
-                    v-for="(item, index) in topItemsMostAdded.slice(0, 5)"
-                    :key="index"
-                    class="flex items-center justify-between text-sm"
-                  >
-                    <span class="flex items-center gap-2 truncate">
-                      <span class="text-slate-400 dark:text-slate-500 font-medium w-4">{{ index + 1 }}.</span>
-                      <span class="text-slate-700 dark:text-slate-300 truncate">{{ item.name }}</span>
-                    </span>
-                    <span class="text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded text-xs ml-2 flex-shrink-0">
-                      {{ item.count }}×
-                    </span>
-                  </li>
-                </ol>
-                <p v-else class="text-sm text-slate-400 dark:text-slate-500 italic">
-                  {{ i18n.t('admin.noTopItems') }}
-                </p>
-              </div>
-
-              <!-- Most Checked -->
-              <div>
-                <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1">
-                  <span class="text-blue-500">✓</span>
-                  {{ i18n.t('admin.mostChecked') }}
-                </h3>
-                <ol v-if="topItemsMostChecked.length > 0" class="space-y-2">
-                  <li
-                    v-for="(item, index) in topItemsMostChecked.slice(0, 5)"
-                    :key="index"
-                    class="flex items-center justify-between text-sm"
-                  >
-                    <span class="flex items-center gap-2 truncate">
-                      <span class="text-slate-400 dark:text-slate-500 font-medium w-4">{{ index + 1 }}.</span>
-                      <span class="text-slate-700 dark:text-slate-300 truncate">{{ item.name }}</span>
-                    </span>
-                    <span class="text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded text-xs ml-2 flex-shrink-0">
-                      {{ item.count }}×
-                    </span>
-                  </li>
-                </ol>
-                <p v-else class="text-sm text-slate-400 dark:text-slate-500 italic">
-                  {{ i18n.t('admin.noTopItems') }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </template>
-      </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>

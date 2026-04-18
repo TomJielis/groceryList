@@ -5,6 +5,7 @@ import { useI18nStore } from "~/stores/i18n";
 import { useNotification } from '~/composables/useNotification';
 import type { TGroceryList } from '@/types/TGroceryList';
 import { useGroceryList } from "~/composables/useGroceryList";
+import Button from 'primevue/button';
 
 const emit = defineEmits(['refresh']);
 
@@ -39,67 +40,65 @@ function getCreatorName(list: TGroceryList): string {
 </script>
 
 <template>
-  <div v-if="pendingLists && pendingLists.length > 0" class="mb-6">
+  <div v-if="pendingLists && pendingLists.length > 0" class="space-y-4">
     <!-- Header -->
-    <div class="flex items-center gap-2 mb-3">
-      <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-      <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">
-        {{ i18n.t('lists.pendingInvites') || 'Uitnodigingen in afwachting' }}
-      </h3>
-      <span class="text-xs bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-full font-medium">
+    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-surface-200">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 flex items-center justify-center rounded">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs text-surface-500">
+            {{ i18n.t('lists.approveOrDecline') }}
+          </p>
+        </div>
+      </div>
+      <span class="px-2 py-0.5 border border-surface-200 text-xs font-medium rounded">
         {{ pendingLists.length }}
       </span>
     </div>
 
     <!-- Pending Lists -->
-    <div class="space-y-3">
-      <transition-group name="list" tag="div" class="space-y-3">
+    <div class="pending-scroll">
+      <transition-group name="list" tag="div">
         <div
           v-for="list in pendingLists"
           :key="list.id"
-          class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 border-2 border-amber-200 dark:border-amber-800 rounded-xl p-4 shadow-sm"
+          class="list-item-row border-b border-surface-100 py-4 mb-1"
         >
           <!-- List Info -->
-          <div class="mb-4">
-            <div class="flex items-start gap-3 mb-2">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-amber-700 dark:text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                </svg>
-              </div>
-              <div class="flex-1 min-w-0">
-                <h4 class="text-base font-bold text-slate-900 dark:text-white truncate">
-                  {{ list.name }}
-                </h4>
-                <p class="text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-                  {{ i18n.t('lists.invitedBy') || 'Uitgenodigd door' }} <span class="font-semibold">{{ getCreatorName(list) }}</span>
-                </p>
-              </div>
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0 rounded">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+              </svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h4 class="text-sm font-medium truncate">
+                {{ list.name }}
+              </h4>
+              <p class="text-xs text-surface-500 mt-0.5">
+                {{ i18n.t('lists.invitedBy') }} <span class="font-medium">{{ getCreatorName(list) }}</span>
+              </p>
             </div>
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex gap-2">
-            <button
+          <div class="flex gap-2 flex-col sm:flex-row">
+            <Button
+              :label="i18n.t('lists.approve')"
+              severity="success"
+              class="flex-1"
               @click="handleAction(list.id, 'accepted')"
-              class="flex-1 px-4 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-              </svg>
-              <span>{{ i18n.t('lists.approve') || 'Accepteren' }}</span>
-            </button>
-            <button
+            />
+            <Button
+              :label="i18n.t('lists.decline')"
+              severity="danger"
+              class="flex-1"
               @click="handleAction(list.id, 'declined')"
-              class="flex-1 px-4 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-              <span>{{ i18n.t('lists.decline') || 'Weigeren' }}</span>
-            </button>
+            />
           </div>
         </div>
       </transition-group>
@@ -108,6 +107,16 @@ function getCreatorName(list: TGroceryList): string {
 </template>
 
 <style scoped>
+.pending-scroll {
+  max-height: 22rem;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.pending-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
 /* List animations */
 .list-enter-active,
 .list-leave-active {

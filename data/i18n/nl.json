@@ -1,10 +1,11 @@
 {
   "app": {
-    "title": "Boodschappenlijst",
-    "metaDescription": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik."
+    "title": "TomJielis",
+    "metaDescription": "Log in om je persoonlijke boodschappenlijstjes te beheren. Gratis en eenvoudig in gebruik.",
+    "tagline": "Boodschappen Flow"
   },
   "nav": {
-    "brand": "Boodschappenlijst",
+    "brand": "TomJielis.com",
     "cards": "Kaarten",
     "login": "Login",
     "register": "Registreren",
@@ -18,8 +19,11 @@
     "admin": "Admin"
   },
   "auth": {
-    "loginTitle": "Inloggen - Boodschappenlijstje",
-    "loginSubtitle": "Welkom terug bij Boodschappenlijst",
+    "loginTitle": "Inloggen - TomJielis.com",
+    "loginSubtitle": "Welkom terug bij TomJielis.com",
+    "realTime": "Realtime",
+    "joinCommunity": "Nodig vrienden uit",
+    "freeForever": "Gratis account",
     "email": "Email",
     "password": "Wachtwoord",
     "passwordPlaceholder": "••••••••",
@@ -46,6 +50,7 @@
     "backToLogin": "Terug naar inloggen",
     "resetPasswordTitle": "Wachtwoord vergeten",
     "resetPasswordSubtitle": "Geen probleem, we sturen je een reset link",
+    "resetHelper": "We sturen je een beveiligde link om een nieuw wachtwoord in te stellen.",
     "resetPasswordBtn": "Wachtwoord resetten",
     "newPasswordTitle": "Nieuw wachtwoord",
     "newPasswordSubtitle": "Kies een nieuw wachtwoord voor je account",
@@ -70,7 +75,13 @@
     "listCount": "lijsten",
     "completed": "afgevinkt",
     "remaining": "te doen",
+    "owner": "eigenaar",
+    "name": "Naam",
+    "items": "Items",
+    "by": "door",
+    "createFirst": "Maak je eerste lijst",
     "editList": "Lijst bewerken",
+    "editDescription": "Wijzig de naam of beheer gedeelde gebruikers",
     "newList": "Nieuwe lijst",
     "sharedWith": "Gedeeld met",
     "pendingInvites": "Uitnodigingen in afwachting",
@@ -80,6 +91,7 @@
     "deleteListName": "Lijst",
     "deleteBtn": "Verwijderen",
     "sharePrompt": "Voer een e-mailadres in om de lijst mee te delen:",
+    "emailAddress": "E-mailadres",
     "shareEmailPlaceholder": "E-mail adres",
     "shareTitle": "Lijst Delen",
     "shareListName": "Lijst",
@@ -87,6 +99,8 @@
     "shared": "Lijst is gedeeld!",
     "updated": "Lijst is geupdate!",
     "created": "Lijst is aangemaakt!",
+    "approveOrDecline": "Keur gedeelde lijsten snel goed",
+    "pending": "Live",
     "delete-shared-user-body": "Weet je zeker dat je deze gebruiker wilt verwijderen?",
     "favorited": "Lijst als favoriet gemarkeerd!",
     "emptyState": {
@@ -129,7 +143,13 @@
     "items": "items",
     "showChecked": "Weergeef",
     "hideChecked": "Verberg",
-    "checkedItemsSuffix": "afgevinkte items"
+    "checkedItemsSuffix": "afgevinkte items",
+    "remaining": "over",
+    "done": "klaar",
+    "completed": "Afgerond",
+    "progress": "Voortgang",
+    "allDone": "Alles gedaan!",
+    "allDoneMessage": "Je hebt alle items afgevinkt"
   },
   "items": {
     "addPlaceholder": "Nieuwe item invoeren",
@@ -137,6 +157,10 @@
     "addNew": "Items toevoegen",
     "suggestions": "suggesties",
     "total": "Totaal",
+    "name": "Product",
+    "quantity": "Aantal",
+    "price": "Prijs",
+    "noPrice": "Geen prijs beschikbaar",
     "emptyState": {
       "title": "Nog geen items",
       "message": "Begin met het toevoegen van items aan je boodschappenlijst. Klik op de + knop hieronder om je eerste item toe te voegen!"
@@ -149,17 +173,18 @@
     "title": "Titel",
     "attachment": "Bijlage",
     "upload": "Uploaden",
-    "uploadSubtitle": "Upload een foto of PDF",
+    "subtitle": "Upload een foto of PDF",
     "view": "Bekijken",
     "manageYourCards": "Beheer je kortingskaarten",
     "titlePlaceholder": "Bijv. Albert Heijn Bonuskaart",
     "fileTypes": "Ondersteunt: JPG, PNG, PDF",
     "uploadBtn": "Uploaden",
+    "uploadSuccess": "Kaart geüpload",
     "confirmDelete": "Wil je deze kaart verwijderen?",
     "deleteTitle": "Kaart Verwijderen",
     "deleteCardName": "Kaart",
     "deleteBtn": "Verwijder kaart",
-    "addBtn": "Kaart toevoegen",
+    "uploadNew": "Kaart toevoegen",
     "noCards": "Je hebt nog geen kaart toegevoegd.",
     "emptyState": {
       "title": "Nog geen kaarten",
@@ -169,7 +194,10 @@
   },
   "profile": {
     "title": "Profiel",
+    "hello": "Welkom terug",
     "information": "Profiel Informatie",
+    "namePlaceholder": "Je naam",
+    "emailPlaceholder": "jij@email.nl",
     "edit": "Bewerken",
     "saveChanges": "Wijzigingen Opslaan",
     "profileUpdated": "Profiel succesvol bijgewerkt",
@@ -221,7 +249,13 @@
     "unexpectedError": "Er is een onverwachte fout opgetreden",
     "cardStoreFailed": "Kaart opslaan mislukt",
     "cardDeleteFailed": "Kaart verwijderen mislukt",
-    "listUnshareFailed": "Gebruiker verwijderen mislukt"
+    "listUnshareFailed": "Gebruiker verwijderen mislukt",
+    "failedToLoadStats": "Statistieken laden mislukt",
+    "failedToLoadAdminData": "Admin-data laden mislukt",
+    "failedToLoadTopItems": "Top items laden mislukt",
+    "failedToLoadUsers": "Gebruikers laden mislukt",
+    "failedToLoadUserDetails": "Gebruikersdetails laden mislukt",
+    "failedToUpdateUser": "Gebruiker bijwerken mislukt"
   },
   "deleteModal": {
     "typeListNameToDelete": "Ter bevestiging, typ de naam van de lijst:",
@@ -230,12 +264,18 @@
   "register": {
     "acceptTerms": "Ik ga akkoord met de <span class='underline underline-offset-2 hover:text-accent transition'><a href='/terms' target='_blank'>Gebruiksvoorwaarden & Privacyverklaring</a></span>."
   },
+  "validation": {
+    "invalidEmail": "Voer een geldig e-mailadres in"
+  },
   "terms": {
-    "title": "Algemene Voorwaarden & Privacyverklaring – Grocery List",
+    "title": "Algemene Voorwaarden & Privacyverklaring – TomJielis.com",
     "lastUpdated": "Laatst bijgewerkt: {date}"
   },
   "admin": {
     "title": "Admin Dashboard",
+    "overview": "Overzicht",
+    "dashboard": "Beheer gebruikers en bekijk statistieken",
+    "analytics": "Inzichten",
     "users": "Gebruikers",
     "totalUsers": "Totaal gebruikers",
     "newUsers": "Nieuwe gebruikers",
@@ -302,8 +342,8 @@
     "active": "Actief"
   },
   "info": {
-    "badge": "Boodschappenlijst App",
-    "title": "Welkom bij Boodschappenlijst!",
+    "badge": "TomJielis.com App",
+    "title": "Welkom bij TomJielis.com!",
     "subtitle": "Jouw slimme hulp voor al je boodschappen.",
     "featuresTitle": "Ontdek de functies",
     "featuresSubtitle": "Ontdek wat je allemaal kunt met onze app",
@@ -318,7 +358,7 @@
     "feature5Title": "Alles op Jouw Account",
     "feature5Text": "Al je lijsten, producten en kaarten worden veilig opgeslagen op jouw persoonlijke account. Altijd en overal beschikbaar.",
     "ctaTitle": "Klaar om te beginnen?",
-    "ctaSubtitle": "Word lid van Boodschappenlijst om je boodschappen te organiseren, lijsten te delen en niets meer te vergeten.",
+    "ctaSubtitle": "Word lid van TomJielis.com om je boodschappen te organiseren, lijsten te delen en niets meer te vergeten.",
     "ctaButton": "Maak een gratis account",
     "screensTitle": "Een kijkje in de app",
     "screensIntro": "Zo ziet het er uit wanneer je lijsten beheert, producten toevoegt en items afvinkt.",
@@ -337,7 +377,7 @@
     "mobileScreenCards": "Kaarten",
     "mobileScreenProfile": "Profiel",
     "crossPlatformTitle": "Werkt overal",
-    "crossPlatformIntro": "Gebruik Boodschappenlijst op PC, laptop, tablet (iPad) en telefoon. Dankzij het responsive ontwerp past alles zich automatisch aan.",
+    "crossPlatformIntro": "Gebruik TomJielis.com op PC, laptop, tablet (iPad) en telefoon. Dankzij het responsive ontwerp past alles zich automatisch aan.",
     "pwaTitle": "Installeren als PWA (Web App)",
     "pwaIntro": "Je kunt de app installeren zodat hij als een echte native app voelt, inclusief snelkoppeling en fullscreen ervaring.",
     "pwaDesktop": "Desktop (Chrome / Edge / Brave): Klik op het installatie‑pictogram (📥) rechts van de adresbalk of via het menu ⋮ > Installeren.",

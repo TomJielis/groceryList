@@ -8,8 +8,9 @@ import {useListStore} from '~/stores/lists';
 import {useI18nStore} from '~/stores/i18n';
 import {useAuthStore} from '~/stores/auth';
 import {useSocket} from '~/composables/useSocket';
-import AddButton from "~/components/form/addButton.vue";
 import Loader from '~/components/Loader.vue';
+import Button from 'primevue/button';
+import ProgressBar from 'primevue/progressbar';
 
 
 definePageMeta({
@@ -132,149 +133,204 @@ async function handleCheckItem(item: any) {
 const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </script>
 <template>
-  <div class="fixed inset-0 md:pt-16 flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
-    <!-- Fixed Header -->
-    <div class="flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-sm">
-      <div class="max-w-4xl mx-auto px-4 py-4">
-        <div class="flex items-center justify-between gap-4">
-          <div class="flex-1 min-w-0">
-            <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white truncate flex items-center gap-2">
-              <span class="text-2xl">🛒</span>
-              <span>{{ list?.name }}</span>
-            </h1>
-            <div class="flex items-center gap-3 mt-1 text-sm text-slate-600 dark:text-slate-400">
-              <span class="flex items-center gap-1">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                </svg>
-                {{ uncheckedItems.length }} {{ i18n.t('list.items') || 'items' }}
-              </span>
-              <span class="w-1 h-1 rounded-full bg-slate-400"></span>
-              <span class="flex items-center gap-1 font-semibold text-green-600 dark:text-green-400">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-                </svg>
-                €{{ totalPrice.toFixed(2) }}
-              </span>
+  <div class="list-shell px-4 py-6">
+    <div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
+      <div>
+        <div class="flex flex-col gap-6">
+          <PageHeader
+            back-to="/"
+            :title="list?.name || ''"
+            :subtitle="`${uncheckedItems.length} ${i18n.t('list.remaining')} · ${checkedItems.length} ${i18n.t('list.done')}`"
+          >
+            <template #actions>
+              <div class="flex flex-col sm:flex-row gap-3">
+                <Button
+                  v-if="showAddItem"
+                  :label="i18n.t('common.cancel')"
+                  severity="secondary"
+                  @click="showAddItem = false"
+                />
+                <Button
+                  v-else
+                  icon="pi pi-plus"
+                  :label="i18n.t('items.addNew')"
+                  severity="primary"
+                  @click="showAddItem = true"
+                />
+              </div>
+            </template>
+          </PageHeader>
+
+          <div class="grid grid-cols-3 gap-3 pt-4">
+            <div class="stat-card-item stat-card-accent-orange">
+              <div class="stat-card-label">{{ i18n.t('items.total') }}</div>
+              <div class="stat-card-value">€{{ totalPrice.toFixed(2) }}</div>
+            </div>
+            <div class="stat-card-item stat-card-accent-blue">
+              <div class="stat-card-label">{{ i18n.t('list.remaining') }}</div>
+              <div class="stat-card-value">{{ uncheckedItems.length }}</div>
+            </div>
+            <div class="stat-card-item stat-card-accent-green">
+              <div class="stat-card-label">{{ i18n.t('list.done') }}</div>
+              <div class="stat-card-value">{{ checkedItems.length }}</div>
             </div>
           </div>
-          <!-- Add Item Button -->
-          <button
-            v-if="!showAddItem"
-            @click="showAddItem = true"
-            class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
-          >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto">
-      <div class="max-w-4xl mx-auto px-4 pb-24 pt-6">
-      <Loader v-if="loading" />
-
-      <!-- Empty State -->
-      <div v-else-if="items.length === 0 && !showAddItem" class="flex flex-col items-center justify-center py-20 px-6">
-        <div class="w-32 h-32 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-full flex items-center justify-center mb-6 animate-bounce">
-          <span class="text-6xl">🛒</span>
-        </div>
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-3 text-center">
-          {{ i18n.t('items.emptyState.title') }}
-        </h2>
-        <p class="text-slate-600 dark:text-slate-400 text-center max-w-sm mb-8">
-          {{ i18n.t('items.emptyState.message') }}
-        </p>
-        <button
-          @click="showAddItem = true"
-          class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
-        >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-          </svg>
-          <span>{{ i18n.t('items.addFirst') || 'Add First Item' }}</span>
-        </button>
-      </div>
-
-      <!-- Items List -->
-      <div v-else class="space-y-4">
-        <div v-if="!showAddItem">
-          <!-- Active Items Section -->
-          <div v-if="uncheckedItems.length > 0" class="space-y-3">
-            <div class="flex items-center justify-between px-2 mb-3">
-              <h3 class="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-                {{ i18n.t('list.toBuy') || 'To Buy' }}
-              </h3>
-              <span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2.5 py-1 rounded-full font-medium">
-                {{ uncheckedItems.length }}
-              </span>
+          <div v-if="items.length > 0" class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs text-surface-500">
+              <span>{{ i18n.t('list.progress') }}</span>
+              <span>{{ Math.round((checkedItems.length / items.length) * 100) }}%</span>
             </div>
-            <transition-group name="list" tag="div" class="space-y-2">
-              <GroceryListItem
-                v-for="item in uncheckedItems"
-                :key="item.id"
-                :item="item"
-                :isEditing="editingItemId === item.id"
-                @edit="editingItemId = $event"
-                @check="handleCheckItem"
-                @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
-                class="transform transition-all duration-200"
-              />
-            </transition-group>
+            <ProgressBar :value="Math.round((checkedItems.length / items.length) * 100)" :showValue="false" />
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <Loader v-if="loading" />
+
+        <div v-else-if="items.length === 0 && !showAddItem" class="flex flex-col items-center justify-center py-12 px-6 text-center space-y-4">
+          <div class="text-5xl">🛒</div>
+          <h2 class="text-xl font-light">
+            {{ i18n.t('items.emptyState.title') }}
+          </h2>
+          <p class="text-sm text-surface-500 max-w-md">
+            {{ i18n.t('items.emptyState.message') }}
+          </p>
+          <Button
+            icon="pi pi-plus"
+            :label="i18n.t('items.addFirst')"
+            severity="primary"
+            @click="showAddItem = true"
+          />
+        </div>
+
+        <div v-else class="space-y-5">
+          <div v-if="!showAddItem">
+          <!-- Active Items Section -->
+          <div v-if="uncheckedItems.length > 0">
+            <!-- Desktop Table View -->
+            <div class="hidden md:block rounded overflow-hidden">
+              <div class="grid grid-cols-12 gap-4 px-6 py-3 text-[0.65rem] font-medium uppercase tracking-[0.14em] text-surface-400">
+                <div class="col-span-5">{{ i18n.t('items.name') }}</div>
+                <div class="col-span-2 text-center">{{ i18n.t('items.quantity') }}</div>
+                <div class="col-span-2 text-center">{{ i18n.t('items.price') }}</div>
+                <div class="col-span-2 text-center">{{ i18n.t('items.total') }}</div>
+                <div class="col-span-1"></div>
+              </div>
+              <transition-group name="list" tag="div">
+                <GroceryListItem
+                  v-for="item in uncheckedItems"
+                  :key="item.id"
+                  :item="item"
+                  :isEditing="editingItemId === item.id"
+                  :tableMode="true"
+                  @edit="editingItemId = $event"
+                  @check="handleCheckItem"
+                  @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+                />
+              </transition-group>
+            </div>
+
+            <!-- Mobile List View -->
+            <div class="md:hidden">
+              <transition-group name="list" tag="div">
+                <GroceryListItem
+                  v-for="item in uncheckedItems"
+                  :key="item.id"
+                  :item="item"
+                  :isEditing="editingItemId === item.id"
+                  @edit="editingItemId = $event"
+                  @check="handleCheckItem"
+                  @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+                />
+              </transition-group>
+            </div>
+          </div>
+
+          <!-- All Done State -->
+          <div v-else-if="checkedItems.length > 0" class="flex flex-col items-center justify-center py-12 px-6">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4">
+              <span class="text-3xl">🎉</span>
+            </div>
+            <h2 class="text-lg font-light mb-1 text-center">
+              {{ i18n.t('list.allDone') }}
+            </h2>
+            <p class="text-surface-500 text-center text-sm">
+              {{ i18n.t('list.allDoneMessage') }}
+            </p>
           </div>
 
           <!-- Completed Items Section -->
-          <div v-if="checkedItems.length > 0" class="mt-8">
+          <div v-if="checkedItems.length > 0" class="mt-6">
             <button
               @click="showCheckedItems = !showCheckedItems"
-              class="w-full flex items-center justify-between px-4 py-3 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition-colors duration-200 group"
+              class="w-full flex items-center justify-between py-3 border-t border-surface-200 transition-colors duration-200 group"
             >
               <div class="flex items-center gap-3">
-                <svg
-                  class="w-5 h-5 text-slate-600 dark:text-slate-400 transition-transform duration-200"
-                  :class="{ 'rotate-90': showCheckedItems }"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
-                <span class="font-semibold text-slate-700 dark:text-slate-300">
-                  {{ showCheckedItems ? i18n.t('list.hideChecked') : i18n.t('list.showChecked') }}
+                <div class="w-7 h-7 rounded flex items-center justify-center">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+                <span class="text-sm font-medium text-surface-500">
+                  {{ i18n.t('list.completed') }}
                 </span>
-                <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2.5 py-1 rounded-full font-medium">
+                <span class="text-xs px-2 py-0.5 rounded font-medium">
                   {{ checkedItems.length }}
                 </span>
               </div>
-              <svg class="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              <svg
+                class="w-4 h-4 transition-transform duration-200"
+                :class="{ 'rotate-180': showCheckedItems }"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
               </svg>
             </button>
 
             <transition
               enter-active-class="transition-all duration-300 ease-out"
-              enter-from-class="opacity-0 -translate-y-2"
-              enter-to-class="opacity-100 translate-y-0"
+              enter-from-class="opacity-0 max-h-0"
+              enter-to-class="opacity-100 max-h-[2000px]"
               leave-active-class="transition-all duration-200 ease-in"
-              leave-from-class="opacity-100 translate-y-0"
-              leave-to-class="opacity-0 -translate-y-2"
+              leave-from-class="opacity-100 max-h-[2000px]"
+              leave-to-class="opacity-0 max-h-0"
             >
-              <div v-if="showCheckedItems" class="mt-3 space-y-2">
-                <transition-group name="list" tag="div" class="space-y-2">
-                  <GroceryListItem
-                    v-for="item in checkedItems"
-                    :key="item.id"
-                    :item="item"
-                    :isEditing="editingItemId === item.id"
-                    @edit="editingItemId = $event"
-                    @check="handleCheckItem"
-                    @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
-                    class="opacity-75"
-                  />
-                </transition-group>
+              <div v-if="showCheckedItems" class="mt-3 overflow-hidden">
+                <!-- Desktop Table View -->
+                <div class="hidden md:block rounded overflow-hidden">
+                  <transition-group name="list" tag="div">
+                    <GroceryListItem
+                      v-for="item in checkedItems"
+                      :key="item.id"
+                      :item="item"
+                      :isEditing="editingItemId === item.id"
+                      :tableMode="true"
+                      @edit="editingItemId = $event"
+                      @check="handleCheckItem"
+                      @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+                    />
+                  </transition-group>
+                </div>
+
+                <!-- Mobile List View -->
+                <div class="md:hidden">
+                  <transition-group name="list" tag="div">
+                    <GroceryListItem
+                      v-for="item in checkedItems"
+                      :key="item.id"
+                      :item="item"
+                      :isEditing="editingItemId === item.id"
+                      @edit="editingItemId = $event"
+                      @check="handleCheckItem"
+                      @save="(updatedItem) => { updateGroceryListItem(updatedItem); editingItemId = null }"
+                      class="opacity-60"
+                    />
+                  </transition-group>
+                </div>
               </div>
             </transition>
           </div>
@@ -289,7 +345,7 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
           leave-from-class="opacity-100 scale-100"
           leave-to-class="opacity-0 scale-95"
         >
-          <div v-if="showAddItem" class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div v-if="showAddItem" class="rounded overflow-hidden">
             <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
           </div>
         </transition>
@@ -300,16 +356,9 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 </template>
 
 <style scoped>
-@supports (height: 100dvh) {
-  .min-h-screen { min-height: 100dvh; }
+.list-shell {
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background: transparent;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-.fade-leave-from, .fade-enter-to {
-  opacity: 1;
-}
+
 </style>

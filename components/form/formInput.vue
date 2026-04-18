@@ -1,11 +1,10 @@
 <script setup lang="ts">
-
-const props = defineProps<{
+defineProps<{
   modelValue: string;
   placeholder: string;
   label?: string;
   inputType: 'text' | 'password' | 'email';
-  disabled:boolean
+  disabled: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -14,17 +13,21 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <label v-if="label" class="block text-sm font-medium mb-1">{{ label }}</label>
-  <input
-      :type="inputType"
-      :value="modelValue"
-      @input="emit('update:modelValue', $event.target.value)"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      :class="[
-        'w-full mb-3 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 border-border-light dark:border-border-dark focus:ring-blue-400 focus:border-blue-400 text-base placeholder-slate-400 dark:placeholder-slate-500',
-        'bg-white/90 dark:bg-slate-900/80',
-        disabled ? 'bg-gray-00 dark:bg-gray-800 text-gray-200' : ''
-      ]"
-  />
+  <div>
+    <label v-if="label" class="text-[0.65rem] uppercase tracking-[0.14em] font-medium mb-2 block" style="color: var(--p-surface-500)">{{ label }}</label>
+    <input
+        :type="inputType"
+        :value="modelValue"
+        @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+        :placeholder="placeholder"
+        :disabled="disabled"
+        :class="[
+          'w-full py-2 border-b focus:outline-none text-base transition',
+          disabled
+            ? 'cursor-not-allowed'
+            : ''
+        ]"
+        style="border-color: var(--p-surface-300); background: transparent; color: var(--p-surface-900);"
+    />
+  </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth";
 import { useI18nStore } from "~/stores/i18n";
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useListStore } from '~/stores/lists';
 import { useRoute } from 'vue-router';
 
@@ -13,10 +13,8 @@ const route = useRoute();
 
 const pendingCount = computed(() => listStore.pendingLists.length);
 
-const showLang = ref(false);
 function setLocale(locale: 'nl' | 'en') {
   i18n.setLocale(locale);
-  showLang.value = false;
 }
 
 onMounted(() => {
@@ -27,7 +25,6 @@ onMounted(() => {
 
 function isActiveTab(path: string) {
   if (path === '/') {
-    // For home/lists page, match exactly '/' or '/list/*' routes
     return route.path === '/' || route.path.startsWith('/list/');
   }
   return route.path.startsWith(path);
@@ -35,123 +32,164 @@ function isActiveTab(path: string) {
 </script>
 
 <template>
-  <nav class="fixed bottom-0 left-0 right-0 flex justify-around items-center px-2 py-2 shadow-2xl md:hidden h-20 bg-white dark:bg-slate-900 border-t-2 border-slate-200 dark:border-slate-700">
-    <!-- Info Tab -->
+  <nav class="bottombar app-bottombar">
     <nuxtLink
       v-if="!authStore.user"
       to="/information"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
-      :class="isActiveTab('/information')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/information') }"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/information') ? 'drop-shadow-lg' : ''">ℹ️</span>
-      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/information') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.info') }}</span>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/information') }">
+        <i class="pi pi-info-circle bottombar-icon"></i>
+      </span>
+      <span class="bottombar-label">{{ t('nav.info') }}</span>
     </nuxtLink>
 
-    <!-- Lists Tab -->
     <nuxtLink
       v-if="authStore.user"
       to="/"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
-      :class="isActiveTab('/')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/') }"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/') ? 'drop-shadow-lg' : ''">📝</span>
-      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.lists') }}</span>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/') }">
+        <i class="pi pi-list bottombar-icon"></i>
+      </span>
+      <span class="bottombar-label">{{ t('nav.lists') }}</span>
     </nuxtLink>
 
-    <!-- Cards Tab -->
     <nuxtLink
       v-if="authStore.user"
       to="/cards"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
-      :class="isActiveTab('/cards')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/cards') }"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/cards') ? 'drop-shadow-lg' : ''">💳</span>
-      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/cards') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.cards') }}</span>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/cards') }">
+        <i class="pi pi-credit-card bottombar-icon"></i>
+      </span>
+      <span class="bottombar-label">{{ t('nav.cards') }}</span>
     </nuxtLink>
 
-    <!-- Login Tab -->
     <nuxtLink
       v-if="!authStore.user"
       to="/auth/login"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
-      :class="isActiveTab('/auth/login')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/auth/login') }"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/auth/login') ? 'drop-shadow-lg' : ''">🚪</span>
-      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/auth/login') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.login') }}</span>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/auth/login') }">
+        <i class="pi pi-sign-in bottombar-icon"></i>
+      </span>
+      <span class="bottombar-label">{{ t('nav.login') }}</span>
     </nuxtLink>
 
-    <!-- Register Tab -->
     <nuxtLink
       v-if="!authStore.user"
       to="/auth/register"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
-      :class="isActiveTab('/auth/register')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/auth/register') }"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/auth/register') ? 'drop-shadow-lg' : ''">📝</span>
-      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/auth/register') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.register') }}</span>
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/auth/register') }">
+        <i class="pi pi-user-plus bottombar-icon"></i>
+      </span>
+      <span class="bottombar-label">{{ t('nav.register') }}</span>
     </nuxtLink>
 
-    <!-- Profile Tab -->
     <nuxtLink
       v-if="authStore.user"
       to="/profile"
-      class="flex flex-col items-center justify-center text-center flex-1 py-2.5 px-2 rounded-2xl transition-all duration-300 group relative"
-      :class="isActiveTab('/profile')
-        ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg scale-105'
-        : 'hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/profile') }"
     >
-      <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300" :class="isActiveTab('/profile') ? 'drop-shadow-lg' : ''">👤</span>
-      <span class="text-[11px] font-bold tracking-wide" :class="isActiveTab('/profile') ? 'text-white' : 'text-slate-600 dark:text-slate-400'">{{ t('nav.profile') }}</span>
-      <span
-        v-if="pendingCount > 0"
-        class="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-red-600 text-white text-[10px] leading-none rounded-full min-w-[20px] h-[20px] flex items-center justify-center font-bold shadow-lg animate-pulse border-2 border-white dark:border-slate-900"
-      >
-        {{ pendingCount }}
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/profile') }">
+        <i class="pi pi-user bottombar-icon"></i>
+      </span>
+      <span class="bottombar-label">
+        {{ t('nav.profile') }}
+        <span v-if="pendingCount > 0" class="bottombar-badge">{{ pendingCount }}</span>
       </span>
     </nuxtLink>
 
-    <!-- Language Selector -->
-    <div v-if="!authStore.user" class="flex flex-col items-center justify-center text-center flex-1 relative">
-      <button
-        @click="showLang = !showLang"
-        class="flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl transition-all duration-300 group hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105"
-      >
-        <span class="text-3xl mb-1 group-hover:scale-110 transition-transform duration-300">🌐</span>
-        <span class="text-[11px] font-bold tracking-wide text-slate-600 dark:text-slate-400">{{ i18n.locale.toUpperCase() }}</span>
+    <div v-if="!authStore.user" class="bottombar-tab app-bottombar-tab">
+      <button class="bottombar-lang-btn" @click="setLocale(i18n.locale === 'nl' ? 'en' : 'nl')">
+        <span class="app-bottombar-tab-icon">
+          <span class="bottombar-lang-flag">{{ i18n.locale === 'nl' ? '🇳🇱' : '🇬🇧' }}</span>
+        </span>
+        <span class="bottombar-label">{{ i18n.locale === 'nl' ? 'NL' : 'EN' }}</span>
       </button>
-      <div v-if="showLang" class="absolute bottom-20 left-1/2 -translate-x-1/2 w-40 bg-white dark:bg-slate-800 backdrop-blur-xl border-2 border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl py-3 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
-        <button @click="setLocale('nl')" class="flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 dark:hover:from-slate-700 dark:hover:to-slate-600 rounded-xl mx-1 transition-all duration-200">
-          <span class="text-xl">🇳🇱</span>
-          <span>{{ t('nav.dutch') }}</span>
-        </button>
-        <button @click="setLocale('en')" class="flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 dark:hover:from-slate-700 dark:hover:to-slate-600 rounded-xl mx-1 transition-all duration-200">
-          <span class="text-xl">🇺🇸</span>
-          <span>{{ t('nav.english') }}</span>
-        </button>
-      </div>
     </div>
   </nav>
 </template>
 
 <style scoped>
-nav {
-  z-index: 50;
+.bottombar {
+  height: 4rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
-nav a, nav button {
+@media (min-width: 768px) {
+  .bottombar {
+    display: none;
+  }
+}
+
+.bottombar-tab {
+  flex: 1;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100%;
+  justify-content: center;
+  gap: 0.2rem;
+  text-decoration: none;
+  padding: 0.5rem 0.25rem;
+  position: relative;
+}
+
+.bottombar-icon {
+  font-size: 1rem;
+}
+
+.bottombar-label {
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.bottombar-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--p-primary-color);
+  color: #fff;
+  font-size: 0.45rem;
+  font-weight: 700;
+}
+
+.bottombar-lang-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  padding: 0.5rem 0.25rem;
+  width: 100%;
+}
+
+.bottombar-lang-flag {
+  font-size: 1rem;
+  line-height: 1;
 }
 </style>

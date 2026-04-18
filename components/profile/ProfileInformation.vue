@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useI18nStore } from '~/stores/i18n';
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
 
 const props = defineProps<{
   user: {
@@ -48,107 +50,104 @@ function handleSubmit() {
 <template>
   <div>
     <!-- Edit Mode -->
-    <form v-if="isEditing" @submit.prevent="handleSubmit" class="space-y-4">
+    <form v-if="isEditing" @submit.prevent="handleSubmit" class="space-y-5">
       <!-- Name Input -->
       <div>
-        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-          {{ i18n.t('profile.form.name') || 'Naam' }}
+        <label class="block text-[0.65rem] uppercase tracking-[0.14em] font-medium mb-2">
+          {{ i18n.t('profile.form.name') }}
         </label>
-        <input
+        <InputText
           v-model="userData.name"
           type="text"
-          :placeholder="i18n.t('profile.name') || 'Je naam'"
+          :placeholder="i18n.t('profile.namePlaceholder')"
           required
-          class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base font-medium placeholder:text-slate-400"
+          class="w-full"
         />
       </div>
 
       <!-- Email Input (Disabled) -->
       <div>
-        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-          {{ i18n.t('profile.form.email') || 'Email' }}
+        <label class="block text-[0.65rem] uppercase tracking-[0.14em] font-medium mb-2">
+          {{ i18n.t('profile.form.email') }}
         </label>
-        <input
+        <InputText
           v-model="userData.email"
           type="email"
-          :placeholder="i18n.t('profile.email') || 'je@email.nl'"
-          disabled
-          class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-base font-medium text-slate-500 dark:text-slate-400 cursor-not-allowed"
+          :placeholder="i18n.t('profile.emailPlaceholder')"
+          :disabled="true"
+          class="w-full"
         />
-        <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+        <p class="mt-2 text-xs flex items-center gap-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
           </svg>
-          <span>{{ i18n.t('profile.emailLocked') || 'Email kan niet worden gewijzigd' }}</span>
+          <span>{{ i18n.t('profile.emailLocked') }}</span>
         </p>
       </div>
 
       <!-- Action Buttons -->
       <div class="flex gap-3 pt-2">
-        <button
+        <Button
           type="button"
+          severity="secondary"
+          class="flex-1"
           @click="toggleEdit"
-          class="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-98 flex items-center justify-center gap-2"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-          <span>{{ i18n.t('common.cancel') || 'Annuleren' }}</span>
-        </button>
-        <button
+          :label="i18n.t('common.cancel')"
+        />
+        <Button
           type="submit"
-          class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all active:scale-98 shadow-lg flex items-center justify-center gap-2"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-          </svg>
-          <span>{{ i18n.t('profile.saveChanges') || 'Opslaan' }}</span>
-        </button>
+          severity="primary"
+          class="flex-1"
+          :label="i18n.t('profile.saveChanges')"
+        />
       </div>
     </form>
 
     <!-- Display Mode -->
     <div v-else class="space-y-4">
       <!-- Name Display -->
-      <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+      <div class="py-3 border-b last:border-0">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 flex items-center justify-center flex-shrink-0">
-            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-8 h-8 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
             </svg>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ i18n.t('auth.name') || 'Naam' }}</p>
-            <p class="text-base font-bold text-slate-900 dark:text-white truncate">{{ userData.name }}</p>
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] font-medium">{{ i18n.t('auth.name') }}</p>
+            <p class="text-base font-medium truncate">{{ userData.name }}</p>
           </div>
         </div>
       </div>
 
       <!-- Email Display -->
-      <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+      <div class="py-3 border-b last:border-0">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 flex items-center justify-center flex-shrink-0">
-            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-8 h-8 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
             </svg>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ i18n.t('auth.email') || 'Email' }}</p>
-            <p class="text-base font-bold text-slate-900 dark:text-white truncate">{{ userData.email }}</p>
+            <p class="text-[0.65rem] uppercase tracking-[0.14em] font-medium">{{ i18n.t('auth.email') }}</p>
+            <p class="text-base font-medium truncate">{{ userData.email }}</p>
           </div>
         </div>
       </div>
 
       <!-- Edit Button -->
-      <button
+      <Button
+        severity="secondary"
+        class="w-full"
         @click="toggleEdit"
-        class="w-full py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl transition-colors active:scale-98 flex items-center justify-center gap-2"
       >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-        </svg>
-        <span>{{ i18n.t('profile.edit') || 'Bewerken' }}</span>
-      </button>
+        <template #default>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          </svg>
+          <span>{{ i18n.t('profile.edit') }}</span>
+        </template>
+      </Button>
     </div>
   </div>
 </template>

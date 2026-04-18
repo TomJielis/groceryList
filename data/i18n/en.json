@@ -1,10 +1,11 @@
 {
   "app": {
-    "title": "Grocery List",
-    "metaDescription": "Log in to manage your personal grocery lists. Free and easy to use."
+    "title": "TomJielis.com",
+    "metaDescription": "Log in to manage your personal grocery lists. Free and easy to use.",
+    "tagline": "Grocery Flow"
   },
   "nav": {
-    "brand": "Grocery List",
+    "brand": "TomJielis.com",
     "cards": "Cards",
     "login": "Login",
     "register": "Register",
@@ -18,8 +19,11 @@
     "admin": "Admin"
   },
   "auth": {
-    "loginTitle": "Login - Grocery List",
-    "loginSubtitle": "Welcome back to Grocery List",
+    "loginTitle": "Login - TomJielis.com",
+    "loginSubtitle": "Welcome back to TomJielis.com",
+    "realTime": "Realtime sync",
+    "joinCommunity": "Invite friends",
+    "freeForever": "Free account",
     "email": "Email",
     "password": "Password",
     "passwordPlaceholder": "••••••••",
@@ -46,6 +50,7 @@
     "backToLogin": "Back to login",
     "resetPasswordTitle": "Forgot password",
     "resetPasswordSubtitle": "No problem, we'll send you a reset link",
+    "resetHelper": "We'll send you a secure link to set a new password.",
     "resetPasswordBtn": "Reset password",
     "newPasswordTitle": "New password",
     "newPasswordSubtitle": "Choose a new password for your account",
@@ -70,7 +75,13 @@
     "listCount": "lists",
     "completed": "completed",
     "remaining": "remaining",
+    "owner": "owner",
+    "name": "Name",
+    "items": "Items",
+    "by": "by",
+    "createFirst": "Create your first list",
     "editList": "Edit list",
+    "editDescription": "Change the name or manage shared users",
     "newList": "New list",
     "sharedWith": "Shared with",
     "pendingInvites": "Pending invitations",
@@ -80,6 +91,7 @@
     "deleteListName": "List",
     "deleteBtn": "Delete",
     "sharePrompt": "Enter an email address to share the list with:",
+    "emailAddress": "Email address",
     "shareEmailPlaceholder": "Email address",
     "shareTitle": "Share List",
     "shareListName": "List",
@@ -90,6 +102,8 @@
     "favorited": "List marked as favorite!",
     "approvedMessage": "List has been added to your lists.",
     "declinedMessage": "List invitation has been declined.",
+    "approveOrDecline": "Approve or decline shared lists quickly",
+    "pending": "Live",
     "emptyState": {
       "title": "No Lists Yet",
       "message": "Get started by creating your first grocery list. Click the + button below to add one!",
@@ -130,7 +144,13 @@
     "items": "items",
     "showChecked": "Show",
     "hideChecked": "Hide",
-    "checkedItemsSuffix": "checked items"
+    "checkedItemsSuffix": "checked items",
+    "remaining": "remaining",
+    "done": "done",
+    "completed": "Completed",
+    "progress": "Progress",
+    "allDone": "All done!",
+    "allDoneMessage": "You have checked off all items"
   },
   "items": {
     "addPlaceholder": "Enter new item",
@@ -138,6 +158,10 @@
     "addNew": "Add items",
     "suggestions": "suggestions",
     "total": "Total",
+    "name": "Product",
+    "quantity": "Quantity",
+    "price": "Price",
+    "noPrice": "No price available",
     "emptyState": {
       "title": "No Items Yet",
       "message": "Start adding items to your grocery list. Click the + button below to add your first item!"
@@ -150,7 +174,7 @@
     "title": "Title",
     "attachment": "Attachment",
     "upload": "Upload",
-    "uploadSubtitle": "Upload a photo or PDF",
+    "subtitle": "Upload a photo or PDF",
     "view": "View",
     "manageYourCards": "Manage your discount cards",
     "titlePlaceholder": "E.g. Albert Heijn Bonus Card",
@@ -160,8 +184,9 @@
     "deleteTitle": "Delete Card",
     "deleteCardName": "Card",
     "deleteBtn": "Delete card",
-    "addBtn": "Add card",
+    "uploadNew": "Add card",
     "noCards": "You have not added any cards yet.",
+    "uploadSuccess": "Card uploaded",
     "emptyState": {
       "title": "No cards yet",
       "message": "Add your first loyalty or discount card to keep everything handy."
@@ -170,7 +195,10 @@
   },
   "profile": {
     "title": "Profile",
+    "hello": "Welcome back",
     "information": "Profile Information",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@email.com",
     "edit": "Edit",
     "saveChanges": "Save Changes",
     "profileUpdated": "Profile updated successfully",
@@ -222,7 +250,13 @@
     "unexpectedError": "An unexpected error occurred",
     "cardStoreFailed": "Failed to store card",
     "cardDeleteFailed": "Failed to delete card",
-    "listUnshareFailed": "Failed to remove user from list"
+    "listUnshareFailed": "Failed to remove user from list",
+    "failedToLoadStats": "Failed to load stats",
+    "failedToLoadAdminData": "Failed to load admin data",
+    "failedToLoadTopItems": "Failed to load top items",
+    "failedToLoadUsers": "Failed to load users",
+    "failedToLoadUserDetails": "Failed to load user details",
+    "failedToUpdateUser": "Failed to update user"
   },
   "deleteModal": {
     "typeListNameToDelete": "To confirm, type the name of the list:",
@@ -231,8 +265,11 @@
   "register": {
     "acceptTerms": "I agree with the <span class='underline underline-offset-2 hover:text-accent transition'><a href='/terms' target='_blank'>Terms of Use & Privacy Policy</a></span>."
   },
+  "validation": {
+    "invalidEmail": "Please enter a valid email address"
+  },
   "terms": {
-    "title": "Terms of Use & Privacy Policy – Grocery List",
+    "title": "Terms of Use & Privacy Policy – TomJielis.com",
     "lastUpdated": "Last updated: {date}"
   },
   "termsApproval": {
@@ -242,6 +279,9 @@
   },
   "admin": {
     "title": "Admin Dashboard",
+    "overview": "Overview",
+    "dashboard": "Manage users and view statistics",
+    "analytics": "Insights",
     "users": "Users",
     "totalUsers": "Total users",
     "newUsers": "New users",
@@ -308,8 +348,8 @@
     "userTopItems": "Top Items of this User"
   },
   "info": {
-    "badge": "Grocery List App",
-    "title": "Welcome to Grocery List!",
+    "badge": "TomJielis.com App",
+    "title": "Welcome to TomJielis.com!",
     "subtitle": "Your smart assistant for all your groceries.",
     "featuresTitle": "Discover the features",
     "featuresSubtitle": "Discover everything you can do with our app",
@@ -324,7 +364,7 @@
     "feature5Title": "Everything on Your Account",
     "feature5Text": "All your lists, products, and cards are securely stored on your personal account. Available anytime, anywhere.",
     "ctaTitle": "Ready to get started?",
-    "ctaSubtitle": "Join Grocery List to organize shopping, share lists, and never miss an item.",
+    "ctaSubtitle": "Join TomJielis.com to organize shopping, share lists, and never miss an item.",
     "ctaButton": "Create a free account",
     "screensTitle": "A glimpse inside the app",
     "screensIntro": "Here's how it looks while managing lists, adding products and checking items off.",
@@ -343,7 +383,7 @@
     "mobileScreenCards": "Cards",
     "mobileScreenProfile": "Profile",
     "crossPlatformTitle": "Works Everywhere",
-    "crossPlatformIntro": "Use Grocery List on PC, laptop, tablet (iPad) and phone. The responsive design adapts automatically.",
+    "crossPlatformIntro": "Use TomJielis.com on PC, laptop, tablet (iPad) and phone. The responsive design adapts automatically.",
     "pwaTitle": "Install as a PWA (Web App)",
     "pwaIntro": "You can install the app so it behaves like a native app – with a shortcut and fullscreen feel.",
     "pwaDesktop": "Desktop (Chrome / Edge / Brave): Click the install icon (📥) near the address bar or use the ⋮ menu > Install.",
