@@ -33,7 +33,7 @@ function isActiveTab(path: string) {
       <nuxt-link to="/" class="navbar-brand-link">
         <div class="flex items-center gap-2">
           <span class="app-navbar-logo-dot"></span>
-          <span class="app-navbar-brand">GroceryList</span>
+          <span class="app-navbar-brand">TomJielis</span>
         </div>
       </nuxt-link>
 
