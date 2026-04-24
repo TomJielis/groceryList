@@ -231,6 +231,13 @@
     "adminDashboard": "Admin Dashboard",
     "adminDashboardDescription": "Beheer gebruikers en bekijk statistieken",
     "invalidLoginAttempts": "Foutieve inlog pogingen",
+    "monthlySpend": "Maandelijkse uitgaven",
+    "spendByList": "Uitgaven per lijst",
+    "listName": "Lijst",
+    "spendAmount": "Bedrag",
+    "noSpendData": "Voeg prijzen toe aan je items om uitgaven bij te houden",
+    "userBreakdown": "Per gebruiker",
+    "userName": "Gebruiker",
     "form": {
       "name": "Naam",
       "email": "E-mail"
@@ -331,6 +338,8 @@
     "noTopItems": "Geen top items beschikbaar",
     "viewTopItems": "Bekijk top items",
     "userTopItems": "Top Items van deze Gebruiker",
+    "totalSpend": "Totale uitgaven",
+    "spendThisMonth": "Uitgaven deze maand",
     "block": "Blokkeren",
     "unblock": "Deblokkeren",
     "blocked": "Geblokkeerd",

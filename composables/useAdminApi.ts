@@ -142,6 +142,22 @@ export function useAdminApi() {
         return await response.json();
     }
 
+    async function getStatsSpend(month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/stats/spend${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch spend stats: ${response.statusText}`);
+        }
+
+        return await response.json();
+    }
+
     return {
         getStatsUsers,
         getStatsItems,
@@ -151,6 +167,7 @@ export function useAdminApi() {
         getUsers,
         getUserDetail,
         getStatsTopItems,
+        getStatsSpend,
         blockUser,
     }
 }

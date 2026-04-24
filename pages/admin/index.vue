@@ -12,7 +12,7 @@ definePageMeta({
 })
 
 const i18n = useI18nStore()
-const { getStatsUsers, getStatsItems, getStatsLists, getStatsActivity, getStatsVersions, getStatsTopItems, getUsers } = useAdminApi()
+const { getStatsUsers, getStatsItems, getStatsLists, getStatsActivity, getStatsVersions, getStatsTopItems, getUsers, getStatsSpend } = useAdminApi()
 
 const loading = ref(true)
 const error = ref<string | null>(null)
@@ -23,6 +23,7 @@ const statsLists = ref<any>(null)
 const statsActivity = ref<any>(null)
 const statsVersions = ref<any>(null)
 const statsTopItems = ref<any>(null)
+const statsSpend = ref<any>(null)
 const allUsers = ref<any[]>([])
 const selectedMonth = ref('')
 const availableMonths = ref<string[]>([])
@@ -52,7 +53,7 @@ const loadData = async (month?: string) => {
   error.value = null
   try {
     const monthParam = month || selectedMonth.value
-    const [users, items, lists, activity, versions, topItems, usersData] = await Promise.all([
+    const [users, items, lists, activity, versions, topItems, usersData, spend] = await Promise.all([
       getStatsUsers(monthParam),
       getStatsItems(monthParam),
       getStatsLists(monthParam),
@@ -60,6 +61,7 @@ const loadData = async (month?: string) => {
       getStatsVersions(monthParam),
       getStatsTopItems(monthParam),
       getUsers(),
+      getStatsSpend(monthParam),
     ])
     statsUsers.value = users
     statsItems.value = items
@@ -68,6 +70,7 @@ const loadData = async (month?: string) => {
     statsVersions.value = versions
     statsTopItems.value = topItems
     allUsers.value = usersData.users || []
+    statsSpend.value = spend
   } catch (e: any) {
     error.value = e.message || i18n.t('errors.failedToLoadAdminData')
   } finally {
@@ -124,6 +127,13 @@ const topItemsMostChecked = computed(() => {
 const topItemsPeriod = computed(() => {
   return statsTopItems.value?.current_month?.period || ''
 })
+
+const spendCurrentTotal = computed(() =>
+  statsSpend.value?.current_month?.total ?? 0
+)
+const spendPreviousTotal = computed(() =>
+  statsSpend.value?.previous_month?.total ?? 0
+)
 
 const recentlyActiveUsers = computed(() => {
   if (!allUsers.value.length) return []
@@ -271,6 +281,13 @@ const userColumns = [
             :value="statsLists?.current_month?.breakdown?.shared ?? 0"
             :previous-value="statsLists?.previous_month?.breakdown?.shared"
             :showPercentage="true"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.totalSpend')"
+            :value="spendCurrentTotal"
+            :previous-value="spendPreviousTotal"
+            :showPercentage="true"
+            prefix="€"
           />
         </div>
 

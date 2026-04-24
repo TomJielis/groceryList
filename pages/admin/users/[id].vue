@@ -235,7 +235,7 @@ const toggleBlockUser = async () => {
             <div v-if="loadingActivity" class="flex items-center justify-center py-8">
               <div class="animate-spin h-6 w-6 border border-surface-200 border-t-surface-400 rounded"></div>
             </div>
-            <div v-else class="grid grid-cols-1 md:grid-cols-4 gap-x-6">
+            <div v-else class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-x-6">
               <AdminStatsCard
                 :title="i18n.t('admin.itemsAddedMonth')"
                 :value="data.items?.current_month?.added ?? 0"
@@ -253,6 +253,13 @@ const toggleBlockUser = async () => {
                 :value="data.invalid_loggin_attempts?.current_month ?? 0"
                 :previous-value="data.invalid_loggin_attempts?.previous_month ?? 0"
                 :showPercentage="true"
+              />
+              <AdminStatsCard
+                :title="i18n.t('admin.spendThisMonth')"
+                :value="data?.spend?.current_month?.total ?? 0"
+                :previous-value="data?.spend?.previous_month?.total ?? 0"
+                :showPercentage="true"
+                prefix="€"
               />
               <div class="border-b border-surface-200 py-4">
                 <h3 class="text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">

@@ -7,6 +7,7 @@ interface Props {
   value: number | string
   previousValue?: number | string
   showPercentage?: boolean
+  prefix?: string
 }
 
 const props = defineProps<Props>()
@@ -34,7 +35,7 @@ const changeIcon = computed(() => {
   <div class="border-b border-surface-200 py-4 space-y-1">
     <p class="text-[0.65rem] uppercase tracking-[0.14em] font-medium" style="color: var(--p-surface-500)">{{ title }}</p>
     <div class="flex items-baseline gap-2">
-      <p class="text-xl font-light" style="color: var(--p-surface-900)">{{ value }}</p>
+      <p class="text-xl font-light" style="color: var(--p-surface-900)">{{ prefix ?? '' }}{{ value }}</p>
       <p v-if="change.percentage !== null && showPercentage" :class="['text-sm font-medium', changeColor]">
         {{ changeIcon }} {{ Math.abs(change.percentage) }}%
       </p>

@@ -4,6 +4,7 @@ import { useI18nStore } from '~/stores/i18n'
 import MonthSelector from '~/components/profile/MonthSelector.vue'
 import ProfileItemsActivity from '~/components/profile/ProfileItemsActivity.vue'
 import ProfileTopItems from '~/components/profile/ProfileTopItems.vue'
+import ProfileSpend from '~/components/profile/ProfileSpend.vue'
 import Card from 'primevue/card'
 
 definePageMeta({
@@ -118,7 +119,10 @@ async function onMonthChange(month: string) {
               <h2 class="page-heading mb-4">
                 {{ i18n.t('profile.itemsActivity') }}
               </h2>
-              <ProfileItemsActivity :items="data.items" :invalid_login_attempts="data.invalid_login_attempts" />
+              <ProfileItemsActivity
+                :items="data.items"
+                :invalid_login_attempts="data.invalid_login_attempts"
+              />
             </div>
 
             <!-- Top Items Section -->
@@ -127,6 +131,14 @@ async function onMonthChange(month: string) {
                 {{ i18n.t('profile.topItems') }}
               </h2>
               <ProfileTopItems :top-items="data.top_items" />
+            </div>
+
+            <!-- Monthly Spend Section -->
+            <div v-if="data.spend" class="pt-5">
+              <h2 class="page-heading mb-4">
+                {{ i18n.t('profile.monthlySpend') }}
+              </h2>
+              <ProfileSpend :spend="data.spend" :user_breakdown="data.user_breakdown" />
             </div>
           </template>
         </template>

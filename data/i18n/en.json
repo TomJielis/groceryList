@@ -232,6 +232,13 @@
     "adminDashboard": "Admin Dashboard",
     "adminDashboardDescription": "Manage users and view statistics",
     "invalidLoginAttempts": "Invalid login attempts",
+    "monthlySpend": "Monthly Spend",
+    "spendByList": "Spend by List",
+    "listName": "List",
+    "spendAmount": "Amount",
+    "noSpendData": "Add prices to your items to track monthly spend",
+    "userBreakdown": "By user",
+    "userName": "User",
     "form": {
       "name": "Name",
       "email": "Email"
@@ -345,7 +352,9 @@
     "userUnblocked": "User has been unblocked",
     "status": "Status",
     "active": "Active",
-    "userTopItems": "Top Items of this User"
+    "userTopItems": "Top Items of this User",
+    "totalSpend": "Total spend",
+    "spendThisMonth": "Spend this month"
   },
   "info": {
     "badge": "TomJielis.com App",
