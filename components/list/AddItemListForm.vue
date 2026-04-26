@@ -272,6 +272,9 @@ const suggestionItems = computed(() =>
                       <span class="text-sm font-medium group-hover:text-surface-900 transition-colors">{{ item.name }}</span>
                     </div>
 
+                    <!-- Price -->
+                    <span v-if="item.unit_price" class="text-sm text-surface-400 flex-shrink-0">€{{ item.unit_price.toFixed(2) }}</span>
+
                     <!-- Chevron -->
                     <svg class="flex-shrink-0 w-4 h-4 text-surface-300 group-hover:text-surface-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
