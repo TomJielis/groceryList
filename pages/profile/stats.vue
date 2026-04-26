@@ -5,7 +5,6 @@ import MonthSelector from '~/components/profile/MonthSelector.vue'
 import ProfileItemsActivity from '~/components/profile/ProfileItemsActivity.vue'
 import ProfileTopItems from '~/components/profile/ProfileTopItems.vue'
 import ProfileSpend from '~/components/profile/ProfileSpend.vue'
-import Card from 'primevue/card'
 
 definePageMeta({
   middleware: ['auth', 'terms']
@@ -82,7 +81,7 @@ async function onMonthChange(month: string) {
         <!-- Initial Loading State -->
         <div v-if="initialLoading" class="flex items-center justify-center py-20">
           <div class="text-center">
-            <div class="animate-spin rounded h-10 w-10 border-b-2 mx-auto"></div>
+            <div class="animate-spin rounded-full h-10 w-10 border-2 border-surface-200 border-t-surface-500 mx-auto"></div>
             <p class="mt-4 text-sm">{{ i18n.t('common.loading') }}</p>
           </div>
         </div>
@@ -110,7 +109,7 @@ async function onMonthChange(month: string) {
 
           <!-- Loading indicator for month change -->
           <div v-if="loading" class="flex items-center justify-center py-10">
-            <div class="animate-spin rounded h-8 w-8 border-b-2"></div>
+            <div class="animate-spin rounded-full h-8 w-8 border-2 border-surface-200 border-t-surface-500"></div>
           </div>
 
           <template v-else-if="data">

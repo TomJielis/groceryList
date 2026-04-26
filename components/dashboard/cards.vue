@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
-import Card from 'primevue/card'
 import Button from 'primevue/button'
 import {useCards} from '~/composables/useCards';
 import {useI18nStore} from '~/stores/i18n';
@@ -28,9 +27,9 @@ onMounted(async () => {
     await getCards();
   } catch (error) {
     // Errors are handled by the global error interceptor
+  } finally {
     loading.value = false;
   }
-  loading.value = false;
 });
 
 function destroy(id: number) {
@@ -45,7 +44,6 @@ function handleDeleteConfirm() {
     deleteCard(deleteCardId.value).catch(() => {
       showNotification(i18n.t('errors.cardDeleteFailed'));
     });
-
     closeDeleteModal();
   }
 }
@@ -70,88 +68,61 @@ function closeModal() {
 <template>
   <div class="space-y-4">
 
-    <!-- Loading State -->
+    <!-- Loading -->
     <div v-if="loading" class="flex items-center justify-center py-16">
-      <div class="animate-spin rounded-full h-8 w-8 border-2 border-surface-200 border-t-surface-400"></div>
+      <div class="animate-spin rounded-full h-8 w-8 border-2 border-surface-200 border-t-surface-500"></div>
     </div>
 
     <!-- Empty State -->
-    <div v-else-if="cards.length === 0" class="flex flex-col items-center justify-center py-16 px-6 text-center">
-      <div class="text-5xl mb-4">🎫</div>
-      <h2 class="text-xl font-light mb-2">
-        {{ i18n.t('cards.emptyState.title') }}
-      </h2>
-      <p class="text-sm text-color-secondary max-w-sm mb-6">
-        {{ i18n.t('cards.emptyState.message') }}
-      </p>
-      <Button
-        severity="primary"
-        :label="i18n.t('cards.uploadFirst')"
-        icon="pi pi-plus"
-        @click="emit('upload')"
-      />
+    <div v-else-if="cards.length === 0" class="flex flex-col items-center justify-center py-16 px-6 text-center gap-4">
+      <div class="text-5xl">🎫</div>
+      <h2 class="text-xl font-light">{{ i18n.t('cards.emptyState.title') }}</h2>
+      <p class="text-sm text-surface-500 max-w-sm">{{ i18n.t('cards.emptyState.message') }}</p>
+      <Button severity="primary" :label="i18n.t('cards.uploadFirst')" icon="pi pi-plus" @click="emit('upload')" />
     </div>
 
     <!-- Cards Grid -->
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <transition-group name="card-list" tag="div" class="contents">
-        <Card
+        <div
           v-for="card in cards"
           :key="card.id"
-          class="overflow-hidden group"
+          class="list-item-row rounded overflow-hidden group"
         >
-          <template #header>
-            <div class="flex items-center justify-between px-4 py-3 border-b border-surface-200">
-              <h3 class="text-sm font-medium truncate">{{ card.title }}</h3>
-              <Button
-                severity="danger"
-                text
-                :title="i18n.t('cards.deleteBtn')"
-                icon="pi pi-trash"
-                class="flex-shrink-0 w-8 h-8"
-                @click="destroy(card.id)"
-              />
-            </div>
-          </template>
-
-          <template #content>
-            <!-- Card Image -->
-            <div
-              class="relative p-4 cursor-pointer"
-              @click="openModal(card)"
+          <!-- Card Header -->
+          <div class="flex items-center justify-between px-4 py-3 border-b border-surface-100">
+            <h3 class="text-sm font-medium truncate">{{ card.title }}</h3>
+            <button
+              :title="i18n.t('cards.deleteBtn')"
+              class="flex-shrink-0 w-8 h-8 rounded flex items-center justify-center text-surface-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+              @click="destroy(card.id)"
             >
-              <img
-                :src="card.attachment"
-                :alt="card.title"
-                class="w-full h-auto object-contain max-h-56"
-              />
-              <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors">
-                <div class="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                  </svg>
-                </div>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Card Image -->
+          <div class="relative p-4 cursor-pointer" @click="openModal(card)">
+            <img
+              :src="card.attachment"
+              :alt="card.title"
+              class="w-full h-auto object-contain max-h-56"
+            />
+            <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/25 transition-colors">
+              <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
               </div>
             </div>
-          </template>
-
-          <template #footer>
-            <div class="px-4 py-3 border-t border-surface-200">
-              <Button
-                severity="secondary"
-                text
-                :label="i18n.t('cards.view')"
-                icon="pi pi-eye"
-                class="w-full justify-center"
-                @click="openModal(card)"
-              />
-            </div>
-          </template>
-        </Card>
+          </div>
+        </div>
       </transition-group>
     </div>
 
-    <!-- Full screen preview modal -->
+    <!-- Full screen preview -->
     <transition
       enter-active-class="transition-all duration-200 ease-out"
       enter-from-class="opacity-0"
@@ -175,20 +146,17 @@ function closeModal() {
           leave-to-class="opacity-0 scale-95"
         >
           <div v-if="isModalOpen" class="relative w-full max-w-4xl max-h-[90vh]" @click.stop>
-            <!-- Close + Title bar -->
             <div class="flex items-center justify-between mb-3">
-              <h3 class="text-sm font-medium text-color-secondary">{{ selectedCard?.title }}</h3>
+              <h3 class="text-sm font-medium text-white/70">{{ selectedCard?.title }}</h3>
               <button
                 @click="closeModal"
-                class="w-9 h-9 flex items-center justify-center text-color-secondary hover:text-color transition-colors"
+                class="w-9 h-9 flex items-center justify-center text-white/60 hover:text-white transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
               </button>
             </div>
-
-            <!-- Image -->
             <div class="rounded overflow-hidden">
               <img
                 :src="selectedCard?.attachment"
@@ -220,17 +188,14 @@ function closeModal() {
 .card-list-leave-active {
   transition: all 0.3s ease;
 }
-
 .card-list-enter-from {
   opacity: 0;
   transform: translateY(-10px);
 }
-
 .card-list-leave-to {
   opacity: 0;
   transform: translateX(-10px);
 }
-
 .card-list-move {
   transition: transform 0.3s ease;
 }

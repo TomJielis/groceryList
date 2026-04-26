@@ -11,15 +11,9 @@ import {useListStore} from "~/stores/lists";
 import { useI18nStore } from '~/stores/i18n';
 import { useSocket } from '~/composables/useSocket';
 import Button from 'primevue/button'
-import Tag from 'primevue/tag'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
 import ProgressBar from 'primevue/progressbar'
-import Avatar from 'primevue/avatar'
-import AvatarGroup from 'primevue/avatargroup'
 import Menu from 'primevue/menu'
 import Skeleton from 'primevue/skeleton'
-import Card from 'primevue/card'
 import type { MenuItem } from 'primevue/menuitem'
 
 const listStore = useListStore();
@@ -64,7 +58,6 @@ onMounted(async () => {
     loading.value = false;
   }
 
-  // Connect to Socket.io and join all list rooms so index can receive progress updates
   connect();
   listStore.lists.forEach((l: any) => {
     if (l?.id) joinList(Number(l.id));
@@ -92,15 +85,10 @@ const sortedLists = computed(() => {
   });
 });
 
-const sharedListsCount = computed(() => {
-  return listStore.lists.filter((list: any) => (list?.grocery_list_invites?.length || 0) > 0).length;
-});
-
 definePageMeta({
   middleware: ['auth', 'terms'],
   requiresAuth: true,
 })
-
 
 function handleList() {
   closeListForm();
@@ -159,13 +147,6 @@ function openActionMenu(event: MouseEvent, listItem: any) {
 
 function closeActionMenu() {
   actionMenu.value?.hide();
-}
-
-function handleRowNavigate(event: any) {
-  const id = event?.data?.id;
-  if (id) {
-    router.push(`/list/${id}`);
-  }
 }
 
 function shareListWithUser(id: number) {
@@ -240,17 +221,12 @@ async function setFavoriteList(id: number) {
 }
 
 function stringToColor(str: string | null | undefined) {
-
-  if(!str){
-    return 'hsl(0, 0%, 80%)';
-  }
-
+  if (!str) return 'hsl(0, 0%, 80%)';
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const h = hash % 360;
-  return `hsl(${h}, 70%, 85%)`;
+  return `hsl(${hash % 360}, 70%, 85%)`;
 }
 
 function calculateProgress(listItem: any) {
@@ -264,32 +240,22 @@ function getRemainingCount(listItem: any) {
   return (listItem.grocery_list_items_count || 0) - (listItem.grocery_list_items_checked_count || 0);
 }
 
-const totalItemsChecked = computed(() => {
-  return sortedLists.value.reduce((sum, list) => sum + (list.grocery_list_items_checked_count || 0), 0);
-});
-
-const totalItemsRemaining = computed(() => {
-  return sortedLists.value.reduce((sum, list) => sum + getRemainingCount(list), 0);
-});
-
 const editListId = ref<number | undefined>(undefined)
 function openListSettings(id: number) {
   editListId.value = id;
   openListForm.value = true;
   closeActionMenu();
 }
-
 </script>
-
 
 <template>
   <div class="lists-shell px-4 py-6">
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-6">
+
+      <!-- Header -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 py-4 border-b border-surface-200">
         <div class="space-y-1">
-          <h1 class="page-heading">
-            {{ i18n.t('lists.title') }}
-          </h1>
+          <h1 class="page-heading">{{ i18n.t('lists.title') }}</h1>
           <p class="text-sm text-surface-500">
             {{ sortedLists.length }} {{ i18n.t('lists.listCount') }}
           </p>
@@ -312,6 +278,7 @@ function openListSettings(id: number) {
         </div>
       </div>
 
+      <!-- List Form -->
       <div v-if="openListForm" class="py-4">
         <ListForm
           :list-id="editListId"
@@ -321,166 +288,131 @@ function openListSettings(id: number) {
       </div>
 
       <div v-else class="py-4">
-          <div v-if="loading" class="space-y-3">
-            <Skeleton height="48px" class="rounded" />
-            <Skeleton height="48px" class="rounded" />
-            <Skeleton height="48px" class="rounded" />
+
+        <!-- Loading -->
+        <div v-if="loading" class="space-y-1 divide-y divide-surface-100">
+          <div v-for="i in 4" :key="i" class="py-4 flex items-center gap-3">
+            <div class="flex-1 space-y-2">
+              <Skeleton height="1rem" width="40%" class="rounded" />
+              <Skeleton height="0.7rem" width="22%" class="rounded" />
+            </div>
+            <Skeleton height="0.375rem" width="30%" class="rounded-full hidden md:block" />
+          </div>
+        </div>
+
+        <!-- Empty state -->
+        <div v-else-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-12 gap-4 text-center">
+          <div class="text-5xl">🛒</div>
+          <h2 class="text-2xl font-light">{{ i18n.t('lists.emptyState.title') }}</h2>
+          <p class="text-sm text-surface-500 max-w-md">{{ i18n.t('lists.emptyState.message') }}</p>
+          <Button
+            icon="pi pi-plus"
+            :label="i18n.t('lists.createFirst')"
+            severity="primary"
+            @click="() => { editListId = undefined; openListForm = true }"
+          />
+        </div>
+
+        <!-- Lists -->
+        <div v-else>
+
+          <!-- Column headers (desktop) -->
+          <div class="hidden md:flex items-center gap-3 pb-3 text-[0.65rem] font-medium uppercase tracking-[0.14em] text-surface-400 border-b border-surface-100">
+            <div class="flex-1">{{ i18n.t('lists.name') }}</div>
+            <div class="w-48 text-center">{{ i18n.t('list.progress') }}</div>
+            <div class="w-24 text-center">{{ i18n.t('lists.items') }}</div>
+            <div class="w-24 text-center">{{ i18n.t('lists.sharedWith') }}</div>
+            <div class="w-9 flex-shrink-0"></div>
           </div>
 
-          <div v-else-if="sortedLists.length === 0" class="flex flex-col items-center justify-center py-12 gap-4 text-center">
-            <div class="text-5xl">🛒</div>
-            <h2 class="text-2xl font-light">
-              {{ i18n.t('lists.emptyState.title') }}
-            </h2>
-            <p class="text-sm text-surface-500 max-w-md">
-              {{ i18n.t('lists.emptyState.message') }}
-            </p>
-            <Button
-              icon="pi pi-plus"
-              :label="i18n.t('lists.createFirst')"
-              severity="primary"
-              @click="() => { editListId = undefined; openListForm = true }"
-            />
-          </div>
+          <div class="divide-y divide-surface-100">
+            <div
+              v-for="listItem in sortedLists"
+              :key="listItem.id"
+              class="py-4 cursor-pointer"
+              @click="router.push(`/list/${listItem.id}`)"
+            >
+              <div class="flex items-center gap-3">
 
-          <div v-else class="space-y-6">
-            <div class="md:hidden">
-              <div
-                v-for="listItem in sortedLists"
-                :key="listItem.id"
-                class="border-b border-surface-200 py-4 cursor-pointer"
-                @click="router.push(`/list/${listItem.id}`)"
-              >
-                <div class="flex items-center gap-3">
-                  <div class="flex-1 min-w-0">
-                    <p class="font-medium truncate">{{ listItem.name }}</p>
-                    <p class="text-xs text-surface-500 mt-0.5">{{ i18n.t('lists.by') }} {{ listItem.created_by.name }}</p>
+                <!-- Name + creator -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-medium truncate">{{ listItem.name }}</span>
+                    <svg
+                      v-if="auth?.user?.favorite_list_id === listItem.id"
+                      class="w-3 h-3 text-amber-400 flex-shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
                   </div>
-                  <Button
-                    icon="pi pi-ellipsis-v"
-                    text
-                    rounded
-                    severity="secondary"
-                    @click.stop="openActionMenu($event, listItem)"
-                  />
+                  <p class="text-xs text-surface-500 mt-0.5">{{ listItem.created_by.name }}</p>
                 </div>
-                <div class="mt-3 space-y-2">
-                  <div class="flex justify-between text-xs text-surface-500">
-                    <span>{{ getRemainingCount(listItem) }} {{ i18n.t('lists.remaining') }}</span>
-                    <span>{{ calculateProgress(listItem) }}%</span>
+
+                <!-- Progress (desktop) -->
+                <div class="hidden md:flex items-center gap-3 w-48">
+                  <ProgressBar class="flex-1" :value="calculateProgress(listItem)" :showValue="false" />
+                  <span class="text-sm text-surface-500 w-8 text-right">{{ calculateProgress(listItem) }}%</span>
+                </div>
+
+                <!-- Item count (desktop) -->
+                <div class="hidden md:block text-sm w-24 text-center">
+                  <span class="font-medium">{{ getRemainingCount(listItem) }}</span>
+                  <span class="text-surface-300 mx-0.5">/</span>
+                  <span class="text-surface-500">{{ listItem.grocery_list_items_count ?? 0 }}</span>
+                </div>
+
+                <!-- Shared with (desktop) -->
+                <div class="hidden md:flex items-center justify-center w-24">
+                  <div v-if="listItem.grocery_list_invites?.length" class="flex -space-x-1.5">
+                    <span
+                      v-for="invite in listItem.grocery_list_invites.slice(0, 3)"
+                      :key="invite.user?.id"
+                      class="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-white text-[10px] font-semibold"
+                      :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
+                    >{{ invite.user?.name?.charAt(0)?.toUpperCase() ?? '?' }}</span>
+                    <span
+                      v-if="listItem.grocery_list_invites.length > 3"
+                      class="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-surface-200 text-[10px] font-semibold text-surface-600"
+                    >+{{ listItem.grocery_list_invites.length - 3 }}</span>
                   </div>
-                  <ProgressBar :value="calculateProgress(listItem)" :showValue="false" class="h-1.5" />
-                  <div class="flex items-center justify-between text-xs text-surface-500">
-                    <span>{{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }} {{ i18n.t('lists.items') }}</span>
-                    <div class="flex -space-x-2">
-                      <span
-                        v-for="invite in listItem.grocery_list_invites?.slice(0, 3) || []"
-                        :key="invite.user?.id"
-                        class="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-surface-0 text-[10px] font-semibold"
-                        :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
-                      >
-                        {{ invite.user?.name?.charAt(0)?.toUpperCase() ?? '?' }}
-                      </span>
-                    </div>
+                  <span v-else class="text-sm text-surface-300">—</span>
+                </div>
+
+                <!-- Menu -->
+                <Button
+                  icon="pi pi-ellipsis-v"
+                  text
+                  rounded
+                  severity="secondary"
+                  class="flex-shrink-0"
+                  @click.stop="openActionMenu($event, listItem)"
+                />
+              </div>
+
+              <!-- Mobile: progress + meta below -->
+              <div class="md:hidden mt-3 space-y-1.5">
+                <div class="flex justify-between text-xs text-surface-500">
+                  <span>{{ getRemainingCount(listItem) }} {{ i18n.t('lists.remaining') }}</span>
+                  <span>{{ calculateProgress(listItem) }}%</span>
+                </div>
+                <ProgressBar :value="calculateProgress(listItem)" :showValue="false" />
+                <div class="flex items-center justify-between text-xs text-surface-500">
+                  <span>{{ listItem.grocery_list_items_checked_count ?? 0 }}/{{ listItem.grocery_list_items_count ?? 0 }} {{ i18n.t('lists.items') }}</span>
+                  <div v-if="listItem.grocery_list_invites?.length" class="flex -space-x-1.5">
+                    <span
+                      v-for="invite in listItem.grocery_list_invites?.slice(0, 3) || []"
+                      :key="invite.user?.id"
+                      class="inline-flex items-center justify-center w-5 h-5 rounded-full border-2 border-white text-[9px] font-semibold"
+                      :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
+                    >{{ invite.user?.name?.charAt(0)?.toUpperCase() ?? '?' }}</span>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div class="hidden md:block">
-              <Card>
-                <template #content>
-                  <DataTable
-                    :value="sortedLists"
-                    dataKey="id"
-                    responsiveLayout="stack"
-                    breakpoint="960px"
-                    rowHover
-                    @row-click="handleRowNavigate"
-                    class="lists-table"
-                  >
-                  <template #empty>
-                    <div class="py-8 text-center text-sm text-surface-500">
-                      {{ i18n.t('lists.emptyState.message') }}
-                    </div>
-                  </template>
-
-                  <Column :header="i18n.t('lists.name')">
-                    <template #body="{ data }">
-                      <div class="flex items-center gap-3 min-w-0">
-                        <Avatar
-                          :icon="auth?.user?.favorite_list_id === data.id ? 'pi pi-star-fill' : 'pi pi-list'"
-                          shape="circle"
-                        />
-                        <div class="min-w-0">
-                          <p class="font-medium truncate">{{ data.name }}</p>
-                          <p class="text-xs text-surface-500">
-                            {{ i18n.t('lists.by') }} {{ data.created_by.name }}
-                          </p>
-                        </div>
-                      </div>
-                    </template>
-                  </Column>
-
-                  <Column :header="i18n.t('list.progress')" headerClass="text-center" bodyClass="align-middle">
-                    <template #body="{ data }">
-                      <div class="flex items-center gap-3">
-                        <ProgressBar class="flex-1" :value="calculateProgress(data)" :showValue="false" />
-                        <span class="text-sm">{{ calculateProgress(data) }}%</span>
-                      </div>
-                    </template>
-                  </Column>
-
-                  <Column :header="i18n.t('lists.items')" headerClass="text-center" bodyClass="text-center">
-                    <template #body="{ data }">
-                      <div class="flex items-center justify-center gap-2">
-                        <Tag severity="warning" :value="getRemainingCount(data)" />
-                        <span>/</span>
-                        <Tag severity="info" :value="data.grocery_list_items_count ?? 0" />
-                      </div>
-                    </template>
-                  </Column>
-
-                  <Column :header="i18n.t('lists.sharedWith')" headerClass="text-center" bodyClass="text-center">
-                    <template #body="{ data }">
-                      <div v-if="data.grocery_list_invites?.length" class="flex items-center justify-center gap-2">
-                        <AvatarGroup>
-                          <Avatar
-                            v-for="invite in data.grocery_list_invites.slice(0, 3)"
-                            :key="invite.user?.id"
-                            :label="invite.user?.name?.charAt(0)?.toUpperCase() ?? '?'"
-                            class="font-semibold"
-                            :style="{ backgroundColor: stringToColor(invite?.user?.name) }"
-                            shape="circle"
-                            size="small"
-                          />
-                        </AvatarGroup>
-                        <Tag
-                          v-if="data.grocery_list_invites.length > 3"
-                          :value="`+${data.grocery_list_invites.length - 3}`"
-                          severity="secondary"
-                        />
-                      </div>
-                      <span v-else class="text-xs text-surface-400">—</span>
-                    </template>
-                  </Column>
-
-                  <Column headerClass="text-right w-10" bodyClass="text-right">
-                    <template #body="{ data }">
-                      <Button
-                        icon="pi pi-ellipsis-v"
-                        text
-                        rounded
-                        severity="secondary"
-                        @click.stop="openActionMenu($event, data)"
-                      />
-                    </template>
-                  </Column>
-                  </DataTable>
-                </template>
-              </Card>
-            </div>
           </div>
+        </div>
       </div>
     </div>
   </div>
@@ -511,37 +443,6 @@ function openListSettings(id: number) {
 .lists-shell {
   font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
   background: transparent;
-}
-
-:deep(.lists-table .p-datatable-wrapper) {
-  overflow: hidden;
-}
-
-:deep(.lists-table .p-datatable-header) {
-  padding: 0;
-  border: 0;
-}
-
-:deep(.lists-table .p-datatable-thead > tr > th) {
-  padding: 0.75rem 1.25rem;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-weight: 500;
-}
-
-:deep(.lists-table .p-datatable-tbody > tr > td) {
-  padding: 1rem 1.25rem;
-  border: 0;
-}
-
-:deep(.lists-table .p-progressbar) {
-  height: 0.375rem;
-  border-radius: 999px;
-}
-
-:deep(.lists-table .p-progressbar-value) {
-  border-radius: 999px;
 }
 
 :deep(.menu-item-danger) {
