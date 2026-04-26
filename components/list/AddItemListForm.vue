@@ -216,11 +216,6 @@ const suggestionItems = computed(() =>
                       <span class="font-medium text-sm">{{ item.name }}</span>
                     </div>
 
-                    <!-- Unit price -->
-                    <div class="w-16 text-right text-sm text-surface-400">
-                      €{{ (getListItem(item.name)?.unit_price || 0).toFixed(2) }}
-                    </div>
-
                     <!-- Quantity controls -->
                     <div class="flex items-center border border-surface-200 rounded">
                       <button
@@ -235,7 +230,7 @@ const suggestionItems = computed(() =>
                     </div>
 
                     <!-- Total -->
-                    <div class="w-16 text-right text-sm font-medium">
+                    <div v-if="getListItem(item.name)?.unit_price" class="w-14 text-right text-sm font-medium flex-shrink-0">
                       €{{ ((getListItem(item.name)?.unit_price || 0) * (getListItem(item.name)?.quantity || 1)).toFixed(2) }}
                     </div>
 
@@ -276,10 +271,6 @@ const suggestionItems = computed(() =>
                     <div class="flex-1 min-w-0">
                       <span class="text-sm font-medium group-hover:text-surface-900 transition-colors">{{ item.name }}</span>
                     </div>
-
-                    <!-- Price -->
-                    <span v-if="item.unit_price" class="text-sm text-surface-400">€{{ item.unit_price.toFixed(2) }}</span>
-                    <span v-else class="text-sm text-surface-200">—</span>
 
                     <!-- Chevron -->
                     <svg class="flex-shrink-0 w-4 h-4 text-surface-300 group-hover:text-surface-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
