@@ -9,33 +9,36 @@ const props = defineProps({
 
 <template>
   <navbar />
-  <div class="h-[90dvh] bg-[#18181b] flex flex-col items-center justify-center px-4 text-center" style="font-family: 'DM Sans', system-ui, sans-serif">
-    <div class="max-w-md w-full bg-[#1e1e21] border border-[#27272a] rounded p-8">
-      <div class="flex flex-col items-center space-y-4">
-        <img
-            src="/icons/groceryCart.png"
-            alt="Boodschappenlijst Logo"
-            class="w-14 h-14"
-        />
-        <h1 class="text-2xl font-medium text-[#fafafa]">Er is iets misgegaan</h1>
-        <p class="text-[#71717a]">
+  <div
+    class="min-h-[90dvh] flex items-center justify-center px-4"
+    style="background: var(--app-bg); font-family: 'DM Sans', system-ui, sans-serif"
+  >
+    <div class="max-w-sm w-full flex flex-col items-center gap-6 text-center">
+      <!-- Icon -->
+      <div class="w-12 h-12 flex items-center justify-center rounded-full border border-surface-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--p-surface-400)">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        </svg>
+      </div>
+
+      <!-- Text -->
+      <div class="space-y-2">
+        <h1 class="page-heading">Er is iets misgegaan</h1>
+        <p class="text-sm" style="color: var(--p-surface-500)">
           Oeps! Het lijkt erop dat er iets misging bij het laden van de pagina.
         </p>
-        <p class="text-[#71717a]">
-          {{props.error.statusMessage}}
+        <p v-if="props.error?.statusMessage" class="text-sm" style="color: var(--p-surface-500)">
+          {{ props.error.statusMessage }}
         </p>
-        <p class="text-[#52525b] text-sm">
-          Probeer het later opnieuw of ga terug naar je dashboard.
-        </p>
-
-        <NuxtLink
-            to="/"
-        >
-          <button class="mt-4 bg-[#fafafa] text-[#18181b] hover:bg-[#d4d4d8] font-medium px-6 py-2 rounded transition">
-            Terug naar Dashboard
-          </button>
-        </NuxtLink>
       </div>
+
+      <!-- Action -->
+      <NuxtLink
+        to="/"
+        class="px-5 py-2 border border-surface-200 text-surface-500 hover:border-surface-400 hover:text-surface-900 text-sm font-medium rounded transition"
+      >
+        Terug naar dashboard
+      </NuxtLink>
     </div>
   </div>
 </template>

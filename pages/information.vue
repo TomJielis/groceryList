@@ -9,6 +9,17 @@ const i18n = useI18nStore();
 const t = computed(() => i18n.t);
 const auth = useAuthStore()
 
+useHead({
+  title: 'TomJielis GroceryList — Manage Your Shopping Lists',
+  link: [{ rel: 'canonical', href: 'https://tomjielis.com/information' }],
+  meta: [
+    { name: 'description', content: 'TomJielis GroceryList — create, manage and share personal shopping lists. Track spending, collaborate with family. Free and easy to use.' },
+    { property: 'og:title', content: 'TomJielis GroceryList' },
+    { property: 'og:description', content: 'Create, manage and share personal shopping lists. Free and easy to use.' },
+    { property: 'og:url', content: 'https://tomjielis.com/information' },
+  ]
+})
+
 const features = [
   { icon: '📝', title: 'info.feature1Title', text: 'info.feature1Text' },
   { icon: '👨‍👩‍👧‍👦', title: 'info.feature2Title', text: 'info.feature2Text' },

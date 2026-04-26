@@ -4,6 +4,11 @@ import BusinessPreset from './assets/theme/business'
 export default defineNuxtConfig({
     app: {
         head: {
+            htmlAttrs: { lang: 'en' },
+            meta: [
+                { charset: 'utf-8' },
+                { name: 'robots', content: 'index, follow' },
+            ],
             link: [
                 {
                     rel: 'manifest',
