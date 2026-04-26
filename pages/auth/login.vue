@@ -81,6 +81,7 @@ function toggleLanguage() {
                 toggleMask
                 :feedback="false"
                 class="w-full"
+                inputClass="w-full"
               />
             </div>
 

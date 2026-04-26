@@ -105,6 +105,7 @@ function handleLanguageChange(locale: 'nl' | 'en') {
                 toggleMask
                 :feedback="false"
                 class="w-full"
+                inputClass="w-full"
               />
             </div>
 
