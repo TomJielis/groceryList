@@ -322,16 +322,14 @@ const list = listStore.lists.find((list: any) => list.id == parseInt(listId));
 
         <!-- Add Item Form -->
         <transition
-          enter-active-class="transition-all duration-300 ease-out"
-          enter-from-class="opacity-0 scale-95"
-          enter-to-class="opacity-100 scale-100"
-          leave-active-class="transition-all duration-200 ease-in"
-          leave-from-class="opacity-100 scale-100"
-          leave-to-class="opacity-0 scale-95"
+          enter-active-class="transition-opacity duration-300 ease-out"
+          enter-from-class="opacity-0"
+          enter-to-class="opacity-100"
+          leave-active-class="transition-opacity duration-200 ease-in"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
         >
-          <div v-if="showAddItem" class="rounded overflow-hidden">
-            <AddItemListForm @item-added="handleItemAdded" @close="closeAddItemListForm" />
-          </div>
+          <AddItemListForm v-if="showAddItem" @item-added="handleItemAdded" @close="closeAddItemListForm" />
         </transition>
       </div>
       </div>

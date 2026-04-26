@@ -168,7 +168,7 @@ const suggestionItems = computed(() =>
         </div>
 
         <!-- Content -->
-        <div class="flex-1 overflow-hidden">
+        <div class="flex-1 min-h-0">
           <div class="list-add-scroll h-full overflow-y-auto">
 
             <!-- Loading -->
@@ -311,5 +311,6 @@ const suggestionItems = computed(() =>
 .list-add-scroll {
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 </style>
