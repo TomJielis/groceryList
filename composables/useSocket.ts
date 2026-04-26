@@ -78,15 +78,11 @@ export function useSocket() {
   }
 
   const onListRefresh = (callback: (data: { listId: number, userId: number }) => void) => {
-    socket?.on('list-refresh', (data) => {
-      callback(data)
-    })
+    socket?.on('list-refresh', callback)
   }
 
   const onItemChanged = (callback: (data: { listId: number, item: any }) => void) => {
-    socket?.on('item-changed', (data) => {
-      callback(data)
-    })
+    socket?.on('item-changed', callback)
   }
 
   const offListRefresh = (callback: any) => {

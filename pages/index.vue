@@ -46,15 +46,23 @@ const deleteListName = ref('')
 const { connect, onListRefresh, onItemChanged, offListRefresh, offItemChanged, joinList, leaveList } = useSocket();
 const router = useRouter();
 
+const handleListRefresh = async (_data: { listId: number; userId: number }) => {
+  await listStore.fetchLists();
+};
+
+const handleItemChanged = async (_data: { listId: number; item: any }) => {
+  await listStore.fetchLists();
+};
+
 onMounted(async () => {
   loading.value = true;
   try {
     await listStore.fetchLists();
   } catch (error) {
     // Errors are handled by the global error interceptor
+  } finally {
     loading.value = false;
   }
-  loading.value = false;
 
   // Connect to Socket.io and join all list rooms so index can receive progress updates
   connect();
@@ -62,28 +70,16 @@ onMounted(async () => {
     if (l?.id) joinList(Number(l.id));
   });
 
-  const refreshLists = async () => {
-    // Re-fetch lists to update counts and progress bars
-    await listStore.fetchLists();
-  };
-
-  onListRefresh(async (data: { listId: number }) => {
-    // Only refresh affected list; for simplicity re-fetch all
-    await refreshLists();
-  });
-
-  onItemChanged(async (data: { listId: number }) => {
-    await refreshLists();
-  });
+  onListRefresh(handleListRefresh);
+  onItemChanged(handleItemChanged);
 });
 
 onBeforeUnmount(() => {
-  // Leave all joined rooms when leaving index page
   listStore.lists.forEach((l: any) => {
     if (l?.id) leaveList(Number(l.id));
   });
-  offListRefresh(() => {});
-  offItemChanged(() => {});
+  offListRefresh(handleListRefresh);
+  offItemChanged(handleItemChanged);
 })
 
 const sortedLists = computed(() => {
@@ -227,25 +223,19 @@ function closeDeleteModal() {
   deleteListName.value = '';
 }
 
-function makeFavorite(id: number | null) {
-  favorite(id)
-      .then(() => {
-        favorite(id);
-        showSuccess(i18n.t('lists.favorited'));
-      })
-      .catch(() => {
-        showNotification(i18n.t('errors.listFavoriteFailed'));
-      });
-}
-
-function setFavoriteList(id: number) {
-  let listId = auth?.user?.favorite_list_id == id ? null : id;
-  makeFavorite(listId)
+async function setFavoriteList(id: number) {
+  const listId = auth?.user?.favorite_list_id == id ? null : id;
   closeActionMenu();
-  const data = auth.user;
-  if (data) {
-    data.favorite_list_id = listId;
-    auth.setUser(data);
+  try {
+    await favorite(listId);
+    const data = auth.user;
+    if (data) {
+      data.favorite_list_id = listId;
+      auth.setUser(data);
+    }
+    showSuccess(i18n.t('lists.favorited'));
+  } catch {
+    showNotification(i18n.t('errors.listFavoriteFailed'));
   }
 }
 
@@ -301,7 +291,7 @@ function openListSettings(id: number) {
             {{ i18n.t('lists.title') }}
           </h1>
           <p class="text-sm text-surface-500">
-            {{ i18n.t('lists.emptyState.message') }}
+            {{ sortedLists.length }} {{ i18n.t('lists.listCount') }}
           </p>
         </div>
         <div class="flex gap-3">
