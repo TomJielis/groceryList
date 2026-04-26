@@ -209,17 +209,12 @@ const filteredSuggestions = computed(() => {
                   class="flex items-center gap-4 px-4 py-3"
                   :class="{ 'border-b border-surface-200': index < filteredSuggestions.filter(i => isInListUnchecked(i.name)).length - 1 }"
                 >
-                  <!-- Check Button -->
-                  <Button
-                    severity="primary"
-                    @click="toggleSuggestion(item.name)"
-                    :disabled="processing.has(item.name.toLowerCase())"
-                    class="flex-shrink-0 w-7 h-7 p-0"
-                  >
+                  <!-- In-list indicator -->
+                  <div class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center" style="background: #e8f8f0; color: #5ebd8a">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
                     </svg>
-                  </Button>
+                  </div>
 
                   <!-- Product Name -->
                   <div class="flex-1 min-w-0">
@@ -254,6 +249,17 @@ const filteredSuggestions = computed(() => {
                   <div class="w-20 text-right font-medium">
                     €{{ ((getListItem(item.name)?.unit_price || 0) * (getListItem(item.name)?.quantity || 1)).toFixed(2) }}
                   </div>
+
+                  <!-- Remove Button -->
+                  <button
+                    @click="toggleSuggestion(item.name)"
+                    :disabled="processing.has(item.name.toLowerCase())"
+                    class="flex-shrink-0 w-7 h-7 rounded flex items-center justify-center text-surface-300 hover:text-surface-600 hover:bg-surface-100 transition-colors disabled:opacity-40"
+                  >
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
                 </div>
               </div>
 
@@ -265,17 +271,12 @@ const filteredSuggestions = computed(() => {
                   class="border-b border-surface-200 py-3"
                 >
                   <div class="flex items-center gap-3">
-                    <!-- Check Button -->
-                    <Button
-                      severity="primary"
-                      @click="toggleSuggestion(item.name)"
-                      :disabled="processing.has(item.name.toLowerCase())"
-                      class="flex-shrink-0 w-8 h-8 p-0"
-                    >
+                    <!-- In-list indicator -->
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background: #e8f8f0; color: #5ebd8a">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
                       </svg>
-                    </Button>
+                    </div>
 
                     <!-- Product Info -->
                     <div class="flex-1 min-w-0">
@@ -287,12 +288,8 @@ const filteredSuggestions = computed(() => {
                       </p>
                     </div>
 
-                    <!-- Total & Controls -->
+                    <!-- Controls & Remove -->
                     <div class="flex items-center gap-2">
-                      <span class="text-sm font-medium">
-                        €{{ ((getListItem(item.name)?.unit_price || 0) * (getListItem(item.name)?.quantity || 1)).toFixed(2) }}
-                      </span>
-
                       <div class="flex items-center rounded border border-surface-200">
                         <Button
                           severity="secondary"
@@ -308,6 +305,16 @@ const filteredSuggestions = computed(() => {
                           class="w-8 h-8 p-0"
                         >+</Button>
                       </div>
+
+                      <button
+                        @click="toggleSuggestion(item.name)"
+                        :disabled="processing.has(item.name.toLowerCase())"
+                        class="w-8 h-8 rounded flex items-center justify-center text-surface-300 hover:text-surface-600 hover:bg-surface-100 transition-colors disabled:opacity-40"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 </div>
