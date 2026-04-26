@@ -3,35 +3,42 @@ import { ref } from 'vue'
 
 let socket: Socket | null = null
 const isConnected = ref(false)
+const joinedRooms = new Set<number>()
 
 export function useSocket() {
   const connect = () => {
-    if (socket?.connected) {
+    // If socket already exists (connecting or connected) reuse it — don't create a second one
+    if (socket) {
       return socket
     }
 
-    console.log('[Socket.io Client] Connecting to server...')
-
-    // Connect to the Nuxt server - middleware will initialize Socket.io
     socket = io(window.location.origin, {
       path: '/socket.io/',
-      transports: ['polling', 'websocket'], // Try polling first, then upgrade to websocket
+      transports: ['polling', 'websocket'],
       autoConnect: true,
       reconnection: true,
       reconnectionDelay: 1000,
-      reconnectionAttempts: 5,
-      timeout: 10000
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: Infinity,
+      timeout: 10000,
     })
 
     socket.on('connect', () => {
       isConnected.value = true
     })
 
-    socket.on('disconnect', (reason) => {
+    // After every reconnect: re-join all tracked rooms so other users' updates reach us again
+    socket.on('reconnect', () => {
+      joinedRooms.forEach(listId => {
+        socket?.emit('join-list', listId)
+      })
+    })
+
+    socket.on('disconnect', () => {
       isConnected.value = false
     })
 
-    socket.on('connect_error', (error) => {
+    socket.on('connect_error', () => {
       isConnected.value = false
     })
 
@@ -43,13 +50,16 @@ export function useSocket() {
       socket.disconnect()
       socket = null
       isConnected.value = false
+      joinedRooms.clear()
     }
   }
 
   const joinList = (listId: number) => {
     if (!socket) connect()
 
-    // Wait for connection before joining
+    // Track the room so we can re-join after reconnect
+    joinedRooms.add(listId)
+
     if (socket && !socket.connected) {
       socket.once('connect', () => {
         socket?.emit('join-list', listId)
@@ -60,20 +70,17 @@ export function useSocket() {
   }
 
   const leaveList = (listId: number) => {
+    joinedRooms.delete(listId)
     socket?.emit('leave-list', listId)
   }
 
   const notifyListUpdate = (listId: number, userId: number) => {
-    if (!socket?.connected) {
-      return
-    }
+    if (!socket?.connected) return
     socket.emit('list-updated', { listId, userId })
   }
 
   const notifyItemUpdate = (listId: number, item: any) => {
-    if (!socket?.connected) {
-      return
-    }
+    if (!socket?.connected) return
     socket.emit('item-updated', { listId, item })
   }
 
@@ -108,4 +115,3 @@ export function useSocket() {
     offItemChanged,
   }
 }
-
