@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   icon: '',
   showViewAll: false,
   viewAllLink: '',
-  emptyMessage: 'Geen data beschikbaar',
+  emptyMessage: '',
   limit: 0,
   rowLinkLabel: ''
 })
@@ -97,7 +97,7 @@ const formatValue = (column: Column, row: any) => {
       <NuxtLink
         v-if="showViewAll && viewAllLink"
         :to="viewAllLink"
-        class="text-sm transition"
+        class="text-sm text-surface-500 hover:text-surface-900 transition-colors"
       >
         {{ i18n.t('admin.viewAll') }}
       </NuxtLink>

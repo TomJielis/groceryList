@@ -20,13 +20,6 @@ const props = defineProps<{ listId?: number }>();
 
 let newList = ref('');
 
-onMounted(() => {
-  if (props.listId) {
-    const list = listStore.lists.find(l => l.id === props.listId);
-    if (list) newList.value = list.name;
-  }
-});
-
 watch(() => props.listId, (newId) => {
   if (newId) {
     const list = listStore.lists.find(l => l.id === newId);
@@ -34,7 +27,7 @@ watch(() => props.listId, (newId) => {
   } else {
     newList.value = '';
   }
-});
+}, { immediate: true });
 
 async function addList() {
   createList(newList.value.trim())
@@ -73,13 +66,9 @@ function loadSharedInvites() {
   sharedUsersLoading.value = false;
 }
 
-onMounted(() => {
-  loadSharedInvites();
-});
-
 watch(() => props.listId, () => {
   loadSharedInvites();
-});
+}, { immediate: true });
 
 const showUnshareModal = ref(false);
 const inviteToRemove = ref<TGroceryListInvite | null>(null);
@@ -113,7 +102,7 @@ async function removeSharedUser(invite: any) {
 }
 </script>
 <template>
-  <div class="flex flex-col gap-6" style="font-family: 'DM Sans', system-ui, sans-serif;">
+  <div class="flex flex-col gap-6">
     <!-- Header -->
     <div>
       <h2 class="page-heading">
@@ -155,7 +144,7 @@ async function removeSharedUser(invite: any) {
           class="flex items-center justify-between py-3 border-t border-surface-200"
         >
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded flex items-center justify-center text-sm font-semibold">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold text-white flex-shrink-0" style="background: var(--p-primary-color)">
               {{ (invite.user?.name || invite.user?.email || '?').charAt(0).toUpperCase() }}
             </div>
             <div>

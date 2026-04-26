@@ -20,11 +20,6 @@ const change = computed(() => {
   return calculateChange(current, previous)
 })
 
-const changeColor = computed(() => {
-  if (change.value.isZero) return 'text-surface-500'
-  return change.value.isPositive ? 'text-surface-500' : 'text-surface-500'
-})
-
 const changeIcon = computed(() => {
   if (change.value.isZero) return '→'
   return change.value.isPositive ? '↑' : '↓'
@@ -33,10 +28,10 @@ const changeIcon = computed(() => {
 
 <template>
   <div class="border-b border-surface-200 py-4 space-y-1">
-    <p class="text-[0.65rem] uppercase tracking-[0.14em] font-medium" style="color: var(--p-surface-500)">{{ title }}</p>
+    <p class="text-[0.65rem] uppercase tracking-[0.14em] font-medium text-surface-500">{{ title }}</p>
     <div class="flex items-baseline gap-2">
-      <p class="text-xl font-light" style="color: var(--p-surface-900)">{{ prefix ?? '' }}{{ value }}</p>
-      <p v-if="change.percentage !== null && showPercentage" :class="['text-sm font-medium', changeColor]">
+      <p class="text-xl font-light text-surface-900">{{ prefix ?? '' }}{{ value }}</p>
+      <p v-if="change.percentage !== null && showPercentage" class="text-sm font-medium text-surface-500">
         {{ changeIcon }} {{ Math.abs(change.percentage) }}%
       </p>
     </div>

@@ -32,8 +32,7 @@ async function handleAction(id: number, status: 'accepted' | 'declined') {
 
 function getCreatorName(list: TGroceryList): string {
   if (list.created_by && typeof list.created_by === 'object' && 'name' in list.created_by) {
-    // @ts-ignore
-    return list.created_by.name;
+    return (list.created_by as { name: string }).name;
   }
   return 'Unknown';
 }
@@ -86,17 +85,18 @@ function getCreatorName(list: TGroceryList): string {
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex gap-2 flex-col sm:flex-row">
+          <div class="flex gap-2">
             <Button
               :label="i18n.t('lists.approve')"
-              severity="success"
+              severity="primary"
               class="flex-1"
               @click="handleAction(list.id, 'accepted')"
             />
             <Button
               :label="i18n.t('lists.decline')"
-              severity="danger"
-              class="flex-1"
+              severity="secondary"
+              outlined
+              class="flex-shrink-0"
               @click="handleAction(list.id, 'declined')"
             />
           </div>

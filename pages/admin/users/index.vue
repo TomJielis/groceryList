@@ -59,27 +59,14 @@ const userColumns = [
   <div class="px-4 py-6">
     <div class="w-full max-w-5xl mx-auto flex flex-col gap-6 pb-16">
       <!-- Page header -->
-      <div class="border-b border-surface-200 pb-6">
-        <div class="flex items-center gap-4 mb-6">
-          <NuxtLink
-            to="/admin"
-            class="w-9 h-9 flex items-center justify-center border border-surface-200 text-color-secondary hover:border-surface-400 hover:text-color transition rounded"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-          </NuxtLink>
-          <div>
-            <h1 class="page-heading">
-              {{ i18n.t('admin.users') }}
-            </h1>
-            <p class="text-sm text-color-secondary">
-              {{ total }} {{ i18n.t('admin.totalUsers') }}
-            </p>
-          </div>
-        </div>
+      <div class="pb-6">
+        <PageHeader
+          back-to="/admin"
+          :title="i18n.t('admin.users')"
+          :subtitle="total + ' ' + i18n.t('admin.totalUsers')"
+        />
         <!-- Stats row -->
-        <div class="grid grid-cols-2 md:grid-cols-4 border-t border-surface-200">
+        <div class="grid grid-cols-2 md:grid-cols-4 border-t border-surface-200 mt-6">
           <div class="px-0 pr-4 py-3 border-r border-b md:border-b-0 border-surface-200">
             <p class="text-[0.65rem] uppercase tracking-[0.14em] text-color-secondary font-medium">
               {{ i18n.t('admin.activeUsers') }}
@@ -115,10 +102,10 @@ const userColumns = [
         </div>
       </div>
 
-      <div v-if="loading" class="flex items-center justify-center py-20 text-color-secondary">
+      <div v-if="loading" class="flex items-center justify-center py-20">
         <div class="text-center space-y-3">
-          <div class="animate-spin h-8 w-8 border border-surface-200 border-t-surface-400 rounded mx-auto"></div>
-          <p>{{ i18n.t('common.loading') }}</p>
+          <div class="animate-spin rounded-full h-8 w-8 border-2 border-surface-200 border-t-surface-500 mx-auto"></div>
+          <p class="text-sm text-color-secondary">{{ i18n.t('common.loading') }}</p>
         </div>
       </div>
 

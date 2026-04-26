@@ -222,7 +222,7 @@ const userColumns = [
 
       <div v-if="loading" class="flex items-center justify-center py-20 text-color-secondary">
         <div class="text-center space-y-3">
-          <div class="animate-spin h-8 w-8 border border-surface-200 border-t-surface-400 rounded mx-auto"></div>
+          <div class="animate-spin rounded-full h-8 w-8 border-2 border-surface-200 border-t-surface-500 mx-auto"></div>
           <p>{{ i18n.t('common.loading') }}</p>
         </div>
       </div>
