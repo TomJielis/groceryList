@@ -78,6 +78,7 @@ function triggerNewPassword() {
                 toggleMask
                 :feedback="false"
                 class="w-full"
+                inputClass="w-full"
               />
             </div>
 
@@ -89,6 +90,7 @@ function triggerNewPassword() {
                 toggleMask
                 :feedback="false"
                 class="w-full"
+                inputClass="w-full"
               />
             </div>
 

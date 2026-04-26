@@ -27,6 +27,7 @@
     "email": "Email",
     "password": "Wachtwoord",
     "passwordPlaceholder": "••••••••",
+    "repeatPasswordPlaceholder": "••••••••",
     "emailPlaceholder": "voorbeeld@gmail.com",
     "loginBtn": "Login",
     "forgotPassword": "Wachtwoord vergeten?",
