@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { useAdminApi } from '~/composables/useAdminApi'
-import { useI18nStore } from '~/stores/i18n'
 import DataTable from '~/components/DataTable.vue'
 import AdminEmailDetailModal from '~/components/admin/AdminEmailDetailModal.vue'
 
 definePageMeta({
     middleware: ['auth', 'admin'],
 })
-
-const i18n = useI18nStore()
 const { getEmails } = useAdminApi()
 
 const loading = ref(true)

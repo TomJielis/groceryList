@@ -110,7 +110,7 @@ watch(
                 <p class="text-[0.65rem] uppercase tracking-[0.14em] text-surface-500 font-medium mb-2">HTML Body</p>
                 <iframe
                     ref="iframeRef"
-                    sandbox="allow-same-origin"
+                    sandbox=""
                     class="w-full rounded border border-surface-200"
                     style="height: 420px;"
                 />

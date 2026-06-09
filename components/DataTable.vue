@@ -210,6 +210,7 @@ const formatValue = (column: Column, row: any) => {
           </NuxtLink>
           <button
             v-if="rowClickHandler"
+            type="button"
             @click.stop="rowClickHandler(row)"
             class="text-sm font-medium flex-shrink-0"
           >
