@@ -25,6 +25,7 @@ interface Props {
   limit?: number
   rowLink?: (row: any) => string
   rowLinkLabel?: string
+  rowClickHandler?: (row: any) => void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -128,6 +129,8 @@ const formatValue = (column: Column, row: any) => {
           v-for="(row, rowIndex) in displayData"
           :key="rowIndex"
           class="border-b border-surface-200 transition-colors"
+          :class="{ 'cursor-pointer hover:bg-surface-50': !!rowClickHandler }"
+          @click="rowClickHandler ? rowClickHandler(row) : undefined"
         >
           <td
             v-for="column in columns.filter(c => !c.hideOnTablet)"
@@ -178,6 +181,8 @@ const formatValue = (column: Column, row: any) => {
         v-for="(row, rowIndex) in displayData"
         :key="rowIndex"
         class="py-4"
+        :class="{ 'cursor-pointer': !!rowClickHandler }"
+        @click="rowClickHandler ? rowClickHandler(row) : undefined"
       >
         <!-- Primary Row (title + action) -->
         <div class="flex items-center justify-between mb-3">
@@ -203,6 +208,13 @@ const formatValue = (column: Column, row: any) => {
           >
             {{ rowLinkLabel || i18n.t('admin.details') }}
           </NuxtLink>
+          <button
+            v-if="rowClickHandler"
+            @click.stop="rowClickHandler(row)"
+            class="text-sm font-medium flex-shrink-0"
+          >
+            {{ i18n.t('admin.details') }}
+          </button>
         </div>
 
         <!-- Secondary info (like email) - show second column if it exists -->
