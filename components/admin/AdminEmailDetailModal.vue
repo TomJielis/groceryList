@@ -27,22 +27,21 @@ const emit = defineEmits<{
 
 const close = () => emit('update:visible', false)
 
-const iframeRef = ref<HTMLIFrameElement | null>(null)
-
-watch(
-    () => [props.email, props.visible] as const,
-    ([email, visible]) => {
-        if (!visible || !email?.body_html) return
-        nextTick(() => {
-            const doc = iframeRef.value?.contentDocument
-            if (doc) {
-                doc.open()
-                doc.write(email.body_html!)
-                doc.close()
-            }
-        })
-    }
+const emailSrcdoc = computed(() =>
+    props.email?.body_html ? '<base target="_blank">' + props.email.body_html : ''
 )
+
+const recipientLabel = computed(() => {
+    if (!props.email) return ''
+    return props.email.recipient_name
+        ? `${props.email.recipient_name} <${props.email.recipient_email}>`
+        : props.email.recipient_email
+})
+
+const formattedDate = computed(() => {
+    if (!props.email?.sent_at) return null
+    return new Date(props.email.sent_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+})
 </script>
 
 <template>
@@ -51,78 +50,62 @@ watch(
         @update:visible="close"
         modal
         :header="email?.subject ?? 'Email'"
-        :style="{ width: '800px', maxWidth: '95vw' }"
+        :style="{ width: '900px', maxWidth: '96vw' }"
         :dismissable-mask="true"
+        :pt="{ content: { style: 'padding: 0; overflow: hidden;' } }"
     >
-        <div v-if="email" class="flex flex-col gap-4">
-            <!-- Metadata grid -->
-            <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm border-b border-surface-200 pb-4">
-                <div>
-                    <p class="text-[0.65rem] uppercase tracking-[0.14em] text-surface-500 font-medium">Type</p>
-                    <span class="inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium bg-surface-100 text-surface-700">
-                        {{ email.type }}
-                    </span>
-                </div>
-                <div>
-                    <p class="text-[0.65rem] uppercase tracking-[0.14em] text-surface-500 font-medium">Status</p>
-                    <span
-                        class="inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium"
-                        :class="email.status === 'sent' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
-                    >
-                        {{ email.status }}
-                    </span>
-                </div>
-                <div>
-                    <p class="text-[0.65rem] uppercase tracking-[0.14em] text-surface-500 font-medium">Recipient</p>
-                    <p class="mt-1 text-surface-700">
-                        {{ email.recipient_name ? `${email.recipient_name} <${email.recipient_email}>` : email.recipient_email }}
-                    </p>
-                </div>
-                <div>
-                    <p class="text-[0.65rem] uppercase tracking-[0.14em] text-surface-500 font-medium">Sent at</p>
-                    <p class="mt-1 text-surface-700">
-                        {{ email.sent_at ? new Date(email.sent_at).toLocaleString() : '—' }}
-                    </p>
-                </div>
-                <div v-if="email.triggered_by">
-                    <p class="text-[0.65rem] uppercase tracking-[0.14em] text-surface-500 font-medium">Triggered by</p>
+        <div v-if="email">
+            <!-- Meta bar -->
+            <div class="flex items-center gap-2 px-5 py-3 border-b border-surface-100 bg-surface-50 text-sm flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-white border border-surface-200 text-surface-600">
+                    {{ email.type.replaceAll('_', ' ') }}
+                </span>
+                <span
+                    class="px-2.5 py-0.5 rounded-full text-xs font-semibold border"
+                    :class="email.status === 'sent'
+                        ? 'bg-green-50 text-green-700 border-green-200'
+                        : 'bg-red-50 text-red-600 border-red-200'"
+                >{{ email.status }}</span>
+                <span class="w-px h-3.5 bg-surface-200 mx-0.5" />
+                <span class="text-surface-700 text-xs truncate max-w-[260px]">{{ recipientLabel }}</span>
+                <template v-if="formattedDate">
+                    <span class="text-surface-300 text-xs">·</span>
+                    <span class="text-surface-400 text-xs">{{ formattedDate }}</span>
+                </template>
+                <template v-if="email.triggered_by">
+                    <span class="text-surface-300 text-xs">·</span>
                     <NuxtLink
                         :to="`/admin/users/${email.triggered_by.id}`"
-                        class="mt-1 inline-block underline-offset-2 hover:underline"
+                        class="text-surface-400 text-xs hover:text-surface-700 transition-colors"
                         @click="close"
-                    >
-                        {{ email.triggered_by.name }}
-                    </NuxtLink>
-                </div>
+                    >by {{ email.triggered_by.name }}</NuxtLink>
+                </template>
             </div>
 
-            <!-- Error -->
+            <!-- Send error -->
             <div
                 v-if="email.status === 'failed' && email.error_message"
-                class="rounded bg-red-50 border border-red-200 p-3 text-sm text-red-700"
+                class="flex items-start gap-2 px-5 py-3 bg-red-50 border-b border-red-100 text-sm text-red-700"
             >
-                <p class="font-medium mb-1">Error</p>
-                <p>{{ email.error_message }}</p>
+                <span class="font-semibold shrink-0">Send failed:</span>
+                <span>{{ email.error_message }}</span>
             </div>
 
-            <!-- HTML body in sandboxed iframe -->
-            <div v-if="email.body_html">
-                <p class="text-[0.65rem] uppercase tracking-[0.14em] text-surface-500 font-medium mb-2">HTML Body</p>
-                <iframe
-                    ref="iframeRef"
-                    sandbox=""
-                    class="w-full rounded border border-surface-200"
-                    style="height: 420px;"
-                />
-            </div>
+            <!-- HTML body — edge to edge -->
+            <iframe
+                v-if="email.body_html"
+                :srcdoc="emailSrcdoc"
+                sandbox="allow-same-origin allow-popups"
+                style="display: block; width: 100%; height: 540px; border: none;"
+            />
 
             <!-- Plain text fallback -->
-            <div v-else-if="email.body_text">
-                <p class="text-[0.65rem] uppercase tracking-[0.14em] text-surface-500 font-medium mb-2">Text Body</p>
-                <pre class="rounded bg-surface-50 border border-surface-200 p-4 text-sm overflow-auto max-h-96 whitespace-pre-wrap font-mono">{{ email.body_text }}</pre>
-            </div>
+            <pre
+                v-else-if="email.body_text"
+                class="m-5 rounded-lg bg-surface-50 border border-surface-200 p-4 text-sm overflow-auto max-h-[480px] whitespace-pre-wrap font-mono text-surface-700"
+            >{{ email.body_text }}</pre>
 
-            <p v-else class="text-sm text-surface-400 italic">No body content available.</p>
+            <p v-else class="px-5 py-10 text-sm text-surface-400 italic text-center">No body content recorded.</p>
         </div>
     </Dialog>
 </template>
