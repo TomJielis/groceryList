@@ -6,13 +6,14 @@ import AdminLineChart from '~/components/admin/AdminLineChart.vue'
 import AdminDoughnutChart from '~/components/admin/AdminDoughnutChart.vue'
 import DataTable from '~/components/DataTable.vue'
 import MonthSelector from '~/components/profile/MonthSelector.vue'
+import AdminEmailDetailModal from '~/components/admin/AdminEmailDetailModal.vue'
 
 definePageMeta({
   middleware: ['auth', 'admin']
 })
 
 const i18n = useI18nStore()
-const { getStatsUsers, getStatsItems, getStatsLists, getStatsActivity, getStatsVersions, getStatsTopItems, getUsers, getStatsSpend } = useAdminApi()
+const { getStatsUsers, getStatsItems, getStatsLists, getStatsActivity, getStatsVersions, getStatsTopItems, getUsers, getStatsSpend, getEmails } = useAdminApi()
 
 const loading = ref(true)
 const error = ref<string | null>(null)
@@ -27,6 +28,9 @@ const statsSpend = ref<any>(null)
 const allUsers = ref<any[]>([])
 const selectedMonth = ref('')
 const availableMonths = ref<string[]>([])
+const recentEmails = ref<any[]>([])
+const selectedEmail = ref<any | null>(null)
+const emailModalVisible = ref(false)
 
 // Generate last 12 months as fallback
 const generateAvailableMonths = () => {
@@ -53,7 +57,7 @@ const loadData = async (month?: string) => {
   error.value = null
   try {
     const monthParam = month || selectedMonth.value
-    const [users, items, lists, activity, versions, topItems, usersData, spend] = await Promise.all([
+    const [users, items, lists, activity, versions, topItems, usersData, spend, emails] = await Promise.all([
       getStatsUsers(monthParam),
       getStatsItems(monthParam),
       getStatsLists(monthParam),
@@ -62,6 +66,7 @@ const loadData = async (month?: string) => {
       getStatsTopItems(monthParam),
       getUsers(),
       getStatsSpend(monthParam),
+      getEmails({ limit: 10 }),
     ])
     statsUsers.value = users
     statsItems.value = items
@@ -71,6 +76,7 @@ const loadData = async (month?: string) => {
     statsTopItems.value = topItems
     allUsers.value = usersData.users || []
     statsSpend.value = spend
+    recentEmails.value = emails.data || []
   } catch (e: any) {
     error.value = e.message || i18n.t('errors.failedToLoadAdminData')
   } finally {
@@ -81,6 +87,11 @@ const loadData = async (month?: string) => {
 const onMonthChange = (month: string) => {
   selectedMonth.value = month
   loadData(month)
+}
+
+const openEmail = (row: any) => {
+  selectedEmail.value = row
+  emailModalVisible.value = true
 }
 
 const activityLabels = computed(() => {
@@ -142,6 +153,13 @@ const recentlyActiveUsers = computed(() => {
     .sort((a, b) => new Date(b.last_active).getTime() - new Date(a.last_active).getTime())
     .slice(0, 10)
 })
+
+const emailColumns = [
+  { key: 'type', label: 'Type', isPrimary: true, badges: (row: any) => [{ text: row.type, color: 'blue' as const }] },
+  { key: 'recipient_email', label: 'Recipient' },
+  { key: 'status', label: 'Status', badges: (row: any) => [{ text: row.status, color: row.status === 'sent' ? 'green' as const : 'red' as const }] },
+  { key: 'sent_at', label: 'Sent at', type: 'datetime' as const, hideOnMobile: true },
+]
 
 const userColumns = [
   {
@@ -369,6 +387,18 @@ const userColumns = [
           :row-link="(row) => `/admin/users/${row.id}`"
         />
 
+        <!-- Recent Emails -->
+        <DataTable
+          :columns="emailColumns"
+          :data="recentEmails"
+          title="Recent Emails"
+          icon="✉️"
+          :show-view-all="true"
+          view-all-link="/admin/emails"
+          :row-click-handler="openEmail"
+          empty-message="No emails sent yet."
+        />
+
         <!-- Top items section -->
         <div class="border-t border-surface-200 pt-6">
           <div class="flex items-center justify-between mb-4 gap-3 flex-wrap">
@@ -440,4 +470,9 @@ const userColumns = [
       </template>
     </div>
   </div>
+
+  <AdminEmailDetailModal
+    :email="selectedEmail"
+    v-model:visible="emailModalVisible"
+  />
 </template>
