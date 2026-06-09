@@ -158,6 +158,37 @@ export function useAdminApi() {
         return await response.json();
     }
 
+    async function getEmails(params: {
+        status?: string
+        type?: string
+        date_from?: string
+        date_to?: string
+        per_page?: number
+        limit?: number
+    } = {}) {
+        const query = new URLSearchParams()
+        if (params.status) query.set('status', params.status)
+        if (params.type) query.set('type', params.type)
+        if (params.date_from) query.set('date_from', params.date_from)
+        if (params.date_to) query.set('date_to', params.date_to)
+        if (params.per_page) query.set('per_page', String(params.per_page))
+        if (params.limit) query.set('limit', String(params.limit))
+
+        const qs = query.toString()
+        const response = await fetch(`/api/admin/emails${qs ? '?' + qs : ''}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch emails: ${response.statusText}`)
+        }
+
+        return await response.json()
+    }
+
     return {
         getStatsUsers,
         getStatsItems,
@@ -169,5 +200,6 @@ export function useAdminApi() {
         getStatsTopItems,
         getStatsSpend,
         blockUser,
+        getEmails,
     }
 }
