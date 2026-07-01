@@ -42,7 +42,7 @@ auth.verifyEmail(form.value.token).then(() => {
             <span class="auth-brand">GroceryList</span>
           </div>
           <div class="auth-title">{{ title }}</div>
-          <div class="auth-subtitle">{{ t('auth.verifySubtitle') }}</div>
+          <div class="auth-subtitle">{{ i18n.t('auth.verifySubtitle') }}</div>
         </div>
       </template>
       <template #content>
