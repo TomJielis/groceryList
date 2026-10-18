@@ -70,6 +70,15 @@ async function toggleSuggestion(name: string) {
   }
 }
 
+// Lower rank = better match: exact, starts with, word starts with, anywhere
+function matchRank(name: string, term: string): number {
+  const lower = name.toLowerCase();
+  if (lower === term) return 0;
+  if (lower.startsWith(term)) return 1;
+  if (lower.split(/\s+/).some(word => word.startsWith(term))) return 2;
+  return 3;
+}
+
 const filteredSuggestions = computed(() => {
   const searchTerm = newItem.value.toLowerCase();
   const map = itemsMap.value;
@@ -107,6 +116,11 @@ const filteredSuggestions = computed(() => {
 
     if (aUnchecked && bUnchecked && aItem && bItem) {
       return new Date(bItem.created_at).getTime() - new Date(aItem.created_at).getTime();
+    }
+
+    if (searchTerm) {
+      const rankDiff = matchRank(a.name, searchTerm) - matchRank(b.name, searchTerm);
+      if (rankDiff !== 0) return rankDiff;
     }
 
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
