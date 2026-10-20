@@ -29,6 +29,9 @@ export default defineNuxtConfig({
     routeRules: {
         '/socket.io/**': {ssr: false},
     },
+    serverHandlers: [
+        { route: '/.well-known/apple-app-site-association', handler: '~/server/handlers/apple-app-site-association.ts' },
+    ],
     modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
     css: ['@/assets/css/tailwind.css', '@/assets/css/main.css', '@/assets/css/app-theme.css', 'primeicons/primeicons.css'],
     primevue: {
@@ -52,6 +55,11 @@ export default defineNuxtConfig({
         api: {
             url: process.env.API_URL || '0.0.0.0:8000',
             basePath: process.env.API_BASE_PATH || '/api',
+        },
+        // iOS Universal Links, overridden by NUXT_APP_LINKS_APPLE_TEAM_ID / NUXT_APP_LINKS_IOS_BUNDLE_ID
+        appLinks: {
+            appleTeamId: '',
+            iosBundleId: 'com.tomjielis.groceryListExpo',
         },
         public: {
             termsVersion: '1.1',
