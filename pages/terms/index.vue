@@ -56,7 +56,7 @@ hr {
           <!-- Header -->
           <div class="py-4 border-b border-surface-200 mb-6">
             <h1 class="text-xl font-semibold">Terms of Use &amp; Privacy Policy</h1>
-            <p class="text-xs text-color-secondary mt-1">Laatste versie: 1.2 | Laatst bijgewerkt: 10-11-2025</p>
+            <p class="text-xs text-color-secondary mt-1">Laatste versie: 1.1 | Laatst bijgewerkt: 10-11-2025</p>
           </div>
 
           <!-- Content -->
@@ -185,7 +185,7 @@ hr {
             </section>
             <section class="border-t border-surface-200 py-4">
               <h2>English version</h2>
-              <p class="text-xs text-color-secondary mb-4">Latest version: 1.2 — Last updated: 10-11-2025 16:30</p>
+              <p class="text-xs text-color-secondary mb-4">Latest version: 1.1 — Last updated: 10-11-2025 16:30</p>
               <h3>1. About this application</h3>
               <p>This application ("TomJielis.com") is a personal web application that allows users to create, view, share, edit, and delete grocery lists. The application is developed for personal use and aims to make managing groceries more organized.</p>
               <h3>2. Application administrator</h3>

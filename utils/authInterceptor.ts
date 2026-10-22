@@ -16,11 +16,14 @@ function handleUnauthorized() {
     return;
   }
 
-  // Check if already on login/info pages to prevent loops
+  // Check if already on login/info pages to prevent loops. Same public pages as middleware/auth.ts:
+  // the terms page is readable without an account.
   const currentPath = window.location.pathname;
-  const isOnAuthPage = currentPath.includes('/auth/') || currentPath === '/information';
+  const isOnAuthPage = currentPath.includes('/auth/') || currentPath === '/information' || currentPath === '/terms';
 
-  if (isOnAuthPage) {
+  // Without a session nothing expired: a visitor reading a public page (e.g. the terms) stays there.
+  // Protected pages already send visitors without a session to /information (middleware/auth.ts).
+  if (isOnAuthPage || !useAuthStore().token) {
     // Already on an auth page, just clear the auth without redirecting
     const authStore = useAuthStore();
     authStore.clearAuth();
