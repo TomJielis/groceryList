@@ -26,8 +26,11 @@ useHead(() => ({
 }))
 
 const userData = ref({ email: '', password: '' })
+// Both fields are needed; the button stays disabled until then, so an empty login never reaches the API
+const canLogin = computed(() => userData.value.email.trim() !== '' && userData.value.password !== '')
 
 async function handleLogin() {
+  if (!canLogin.value) return
   try {
     const data = await login(userData.value)
     authStore.setUser(data.user)
@@ -88,6 +91,7 @@ function toggleLanguage() {
             <Button
               type="submit"
               :label="t('auth.loginBtn')"
+              :disabled="!canLogin"
               class="w-full"
             />
           </form>
