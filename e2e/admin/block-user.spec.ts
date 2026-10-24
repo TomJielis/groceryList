@@ -11,11 +11,13 @@ test('block and unblock a user', async ({ page }) => {
   const dialog = page.getByRole('dialog')
   await expect(dialog.getByText('Are you sure you want to block this user?')).toBeVisible()
   await dialog.getByRole('button', { name: 'Block', exact: true }).click()
+  await expect(page.getByText('User has been blocked')).toBeVisible()
   await expect(page.getByRole('button', { name: 'Unblock', exact: true })).toBeVisible()
   await expect(page.getByText('Blocked', { exact: true }).first()).toBeVisible()
 
   await page.getByRole('button', { name: 'Unblock', exact: true }).click()
   await page.getByRole('dialog').getByRole('button', { name: 'Unblock', exact: true }).click()
+  await expect(page.getByText('User has been unblocked')).toBeVisible()
   await expect(page.getByRole('button', { name: 'Block', exact: true })).toBeVisible()
   await expect(page.getByText('Active', { exact: true })).toBeVisible()
 })

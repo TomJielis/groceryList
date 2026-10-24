@@ -14,7 +14,7 @@ definePageMeta({
 const route = useRoute()
 const i18n = useI18nStore()
 const { getUserDetail, blockUser } = useAdminApi()
-const { showNotification } = useNotification()
+const { showNotification, showSuccess } = useNotification()
 
 const loading = ref(true)
 const loadingActivity = ref(false)
@@ -109,6 +109,7 @@ const confirmToggleBlock = async () => {
   try {
     await blockUser(userId.value, newBlockedStatus)
     data.value.user.blocked = newBlockedStatus
+    showSuccess(i18n.t(newBlockedStatus ? 'admin.userBlocked' : 'admin.userUnblocked'))
   } catch (e: any) {
     showNotification(e.message || i18n.t('errors.failedToUpdateUser'))
   } finally {
