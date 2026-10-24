@@ -26,7 +26,7 @@ onMounted(async () => {
   loading.value = true;
   await Promise.all([
     fetchItems(listId),
-    suggestionStore.fetchSuggestionsOnly()
+    suggestionStore.fetchSuggestions()
   ]);
   loading.value = false;
 })

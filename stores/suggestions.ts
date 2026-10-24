@@ -1,9 +1,8 @@
 // stores/suggestions.ts
 import {defineStore} from 'pinia'
 import grocerySuggestions from '~/data/suggestions.json';
-import {useGroceryList} from "~/composables/useGroceryList";
 import {useI18nStore} from "~/stores/i18n";
-const { items, fetchItems } = useGroceryList();
+import type {TGroceryListItem} from "~/types/TGroceryListItem";
 
 export const useSuggestionStore = defineStore('suggestions', {
     state: () => ({
@@ -41,33 +40,33 @@ export const useSuggestionStore = defineStore('suggestions', {
     },
 
     actions: {
+        // The standard suggestions plus every product the user has in one of their lists (their own and shared ones),
+        // so a product typed in once is offered in every list from then on
         async fetchSuggestions() {
-            await fetchItems();
             this.loading = true
+            this.defaultSuggestions = grocerySuggestions
             try {
-                this.defaultSuggestions = grocerySuggestions
+                const response = await fetch('/api/groceryListItem/', {
+                    method: 'POST',
+                    body: JSON.stringify({listId: null}),
+                    headers: {'Content-Type': 'application/json'},
+                })
+                if (!response.ok) throw new Error(response.statusText)
+                const items: TGroceryListItem[] = (await response.json()).data ?? []
 
-                const res = items.value;
-                this.userSuggestions = Array.isArray(res)
-                    ? res.filter((item: any) => item.checked).map((item: any) => ({
-                        name: item.name,
-                        unit_price: item.unit_price || null,
-                        checked: false
-                    }))
-                    : []
+                // Newest first, so a product's latest price wins when it is in several lists
+                const newestFirst = [...items].sort((a, b) => b.id - a.id)
+                const seen = new Set<string>()
+                this.userSuggestions = newestFirst
+                    .filter((item) => {
+                        const key = item.name.toLowerCase()
+                        if (seen.has(key)) return false
+                        seen.add(key)
+                        return true
+                    })
+                    .map((item) => ({name: item.name, unit_price: item.unit_price || null}))
             } catch (error) {
-                console.error('Fout bij ophalen suggesties:', error)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        // Fetch only default suggestions without re-fetching items (for parallel loading)
-        async fetchSuggestionsOnly() {
-            this.loading = true
-            try {
-                this.defaultSuggestions = grocerySuggestions
-            } catch (error) {
+                // Without them the standard suggestions still work
                 console.error('Fout bij ophalen suggesties:', error)
             } finally {
                 this.loading = false

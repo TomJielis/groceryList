@@ -24,10 +24,13 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start": "nuxt start"
+    "start": "nuxt start",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "type": "module",
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "autoprefixer": "^10.4.21",
     "postcss": "8",
     "tailwindcss": "3"
