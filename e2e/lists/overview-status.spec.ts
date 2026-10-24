@@ -31,7 +31,7 @@ test('the lists page shows progress and the people a list is shared with', async
 
   // Shared: the friend's initial appears in the "Shared with" column
   await shareList(page, name, FRIEND_EMAIL)
-  await expect(row.locator('span.rounded-full').filter({ hasText: /^E$/ })).toBeVisible()
+  await expect(row.locator('span.rounded-full:visible').filter({ hasText: /^E$/ })).toBeVisible()
   await expect(row).not.toContainText('—')
 
   // Removed from the list again: the initial goes, "—" comes back
@@ -41,6 +41,6 @@ test('the lists page shows progress and the people a list is shared with', async
   await page.getByRole('dialog').getByRole('button', { name: 'Delete' }).click()
   await expect(page.getByText('User removed from list')).toBeVisible()
   await open(page, '/')
-  await expect(row.locator('span.rounded-full').filter({ hasText: /^E$/ })).toHaveCount(0)
+  await expect(row.locator('span.rounded-full:visible').filter({ hasText: /^E$/ })).toHaveCount(0)
   await expect(row).toContainText('—')
 })

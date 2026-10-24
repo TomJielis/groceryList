@@ -25,7 +25,7 @@ const typeOptions = [
     { label: 'All types', value: '' },
     { label: 'Welcome', value: 'welcome' },
     { label: 'Reset password', value: 'reset_password' },
-    { label: 'Grocery list invite', value: 'grocery_list_invite' },
+    { label: 'Grocery list invite', value: 'grocery_list_invite_mail' },
 ]
 
 const statusOptions = [
