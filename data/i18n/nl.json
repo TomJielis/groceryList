@@ -19,6 +19,15 @@
     "admin": "Admin"
   },
   "auth": {
+    "resetLinkExpiredTitle": "Link niet meer geldig",
+    "requestNewLink": "Vraag een nieuwe link aan",
+    "verifySubtitle": "Bevestig je e-mailadres",
+    "emailAlreadyVerifiedTitle": "E-mail al geverifieerd",
+    "emailAlreadyVerifiedBody": "Je e-mailadres is al geverifieerd. Je kunt inloggen op je account.",
+    "verifyLinkInvalid": "Deze link is ongeldig. Gebruik de link uit de meest recente e-mail.",
+    "resetLinkInvalid": "Deze link is ongeldig, al gebruikt of verlopen. Vraag een nieuwe aan.",
+    "passwordTooShort": "Je wachtwoord moet minimaal 8 tekens hebben.",
+    "passwordsDoNotMatch": "De wachtwoorden zijn niet hetzelfde.",
     "loginTitle": "Inloggen - TomJielis.com",
     "loginSubtitle": "Welkom terug bij TomJielis.com",
     "realTime": "Realtime",
@@ -153,6 +162,7 @@
     "allDoneMessage": "Je hebt alle items afgevinkt"
   },
   "items": {
+    "noSuggestions": "Geen suggesties gevonden",
     "addPlaceholder": "Nieuwe item invoeren",
     "pricePlaceholder": "€ prijs",
     "addNew": "Items toevoegen",
@@ -280,6 +290,7 @@
     "lastUpdated": "Laatst bijgewerkt: {date}"
   },
   "admin": {
+    "items": "producten",
     "title": "Admin Dashboard",
     "overview": "Overzicht",
     "dashboard": "Beheer gebruikers en bekijk statistieken",

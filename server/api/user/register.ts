@@ -1,4 +1,5 @@
 import {apiClient} from "~/server/api/utils/apiClient";
+import {forwardedForHeader} from "~/server/api/utils/visitorAddress";
 import {setCookie} from "h3";
 import type {TUser} from "~/types/TUser";
 
@@ -14,6 +15,7 @@ export default defineEventHandler(async (event) => {
 
     const response: RegisterResponse<any> = await apiClient('/register', {
         method: 'POST',
+        headers: forwardedForHeader(event),
         body: {
             name,
             email,

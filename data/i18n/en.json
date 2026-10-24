@@ -19,6 +19,15 @@
     "admin": "Admin"
   },
   "auth": {
+    "resetLinkExpiredTitle": "Link no longer valid",
+    "requestNewLink": "Request a new link",
+    "verifySubtitle": "Confirm your email address",
+    "emailAlreadyVerifiedTitle": "Email already verified",
+    "emailAlreadyVerifiedBody": "Your email address has already been verified. You can log in to your account.",
+    "verifyLinkInvalid": "This link is invalid. Please use the link from the most recent email.",
+    "resetLinkInvalid": "This link is invalid, has already been used or has expired. Please request a new one.",
+    "passwordTooShort": "Your password must be at least 8 characters.",
+    "passwordsDoNotMatch": "The passwords do not match.",
     "loginTitle": "Login - TomJielis.com",
     "loginSubtitle": "Welcome back to TomJielis.com",
     "realTime": "Realtime sync",
@@ -154,6 +163,7 @@
     "allDoneMessage": "You have checked off all items"
   },
   "items": {
+    "noSuggestions": "No suggestions found",
     "addPlaceholder": "Enter new item",
     "pricePlaceholder": "€ price",
     "addNew": "Add items",
@@ -286,6 +296,7 @@
     "approveBtn": "Approve and Continue"
   },
   "admin": {
+    "items": "items",
     "title": "Admin Dashboard",
     "overview": "Overview",
     "dashboard": "Manage users and view statistics",

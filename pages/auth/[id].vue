@@ -19,15 +19,15 @@ const auth = useAuth();
 const route = useRoute();
 form.value.token = route.params.id as string;
 
-auth.verifyEmail(form.value.token).then(() => {
-  title.value = i18n.t('auth.emailVerifiedTitle');
-  body.value = i18n.t('auth.emailVerifiedBody');
+auth.verifyEmail(form.value.token).then((result) => {
+  title.value = i18n.t(result?.alreadyVerified ? 'auth.emailAlreadyVerifiedTitle' : 'auth.emailVerifiedTitle');
+  body.value = i18n.t(result?.alreadyVerified ? 'auth.emailAlreadyVerifiedBody' : 'auth.emailVerifiedBody');
   verified.value = true;
 }).catch((error) => {
   title.value = i18n.t('auth.emailVerifyFailedTitle');
   body.value = i18n.t('auth.emailVerifyFailedBody');
   hasError.value = true;
-  errorText.value = error || i18n.t('auth.unexpectedError');
+  errorText.value = i18n.t(error?.reason === 'invalid_link' ? 'auth.verifyLinkInvalid' : 'auth.unexpectedError');
 });
 </script>
 

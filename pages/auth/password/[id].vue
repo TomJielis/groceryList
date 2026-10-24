@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useAuth } from "~/composables/useAuth";
 import { useRoute } from 'vue-router';
 import { useNotification } from "~/composables/useNotification";
@@ -13,7 +13,9 @@ const i18n = useI18nStore();
 const { showNotification } = useNotification();
 const route = useRoute();
 const passwordUpdated = ref(false);
-const { setNewPassword } = useAuth();
+const { setNewPassword, checkResetLink } = useAuth();
+// A used or expired link shows a 'request a new one' screen instead of the form
+const linkExpired = ref(false);
 
 const userData = ref({
   email: '',
@@ -22,10 +24,37 @@ const userData = ref({
   token: route.params.id as string
 });
 
+onMounted(async () => {
+  linkExpired.value = !(await checkResetLink(userData.value.token));
+});
+
+// Messages for the reasons the API gives
+const reasonMessages: Record<string, string> = {
+  invalid_link: 'auth.resetLinkInvalid',
+  password_too_short: 'auth.passwordTooShort',
+  passwords_do_not_match: 'auth.passwordsDoNotMatch',
+};
+
 function triggerNewPassword() {
+  // The same rules as the API, checked here first so the user sees why straight away
+  if (userData.value.password.length < 8) {
+    showNotification(i18n.t('auth.passwordTooShort'));
+    return;
+  }
+  if (userData.value.password !== userData.value.repeatPassword) {
+    showNotification(i18n.t('auth.passwordsDoNotMatch'));
+    return;
+  }
   setNewPassword(userData.value)
     .then(() => { passwordUpdated.value = true; })
-    .catch(() => { showNotification(i18n.t('errors.unexpectedError')); });
+    .catch((error) => {
+      // The link was used or expired in the meantime
+      if (error?.reason === 'invalid_link') {
+        linkExpired.value = true;
+        return;
+      }
+      showNotification(i18n.t(reasonMessages[error?.reason] ?? 'errors.unexpectedError'));
+    });
 }
 </script>
 
@@ -51,6 +80,18 @@ function triggerNewPassword() {
             <p class="text-4xl font-light">✓</p>
             <h3 class="text-lg font-medium">{{ i18n.t('auth.passwordUpdatedTitle') }}</h3>
             <p class="text-sm leading-relaxed">{{ i18n.t('auth.passwordUpdatedBody') }}</p>
+            <NuxtLink to="/auth/login" class="block">
+              <Button :label="i18n.t('auth.goToLogin')" severity="secondary" outlined class="w-full" />
+            </NuxtLink>
+          </div>
+
+          <!-- Used or expired link -->
+          <div v-else-if="linkExpired" class="flex flex-col gap-5">
+            <h3 class="text-lg font-medium">{{ i18n.t('auth.resetLinkExpiredTitle') }}</h3>
+            <p class="text-sm leading-relaxed">{{ i18n.t('auth.resetLinkInvalid') }}</p>
+            <NuxtLink to="/auth/password/reset" class="block">
+              <Button :label="i18n.t('auth.requestNewLink')" class="w-full" />
+            </NuxtLink>
             <NuxtLink to="/auth/login" class="block">
               <Button :label="i18n.t('auth.goToLogin')" severity="secondary" outlined class="w-full" />
             </NuxtLink>

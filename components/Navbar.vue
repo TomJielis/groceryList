@@ -11,7 +11,7 @@ const route = useRoute();
 
 const localeOptions = [
   { label: '🇳🇱 NL', value: 'nl' },
-  { label: '🇺🇸 EN', value: 'en' },
+  { label: '🇬🇧 EN', value: 'en' },
 ];
 
 const selectedLocale = computed({

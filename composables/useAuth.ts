@@ -62,9 +62,14 @@ export function useAuth() {
 
         let result = await loginResponse.json();
 
+        // Opening the link again is fine: the account is ready to use
+        if (result.reason === 'already_verified') {
+            return {...result, alreadyVerified: true};
+        }
+
         if(!result.success)
         {
-            throw new Error(result.message || 'Verification failed');
+            throw Object.assign(new Error(result.message || 'Verification failed'), {reason: result.reason});
         }
 
         return result;
@@ -103,11 +108,23 @@ export function useAuth() {
 
         let result = await resetPasswordResponse.json();
 
-        // if (!result.user) {
-        //     throw new Error(result.error || 'Login failed');
-        // }
+        // The reason (invalid_link, password_too_short, ...) becomes the error, for the page to translate
+        if (result.success === false) {
+            throw Object.assign(new Error(result.reason), {reason: result.reason});
+        }
 
         return result;
+    }
+
+    async function checkResetLink(token: string): Promise<boolean> {
+        const response = await fetch('/api/user/checkResetLink/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({token}),
+        });
+        if (!response.ok) return true;
+        const result = await response.json();
+        return result.valid !== false;
     }
 
     async function setLanguage(language: string) {
@@ -192,6 +209,7 @@ export function useAuth() {
         login,
         register,
         verifyEmail,
+        checkResetLink,
         resetPassword,
         setNewPassword,
         setLanguage,

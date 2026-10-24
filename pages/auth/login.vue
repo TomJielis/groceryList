@@ -16,8 +16,9 @@ const { login } = useAuth()
 const { showNotification } = useNotification()
 const i18n = useI18nStore()
 const t = computed(() => i18n.t)
+// Shows the active language; tapping switches to the other one
 const languageToggleLabel = computed(() =>
-  i18n.locale === 'en' ? `🇳🇱 ${i18n.t('nav.dutch')}` : `🇬🇧 ${i18n.t('nav.english')}`
+  i18n.locale === 'en' ? `🇬🇧 ${i18n.t('nav.english')}` : `🇳🇱 ${i18n.t('nav.dutch')}`
 )
 
 useHead(() => ({

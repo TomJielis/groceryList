@@ -29,7 +29,11 @@ export const apiClient = async <T = any>(
     });
 
     if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
+        // The API's own answer (e.g. a `reason`) travels along for routes that want to pass it on
+        const error = new Error(`API request failed with status ${response.status}: ${response.statusText}`) as Error & {status?: number, data?: any};
+        error.status = response.status;
+        error.data = await response.json().catch(() => null);
+        throw error;
     }
 
     return response.json();
