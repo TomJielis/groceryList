@@ -62,6 +62,8 @@ export default defineNuxtConfig({
             iosBundleId: 'com.tomjielis.groceryListExpo',
         },
         public: {
+            // The name shown everywhere on the site (titles, logo text, texts with {app}); set NUXT_PUBLIC_APP_NAME in .env
+            appName: 'Boodschappen vriendje',
             termsVersion: '1.1',
             lastUpdatedTerms: '10-11-2025 22:35',
         },

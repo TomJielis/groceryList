@@ -7,6 +7,8 @@ import { useAuth } from '~/composables/useAuth'
 import { useNotification } from '~/composables/useNotification'
 import { useI18nStore } from '~/stores/i18n'
 
+const appName = useRuntimeConfig().public.appName
+
 const i18n = useI18nStore()
 const { showNotification } = useNotification()
 const { resetPassword } = useAuth()
@@ -31,7 +33,7 @@ async function handleResetPassword() {
         <div class="auth-card-header">
           <div class="flex items-center gap-2 mb-4">
             <span class="auth-logo-dot"></span>
-            <span class="auth-brand">GroceryList</span>
+            <span class="auth-brand">{{ appName }}</span>
           </div>
           <div class="auth-title">{{ i18n.t('auth.resetPasswordTitle') }}</div>
           <div class="auth-subtitle">{{ i18n.t('auth.resetPasswordSubtitle') }}</div>

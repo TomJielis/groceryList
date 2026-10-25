@@ -5,16 +5,18 @@ import { useAuthStore } from "~/stores/auth";
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 
+const appName = useRuntimeConfig().public.appName
+
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
 const auth = useAuthStore()
 
 useHead({
-  title: 'TomJielis GroceryList — Manage Your Shopping Lists',
+  title: `${appName} — Manage Your Shopping Lists`,
   link: [{ rel: 'canonical', href: 'https://tomjielis.com/information' }],
   meta: [
-    { name: 'description', content: 'TomJielis GroceryList — create, manage and share personal shopping lists. Track spending, collaborate with family. Free and easy to use.' },
-    { property: 'og:title', content: 'TomJielis GroceryList' },
+    { name: 'description', content: `${appName} — create, manage and share personal shopping lists. Track spending, collaborate with family. Free and easy to use.` },
+    { property: 'og:title', content: appName },
     { property: 'og:description', content: 'Create, manage and share personal shopping lists. Free and easy to use.' },
     { property: 'og:url', content: 'https://tomjielis.com/information' },
   ]

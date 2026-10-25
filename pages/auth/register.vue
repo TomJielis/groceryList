@@ -11,6 +11,8 @@ import { useAuth } from '~/composables/useAuth'
 import { useNotification } from '~/composables/useNotification'
 import { useI18nStore } from '~/stores/i18n'
 
+const appName = useRuntimeConfig().public.appName
+
 const route = useRoute()
 const i18n = useI18nStore()
 const { showNotification } = useNotification()
@@ -60,7 +62,7 @@ function handleLanguageChange(locale: 'nl' | 'en') {
         <div class="auth-card-header">
           <div class="flex items-center gap-2 mb-4">
             <span class="auth-logo-dot"></span>
-            <span class="auth-brand">GroceryList</span>
+            <span class="auth-brand">{{ appName }}</span>
           </div>
           <div class="auth-title">{{ i18n.t('auth.registerTitle') }}</div>
           <div class="auth-subtitle">{{ i18n.t('auth.registerSubtitle') }}</div>

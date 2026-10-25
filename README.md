@@ -97,3 +97,7 @@ npm run test:e2e:ui     # Playwright's UI, to watch or debug
 The tests make their own throwaway `@e2e.test` users through `php artisan e2e:user` (local/testing only) and remove them, everything they made, and their mails afterwards. Passwords, sessions, screenshots and the HTML report go to the git-ignored `node_modules/.cache/e2e` (outside the folders Vite watches; writing there would reload the page under test). `npx playwright show-report node_modules/.cache/e2e/report` opens the report.
 
 `e2e` in `~/.zshrc` runs these and the app's Maestro flows in one go.
+
+## App name
+
+The name shown on the site (titles, logo text, `/manifest.json`, texts) comes from `NUXT_PUBLIC_APP_NAME` in `.env`. Texts in `data/i18n/*.json` write it as `{app}`; components use `useRuntimeConfig().public.appName`. Set the same variable on the production server.

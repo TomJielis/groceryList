@@ -7,6 +7,8 @@ import Button from 'primevue/button'
 import Card from 'primevue/card'
 import ProgressSpinner from 'primevue/progressspinner'
 
+const appName = useRuntimeConfig().public.appName
+
 const i18n = useI18nStore();
 const form = ref({ token: '' });
 const hasError = ref(false)
@@ -39,7 +41,7 @@ auth.verifyEmail(form.value.token).then((result) => {
         <div class="auth-card-header">
           <div class="flex items-center gap-2 mb-4">
             <span class="auth-logo-dot"></span>
-            <span class="auth-brand">GroceryList</span>
+            <span class="auth-brand">{{ appName }}</span>
           </div>
           <div class="auth-title">{{ title }}</div>
           <div class="auth-subtitle">{{ i18n.t('auth.verifySubtitle') }}</div>

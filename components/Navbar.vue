@@ -4,6 +4,8 @@ import { useI18nStore } from "~/stores/i18n";
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
+const appName = useRuntimeConfig().public.appName
+
 const authStore = useAuthStore();
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
@@ -33,7 +35,7 @@ function isActiveTab(path: string) {
       <nuxt-link to="/" class="navbar-brand-link">
         <div class="flex items-center gap-2">
           <span class="app-navbar-logo-dot"></span>
-          <span class="app-navbar-brand">TomJielis.com</span>
+          <span class="app-navbar-brand">{{ appName }}</span>
         </div>
       </nuxt-link>
 

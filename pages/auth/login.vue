@@ -10,6 +10,8 @@ import { useAuthStore } from '~/stores/auth'
 import { useNotification } from '~/composables/useNotification'
 import { useI18nStore } from '~/stores/i18n'
 
+const appName = useRuntimeConfig().public.appName
+
 const router = useRouter()
 const authStore = useAuthStore()
 const { login } = useAuth()
@@ -56,7 +58,7 @@ function toggleLanguage() {
         <div class="auth-card-header">
           <div class="flex items-center gap-2 mb-4">
             <span class="auth-logo-dot"></span>
-            <span class="auth-brand">GroceryList</span>
+            <span class="auth-brand">{{ appName }}</span>
           </div>
           <div class="auth-title">{{ t('auth.loginTitle') }}</div>
           <div class="auth-subtitle">{{ t('auth.loginSubtitle') }}</div>

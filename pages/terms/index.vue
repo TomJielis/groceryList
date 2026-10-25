@@ -2,6 +2,8 @@
 import { useI18nStore } from '~/stores/i18n';
 import Card from 'primevue/card'
 
+const appName = useRuntimeConfig().public.appName
+
 const i18n = useI18nStore();
 </script>
 
@@ -63,11 +65,11 @@ hr {
           <div>
             <section class="border-t border-surface-200 py-4">
               <h2>1. Over deze applicatie</h2>
-              <p>Deze applicatie ("TomJielis.com") is een persoonlijke webapplicatie waarmee gebruikers boodschappenlijsten kunnen aanmaken, bekijken, delen, bewerken en verwijderen. De applicatie is ontwikkeld voor persoonlijk gebruik en heeft als doel het beheren van boodschappen overzichtelijker te maken.</p>
+              <p>Deze applicatie ("{{ appName }}") is een persoonlijke webapplicatie waarmee gebruikers boodschappenlijsten kunnen aanmaken, bekijken, delen, bewerken en verwijderen. De applicatie is ontwikkeld voor persoonlijk gebruik en heeft als doel het beheren van boodschappen overzichtelijker te maken.</p>
             </section>
             <section class="border-t border-surface-200 py-4">
               <h2>2. Beheerder van de applicatie</h2>
-              <p>De applicatie wordt beheerd door de ontwikkelaar van TomJielis.com ("Beheerder"). Voor vragen kun je contact opnemen via het e-mailadres dat in de applicatie wordt vermeld.</p>
+              <p>De applicatie wordt beheerd door de ontwikkelaar van {{ appName }} ("Beheerder"). Voor vragen kun je contact opnemen via het e-mailadres dat in de applicatie wordt vermeld.</p>
             </section>
             <section class="border-t border-surface-200 py-4">
               <h2>Privacy Policy</h2>
@@ -187,9 +189,9 @@ hr {
               <h2>English version</h2>
               <p class="text-xs text-color-secondary mb-4">Latest version: 1.1 — Last updated: 10-11-2025 16:30</p>
               <h3>1. About this application</h3>
-              <p>This application ("TomJielis.com") is a personal web application that allows users to create, view, share, edit, and delete grocery lists. The application is developed for personal use and aims to make managing groceries more organized.</p>
+              <p>This application ("{{ appName }}") is a personal web application that allows users to create, view, share, edit, and delete grocery lists. The application is developed for personal use and aims to make managing groceries more organized.</p>
               <h3>2. Application administrator</h3>
-              <p>The application is managed by the developer of TomJielis.com ("Administrator"). For questions, you can contact the email address listed in the application.</p>
+              <p>The application is managed by the developer of {{ appName }} ("Administrator"). For questions, you can contact the email address listed in the application.</p>
               <h3>Privacy Policy</h3>
               <h4>3. What data is collected</h4>
               <ul>

@@ -1,11 +1,11 @@
 {
   "app": {
-    "title": "TomJielis.com",
-    "metaDescription": "TomJielis GroceryList — create, manage and share your personal shopping lists. Free and easy to use.",
+    "title": "{app}",
+    "metaDescription": "{app} — create, manage and share your personal shopping lists. Free and easy to use.",
     "tagline": "Grocery Flow"
   },
   "nav": {
-    "brand": "TomJielis.com",
+    "brand": "{app}",
     "cards": "Cards",
     "login": "Login",
     "register": "Register",
@@ -28,8 +28,8 @@
     "resetLinkInvalid": "This link is invalid, has already been used or has expired. Please request a new one.",
     "passwordTooShort": "Your password must be at least 8 characters.",
     "passwordsDoNotMatch": "The passwords do not match.",
-    "loginTitle": "Login - TomJielis.com",
-    "loginSubtitle": "Welcome back to TomJielis.com",
+    "loginTitle": "Login - {app}",
+    "loginSubtitle": "Welcome back to {app}",
     "realTime": "Realtime sync",
     "joinCommunity": "Invite friends",
     "freeForever": "Free account",
@@ -287,7 +287,7 @@
     "invalidEmail": "Please enter a valid email address"
   },
   "terms": {
-    "title": "Terms of Use & Privacy Policy – TomJielis.com",
+    "title": "Terms of Use & Privacy Policy – {app}",
     "lastUpdated": "Last updated: {date}"
   },
   "termsApproval": {
@@ -369,8 +369,8 @@
     "spendThisMonth": "Spend this month"
   },
   "info": {
-    "badge": "TomJielis.com App",
-    "title": "Welcome to TomJielis.com!",
+    "badge": "{app}",
+    "title": "Welcome to {app}!",
     "subtitle": "Your smart assistant for all your groceries.",
     "featuresTitle": "Discover the features",
     "featuresSubtitle": "Discover everything you can do with our app",
@@ -385,7 +385,7 @@
     "feature5Title": "Everything on Your Account",
     "feature5Text": "All your lists, products, and cards are securely stored on your personal account. Available anytime, anywhere.",
     "ctaTitle": "Ready to get started?",
-    "ctaSubtitle": "Join TomJielis.com to organize shopping, share lists, and never miss an item.",
+    "ctaSubtitle": "Join {app} to organize shopping, share lists, and never miss an item.",
     "ctaButton": "Create a free account",
     "screensTitle": "A glimpse inside the app",
     "screensIntro": "Here's how it looks while managing lists, adding products and checking items off.",
@@ -404,7 +404,7 @@
     "mobileScreenCards": "Cards",
     "mobileScreenProfile": "Profile",
     "crossPlatformTitle": "Works Everywhere",
-    "crossPlatformIntro": "Use TomJielis.com on PC, laptop, tablet (iPad) and phone. The responsive design adapts automatically.",
+    "crossPlatformIntro": "Use {app} on PC, laptop, tablet (iPad) and phone. The responsive design adapts automatically.",
     "pwaTitle": "Install as a PWA (Web App)",
     "pwaIntro": "You can install the app so it behaves like a native app – with a shortcut and fullscreen feel.",
     "pwaDesktop": "Desktop (Chrome / Edge / Brave): Click the install icon (📥) near the address bar or use the ⋮ menu > Install.",

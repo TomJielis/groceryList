@@ -8,14 +8,19 @@ export type Locale = 'nl' | 'en'
 export const useI18nStore = defineStore('i18n', {
   state: () => ({
     locale: 'en' as Locale,
+    // Texts write the app's name as {app}, so renaming it is one setting (NUXT_PUBLIC_APP_NAME).
+    // Read here because t is also called where Nuxt's composables aren't available
+    appName: useRuntimeConfig().public.appName as string,
   }),
   getters: {
     t: (state) => {
+      const withAppName = (text: string) => text.replaceAll('{app}', state.appName)
       return (key: string): any => {
         const dict = state.locale === 'nl' ? (nl as any) : (en as any)
         // support nested keys like 'nav.login'
         const value = key.split('.').reduce((obj: any, k: string) => (obj && obj[k] !== undefined ? obj[k] : undefined), dict)
-        if (typeof value === 'string' || Array.isArray(value)) return value
+        if (typeof value === 'string') return withAppName(value)
+        if (Array.isArray(value)) return value.map((v) => (typeof v === 'string' ? withAppName(v) : v))
         // fallback to key if missing
         return key
       }
@@ -45,5 +50,6 @@ export const useI18nStore = defineStore('i18n', {
         }
     }
   },
-  persist: true,
+  // Only the language: the app name always comes from the settings
+  persist: { pick: ['locale'] },
 })

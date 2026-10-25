@@ -5,6 +5,8 @@ import BottomBar from '~/components/BottomBar.vue';
 import {useI18nStore} from "~/stores/i18n";
 import {computed, onMounted} from 'vue'
 
+const appName = useRuntimeConfig().public.appName
+
 const i18n = useI18nStore()
 const t = computed(() => i18n.t)
 useHead(() => ({
@@ -15,7 +17,7 @@ useHead(() => ({
   title: t.value('app.title'),
   meta: [
     {name: 'description', content: t.value('app.metaDescription')},
-    {name: 'keywords', content: 'tomjielis, grocerylist, grocery list, shopping list, boodschappenlijst, TomJielis GroceryList'},
+    {name: 'keywords', content: `${appName}, grocery list, shopping list, boodschappenlijst`},
     {name: 'author', content: 'TomJielis'},
     {name: 'viewport', content: 'width=device-width, initial-scale=1.0, user-scalable=no'},
     {name: 'apple-mobile-web-app-capable', content: 'yes'},
@@ -23,13 +25,13 @@ useHead(() => ({
     // Open Graph
     {property: 'og:type', content: 'website'},
     {property: 'og:url', content: 'https://tomjielis.com'},
-    {property: 'og:title', content: 'TomJielis GroceryList'},
+    {property: 'og:title', content: appName},
     {property: 'og:description', content: t.value('app.metaDescription')},
     {property: 'og:image', content: 'https://tomjielis.com/icons/app-icon-3.png'},
-    {property: 'og:site_name', content: 'TomJielis GroceryList'},
+    {property: 'og:site_name', content: appName},
     // Twitter card
     {name: 'twitter:card', content: 'summary'},
-    {name: 'twitter:title', content: 'TomJielis GroceryList'},
+    {name: 'twitter:title', content: appName},
     {name: 'twitter:description', content: t.value('app.metaDescription')},
     {name: 'twitter:image', content: 'https://tomjielis.com/icons/app-icon-3.png'},
   ]
