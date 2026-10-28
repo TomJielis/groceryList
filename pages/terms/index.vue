@@ -87,6 +87,7 @@ hr {
                 <li>Producten die je toevoegt, met aantal en prijs, en wie ze heeft toegevoegd of afgevinkt</li>
                 <li>Klantenkaarten: een titel met een foto of een barcode die uit het ingevoerde nummer wordt gemaakt</li>
                 <li>E-mailadressen van mensen die je uitnodigt voor een lijst</li>
+                <li>Supportvragen: je naam, je e-mailadres en de berichten die je ons stuurt via de app</li>
               </ul>
               <p>Technische gegevens, voor beveiliging en de werking van de applicatie:</p>
               <ul>
@@ -128,8 +129,8 @@ hr {
               <p>De applicatie maakt het mogelijk om lijsten te delen met andere geregistreerde gebruikers. Alleen gebruikers die jij expliciet toevoegt, hebben toegang tot die lijst. Je kunt op elk moment stoppen met delen of de lijst verwijderen.</p>
               <h3>8. Bewaartermijn en verwijdering van gegevens</h3>
               <p>Zolang je account bestaat, worden je account en wat je in de applicatie zet bewaard.</p>
-              <p>Je inloggeschiedenis, mislukte inlogpogingen en het e-maillogboek (met IP-adressen en e-mailadressen) worden maximaal 12 maanden bewaard en daarna automatisch verwijderd.</p>
-              <p>Je kunt je account op elk moment verwijderen. Daarmee worden direct en permanent uit de database verwijderd: je account, je lijsten met hun producten, je klantenkaarten, je uitnodigingen, je inloggeschiedenis, mislukte inlogpogingen met jouw e-mailadres, de e-mails aan jou in het e-maillogboek en de pushtokens van je apparaten.</p>
+              <p>Je inloggeschiedenis, mislukte inlogpogingen en het e-maillogboek (met IP-adressen en e-mailadressen) worden maximaal 12 maanden bewaard en daarna automatisch verwijderd. Een supportgesprek wordt automatisch verwijderd 12 maanden na het laatste bericht.</p>
+              <p>Je kunt je account op elk moment verwijderen. Daarmee worden direct en permanent uit de database verwijderd: je account, je lijsten met hun producten, je klantenkaarten, je uitnodigingen, je inloggeschiedenis, mislukte inlogpogingen met jouw e-mailadres, de e-mails aan jou in het e-maillogboek, je supportvragen en de pushtokens van je apparaten.</p>
               <p>Al verzonden e-mails staan ook in de mailbox van de ontvanger en het verzendaccount van de beheerder (Gmail); die vallen buiten de applicatie en kunnen daar niet worden verwijderd.</p>
               <h3>9. Cookies en lokale opslag</h3>
               <p>De website gebruikt alleen technische cookies en localStorage, en de app de opslag op je apparaat, om je ingelogd te houden en je voorkeuren (zoals je taal) te bewaren. Er worden <span class="underline">geen analyse-, tracking- of advertentiecookies</span> gebruikt en je wordt niet gevolgd op andere websites of apps. Wel worden je logins vastgelegd voor de beveiliging van je account (zie artikel 3, 4 en 8).</p>
@@ -207,7 +208,7 @@ hr {
               <p>Voor de werking van de applicatie maakt de Beheerder gebruik van vertrouwde externe diensten. Zij verwerken gegevens uitsluitend in opdracht van de Beheerder en alleen voor zover nodig:</p>
               <ul>
                 <li>Hosting: de server waarop de applicatie en de database draaien</li>
-                <li>E-mail (Gmail): voor activatie-, herstel- en uitnodigingsmails</li>
+                <li>E-mail (Gmail): voor activatie-, herstel- en uitnodigingsmails, en voor antwoorden op supportvragen</li>
                 <li>Pushmeldingen (Expo en Apple Push Notification service): ontvangen de pushtoken van je apparaat en de tekst van de melding, zoals de naam van een lijst en van wie er iets aan heeft gedaan</li>
               </ul>
               <p>De Beheerder blijft verantwoordelijk voor een zorgvuldige omgang met deze gegevens, in overeenstemming met de AVG.</p>
@@ -234,6 +235,7 @@ hr {
                 <li>Products you add, with quantity and price, and who added or checked them off</li>
                 <li>Loyalty cards: a title with a photo or a barcode made from the number you enter</li>
                 <li>Email addresses of people you invite to a list</li>
+                <li>Support questions: your name, your email address and the messages you send us through the app</li>
               </ul>
               <p>Technical data, for security and for the application to work:</p>
               <ul>
@@ -275,8 +277,8 @@ hr {
               <p>The application allows you to share lists with other registered users. Only users you explicitly add have access to that list. You can stop sharing or delete the list at any time.</p>
               <h4>8. Retention period and deletion of data</h4>
               <p>As long as your account exists, your account and what you put in the application are kept.</p>
-              <p>Your login history, failed login attempts and the email log (with IP addresses and email addresses) are kept for at most 12 months and are then removed automatically.</p>
-              <p>You can delete your account at any time. This immediately and permanently removes from the database: your account, your lists with their products, your loyalty cards, your invitations, your login history, failed login attempts with your email address, the emails to you in the email log and the push tokens of your devices.</p>
+              <p>Your login history, failed login attempts and the email log (with IP addresses and email addresses) are kept for at most 12 months and are then removed automatically. A support conversation is removed automatically 12 months after its last message.</p>
+              <p>You can delete your account at any time. This immediately and permanently removes from the database: your account, your lists with their products, your loyalty cards, your invitations, your login history, failed login attempts with your email address, the emails to you in the email log, your support questions and the push tokens of your devices.</p>
               <p>Emails already sent are also in the recipient's mailbox and the administrator's sending account (Gmail); those are outside the application and cannot be removed there.</p>
               <h4>9. Cookies and local storage</h4>
               <p>The website only uses technical cookies and localStorage, and the app your device's storage, to keep you logged in and to remember your preferences (such as your language). No <span class="underline">analytics, tracking or advertising cookies</span> are used, and you are not followed on other websites or apps. Your logins are recorded to protect your account (see articles 3, 4 and 8).</p>
@@ -350,7 +352,7 @@ hr {
               <p>For the application to work, the Administrator uses trusted external services. They process data only on behalf of the Administrator and only as far as needed:</p>
               <ul>
                 <li>Hosting: the server that runs the application and the database</li>
-                <li>Email (Gmail): for activation, password reset and invitation emails</li>
+                <li>Email (Gmail): for activation, password reset and invitation emails, and for answers to support questions</li>
                 <li>Push notifications (Expo and Apple Push Notification service): receive the push token of your device and the text of the notification, such as the name of a list and of who did something on it</li>
               </ul>
               <p>The Administrator remains responsible for handling this data carefully, in accordance with the GDPR.</p>
