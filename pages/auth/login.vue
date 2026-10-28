@@ -125,6 +125,10 @@ function toggleLanguage() {
               {{ languageToggleLabel }}
             </button>
           </div>
+          <!-- For whoever can't log in: the page with the support address -->
+          <NuxtLink to="/support" class="text-sm text-center text-color-secondary">
+            {{ t('support.helpLink') }}
+          </NuxtLink>
 
         </div>
       </template>

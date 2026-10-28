@@ -118,6 +118,23 @@ function handleLogout() { authStore.clearAuth(); router.push('/auth/login'); }
           </svg>
         </NuxtLink>
 
+        <NuxtLink to="/support" class="flex items-center justify-between py-4 group">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded flex items-center justify-center text-surface-400 group-hover:text-surface-700 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium group-hover:text-surface-900 transition-colors">{{ i18n.t('support.title') }}</p>
+              <p class="text-xs text-surface-500">{{ i18n.t('support.subtitle') }}</p>
+            </div>
+          </div>
+          <svg class="w-4 h-4 text-surface-300 group-hover:text-surface-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </NuxtLink>
+
         <NuxtLink
           v-if="authStore.user?.is_admin"
           to="/admin"
