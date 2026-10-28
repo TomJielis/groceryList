@@ -21,9 +21,19 @@ const emit = defineEmits<{
 const i18n = useI18nStore();
 const { decreaseItems } = useGroceryList();
 const localItem = ref({ ...props.item });
+// The item as it was when the editor last took it over, to tell whether the user changed anything since
+let shownItem = { ...props.item };
+const EDITABLE = ['name', 'quantity', 'unit_price'] as const;
+const differs = (a: any, b: any) => EDITABLE.some((key) => a[key] !== b[key]);
 
+// The list refreshes (another member changed something, a late answer of the server): take the new data over, but not
+// while the user has unsaved changes to this item, or what they typed would be lost. (Once saved, the new data
+// matches what they typed, and it's taken over again.)
 watch(() => props.item, (newVal) => {
+  const unsaved = newVal.id === shownItem.id && differs(localItem.value, shownItem) && differs(localItem.value, newVal);
+  if (unsaved) return;
   localItem.value = { ...newVal };
+  shownItem = { ...newVal };
 });
 
 const handleUnitPriceInput = (e: Event) => {

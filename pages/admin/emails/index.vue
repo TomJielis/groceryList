@@ -34,7 +34,12 @@ const statusOptions = [
     { label: 'Failed', value: 'failed' },
 ]
 
+// Each load gets a number; an answer that arrives after a newer load started (e.g. the first page load answering after
+// a filter was picked) is out of date and ignored, so the list always matches the filters on screen
+let latestLoad = 0
+
 const loadEmails = async () => {
+    const load = ++latestLoad
     loading.value = true
     error.value = null
     try {
@@ -44,12 +49,13 @@ const loadEmails = async () => {
             date_from: filterDateFrom.value || undefined,
             date_to: filterDateTo.value || undefined,
         })
+        if (load !== latestLoad) return
         emails.value = data.data || []
         total.value = data.meta?.total ?? emails.value.length
     } catch (e: any) {
-        error.value = e.message
+        if (load === latestLoad) error.value = e.message
     } finally {
-        loading.value = false
+        if (load === latestLoad) loading.value = false
     }
 }
 
