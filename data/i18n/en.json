@@ -417,5 +417,26 @@
     "mobileText": "Optimized touch interface with a bottom navigation bar.",
     "tabletTitle": "Tablet",
     "tabletText": "More space for lists and items in one overview."
+  },
+  "support": {
+    "title": "Help & contact",
+    "subtitle": "Answers to common questions, and how to reach us",
+    "contactTitle": "Contact",
+    "contactText": "Questions, problems or a request about your data? Send an email and you will get an answer as soon as possible.",
+    "emailButton": "Send an email",
+    "faqTitle": "Frequently asked questions",
+    "q1": "How do I share a list?",
+    "a1": "Open the menu (⋮) of a list and choose Share. Enter the other person's email address: they get an invitation, also if they don't have an account yet.",
+    "q2": "Where do I find an invitation?",
+    "a2": "Invitations appear at the top of your lists screen. Accept one and the list is added to your lists.",
+    "q3": "I forgot my password",
+    "a3": "On the login screen, tap Forgot password. You'll get an email with a link to choose a new one.",
+    "q4": "How do I add a loyalty card?",
+    "a4": "Go to Cards and tap +. Take a photo of your card or type in its number, and the app makes a barcode you can show at the checkout.",
+    "q5": "How do I turn notifications on or off?",
+    "a5": "In the app: Profile → Notifications. Choose which updates about your lists you want to receive.",
+    "q6": "How do I delete my account?",
+    "a6": "From your profile you can delete your account yourself. This permanently removes your account, lists, cards and login history.",
+    "termsLink": "Terms of use & privacy policy"
   }
 }

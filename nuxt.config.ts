@@ -64,8 +64,10 @@ export default defineNuxtConfig({
         public: {
             // The name shown everywhere on the site (titles, logo text, texts with {app}); set NUXT_PUBLIC_APP_NAME in .env
             appName: 'Boodschappen vriendje',
-            termsVersion: '1.1',
-            lastUpdatedTerms: '10-11-2025 22:35',
+            // Where users can reach you (terms, support page); set NUXT_PUBLIC_SUPPORT_EMAIL in .env
+            supportEmail: 'tomjielis@gmail.com',
+            termsVersion: '1.2',
+            lastUpdatedTerms: '28-10-2026',
         },
     },
     nitro: {

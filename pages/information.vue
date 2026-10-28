@@ -167,6 +167,8 @@ onMounted(() => {
         </NuxtLink>
       </div>
 
+      <NuxtLink to="/support" class="text-sm underline text-color-secondary">{{ t('support.title') }}</NuxtLink>
+
     </div>
   </div>
 </template>

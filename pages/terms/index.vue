@@ -2,7 +2,7 @@
 import { useI18nStore } from '~/stores/i18n';
 import Card from 'primevue/card'
 
-const appName = useRuntimeConfig().public.appName
+const { appName, supportEmail } = useRuntimeConfig().public
 
 const i18n = useI18nStore();
 </script>
@@ -58,7 +58,7 @@ hr {
           <!-- Header -->
           <div class="py-4 border-b border-surface-200 mb-6">
             <h1 class="text-xl font-semibold">Terms of Use &amp; Privacy Policy</h1>
-            <p class="text-xs text-color-secondary mt-1">Laatste versie: 1.1 | Laatst bijgewerkt: 10-11-2025</p>
+            <p class="text-xs text-color-secondary mt-1">Laatste versie: 1.2 | Laatst bijgewerkt: 28-10-2026</p>
           </div>
 
           <!-- Content -->
@@ -69,35 +69,52 @@ hr {
             </section>
             <section class="border-t border-surface-200 py-4">
               <h2>2. Beheerder van de applicatie</h2>
-              <p>De applicatie wordt beheerd door de ontwikkelaar van {{ appName }} ("Beheerder"). Voor vragen kun je contact opnemen via het e-mailadres dat in de applicatie wordt vermeld.</p>
+              <p>De applicatie wordt beheerd door de ontwikkelaar van {{ appName }} ("Beheerder"). Voor vragen kun je contact opnemen via <a class="underline" :href="`mailto:${supportEmail}`">{{ supportEmail }}</a>.</p>
             </section>
             <section class="border-t border-surface-200 py-4">
               <h2>Privacy Policy</h2>
               <h3>3. Welke gegevens worden verzameld</h3>
+              <p>Je account:</p>
               <ul>
                 <li>Naam</li>
                 <li>E-mailadres</li>
                 <li>Wachtwoord (veilig gehasht met een cryptografisch algoritme)</li>
+                <li>Taal, meldingsinstellingen en wanneer je de voorwaarden hebt geaccepteerd</li>
               </ul>
+              <p>Wat je in de applicatie zet:</p>
               <ul>
                 <li>Boodschappenlijsten (en gedeelde lijsten)</li>
-                <li>Producten die je toevoegt</li>
-                <li>Foto's die je uploadt (optioneel)</li>
+                <li>Producten die je toevoegt, met aantal en prijs, en wie ze heeft toegevoegd of afgevinkt</li>
+                <li>Klantenkaarten: een titel met een foto of een barcode die uit het ingevoerde nummer wordt gemaakt</li>
+                <li>E-mailadressen van mensen die je uitnodigt voor een lijst</li>
+              </ul>
+              <p>Technische gegevens, voor beveiliging en de werking van de applicatie:</p>
+              <ul>
+                <li>Bij elke geslaagde login: het tijdstip, je IP-adres, het apparaat of de browser (user agent), de app-versie en of je via de app of de website inlogde</li>
+                <li>Bij een mislukte inlogpoging: het tijdstip, het IP-adres en het ingevoerde e-mailadres</li>
+                <li>Wanneer je voor het laatst actief was</li>
+                <li>Als je meldingen toestaat: de pushtoken van je apparaat</li>
+                <li>Een logboek van de e-mails die de applicatie stuurt (activatie, wachtwoord herstellen, uitnodigingen): ontvanger, onderwerp, inhoud en of het verzenden lukte</li>
               </ul>
               <h3>4. Doeleinden van gegevensverwerking</h3>
+              <p>Deze gegevens worden gebruikt om:</p>
               <ul>
                 <li>gebruikers veilig te laten inloggen via Laravel Sanctum</li>
                 <li>gedeelde lijsten correct aan de juiste gebruikers toe te wijzen</li>
                 <li>de werking van de boodschappenlijst functionaliteit te garanderen</li>
-                <li>notificaties binnen de app te tonen</li>
+                <li>meldingen te tonen, in de app en als pushmelding op je apparaat</li>
+                <li>e-mails te sturen die bij je account horen, en te controleren of ze aankomen</li>
+                <li>misbruik te voorkomen en je account te beschermen: het aantal inlogpogingen beperken en ongebruikelijke logins herkennen (hiervoor worden IP-adressen gebruikt)</li>
+                <li>de beheerder overzicht te geven van het gebruik (zoals het aantal actieve gebruikers) en ondersteuning te bieden bij problemen</li>
               </ul>
-              <p>Er worden <span class="underline">geen gegevens verkocht, gedeeld of doorgegeven aan derden</span>.</p>
+              <p>Alleen de beheerder kan de inloggegevens en het e-maillogboek inzien, en alleen voor beveiliging en ondersteuning.</p>
+              <p>Er worden <span class="underline">geen gegevens verkocht</span> of voor advertenties gebruikt. Gegevens gaan alleen naar de externe verwerkers in artikel 21, voor zover nodig om de applicatie te laten werken.</p>
               <h3>5. Gegevensbeveiliging</h3>
               <ul>
                 <li>Wachtwoorden worden nooit in platte tekst opgeslagen, maar veilig gehasht met Laravel's ingebouwde hashingmechanismen (bcrypt/argon2).</li>
-                <li>Gegevensverkeer tussen frontend (Nuxt) en backend (Laravel Sanctum API) is versleuteld via HTTPS.</li>
+                <li>Gegevensverkeer tussen de app, de website (Nuxt) en de backend (Laravel Sanctum API) is versleuteld via HTTPS.</li>
                 <li>Alleen geautoriseerde gebruikers hebben toegang tot hun eigen gegevens.</li>
-                <li>Uploads (zoals foto's) worden veilig opgeslagen en zijn enkel zichtbaar voor gebruikers met toegang tot de betreffende lijst.</li>
+                <li>Lijsten en producten zijn alleen zichtbaar voor gebruikers met toegang tot de betreffende lijst. Klantenkaarten zijn alleen zichtbaar voor jou.</li>
               </ul>
               <h3>6. Verantwoordelijkheid voor foto's</h3>
               <p>Gebruikers zijn zelf verantwoordelijk voor de inhoud van de foto's die zij uploaden. Het is niet toegestaan om foto's te uploaden die:</p>
@@ -110,16 +127,20 @@ hr {
               <h3>7. Delen van lijsten</h3>
               <p>De applicatie maakt het mogelijk om lijsten te delen met andere geregistreerde gebruikers. Alleen gebruikers die jij expliciet toevoegt, hebben toegang tot die lijst. Je kunt op elk moment stoppen met delen of de lijst verwijderen.</p>
               <h3>8. Bewaartermijn en verwijdering van gegevens</h3>
-              <p>Gebruikers kunnen hun account en alle bijbehorende gegevens op elk moment verwijderen. Na verwijdering worden alle gegevens (lijsten, producten, foto's en gedeelde gegevens) permanent uit de database verwijderd. Alleen reeds verzonden e-mails via het Gmail-account van de beheerder kunnen niet worden verwijderd, omdat deze buiten de applicatie vallen.</p>
+              <p>Zolang je account bestaat, worden je account en wat je in de applicatie zet bewaard.</p>
+              <p>Je inloggeschiedenis, mislukte inlogpogingen en het e-maillogboek (met IP-adressen en e-mailadressen) worden maximaal 12 maanden bewaard en daarna automatisch verwijderd.</p>
+              <p>Je kunt je account op elk moment verwijderen. Daarmee worden direct en permanent uit de database verwijderd: je account, je lijsten met hun producten, je klantenkaarten, je uitnodigingen, je inloggeschiedenis, mislukte inlogpogingen met jouw e-mailadres, de e-mails aan jou in het e-maillogboek en de pushtokens van je apparaten.</p>
+              <p>Al verzonden e-mails staan ook in de mailbox van de ontvanger en het verzendaccount van de beheerder (Gmail); die vallen buiten de applicatie en kunnen daar niet worden verwijderd.</p>
               <h3>9. Cookies en lokale opslag</h3>
-              <p>De applicatie gebruikt alleen technische cookies of localStorage om sessie-informatie te bewaren (zoals authenticatie via Sanctum of voorkeuren). Er worden <span class="underline">geen tracking- of advertentiecookies</span> gebruikt.</p>
+              <p>De website gebruikt alleen technische cookies en localStorage, en de app de opslag op je apparaat, om je ingelogd te houden en je voorkeuren (zoals je taal) te bewaren. Er worden <span class="underline">geen analyse-, tracking- of advertentiecookies</span> gebruikt en je wordt niet gevolgd op andere websites of apps. Wel worden je logins vastgelegd voor de beveiliging van je account (zie artikel 3, 4 en 8).</p>
               <h3>10. Jouw rechten</h3>
+              <p>Je hebt het recht om:</p>
               <ul>
                 <li>inzage te vragen in je opgeslagen gegevens</li>
                 <li>je gegevens te corrigeren of te verwijderen</li>
                 <li>je account te beëindigen</li>
               </ul>
-              <p>Voor vragen kun je contact opnemen met de beheerder via het contactadres in de applicatie.</p>
+              <p>Mail hiervoor, of met andere vragen, naar <a class="underline" :href="`mailto:${supportEmail}`">{{ supportEmail }}</a>. Je account verwijderen kan ook zelf, via je profiel.</p>
               <h3>11. Wijzigingen</h3>
               <p>De beheerder kan deze voorwaarden en privacyverklaring wijzigen wanneer de werking van de applicatie verandert. Bij belangrijke wijzigingen word je binnen de applicatie geïnformeerd en kun je de nieuwe voorwaarden opnieuw accepteren.</p>
             </section>
@@ -183,41 +204,64 @@ hr {
                 <li>schending van rechten van derden.</li>
               </ul>
               <h3>21. Externe verwerkers</h3>
-              <p>Voor de werking van de applicatie maakt de Beheerder gebruik van vertrouwde externe diensten, zoals hostingproviders en e-maildiensten. Deze partijen verwerken gegevens uitsluitend in opdracht van de Beheerder en in overeenstemming met de AVG. De Beheerder blijft verantwoordelijk voor een zorgvuldige omgang met deze gegevens.</p>
+              <p>Voor de werking van de applicatie maakt de Beheerder gebruik van vertrouwde externe diensten. Zij verwerken gegevens uitsluitend in opdracht van de Beheerder en alleen voor zover nodig:</p>
+              <ul>
+                <li>Hosting: de server waarop de applicatie en de database draaien</li>
+                <li>E-mail (Gmail): voor activatie-, herstel- en uitnodigingsmails</li>
+                <li>Pushmeldingen (Expo en Apple Push Notification service): ontvangen de pushtoken van je apparaat en de tekst van de melding, zoals de naam van een lijst en van wie er iets aan heeft gedaan</li>
+              </ul>
+              <p>De Beheerder blijft verantwoordelijk voor een zorgvuldige omgang met deze gegevens, in overeenstemming met de AVG.</p>
             </section>
             <section class="border-t border-surface-200 py-4">
               <h2>English version</h2>
-              <p class="text-xs text-color-secondary mb-4">Latest version: 1.1 — Last updated: 10-11-2025 16:30</p>
+              <p class="text-xs text-color-secondary mb-4">Latest version: 1.2 — Last updated: 28-10-2026</p>
               <h3>1. About this application</h3>
               <p>This application ("{{ appName }}") is a personal web application that allows users to create, view, share, edit, and delete grocery lists. The application is developed for personal use and aims to make managing groceries more organized.</p>
               <h3>2. Application administrator</h3>
-              <p>The application is managed by the developer of {{ appName }} ("Administrator"). For questions, you can contact the email address listed in the application.</p>
+              <p>The application is managed by the developer of {{ appName }} ("Administrator"). For questions, you can contact <a class="underline" :href="`mailto:${supportEmail}`">{{ supportEmail }}</a>.</p>
               <h3>Privacy Policy</h3>
               <h4>3. What data is collected</h4>
+              <p>Your account:</p>
               <ul>
                 <li>Name</li>
                 <li>Email address</li>
                 <li>Password (securely hashed with a cryptographic algorithm)</li>
+                <li>Language, notification settings and when you accepted the terms</li>
               </ul>
+              <p>What you put in the application:</p>
               <ul>
                 <li>Grocery lists (and shared lists)</li>
-                <li>Products you add</li>
-                <li>Photos you upload (optional)</li>
+                <li>Products you add, with quantity and price, and who added or checked them off</li>
+                <li>Loyalty cards: a title with a photo or a barcode made from the number you enter</li>
+                <li>Email addresses of people you invite to a list</li>
+              </ul>
+              <p>Technical data, for security and for the application to work:</p>
+              <ul>
+                <li>For every successful login: the time, your IP address, the device or browser (user agent), the app version and whether you logged in through the app or the website</li>
+                <li>For a failed login attempt: the time, the IP address and the email address entered</li>
+                <li>When you were last active</li>
+                <li>If you allow notifications: the push token of your device</li>
+                <li>A log of the emails the application sends (activation, password reset, invitations): recipient, subject, content and whether sending succeeded</li>
               </ul>
               <h4>4. Purposes of data processing</h4>
+              <p>This data is used to:</p>
               <ul>
-                <li>to allow users to log in securely via Laravel Sanctum</li>
-                <li>to correctly assign shared lists to the right users</li>
-                <li>to guarantee the operation of the grocery list functionality</li>
-                <li>to display notifications within the app</li>
+                <li>allow users to log in securely via Laravel Sanctum</li>
+                <li>correctly assign shared lists to the right users</li>
+                <li>guarantee the operation of the grocery list functionality</li>
+                <li>show notifications, in the app and as push notifications on your device</li>
+                <li>send the emails that belong to your account, and check that they arrive</li>
+                <li>prevent abuse and protect your account: limiting login attempts and recognising unusual logins (IP addresses are used for this)</li>
+                <li>give the administrator an overview of usage (such as the number of active users) and help with problems</li>
               </ul>
-              <p>No data is <span class="underline">sold, shared, or passed on to third parties</span>.</p>
+              <p>Only the administrator can see the login data and the email log, and only for security and support.</p>
+              <p>No data is <span class="underline">sold</span> or used for advertising. Data only goes to the external processors in article 21, as far as needed for the application to work.</p>
               <h4>5. Data security</h4>
               <ul>
                 <li>Passwords are never stored in plain text, but securely hashed using Laravel's built-in hashing mechanisms (bcrypt/argon2).</li>
-                <li>Data traffic between frontend (Nuxt) and backend (Laravel Sanctum API) is encrypted via HTTPS.</li>
+                <li>Data traffic between the app, the website (Nuxt) and the backend (Laravel Sanctum API) is encrypted via HTTPS.</li>
                 <li>Only authorized users have access to their own data.</li>
-                <li>Uploads (such as photos) are securely stored and are only visible to users with access to the relevant list.</li>
+                <li>Lists and products are only visible to users with access to the list in question. Loyalty cards are only visible to you.</li>
               </ul>
               <h4>6. Responsibility for photos</h4>
               <p>Users are responsible for the content of the photos they upload. It is not allowed to upload photos that:</p>
@@ -230,16 +274,20 @@ hr {
               <h4>7. Sharing lists</h4>
               <p>The application allows you to share lists with other registered users. Only users you explicitly add have access to that list. You can stop sharing or delete the list at any time.</p>
               <h4>8. Retention period and deletion of data</h4>
-              <p>Users can delete their account and all associated data at any time. After deletion, all data (lists, products, photos, and shared data) is permanently removed from the database. Only emails already sent via the administrator's Gmail account cannot be deleted, as they are outside the application.</p>
+              <p>As long as your account exists, your account and what you put in the application are kept.</p>
+              <p>Your login history, failed login attempts and the email log (with IP addresses and email addresses) are kept for at most 12 months and are then removed automatically.</p>
+              <p>You can delete your account at any time. This immediately and permanently removes from the database: your account, your lists with their products, your loyalty cards, your invitations, your login history, failed login attempts with your email address, the emails to you in the email log and the push tokens of your devices.</p>
+              <p>Emails already sent are also in the recipient's mailbox and the administrator's sending account (Gmail); those are outside the application and cannot be removed there.</p>
               <h4>9. Cookies and local storage</h4>
-              <p>The application only uses technical cookies or localStorage to retain session information (such as authentication via Sanctum or preferences). No <span class="underline">tracking or advertising cookies</span> are used.</p>
+              <p>The website only uses technical cookies and localStorage, and the app your device's storage, to keep you logged in and to remember your preferences (such as your language). No <span class="underline">analytics, tracking or advertising cookies</span> are used, and you are not followed on other websites or apps. Your logins are recorded to protect your account (see articles 3, 4 and 8).</p>
               <h4>10. Your rights</h4>
+              <p>You have the right to:</p>
               <ul>
                 <li>request access to your stored data</li>
                 <li>correct or delete your data</li>
                 <li>terminate your account</li>
               </ul>
-              <p>For questions, you can contact the administrator via the contact address in the application.</p>
+              <p>Email <a class="underline" :href="`mailto:${supportEmail}`">{{ supportEmail }}</a> for this, or with any other question. You can also delete your account yourself, from your profile.</p>
               <h4>11. Changes</h4>
               <p>The administrator may change these terms and privacy policy when the operation of the application changes. For important changes, you will be informed within the application and can accept the new terms again.</p>
               <h3>Terms of Use</h3>
@@ -299,7 +347,13 @@ hr {
                 <li>violation of third-party rights.</li>
               </ul>
               <h4>21. External processors</h4>
-              <p>For the operation of the application, the Administrator uses trusted external services, such as hosting providers and email services. These parties process data only on behalf of the Administrator and in accordance with the GDPR. The Administrator remains responsible for careful handling of this data.</p>
+              <p>For the application to work, the Administrator uses trusted external services. They process data only on behalf of the Administrator and only as far as needed:</p>
+              <ul>
+                <li>Hosting: the server that runs the application and the database</li>
+                <li>Email (Gmail): for activation, password reset and invitation emails</li>
+                <li>Push notifications (Expo and Apple Push Notification service): receive the push token of your device and the text of the notification, such as the name of a list and of who did something on it</li>
+              </ul>
+              <p>The Administrator remains responsible for handling this data carefully, in accordance with the GDPR.</p>
             </section>
           </div>
         </template>

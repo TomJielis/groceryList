@@ -416,5 +416,26 @@
     "title": "Actie vereist: Keur de nieuwe voorwaarden goed",
     "body": "Om deze applicatie te blijven gebruiken, dien je de nieuwe voorwaarden te accepteren.",
     "approveBtn": "Accepteer de voorwaarden"
+  },
+  "support": {
+    "title": "Hulp & contact",
+    "subtitle": "Antwoorden op veelgestelde vragen, en hoe je ons bereikt",
+    "contactTitle": "Contact",
+    "contactText": "Vragen, problemen of een verzoek over je gegevens? Stuur een e-mail, dan krijg je zo snel mogelijk antwoord.",
+    "emailButton": "Stuur een e-mail",
+    "faqTitle": "Veelgestelde vragen",
+    "q1": "Hoe deel ik een lijst?",
+    "a1": "Open het menu (⋮) van een lijst en kies Delen. Vul het e-mailadres van de ander in: die krijgt een uitnodiging, ook als die nog geen account heeft.",
+    "q2": "Waar vind ik een uitnodiging?",
+    "a2": "Uitnodigingen staan bovenaan je lijstenoverzicht. Accepteer je er een, dan staat de lijst bij je lijsten.",
+    "q3": "Ik ben mijn wachtwoord vergeten",
+    "a3": "Tik op het inlogscherm op Wachtwoord vergeten. Je krijgt een e-mail met een link om een nieuw wachtwoord te kiezen.",
+    "q4": "Hoe voeg ik een klantenkaart toe?",
+    "a4": "Ga naar Kaarten en tik op +. Maak een foto van je kaart of typ het nummer in, dan maakt de app een barcode die je bij de kassa laat zien.",
+    "q5": "Hoe zet ik meldingen aan of uit?",
+    "a5": "In de app: Profiel → Meldingen. Kies over welke wijzigingen in je lijsten je een melding wilt krijgen.",
+    "q6": "Hoe verwijder ik mijn account?",
+    "a6": "Via je profiel kun je je account zelf verwijderen. Daarmee worden je account, lijsten, kaarten en inloggeschiedenis permanent verwijderd.",
+    "termsLink": "Gebruiksvoorwaarden & privacyverklaring"
   }
 }
