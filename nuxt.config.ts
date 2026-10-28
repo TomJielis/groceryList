@@ -63,7 +63,7 @@ export default defineNuxtConfig({
         },
         public: {
             // The name shown everywhere on the site (titles, logo text, texts with {app}); set NUXT_PUBLIC_APP_NAME in .env
-            appName: 'Boodschappen vriendje',
+            appName: 'Shoplisto',
             // Where users can reach you (terms, support page); set NUXT_PUBLIC_SUPPORT_EMAIL in .env
             supportEmail: 'tomjielis@gmail.com',
             termsVersion: '1.2',
