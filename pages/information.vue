@@ -37,13 +37,17 @@ const screenshotBlocks = [
   { img: '/info-screenshots/add-items-to-groceryList.png', alt: 'Items toevoegen aan een lijst', titleKey: 'info.screenAddItemsTitle', textKey: 'info.screenAddItemsText' }
 ];
 
-const phoneScreenshotBlocks = [
-  { img: '/info-screenshots-mobile/groceryList.png', titleKey: 'info.mobileScreenLists', altKey: 'info.mobileScreenLists' },
-  { img: '/info-screenshots-mobile/GroceryListItems.png', titleKey: 'info.mobileScreenItems', altKey: 'info.mobileScreenItems' },
-  { img: '/info-screenshots-mobile/GroceryListAddItemsToList.png', titleKey: 'info.screenAddItemsTitle', altKey: 'info.screenAddItemsTitle' },
-  { img: '/info-screenshots-mobile/Cards.png', titleKey: 'info.mobileScreenCards', altKey: 'info.mobileScreenCards' },
-  { img: '/info-screenshots-mobile/profile.png', titleKey: 'info.mobileScreenProfile', altKey: 'info.mobileScreenProfile' }
-];
+// Made with the demo data in both languages (GroceryListExpo/store-screenshots/tools/website.js); follows the language
+const phoneScreenshotBlocks = computed(() => {
+  const dir = `/info-screenshots-mobile/${i18n.locale === 'nl' ? 'nl' : 'en'}`;
+  return [
+    { img: `${dir}/01-lists.png`, titleKey: 'info.mobileScreenLists', altKey: 'info.mobileScreenLists' },
+    { img: `${dir}/02-list.png`, titleKey: 'info.mobileScreenItems', altKey: 'info.mobileScreenItems' },
+    { img: `${dir}/03-add-items.png`, titleKey: 'info.screenAddItemsTitle', altKey: 'info.screenAddItemsTitle' },
+    { img: `${dir}/04-cards.png`, titleKey: 'info.mobileScreenCards', altKey: 'info.mobileScreenCards' },
+    { img: `${dir}/05-profile.png`, titleKey: 'info.mobileScreenProfile', altKey: 'info.mobileScreenProfile' },
+  ];
+});
 
 onMounted(() => {
   requestAnimationFrame(() => {
