@@ -35,6 +35,21 @@ const invitation = computed(() => {
   return `${p.invited_by ?? '?'} ${i18n.t('inviteLink.invitesYou')} ${i18n.t(p.type === 'list' ? 'inviteLink.aList' : 'inviteLink.aCookbook')}`;
 });
 
+// The preview block WhatsApp, iMessage and the like show for the link: who invites you to what, with the app icon
+if (preview.value?.status === 'valid') {
+  useSeoMeta({
+    title: preview.value.name,
+    ogTitle: preview.value.name,
+    ogDescription: `${invitation.value} · ${config.appName}`,
+    ogImage: 'https://tomjielis.com/icons/app-icon-3.png',
+    ogUrl: useRequestURL().href,
+    twitterCard: 'summary',
+    twitterTitle: preview.value.name,
+    twitterDescription: `${invitation.value} · ${config.appName}`,
+    twitterImage: 'https://tomjielis.com/icons/app-icon-3.png',
+  });
+}
+
 // Safari's Smart App Banner: "Open" (on this invite) when the app is installed, "View" (App Store) when it isn't;
 // only Safari knows which, a page can't. Needs the App Store link (NUXT_PUBLIC_APP_STORE_URL, with the app's id).
 const appStoreId = /id(\d+)/.exec(config.appStoreUrl || '')?.[1] ?? null;

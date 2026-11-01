@@ -45,6 +45,23 @@ const ingredientText = (ingredient: Ingredient) => {
   return [amount, ingredient.unit, ingredient.name].filter(Boolean).join(' ');
 };
 
+// The preview block WhatsApp, iMessage and the like show for the link: photo (the small copy), title and "via <app>"
+if (recipe.value) {
+  const image = recipe.value.image_url ? `${recipe.value.image_url}?size=thumb` : 'https://tomjielis.com/icons/app-icon-3.png';
+  useSeoMeta({
+    title: recipe.value.title,
+    ogTitle: recipe.value.title,
+    ogDescription: `via ${config.appName}`,
+    ogImage: image,
+    ogUrl: useRequestURL().href,
+    ogType: 'article',
+    twitterCard: recipe.value.image_url ? 'summary_large_image' : 'summary',
+    twitterTitle: recipe.value.title,
+    twitterDescription: `via ${config.appName}`,
+    twitterImage: image,
+  });
+}
+
 // Safari's Smart App Banner: "Open" (on this recipe) when the app is installed, "View" (App Store) when it isn't
 const appStoreId = /id(\d+)/.exec(config.appStoreUrl || '')?.[1] ?? null;
 const pageUrl = useRequestURL().href;
