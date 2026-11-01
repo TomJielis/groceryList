@@ -438,5 +438,20 @@
     "q6": "Hoe verwijder ik mijn account?",
     "a6": "Via je profiel kun je je account zelf verwijderen. Daarmee worden je account, lijsten, kaarten en inloggeschiedenis permanent verwijderd.",
     "termsLink": "Gebruiksvoorwaarden & privacyverklaring"
+  },
+  "inviteLink": {
+    "title": "Uitnodiging",
+    "invitesYou": "nodigt je uit",
+    "aList": "om een boodschappenlijst te delen",
+    "aCookbook": "om een kookboek te delen",
+    "howToJoin": "Installeer de {app}-app en tik daarna nog een keer op de link om mee te doen. Nog geen account? Maak er eerst een aan.",
+    "download": "Download {app} in de App Store",
+    "createAccount": "Account aanmaken",
+    "expiredTitle": "Deze link is verlopen",
+    "expiredBody": "Deze uitnodigingslink werkt niet meer: hij is verlopen of ingetrokken. Vraag degene die je uitnodigde om een nieuwe link.",
+    "notFoundTitle": "Link niet gevonden",
+    "notFoundBody": "Deze uitnodigingslink bestaat niet. Controleer of je de hele link hebt gekopieerd, of vraag om een nieuwe.",
+    "loadFailed": "De uitnodiging kon niet worden geladen. Probeer het later opnieuw.",
+    "toSite": "Naar de website"
   }
 }

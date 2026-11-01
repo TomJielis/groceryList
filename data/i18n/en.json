@@ -439,5 +439,20 @@
     "q6": "How do I delete my account?",
     "a6": "From your profile you can delete your account yourself. This permanently removes your account, lists, cards and login history.",
     "termsLink": "Terms of use & privacy policy"
+  },
+  "inviteLink": {
+    "title": "Invitation",
+    "invitesYou": "invites you",
+    "aList": "to share a grocery list",
+    "aCookbook": "to share a cookbook",
+    "howToJoin": "Install the {app} app, then tap the link again to join. No account yet? Create one first.",
+    "download": "Download {app} from the App Store",
+    "createAccount": "Create an account",
+    "expiredTitle": "This link has expired",
+    "expiredBody": "This invite link no longer works: it has expired or was withdrawn. Ask the person who invited you for a new link.",
+    "notFoundTitle": "Link not found",
+    "notFoundBody": "This invite link doesn't exist. Check that you copied the whole link, or ask for a new one.",
+    "loadFailed": "The invitation couldn't be loaded. Please try again later.",
+    "toSite": "Go to the website"
   }
 }
