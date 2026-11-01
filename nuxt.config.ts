@@ -66,7 +66,7 @@ export default defineNuxtConfig({
             appName: 'Shoplisto',
             // Where users can reach you (terms, support page); set NUXT_PUBLIC_SUPPORT_EMAIL in .env
             supportEmail: 'tomjielis@gmail.com',
-            termsVersion: '1.2',
+            termsVersion: '1.3',
             lastUpdatedTerms: '28-10-2026',
         },
     },

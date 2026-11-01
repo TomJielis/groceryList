@@ -58,14 +58,14 @@ hr {
           <!-- Header -->
           <div class="py-4 border-b border-surface-200 mb-6">
             <h1 class="text-xl font-semibold">Terms of Use &amp; Privacy Policy</h1>
-            <p class="text-xs text-color-secondary mt-1">Laatste versie: 1.2 | Laatst bijgewerkt: 28-10-2026</p>
+            <p class="text-xs text-color-secondary mt-1">Laatste versie: 1.3 | Laatst bijgewerkt: 01-11-2026</p>
           </div>
 
           <!-- Content -->
           <div>
             <section class="border-t border-surface-200 py-4">
               <h2>1. Over deze applicatie</h2>
-              <p>Deze applicatie ("{{ appName }}") is een persoonlijke webapplicatie waarmee gebruikers boodschappenlijsten kunnen aanmaken, bekijken, delen, bewerken en verwijderen. De applicatie is ontwikkeld voor persoonlijk gebruik en heeft als doel het beheren van boodschappen overzichtelijker te maken.</p>
+              <p>Deze applicatie ("{{ appName }}") is een persoonlijke webapplicatie waarmee gebruikers boodschappenlijsten kunnen aanmaken, bekijken, delen, bewerken en verwijderen, en recepten kunnen bewaren in kookboeken die ze ook kunnen delen. De applicatie is ontwikkeld voor persoonlijk gebruik en heeft als doel het beheren van boodschappen en recepten overzichtelijker te maken.</p>
             </section>
             <section class="border-t border-surface-200 py-4">
               <h2>2. Beheerder van de applicatie</h2>
@@ -86,7 +86,10 @@ hr {
                 <li>Boodschappenlijsten (en gedeelde lijsten)</li>
                 <li>Producten die je toevoegt, met aantal en prijs, en wie ze heeft toegevoegd of afgevinkt</li>
                 <li>Klantenkaarten: een titel met een foto of een barcode die uit het ingevoerde nummer wordt gemaakt</li>
-                <li>E-mailadressen van mensen die je uitnodigt voor een lijst</li>
+                <li>Recepten: titel, omschrijving, ingrediënten, bereidingsstappen, tijden, voedingswaarden, de link naar de bron, een foto en wie het recept heeft toegevoegd</li>
+                <li>Kookboeken: de naam en met wie je ze deelt</li>
+                <li>Je favoriete recepten en je favoriete kookboek</li>
+                <li>E-mailadressen van mensen die je uitnodigt voor een lijst of kookboek</li>
                 <li>Supportvragen: je naam, je e-mailadres en de berichten die je ons stuurt via de app</li>
               </ul>
               <p>Technische gegevens, voor beveiliging en de werking van de applicatie:</p>
@@ -102,20 +105,21 @@ hr {
               <ul>
                 <li>gebruikers veilig te laten inloggen via Laravel Sanctum</li>
                 <li>gedeelde lijsten correct aan de juiste gebruikers toe te wijzen</li>
-                <li>de werking van de boodschappenlijst functionaliteit te garanderen</li>
+                <li>de werking van de boodschappenlijsten en recepten te garanderen</li>
                 <li>meldingen te tonen, in de app en als pushmelding op je apparaat</li>
                 <li>e-mails te sturen die bij je account horen, en te controleren of ze aankomen</li>
                 <li>misbruik te voorkomen en je account te beschermen: het aantal inlogpogingen beperken en ongebruikelijke logins herkennen (hiervoor worden IP-adressen gebruikt)</li>
                 <li>de beheerder overzicht te geven van het gebruik (zoals het aantal actieve gebruikers) en ondersteuning te bieden bij problemen</li>
               </ul>
               <p>Alleen de beheerder kan de inloggegevens en het e-maillogboek inzien, en alleen voor beveiliging en ondersteuning.</p>
+              <p>Importeer je een recept van een website, dan haalt je eigen telefoon die pagina op en leest het recept uit. De server van de applicatie bezoekt die website niet en ontvangt alleen het recept dat je opslaat. Recepten van websites zijn bedoeld voor persoonlijk gebruik.</p>
               <p>Er worden <span class="underline">geen gegevens verkocht</span> of voor advertenties gebruikt. Gegevens gaan alleen naar de externe verwerkers in artikel 21, voor zover nodig om de applicatie te laten werken.</p>
               <h3>5. Gegevensbeveiliging</h3>
               <ul>
                 <li>Wachtwoorden worden nooit in platte tekst opgeslagen, maar veilig gehasht met Laravel's ingebouwde hashingmechanismen (bcrypt/argon2).</li>
                 <li>Gegevensverkeer tussen de app, de website (Nuxt) en de backend (Laravel Sanctum API) is versleuteld via HTTPS.</li>
                 <li>Alleen geautoriseerde gebruikers hebben toegang tot hun eigen gegevens.</li>
-                <li>Lijsten en producten zijn alleen zichtbaar voor gebruikers met toegang tot de betreffende lijst. Klantenkaarten zijn alleen zichtbaar voor jou.</li>
+                <li>Lijsten en producten zijn alleen zichtbaar voor gebruikers met toegang tot de betreffende lijst. Recepten zijn alleen zichtbaar voor wie in het betreffende kookboek zit. Klantenkaarten en je favorieten zijn alleen zichtbaar voor jou.</li>
               </ul>
               <h3>6. Verantwoordelijkheid voor foto's</h3>
               <p>Gebruikers zijn zelf verantwoordelijk voor de inhoud van de foto's die zij uploaden. Het is niet toegestaan om foto's te uploaden die:</p>
@@ -125,12 +129,14 @@ hr {
                 <li>persoonsgegevens van derden bevatten zonder hun toestemming</li>
               </ul>
               <p>De Beheerder behoudt zich het recht voor om inhoud te verwijderen bij misbruik.</p>
-              <h3>7. Delen van lijsten</h3>
+              <h3>7. Delen van lijsten en kookboeken</h3>
               <p>De applicatie maakt het mogelijk om lijsten te delen met andere geregistreerde gebruikers. Alleen gebruikers die jij expliciet toevoegt, hebben toegang tot die lijst. Je kunt op elk moment stoppen met delen of de lijst verwijderen.</p>
+              <p>Kookboeken deel je op dezelfde manier. Iedereen in een kookboek ziet en bewerkt de recepten erin, en ziet wie een recept heeft toegevoegd. Alleen de maker van een kookboek bepaalt wie erin zit; anderen kunnen het kookboek zelf verlaten. Verwijdert de maker het kookboek, dan verdwijnt het met alle recepten en foto's voor iedereen.</p>
               <h3>8. Bewaartermijn en verwijdering van gegevens</h3>
               <p>Zolang je account bestaat, worden je account en wat je in de applicatie zet bewaard.</p>
               <p>Je inloggeschiedenis, mislukte inlogpogingen en het e-maillogboek (met IP-adressen en e-mailadressen) worden maximaal 12 maanden bewaard en daarna automatisch verwijderd. Een supportgesprek wordt automatisch verwijderd 12 maanden na het laatste bericht.</p>
-              <p>Je kunt je account op elk moment verwijderen. Daarmee worden direct en permanent uit de database verwijderd: je account, je lijsten met hun producten, je klantenkaarten, je uitnodigingen, je inloggeschiedenis, mislukte inlogpogingen met jouw e-mailadres, de e-mails aan jou in het e-maillogboek, je supportvragen en de pushtokens van je apparaten.</p>
+              <p>Je kunt je account op elk moment verwijderen. Daarmee worden direct en permanent uit de database verwijderd: je account, je lijsten met hun producten, je kookboeken met alle recepten en foto's erin (ook voor wie je ze deelde), je klantenkaarten, je uitnodigingen, je inloggeschiedenis, mislukte inlogpogingen met jouw e-mailadres, de e-mails aan jou in het e-maillogboek, je supportvragen en de pushtokens van je apparaten.</p>
+              <p>Recepten die je aan het kookboek van iemand anders hebt toegevoegd, blijven daar staan, zonder je naam.</p>
               <p>Al verzonden e-mails staan ook in de mailbox van de ontvanger en het verzendaccount van de beheerder (Gmail); die vallen buiten de applicatie en kunnen daar niet worden verwijderd.</p>
               <h3>9. Cookies en lokale opslag</h3>
               <p>De website gebruikt alleen technische cookies en localStorage, en de app de opslag op je apparaat, om je ingelogd te houden en je voorkeuren (zoals je taal) te bewaren. Er worden <span class="underline">geen analyse-, tracking- of advertentiecookies</span> gebruikt en je wordt niet gevolgd op andere websites of apps. Wel worden je logins vastgelegd voor de beveiliging van je account (zie artikel 3, 4 en 8).</p>
@@ -215,9 +221,9 @@ hr {
             </section>
             <section class="border-t border-surface-200 py-4">
               <h2>English version</h2>
-              <p class="text-xs text-color-secondary mb-4">Latest version: 1.2 — Last updated: 28-10-2026</p>
+              <p class="text-xs text-color-secondary mb-4">Latest version: 1.3 — Last updated: 01-11-2026</p>
               <h3>1. About this application</h3>
-              <p>This application ("{{ appName }}") is a personal web application that allows users to create, view, share, edit, and delete grocery lists. The application is developed for personal use and aims to make managing groceries more organized.</p>
+              <p>This application ("{{ appName }}") is a personal web application that allows users to create, view, share, edit, and delete grocery lists, and to keep recipes in cookbooks they can share as well. The application is developed for personal use and aims to make managing groceries and recipes more organized.</p>
               <h3>2. Application administrator</h3>
               <p>The application is managed by the developer of {{ appName }} ("Administrator"). For questions, you can contact <a class="underline" :href="`mailto:${supportEmail}`">{{ supportEmail }}</a>.</p>
               <h3>Privacy Policy</h3>
@@ -234,7 +240,10 @@ hr {
                 <li>Grocery lists (and shared lists)</li>
                 <li>Products you add, with quantity and price, and who added or checked them off</li>
                 <li>Loyalty cards: a title with a photo or a barcode made from the number you enter</li>
-                <li>Email addresses of people you invite to a list</li>
+                <li>Recipes: title, description, ingredients, steps, times, nutrition values, the link to the source, a photo and who added the recipe</li>
+                <li>Cookbooks: the name and who you share them with</li>
+                <li>Your favourite recipes and your favourite cookbook</li>
+                <li>Email addresses of people you invite to a list or cookbook</li>
                 <li>Support questions: your name, your email address and the messages you send us through the app</li>
               </ul>
               <p>Technical data, for security and for the application to work:</p>
@@ -250,20 +259,21 @@ hr {
               <ul>
                 <li>allow users to log in securely via Laravel Sanctum</li>
                 <li>correctly assign shared lists to the right users</li>
-                <li>guarantee the operation of the grocery list functionality</li>
+                <li>guarantee the operation of the grocery lists and recipes</li>
                 <li>show notifications, in the app and as push notifications on your device</li>
                 <li>send the emails that belong to your account, and check that they arrive</li>
                 <li>prevent abuse and protect your account: limiting login attempts and recognising unusual logins (IP addresses are used for this)</li>
                 <li>give the administrator an overview of usage (such as the number of active users) and help with problems</li>
               </ul>
               <p>Only the administrator can see the login data and the email log, and only for security and support.</p>
+              <p>When you import a recipe from a website, your own phone fetches that page and reads the recipe. The application's server does not visit that website and only receives the recipe you save. Recipes from websites are meant for personal use.</p>
               <p>No data is <span class="underline">sold</span> or used for advertising. Data only goes to the external processors in article 21, as far as needed for the application to work.</p>
               <h4>5. Data security</h4>
               <ul>
                 <li>Passwords are never stored in plain text, but securely hashed using Laravel's built-in hashing mechanisms (bcrypt/argon2).</li>
                 <li>Data traffic between the app, the website (Nuxt) and the backend (Laravel Sanctum API) is encrypted via HTTPS.</li>
                 <li>Only authorized users have access to their own data.</li>
-                <li>Lists and products are only visible to users with access to the list in question. Loyalty cards are only visible to you.</li>
+                <li>Lists and products are only visible to users with access to the list in question. Recipes are only visible to the people in that cookbook. Loyalty cards and your favourites are only visible to you.</li>
               </ul>
               <h4>6. Responsibility for photos</h4>
               <p>Users are responsible for the content of the photos they upload. It is not allowed to upload photos that:</p>
@@ -273,12 +283,14 @@ hr {
                 <li>contain personal data of third parties without their consent</li>
               </ul>
               <p>The Administrator reserves the right to remove content in case of abuse.</p>
-              <h4>7. Sharing lists</h4>
+              <h4>7. Sharing lists and cookbooks</h4>
               <p>The application allows you to share lists with other registered users. Only users you explicitly add have access to that list. You can stop sharing or delete the list at any time.</p>
+              <p>Cookbooks are shared the same way. Everyone in a cookbook sees and edits its recipes, and sees who added a recipe. Only the creator of a cookbook decides who is in it; others can leave the cookbook themselves. When the creator deletes the cookbook, it disappears with all its recipes and photos for everyone.</p>
               <h4>8. Retention period and deletion of data</h4>
               <p>As long as your account exists, your account and what you put in the application are kept.</p>
               <p>Your login history, failed login attempts and the email log (with IP addresses and email addresses) are kept for at most 12 months and are then removed automatically. A support conversation is removed automatically 12 months after its last message.</p>
-              <p>You can delete your account at any time. This immediately and permanently removes from the database: your account, your lists with their products, your loyalty cards, your invitations, your login history, failed login attempts with your email address, the emails to you in the email log, your support questions and the push tokens of your devices.</p>
+              <p>You can delete your account at any time. This immediately and permanently removes from the database: your account, your lists with their products, your cookbooks with all recipes and photos in them (also for the people you shared them with), your loyalty cards, your invitations, your login history, failed login attempts with your email address, the emails to you in the email log, your support questions and the push tokens of your devices.</p>
+              <p>Recipes you added to someone else's cookbook stay there, without your name.</p>
               <p>Emails already sent are also in the recipient's mailbox and the administrator's sending account (Gmail); those are outside the application and cannot be removed there.</p>
               <h4>9. Cookies and local storage</h4>
               <p>The website only uses technical cookies and localStorage, and the app your device's storage, to keep you logged in and to remember your preferences (such as your language). No <span class="underline">analytics, tracking or advertising cookies</span> are used, and you are not followed on other websites or apps. Your logins are recorded to protect your account (see articles 3, 4 and 8).</p>
