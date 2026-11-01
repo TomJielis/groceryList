@@ -453,5 +453,19 @@
     "notFoundBody": "Deze uitnodigingslink bestaat niet. Controleer of je de hele link hebt gekopieerd, of vraag om een nieuwe.",
     "loadFailed": "De uitnodiging kon niet worden geladen. Probeer het later opnieuw.",
     "toSite": "Naar de website"
+  },
+  "recipeLink": {
+    "title": "Gedeeld recept",
+    "sharedBy": "Gedeeld door",
+    "minutes": "min",
+    "servings": "pers.",
+    "ingredients": "Ingrediënten",
+    "steps": "Bereiding",
+    "howToSave": "Wil je dit recept in je eigen kookboek bewaren? Installeer de {app}-app en tik daarna nog een keer op de link.",
+    "expiredTitle": "Deze link is verlopen",
+    "expiredBody": "Deze receptlink werkt niet meer: hij is verlopen of ingetrokken. Vraag degene die hem deelde om een nieuwe link.",
+    "notFoundTitle": "Link niet gevonden",
+    "notFoundBody": "Deze receptlink bestaat niet. Controleer of je de hele link hebt gekopieerd, of vraag om een nieuwe.",
+    "loadFailed": "Het recept kon niet worden geladen. Probeer het later opnieuw."
   }
 }

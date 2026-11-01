@@ -454,5 +454,19 @@
     "notFoundBody": "This invite link doesn't exist. Check that you copied the whole link, or ask for a new one.",
     "loadFailed": "The invitation couldn't be loaded. Please try again later.",
     "toSite": "Go to the website"
+  },
+  "recipeLink": {
+    "title": "Shared recipe",
+    "sharedBy": "Shared by",
+    "minutes": "min",
+    "servings": "servings",
+    "ingredients": "Ingredients",
+    "steps": "Method",
+    "howToSave": "Want to keep this recipe in your own cookbook? Install the {app} app, then tap the link again.",
+    "expiredTitle": "This link has expired",
+    "expiredBody": "This recipe link no longer works: it has expired or was withdrawn. Ask the person who shared it for a new link.",
+    "notFoundTitle": "Link not found",
+    "notFoundBody": "This recipe link doesn't exist. Check that you copied the whole link, or ask for a new one.",
+    "loadFailed": "The recipe couldn't be loaded. Please try again later."
   }
 }
