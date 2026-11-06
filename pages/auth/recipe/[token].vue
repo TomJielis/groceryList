@@ -2,6 +2,8 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useI18nStore } from '~/stores/i18n';
+import { ingredientText, totalMinutes } from '~/utils/recipeFormat';
+import type { TRecipeIngredient } from '~/types/TRecipe';
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import ProgressSpinner from 'primevue/progressspinner'
@@ -9,10 +11,9 @@ import ProgressSpinner from 'primevue/progressspinner'
 // Where a recipe link (https://<site>/auth/recipe/<code>) lands when the app isn't installed: with the app, iOS opens
 // it in the app instead (apple-app-site-association claims /auth/*). Shows the recipe, and how to save it in the
 // app, or that the link expired.
-type Ingredient = { name: string; amount: number | null; unit: string }
 type SharedRecipe = {
   title: string; description: string | null; servings: number; prep_minutes: number; cook_minutes: number | null;
-  oven_minutes: number | null; image_url: string | null; ingredients: Ingredient[]; steps: string[]
+  oven_minutes: number | null; image_url: string | null; ingredients: TRecipeIngredient[]; steps: string[]
 }
 type Preview =
   | { status: 'valid'; shared_by: string | null; recipe: SharedRecipe }
@@ -34,16 +35,7 @@ const title = computed(() => {
   return i18n.t('recipeLink.title');
 });
 
-const minutes = computed(() => recipe.value
-  ? recipe.value.prep_minutes + (recipe.value.cook_minutes ?? 0) + (recipe.value.oven_minutes ?? 0)
-  : 0);
-
-// "1,5 el olijfolie" in Dutch, "1.5 el olijfolie" in English
-const ingredientText = (ingredient: Ingredient) => {
-  const amount = ingredient.amount === null ? ''
-    : String(Math.round(ingredient.amount * 10) / 10).replace('.', i18n.locale === 'nl' ? ',' : '.');
-  return [amount, ingredient.unit, ingredient.name].filter(Boolean).join(' ');
-};
+const minutes = computed(() => (recipe.value ? totalMinutes(recipe.value) : 0));
 
 // The preview block WhatsApp, iMessage and the like show for the link: photo (the small copy), title and "via <app>"
 if (recipe.value) {
@@ -101,7 +93,7 @@ if (appStoreId) {
             <div>
               <h3 class="font-semibold mb-2">{{ i18n.t('recipeLink.ingredients') }}</h3>
               <ul class="text-sm leading-relaxed list-disc pl-5">
-                <li v-for="(ingredient, index) in recipe.ingredients" :key="index">{{ ingredientText(ingredient) }}</li>
+                <li v-for="(ingredient, index) in recipe.ingredients" :key="index">{{ ingredientText(ingredient, i18n.locale) }}</li>
               </ul>
             </div>
 

@@ -2,6 +2,7 @@
 import { useAdminApi } from '~/composables/useAdminApi'
 import { useI18nStore } from '~/stores/i18n'
 import AdminStatsCard from '~/components/admin/AdminStatsCard.vue'
+import ProfileRecipes from '~/components/profile/ProfileRecipes.vue'
 import MonthSelector from '~/components/profile/MonthSelector.vue'
 import Button from 'primevue/button'
 import deleteModal from '~/components/deleteModal.vue'
@@ -277,6 +278,17 @@ const confirmToggleBlock = async () => {
               </p>
             </div>
           </div>
+        </div>
+
+        <!-- Recipes and cookbooks: for the chosen month, like the product activity, and how many in all -->
+        <div v-if="data.recipes" class="flex flex-col gap-4">
+          <h2 class="text-base font-medium">
+            {{ i18n.t('admin.recipesInfo') }}
+          </h2>
+          <div v-if="loadingActivity" class="flex items-center justify-center py-8">
+            <div class="animate-spin rounded-full h-6 w-6 border-2 border-surface-200 border-t-surface-500"></div>
+          </div>
+          <ProfileRecipes v-else :recipes="data.recipes" admin />
         </div>
 
         <!-- User top items -->

@@ -3,6 +3,7 @@ import { useUserStats } from '~/composables/useUserStats'
 import { useI18nStore } from '~/stores/i18n'
 import MonthSelector from '~/components/profile/MonthSelector.vue'
 import ProfileItemsActivity from '~/components/profile/ProfileItemsActivity.vue'
+import ProfileRecipes from '~/components/profile/ProfileRecipes.vue'
 import ProfileTopItems from '~/components/profile/ProfileTopItems.vue'
 import ProfileSpend from '~/components/profile/ProfileSpend.vue'
 
@@ -122,6 +123,14 @@ async function onMonthChange(month: string) {
                 :items="data.items"
                 :invalid_login_attempts="data.invalid_login_attempts"
               />
+            </div>
+
+            <!-- Recipes and cookbooks (missing on an API from before recipes were counted here) -->
+            <div v-if="data.recipes" class="pt-5">
+              <h2 class="page-heading mb-4">
+                {{ i18n.t('profile.recipesActivity') }}
+              </h2>
+              <ProfileRecipes :recipes="data.recipes" />
             </div>
 
             <!-- Top Items Section -->

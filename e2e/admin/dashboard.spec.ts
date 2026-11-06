@@ -7,7 +7,8 @@ test('the admin dashboard shows every statistic and links on', async ({ page }) 
   await expect(page.getByText('Admin Dashboard').first()).toBeVisible()
   for (const title of [
     'Total users', 'New users', 'Active users', 'Verified emails', 'Invalid login attempts (this month)',
-    'Items added', 'Items checked', 'Lists created', 'Shared lists', 'Total spend',
+    'Items added', 'Items checked', 'Lists created', 'Shared lists',
+    'Recipes added', 'Cookbooks created', 'Total recipes', 'Shared cookbooks', 'Total spend',
     'Daily Activity', 'Version Distribution', 'Top 10 Active Lists',
   ]) {
     await expect(page.getByText(title, { exact: true }).first(), title).toBeVisible()

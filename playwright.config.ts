@@ -4,6 +4,7 @@ import { defineConfig, devices } from '@playwright/test'
 //   e2e/auth   logged out: login, language, register, mails
 //   e2e/lists  logged in: the lists and their items
 //   e2e/cards  logged in: the loyalty cards
+//   e2e/recipes logged in: recipes and cookbooks
 //   e2e/pages  logged in: profile
 //   e2e/admin  logged in as admin
 // Run with `npm run test:e2e`; see the README for what has to be running.
@@ -33,7 +34,7 @@ export default defineConfig({
     { name: 'auth', testMatch: 'auth/**/*.spec.ts' },
     {
       name: 'logged-in',
-      testMatch: ['lists/**/*.spec.ts', 'cards/**/*.spec.ts', 'pages/**/*.spec.ts'],
+      testMatch: ['lists/**/*.spec.ts', 'cards/**/*.spec.ts', 'recipes/**/*.spec.ts', 'pages/**/*.spec.ts'],
       dependencies: ['setup'],
       use: { storageState: `${output}/auth/state.json` },
     },

@@ -3,7 +3,7 @@ import { resetLists } from './users'
 
 export { expect } from '@playwright/test'
 
-// For the logged-in tests: each starts with no lists or cards, so nothing piles up from the tests before it
+// For the logged-in tests: each starts with no lists, cards or cookbooks, so nothing piles up from the tests before it
 export const test = base.extend<{ cleanSlate: void }>({
   cleanSlate: [async ({}, use) => {
     resetLists()

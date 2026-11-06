@@ -59,6 +59,15 @@ function isActiveTab(path: string) {
 
         <nuxt-link
           v-if="authStore.user"
+          to="/recipes"
+          class="app-navbar-link"
+          :class="{ active: isActiveTab('/recipes') }"
+        >
+          {{ t('nav.recipes') }}
+        </nuxt-link>
+
+        <nuxt-link
+          v-if="authStore.user"
           to="/cards"
           class="app-navbar-link"
           :class="{ active: isActiveTab('/cards') }"

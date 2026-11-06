@@ -13,7 +13,7 @@ definePageMeta({
 })
 
 const i18n = useI18nStore()
-const { getStatsUsers, getStatsItems, getStatsLists, getStatsActivity, getStatsVersions, getStatsTopItems, getUsers, getStatsSpend, getEmails } = useAdminApi()
+const { getStatsUsers, getStatsItems, getStatsLists, getStatsRecipes, getStatsActivity, getStatsVersions, getStatsTopItems, getUsers, getStatsSpend, getEmails } = useAdminApi()
 
 const loading = ref(true)
 const error = ref<string | null>(null)
@@ -21,6 +21,7 @@ const error = ref<string | null>(null)
 const statsUsers = ref<any>(null)
 const statsItems = ref<any>(null)
 const statsLists = ref<any>(null)
+const statsRecipes = ref<any>(null)
 const statsActivity = ref<any>(null)
 const statsVersions = ref<any>(null)
 const statsTopItems = ref<any>(null)
@@ -57,10 +58,11 @@ const loadData = async (month?: string) => {
   error.value = null
   try {
     const monthParam = month || selectedMonth.value
-    const [users, items, lists, activity, versions, topItems, usersData, spend, emails] = await Promise.all([
+    const [users, items, lists, recipes, activity, versions, topItems, usersData, spend, emails] = await Promise.all([
       getStatsUsers(monthParam),
       getStatsItems(monthParam),
       getStatsLists(monthParam),
+      getStatsRecipes(monthParam),
       getStatsActivity(monthParam),
       getStatsVersions(monthParam),
       getStatsTopItems(monthParam),
@@ -71,6 +73,7 @@ const loadData = async (month?: string) => {
     statsUsers.value = users
     statsItems.value = items
     statsLists.value = lists
+    statsRecipes.value = recipes
     statsActivity.value = activity
     statsVersions.value = versions
     statsTopItems.value = topItems
@@ -299,6 +302,26 @@ const userColumns = [
             :value="statsLists?.current_month?.breakdown?.shared ?? 0"
             :previous-value="statsLists?.previous_month?.breakdown?.shared"
             :showPercentage="true"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.recipesAdded')"
+            :value="statsRecipes?.current_month?.breakdown?.added ?? 0"
+            :previous-value="statsRecipes?.previous_month?.breakdown?.added"
+            :showPercentage="true"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.cookbooksCreated')"
+            :value="statsRecipes?.current_month?.breakdown?.cookbooks_created ?? 0"
+            :previous-value="statsRecipes?.previous_month?.breakdown?.cookbooks_created"
+            :showPercentage="true"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.totalRecipes')"
+            :value="statsRecipes?.current_month?.breakdown?.total_recipes ?? 0"
+          />
+          <AdminStatsCard
+            :title="i18n.t('admin.sharedCookbooks')"
+            :value="statsRecipes?.current_month?.breakdown?.shared_cookbooks ?? 0"
           />
           <AdminStatsCard
             :title="i18n.t('admin.totalSpend')"

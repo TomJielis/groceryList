@@ -110,3 +110,42 @@ export async function uploadCard(page: Page, title: string) {
   await expect(page.getByText('Card uploaded')).toBeVisible()
   await expect(page.getByRole('heading', { name: title })).toBeVisible()
 }
+
+/** Makes a cookbook from the recipes page and leaves it selected there; the name is unique per call */
+export async function createCookbook(page: Page, label: string): Promise<string> {
+  const name = `E2E ${label} ${Date.now()}`
+  await open(page, '/recipes')
+  await page.getByRole('button', { name: /Make a cookbook|New cookbook/ }).first().click()
+  const nameInput = page.getByPlaceholder('E.g. Cooking together')
+  await nameInput.fill(name)
+  await nameInput.press('Enter')
+  await expect(page.getByText('Cookbook created.')).toBeVisible()
+  await expect(page.getByTestId('cookbook-select').locator('option:checked')).toContainText(name)
+  return name
+}
+
+/** Adds a recipe with two ingredients and two steps to the cookbook selected on the recipes page; ends on the recipe */
+export async function createRecipe(page: Page, title: string) {
+  await page.getByRole('button', { name: /New recipe|Add your first recipe/ }).first().click()
+  await page.getByPlaceholder("E.g. Grandma's lasagne").fill(title)
+  await page.getByLabel('Servings').fill('4')
+  const ingredient = page.getByTestId('ingredient-row').first()
+  await ingredient.getByLabel('Amount').fill('200')
+  await ingredient.getByLabel('Unit').fill('g')
+  await ingredient.getByLabel('Ingredient').fill('spaghetti')
+  await page.getByRole('button', { name: 'Add ingredient' }).click()
+  await page.getByTestId('ingredient-row').nth(1).getByLabel('Ingredient').fill('salt')
+  await page.getByTestId('step-row').first().getByRole('textbox').fill('Boil the pasta.')
+  await page.getByRole('button', { name: 'Add step' }).click()
+  await page.getByTestId('step-row').nth(1).getByRole('textbox').fill('Season with salt.')
+  await page.getByRole('button', { name: 'Add recipe', exact: true }).click()
+  await expect(page.getByText('Recipe added')).toBeVisible()
+  await expect(page).toHaveURL(/\/recipes\/\d+$/)
+  await expect(page.getByRole('heading', { name: title })).toBeVisible()
+}
+
+/** Opens the menu of the cookbook selected on the recipes page and picks `item` */
+export async function cookbookMenu(page: Page, item: string) {
+  await page.getByTestId('cookbook-menu').click()
+  await page.getByRole('menuitem', { name: item }).click()
+}

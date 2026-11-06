@@ -183,6 +183,41 @@ body {
   letter-spacing: -0.02em;
 }
 
+/* ----- Formulier velden (zoals de lijst-naam in ListForm): klein label, veld met alleen een onderlijn ----- */
+.form-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.375rem;
+  color: var(--p-surface-400);
+}
+
+/* Full width unless the field says otherwise: :where() weighs nothing, so a Tailwind width (w-20) wins */
+:where(.form-field) {
+  width: 100%;
+}
+
+.form-field {
+  padding: 0.5rem 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--p-surface-200);
+  outline: none;
+  font-size: 1rem;
+  color: var(--p-surface-900);
+  transition: border-color 0.15s;
+}
+
+.form-field:focus {
+  border-bottom-color: var(--p-surface-400);
+}
+
+.form-field::placeholder {
+  color: var(--p-surface-300);
+}
+
 /* ----- Notification kleuren ----- */
 .notification-success { background: var(--app-success); }
 .notification-error   { background: var(--app-error); }

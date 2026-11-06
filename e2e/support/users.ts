@@ -52,7 +52,7 @@ export function uniqueEmail(name: string) {
   return `${PREFIX}-${name}-${Date.now()}@e2e.test`
 }
 
-/** Removes the lists and cards of the user and the friend, so every test starts from empty pages */
+/** Removes the lists, cards and cookbooks (with their recipes) of the user and the friend, so every test starts from empty pages */
 export function resetLists() {
   artisan('reset', USER_EMAIL)
   artisan('reset', FRIEND_EMAIL)

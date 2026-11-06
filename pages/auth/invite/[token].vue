@@ -11,8 +11,8 @@ import Card from 'primevue/card'
 import ProgressSpinner from 'primevue/progressspinner'
 
 // Where an invite link (https://<site>/auth/invite/<code>) lands when the app isn't installed: with the app, iOS opens
-// the link in the app instead (apple-app-site-association claims /auth/*). Logged in, opening a list's link asks once
-// ("Meedoen") and opens the list (already in it: just opens it). Logged out, it says what it invites to and how to
+// the link in the app instead (apple-app-site-association claims /auth/*). Logged in, opening a list's or cookbook's
+// link asks once ("Meedoen") and opens it (already in it: just opens it). Logged out, it says what it invites to and how to
 // join; after logging in (or registering and verifying first) you come back here and are asked. Or it says the link
 // expired.
 type Preview =
@@ -31,10 +31,10 @@ const token = route.params.token as string;
 const { data, pending } = await useFetch<{ data: Preview }>(`/api/inviteLink/${encodeURIComponent(token)}`);
 const preview = ref<Preview | null>(data.value?.data ?? null);
 
-// Logged in (the login cookie, known while rendering on the server too): a list's link shows "adding you" from the
+// Logged in (the login cookie, known while rendering on the server too): a valid link shows "adding you" from the
 // start instead of the logged-out explanation
 const loggedInHint = useState(`invite-logged-in-${token}`, () => import.meta.server ? Boolean(useCookie('token').value) : false);
-const joining = ref(loggedInHint.value && preview.value?.status === 'valid' && preview.value.type === 'list');
+const joining = ref(loggedInHint.value && preview.value?.status === 'valid');
 const joinFailed = ref(false);
 // Logged in and not in it yet: "Meedoen" or "Nee, bedankt"
 const asking = ref(false);
@@ -51,13 +51,13 @@ async function check() {
   try {
     const fresh = (await $fetch<{ data: Preview }>(`/api/inviteLink/${encodeURIComponent(token)}`)).data;
     preview.value = fresh;
-    if (fresh.status !== 'valid' || fresh.type !== 'list') {
+    if (fresh.status !== 'valid') {
       forgetInvite();
       joining.value = false;
       return;
     }
     if (fresh.already_member) {
-      await openList(fresh.id);
+      await openInvited(fresh.type, fresh.id);
       return;
     }
     asking.value = true;
@@ -68,8 +68,13 @@ async function check() {
   }
 }
 
-async function openList(id: number) {
+// The list, or the recipes page on the cookbook
+async function openInvited(type: 'list' | 'cookbook', id: number) {
   forgetInvite();
+  if (type === 'cookbook') {
+    await router.replace({ path: '/recipes', query: { cookbook: String(id) } });
+    return;
+  }
   await listStore.fetchLists();
   await router.replace(`/list/${id}`);
 }
@@ -79,11 +84,11 @@ async function join() {
   joining.value = true;
   joinFailed.value = false;
   try {
-    const joined = (await $fetch<{ data: { id: number; name: string; already_member: boolean } }>(
+    const joined = (await $fetch<{ data: { type: 'list' | 'cookbook'; id: number; name: string; already_member: boolean } }>(
       `/api/inviteLink/${encodeURIComponent(token)}/accept`, { method: 'POST' })).data;
     if (!joined.already_member) showSuccess(i18n.t('inviteLink.joinedName').replace('{name}', joined.name), 3000);
     asking.value = false;
-    await openList(joined.id);
+    await openInvited(joined.type, joined.id);
   } catch (error: any) {
     // Expired or withdrawn in the meantime (410), or gone (404): the page says so
     asking.value = false;
@@ -108,7 +113,7 @@ function decline() {
 
 onMounted(() => {
   const p = preview.value;
-  if (!p || p.status !== 'valid' || p.type !== 'list') {
+  if (!p || p.status !== 'valid') {
     joining.value = false;
     if (p && (p.status === 'expired' || p.status === 'not_found')) forgetInvite();
     return;
@@ -201,7 +206,7 @@ if (appStoreId) {
               data-testid="invite-decline" @click="decline" />
           </template>
 
-          <template v-else-if="preview?.status === 'valid' && preview.type === 'list'">
+          <template v-else-if="preview?.status === 'valid'">
             <p class="text-sm leading-relaxed">{{ i18n.t('inviteLink.logInFirst') }}</p>
             <NuxtLink to="/auth/login" class="block">
               <Button :label="i18n.t('inviteLink.logIn')" class="w-full" />
@@ -212,16 +217,6 @@ if (appStoreId) {
             <a v-if="config.appStoreUrl" :href="config.appStoreUrl" class="block">
               <Button :label="i18n.t('inviteLink.download')" icon="pi pi-apple" severity="secondary" outlined class="w-full" />
             </a>
-          </template>
-
-          <template v-else-if="preview?.status === 'valid'">
-            <p class="text-sm leading-relaxed">{{ i18n.t('inviteLink.howToJoin') }}</p>
-            <a v-if="config.appStoreUrl" :href="config.appStoreUrl" class="block">
-              <Button :label="i18n.t('inviteLink.download')" icon="pi pi-apple" class="w-full" />
-            </a>
-            <NuxtLink to="/auth/register" class="block text-center text-sm underline">
-              {{ i18n.t('inviteLink.createAccount') }}
-            </NuxtLink>
           </template>
 
           <template v-else>

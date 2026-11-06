@@ -9,6 +9,8 @@ const props = defineProps<{
   itemName?: string;
   deleteButtonText?: string;
   withValidation?: boolean;
+  // The line above the name to type (withValidation); a list's by default
+  confirmLabel?: string;
 }>();
 
 const emit = defineEmits<{
@@ -52,7 +54,7 @@ const visible = computed({
 
     <div v-if="withValidation" class="mt-4">
       <p style="color: var(--p-surface-600); font-size: 14px; margin-bottom: 8px;">
-        {{ i18n.t('deleteModal.typeListNameToDelete') }}
+        {{ confirmLabel || i18n.t('deleteModal.typeListNameToDelete') }}
       </p>
       <p style="color: var(--app-error); font-size: 15px; font-weight: 600; margin-bottom: 12px;">
         {{ itemName }}

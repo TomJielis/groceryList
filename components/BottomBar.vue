@@ -49,6 +49,18 @@ function isActiveTab(path: string) {
 
     <nuxtLink
       v-if="authStore.user"
+      to="/recipes"
+      class="bottombar-tab app-bottombar-tab"
+      :class="{ active: isActiveTab('/recipes') }"
+    >
+      <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/recipes') }">
+        <i class="pi pi-book bottombar-icon"></i>
+      </span>
+      <span class="bottombar-label">{{ t('nav.recipes') }}</span>
+    </nuxtLink>
+
+    <nuxtLink
+      v-if="authStore.user"
       to="/cards"
       class="bottombar-tab app-bottombar-tab"
       :class="{ active: isActiveTab('/cards') }"

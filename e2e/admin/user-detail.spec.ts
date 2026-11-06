@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { open } from '../support/helpers'
 import { FRIEND_EMAIL, testUser } from '../support/users'
 
-test('a user\'s details: info, lists, activity and top items', async ({ page }) => {
+test('a user\'s details: info, lists, activity, recipes and top items', async ({ page }) => {
   await open(page, `/admin/users/${testUser('friend').id}`)
 
   await expect(page.getByRole('heading', { name: 'E2E Friend' })).toBeVisible()
@@ -11,6 +11,8 @@ test('a user\'s details: info, lists, activity and top items', async ({ page }) 
     'User Info', 'Registered', 'Email verified', 'Last active', 'App version', 'Status',
     'Owned lists', 'Shared with user', 'Total access',
     'Items Activity', 'Items added (this month)', 'Items checked (this month)', 'Previous month', 'Top Items of this User',
+    'Recipes & cookbooks', 'Recipes added', 'Cookbooks created', 'Recipes added (all time)', 'Recipes they can see',
+    'Own cookbooks', 'Cookbooks shared with them',
   ]) {
     await expect(page.getByText(label, { exact: true }).first(), label).toBeVisible()
   }

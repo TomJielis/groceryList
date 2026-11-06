@@ -6,6 +6,7 @@ import {ref, computed, onMounted, onBeforeUnmount} from 'vue'
 import { useRouter } from 'vue-router'
 import {useAuthStore} from "~/stores/auth";
 import {useNotification} from "~/composables/useNotification";
+import {useShareLink} from "~/composables/useShareLink";
 import {useListStore} from "~/stores/lists";
 import { useI18nStore } from '~/stores/i18n';
 import { useSocket } from '~/composables/useSocket';
@@ -21,6 +22,7 @@ const auth = useAuthStore()
 const list = useGroceryList()
 const {favorite, createInviteLink, deleteList} = list
 const {showNotification, showSuccess} = useNotification();
+const {shareLink} = useShareLink();
 const i18n = useI18nStore();
 
 const openListForm = ref(false)
@@ -148,8 +150,7 @@ function closeActionMenu() {
   actionMenu.value?.hide();
 }
 
-// Sharing a list is only by invite link: the share sheet where there is one (phones, the installed app),
-// otherwise the link goes to the clipboard
+// Sharing a list is only by invite link (see useShareLink)
 async function shareListLink(id: number) {
   closeActionMenu();
   if (sharingListId.value !== null) return;
@@ -169,23 +170,7 @@ async function shareListLink(id: number) {
     }
   }
 
-  if (typeof navigator.share === 'function') {
-    try {
-      await navigator.share({ title: name, text: i18n.t('lists.shareLinkMessage').replace('{name}', name), url });
-      return;
-    } catch (error: any) {
-      // Closed without sharing: nothing to say
-      if (error?.name === 'AbortError') return;
-      // Otherwise (e.g. not allowed this long after the tap) the clipboard below
-    }
-  }
-
-  try {
-    await navigator.clipboard.writeText(url);
-    showSuccess(i18n.t('lists.linkCopied'));
-  } catch {
-    showNotification(i18n.t('errors.linkCopyFailed'));
-  }
+  await shareLink(url, name, i18n.t('lists.shareLinkMessage').replace('{name}', name));
 }
 
 function deleteListItem(id: number) {

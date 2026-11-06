@@ -47,6 +47,22 @@ export function useAdminApi() {
         return await response.json();
     }
 
+    async function getStatsRecipes(month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/stats/recipes${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch recipes stats: ${response.statusText}`);
+        }
+
+        return await response.json();
+    }
+
     async function getStatsActivity(month?: string) {
         const params = month ? `?month=${month}` : '';
         const response = await fetch(`/api/admin/stats/activity${params}`, {
@@ -193,6 +209,7 @@ export function useAdminApi() {
         getStatsUsers,
         getStatsItems,
         getStatsLists,
+        getStatsRecipes,
         getStatsActivity,
         getStatsVersions,
         getUsers,
