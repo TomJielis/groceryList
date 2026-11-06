@@ -16,12 +16,13 @@ const i18n = useI18nStore()
     :data-testid="`recipe-card-${recipe.id}`"
   >
     <div class="recipe-card-photo relative">
+      <!-- Positioned inside the 4:3 box, so a portrait or panorama photo can't stretch it: every tile is the same size -->
       <img
         v-if="recipe.thumb_url"
         :src="recipe.thumb_url"
         :alt="recipe.title"
         loading="lazy"
-        class="w-full h-full object-cover"
+        class="absolute inset-0 w-full h-full object-cover"
       />
       <div v-else class="w-full h-full flex items-center justify-center text-4xl">🍽️</div>
       <span
@@ -55,6 +56,7 @@ const i18n = useI18nStore()
 
 .recipe-card-photo {
   aspect-ratio: 4 / 3;
+  overflow: hidden;
   background: var(--p-surface-100);
 }
 

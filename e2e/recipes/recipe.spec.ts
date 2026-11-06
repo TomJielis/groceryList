@@ -1,6 +1,6 @@
 import { join } from 'node:path'
 import { test, expect } from '../support/test'
-import { createCookbook, createRecipe, open } from '../support/helpers'
+import { createCookbook, createRecipe, open, selectCookbook } from '../support/helpers'
 
 test('add a recipe, view it for more servings, edit it with a photo, favourite and delete it', async ({ page }) => {
   await createCookbook(page, 'recipes')
@@ -64,4 +64,38 @@ test('a recipe needs a title', async ({ page }) => {
 test('a recipe that is not in your cookbooks says so', async ({ page }) => {
   await open(page, '/recipes/999999999')
   await expect(page.getByText("This recipe doesn't exist (any more)")).toBeVisible()
+})
+
+test('on a wide screen every recipe tile is the same size, whatever the photo or title', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  const name = await createCookbook(page, 'tiles')
+  const photos = { wide: 'wide-large.png', portrait: 'portrait.png' }
+  for (const [title, photo] of [
+    ['E2E Wide photo', photos.wide],
+    ['E2E Portrait photo', photos.portrait],
+    ['E2E No photo but a very long title that does not fit on one line at all', null],
+  ] as const) {
+    await open(page, '/recipes')
+    await selectCookbook(page, name)
+    await page.getByRole('button', { name: /New recipe|Add your first recipe/ }).first().click()
+    await page.getByPlaceholder("E.g. Grandma's lasagne").fill(title)
+    if (photo) await page.getByTestId('recipe-photo-input').setInputFiles(join(import.meta.dirname, '../fixtures', photo))
+    await page.getByRole('button', { name: 'Add recipe', exact: true }).click()
+    await expect(page.getByText('Recipe added')).toBeVisible()
+  }
+
+  await open(page, '/recipes')
+  await selectCookbook(page, name)
+  const cards = page.locator('a[data-testid^="recipe-card-"]')
+  await expect(cards).toHaveCount(3)
+  // The photos have loaded (a photo that is still loading has no size to stretch a tile with)
+  await expect.poll(() => page.locator('a[data-testid^="recipe-card-"] img').evaluateAll(
+    (images) => images.every((img) => (img as HTMLImageElement).complete && (img as HTMLImageElement).naturalWidth > 0),
+  )).toBe(true)
+  const boxes = await cards.evaluateAll((elements) => elements.map((el) => {
+    const { width, height } = el.getBoundingClientRect()
+    return { width: Math.round(width), height: Math.round(height) }
+  }))
+  expect(new Set(boxes.map((box) => box.width)).size, JSON.stringify(boxes)).toBe(1)
+  expect(new Set(boxes.map((box) => box.height)).size, JSON.stringify(boxes)).toBe(1)
 })
