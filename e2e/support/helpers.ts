@@ -149,3 +149,35 @@ export async function cookbookMenu(page: Page, item: string) {
   await page.getByTestId('cookbook-menu').click()
   await page.getByRole('menuitem', { name: item }).click()
 }
+
+/** Selects a cookbook on the recipes page by (part of) its name; the option also shows its recipe count */
+export async function selectCookbook(page: Page, name: string) {
+  const select = page.getByTestId('cookbook-select')
+  const value = await select.locator('option', { hasText: name }).getAttribute('value')
+  await select.selectOption(value!)
+}
+
+/**
+ * Shares the cookbook through its menu (only by invite link): without a share sheet (desktop Chromium, made sure of
+ * here) the link goes to the clipboard. Returns the link's path, so it opens on the server under test.
+ */
+export async function shareCookbookLink(page: Page, name: string): Promise<string> {
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
+  await page.addInitScript(() => { delete (Navigator.prototype as any).share })
+  await open(page, '/recipes')
+  await selectCookbook(page, name)
+  await cookbookMenu(page, 'Share cookbook')
+  await expect(page.getByText('Link copied')).toBeVisible()
+  const url = await page.evaluate(() => navigator.clipboard.readText())
+  expect(url).toMatch(/\/auth\/invite\/[A-Za-z0-9]+$/)
+  return new URL(url).pathname
+}
+
+/** Opens a cookbook's invite link while logged in and joins: lands on the recipes page on that cookbook */
+export async function joinCookbookByLink(page: Page, invitePath: string, name: string) {
+  await open(page, invitePath)
+  await expect(page.getByText('invites you to share a cookbook')).toBeVisible()
+  await page.getByRole('button', { name: 'Join', exact: true }).click()
+  await expect(page).toHaveURL(/\/recipes\?cookbook=\d+$/)
+  await expect(page.getByText(`You have joined ${name}.`)).toBeVisible()
+}
