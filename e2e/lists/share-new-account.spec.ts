@@ -1,48 +1,38 @@
 import { test, expect } from '../support/test'
-import { createList, listRow, listsHeading, logIn, open, shareList } from '../support/helpers'
+import { createList, listRow, logIn, open, shareLink } from '../support/helpers'
 import { linkFromMail, pathOf } from '../support/mailhog'
 import { uniqueEmail } from '../support/users'
 
-// Sharing with an address without an account mails an invite; registering through it gives access to the list.
-// The new account is an @e2e.test address, removed again by the global teardown.
-test('someone without an account registers from the invite mail and gets the list', async ({ page, browser }) => {
+// Someone without an account opens an invite link, registers, verifies the address and logs in: they're asked once on
+// the invite and added with one tap. The new account is an @e2e.test address, removed again by the global teardown.
+test('someone without an account registers from an invite link and gets the list', async ({ page, browser }) => {
   const email = uniqueEmail('invited')
   const password = `Invited-${Date.now()}`
   const name = await createList(page, 'share-new-account')
-  await shareList(page, name, email)
+  const invitePath = await shareLink(page, name)
 
-  const context = await browser.newContext()
+  // Logged out: a context of its own, without the project's login
+  const context = await browser.newContext({ storageState: { cookies: [], origins: [] } })
   const invited = await context.newPage()
+  await open(invited, invitePath)
+  await invited.getByRole('link', { name: 'Create an account' }).click()
+  await expect(invited).toHaveURL(/\/auth\/register$/)
 
-  // The invite links to the register page with the address filled in (and locked)
-  const inviteLink = pathOf(await linkFromMail(email, '/auth/register'))
-  await open(invited, inviteLink)
-  const emailInput = invited.getByPlaceholder('example@gmail.com')
-  await expect(emailInput).toHaveValue(email)
-  await expect(emailInput).toBeDisabled()
+  await invited.getByPlaceholder('example@gmail.com').fill(email)
   await invited.getByPlaceholder('Your name').fill('E2E Invited')
   await invited.getByPlaceholder('••••••••').fill(password)
   await invited.locator('label[for="terms"]').click()
   await invited.getByRole('button', { name: 'Register', exact: true }).click()
   await expect(invited.getByText('Verify your email')).toBeVisible()
 
-  // The invite's button a second time: the account exists now, so registering again is refused
-  await open(invited, inviteLink)
-  await invited.getByPlaceholder('Your name').fill('E2E Invited again')
-  await invited.getByPlaceholder('••••••••').fill(password)
-  await invited.getByRole('button', { name: 'Register', exact: true }).click()
-  await expect(invited.getByText('An account with this email address already exists.')).toBeVisible()
-
   await open(invited, pathOf(await linkFromMail(email, '/auth/')))
   await expect(invited.getByText('Your email has been verified. You can now log in to your account.')).toBeVisible()
   await logIn(invited, email, password)
-  await expect(listsHeading(invited)).toBeVisible()
 
-  // The invite is waiting on the profile page
-  await open(invited, '/profile')
-  const invite = invited.locator('div').filter({ hasText: name }).filter({ has: invited.getByRole('button', { name: 'Approve' }) }).last()
-  await invite.getByRole('button', { name: 'Approve' }).click()
-  await expect(invited.getByText('List has been added to your lists.')).toBeVisible()
+  // Back to the invite: asked once, "Join" and into the list
+  await invited.getByRole('button', { name: 'Join', exact: true }).click()
+  await expect(invited).toHaveURL(/\/list\/\d+$/)
+  await expect(invited.getByText(`You have joined ${name}.`)).toBeVisible()
   await open(invited, '/')
   await expect(listRow(invited, name)).toBeVisible()
   await context.close()

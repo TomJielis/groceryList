@@ -1,27 +1,17 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth";
 import { useI18nStore } from "~/stores/i18n";
-import { computed, onMounted } from 'vue';
-import { useListStore } from '~/stores/lists';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const authStore = useAuthStore();
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
-const listStore = useListStore();
 const route = useRoute();
-
-const pendingCount = computed(() => listStore.pendingLists.length);
 
 function setLocale(locale: 'nl' | 'en') {
   i18n.setLocale(locale);
 }
-
-onMounted(() => {
-  if (listStore.pendingLists.length === 0) {
-    listStore.fetchPendingLists();
-  }
-});
 
 function isActiveTab(path: string) {
   if (path === '/') {
@@ -102,10 +92,7 @@ function isActiveTab(path: string) {
       <span class="app-bottombar-tab-icon" :class="{ active: isActiveTab('/profile') }">
         <i class="pi pi-user bottombar-icon"></i>
       </span>
-      <span class="bottombar-label">
-        {{ t('nav.profile') }}
-        <span v-if="pendingCount > 0" class="bottombar-badge">{{ pendingCount }}</span>
-      </span>
+      <span class="bottombar-label">{{ t('nav.profile') }}</span>
     </nuxtLink>
 
     <div v-if="!authStore.user" class="bottombar-tab app-bottombar-tab">
@@ -159,19 +146,6 @@ function isActiveTab(path: string) {
   display: flex;
   align-items: center;
   gap: 0.2rem;
-}
-
-.bottombar-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--p-primary-color);
-  color: #fff;
-  font-size: 0.45rem;
-  font-weight: 700;
 }
 
 .bottombar-lang-btn {

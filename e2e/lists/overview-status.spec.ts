@@ -1,9 +1,9 @@
 import { test, expect } from '../support/test'
-import { addItem, createList, itemRow, listRow, open, openListMenu, shareList } from '../support/helpers'
-import { FRIEND_EMAIL } from '../support/users'
+import { addItem, createList, itemRow, listRow, open, openListMenu, sessionAs, shareWith } from '../support/helpers'
+import { FRIEND_EMAIL, testUser } from '../support/users'
 
 // The lists page sums each list up: progress, what is left, and who it is shared with (initials)
-test('the lists page shows progress and the people a list is shared with', async ({ page }) => {
+test('the lists page shows progress and the people a list is shared with', async ({ page, browser }) => {
   const name = await createList(page, 'overview')
   const row = listRow(page, name)
   await expect(row).toContainText('0%')
@@ -29,8 +29,11 @@ test('the lists page shows progress and the people a list is shared with', async
   await expect(row).toContainText('100%')
   await expect(row.locator('div.text-sm.w-24')).toHaveText(/0\s*\/\s*2/)
 
-  // Shared: the friend's initial appears in the "Shared with" column
-  await shareList(page, name, FRIEND_EMAIL)
+  // Shared: once the friend joined by link, their initial appears in the "Shared with" column
+  const friend = await sessionAs(browser, testUser('friend'))
+  await shareWith(page, name, friend.page)
+  await friend.context.close()
+  await open(page, '/')
   await expect(row.locator('span.rounded-full:visible').filter({ hasText: /^E$/ })).toBeVisible()
   await expect(row).not.toContainText('—')
 

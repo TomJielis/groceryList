@@ -9,6 +9,7 @@ import { useAuth } from '~/composables/useAuth'
 import { useAuthStore } from '~/stores/auth'
 import { useNotification } from '~/composables/useNotification'
 import { useI18nStore } from '~/stores/i18n'
+import { afterLoginPath } from '~/utils/pendingInvite'
 
 const appName = useRuntimeConfig().public.appName
 
@@ -39,7 +40,8 @@ async function handleLogin() {
     authStore.setUser(data.user)
     authStore.setToken(data.token)
     i18n.setLocale(data.user.language || 'nl')
-    router.push('/')
+    // Back to an invite link opened before logging in, if any
+    router.push(afterLoginPath())
   } catch (error) {
     showNotification(error)
   }

@@ -68,15 +68,36 @@ export async function sessionAs(browser: Browser, user: TestUser) {
   return { context, page }
 }
 
-/** Shares the list with `email` through its menu */
-export async function shareList(page: Page, listName: string, email: string) {
+/**
+ * Shares the list through its menu, which is only by invite link: without a share sheet (desktop Chromium, made sure
+ * of here) the link goes to the clipboard. Returns the link's path, so it opens on the server under test.
+ */
+export async function shareLink(page: Page, listName: string): Promise<string> {
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
+  await page.addInitScript(() => { delete (Navigator.prototype as any).share })
   await open(page, '/')
   await openListMenu(page, listName)
   await page.getByRole('menuitem', { name: 'Share' }).click()
-  const dialog = page.getByRole('dialog', { name: 'Share List' })
-  await dialog.getByPlaceholder('Email address').fill(email)
-  await dialog.getByRole('button', { name: 'Share' }).click()
-  await expect(page.getByText('List has been shared!')).toBeVisible()
+  await expect(page.getByText('Link copied')).toBeVisible()
+  const url = await page.evaluate(() => navigator.clipboard.readText())
+  expect(url).toMatch(/\/auth\/invite\/[A-Za-z0-9]+$/)
+  return new URL(url).pathname
+}
+
+/** Opens an invite link while logged in: asked once who invites to what, "Join" adds you and opens the list */
+export async function joinByLink(page: Page, invitePath: string, listName: string) {
+  await open(page, invitePath)
+  await expect(page.getByText(listName).first()).toBeVisible()
+  await page.getByRole('button', { name: 'Join', exact: true }).click()
+  await expect(page).toHaveURL(/\/list\/\d+$/)
+  await expect(page.getByText(`You have joined ${listName}.`)).toBeVisible()
+}
+
+/** Shares the owner's list by link and lets `member` join through it */
+export async function shareWith(owner: Page, listName: string, member: Page) {
+  const invitePath = await shareLink(owner, listName)
+  await joinByLink(member, invitePath, listName)
+  return invitePath
 }
 
 /** Uploads e2e/fixtures/card.png as a card called `title` from the cards page */
@@ -88,12 +109,4 @@ export async function uploadCard(page: Page, title: string) {
   await page.getByRole('button', { name: 'Upload', exact: true }).click()
   await expect(page.getByText('Card uploaded')).toBeVisible()
   await expect(page.getByRole('heading', { name: title })).toBeVisible()
-}
-
-/** Accepts the pending invite for `listName` on the profile page */
-export async function acceptInvite(page: Page, listName: string) {
-  await open(page, '/profile')
-  const invite = page.locator('div').filter({ hasText: listName }).filter({ has: page.getByRole('button', { name: 'Approve' }) }).last()
-  await invite.getByRole('button', { name: 'Approve' }).click()
-  await expect(page.getByText('List has been added to your lists.')).toBeVisible()
 }

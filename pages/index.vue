@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {useGroceryList} from '~/composables/useGroceryList'
 import ListForm from '~/components/list/ListForm.vue'
-import ShareListModal from '~/components/ShareListModal.vue';
 import deleteModal from '~/components/deleteModal.vue';
 import {ref, computed, onMounted, onBeforeUnmount} from 'vue'
 import { useRouter } from 'vue-router'
@@ -20,7 +19,7 @@ const listStore = useListStore();
 const loading = ref(true);
 const auth = useAuthStore()
 const list = useGroceryList()
-const {favorite, shareList, deleteList} = list
+const {favorite, createInviteLink, deleteList} = list
 const {showNotification, showSuccess} = useNotification();
 const i18n = useI18nStore();
 
@@ -28,10 +27,10 @@ const openListForm = ref(false)
 const actionMenu = ref<any>(null)
 const activeMenuList = ref<any | null>(null)
 
-const showShareModal = ref(false)
-const shareEmail = ref('')
-const shareListId = ref<number | null>(null)
-const shareListName = ref('')
+// The invite link per list, once made: tapping Share again then shares right away, still within the tap
+// (Safari only lets a page open the share sheet or write the clipboard straight after a tap)
+const inviteLinks = new Map<number, string>()
+const sharingListId = ref<number | null>(null)
 
 const showDeleteModal = ref(false)
 const deleteListId = ref<number | null>(null)
@@ -124,7 +123,7 @@ const actionMenuItems = computed<MenuItem[]>(() => {
       {
         label: i18n.t('lists.menu.share'),
         icon: 'pi pi-share-alt',
-        command: () => shareListWithUser(current.id)
+        command: () => shareListLink(current.id)
       }
     );
   }
@@ -149,32 +148,44 @@ function closeActionMenu() {
   actionMenu.value?.hide();
 }
 
-function shareListWithUser(id: number) {
-  const list = listStore.lists.find((list: any) => list.id === id);
-  shareListId.value = id;
-  shareListName.value = list?.name || '';
-  shareEmail.value = '';
-  showShareModal.value = true;
+// Sharing a list is only by invite link: the share sheet where there is one (phones, the installed app),
+// otherwise the link goes to the clipboard
+async function shareListLink(id: number) {
   closeActionMenu();
-}
+  if (sharingListId.value !== null) return;
+  const name = listStore.lists.find((l: any) => l.id === id)?.name || '';
 
-function handleShareConfirm(email: string) {
-  if (shareListId.value && email.trim()) {
-    shareList(shareListId.value, email).then(async () => {
-      showSuccess(i18n.t('lists.shared'));
-      await listStore.fetchLists();
-      showShareModal.value = false;
-    }).catch((error) => {
-      showNotification(error);
-    });
+  let url = inviteLinks.get(id);
+  if (!url) {
+    sharingListId.value = id;
+    try {
+      url = (await createInviteLink(id)).url;
+      inviteLinks.set(id, url);
+    } catch (error: any) {
+      showNotification(error?.data?.message || i18n.t('errors.inviteLinkFailed'));
+      return;
+    } finally {
+      sharingListId.value = null;
+    }
   }
-}
 
-function closeShareModal() {
-  showShareModal.value = false;
-  shareEmail.value = '';
-  shareListId.value = null;
-  shareListName.value = '';
+  if (typeof navigator.share === 'function') {
+    try {
+      await navigator.share({ title: name, text: i18n.t('lists.shareLinkMessage').replace('{name}', name), url });
+      return;
+    } catch (error: any) {
+      // Closed without sharing: nothing to say
+      if (error?.name === 'AbortError') return;
+      // Otherwise (e.g. not allowed this long after the tap) the clipboard below
+    }
+  }
+
+  try {
+    await navigator.clipboard.writeText(url);
+    showSuccess(i18n.t('lists.linkCopied'));
+  } catch {
+    showNotification(i18n.t('errors.linkCopyFailed'));
+  }
 }
 
 function deleteListItem(id: number) {
@@ -419,13 +430,6 @@ function openListSettings(id: number) {
 
   <Menu ref="actionMenu" popup :model="actionMenuItems" class="lists-menu min-w-[14rem]" />
 
-  <ShareListModal
-    :is-visible="showShareModal"
-    v-model:email="shareEmail"
-    :list-name="shareListName"
-    @close="closeShareModal"
-    @confirm="handleShareConfirm"
-  />
 
   <deleteModal
     :is-visible="showDeleteModal"

@@ -2,6 +2,8 @@ import {ref, computed} from 'vue'
 import type { TGroceryList } from '@/types/TGroceryList'
 import type { TGroceryListItem } from '@/types/TGroceryListItem'
 
+export type TInviteLink = { token: string; url: string; expires_at: string }
+
 // Shared state across all instances
 // Store items per list ID to prevent conflicts when switching lists
 const itemsByListId = ref<Map<number, TGroceryListItem[]>>(new Map());
@@ -51,19 +53,6 @@ export function useGroceryList() {
         }
     }
 
-    async function fetchPendingLists(): Promise<TGroceryList[] | undefined> {
-        try {
-            const response = await fetch('/api/groceryList/pending');
-            if (!response.ok) {
-                throw new Error(`Failed to fetch lists: ${response.statusText}`);
-            }
-            const result = await response.json();
-            return result.data ? result.data as TGroceryList[] : result as TGroceryList[];
-        } catch (error) {
-            console.error('Error fetching lists:', error);
-        }
-    }
-
     async function createList(name: string): Promise<any> {
         const response = await fetch('/api/groceryList/store', {
             method: 'POST',
@@ -84,20 +73,13 @@ export function useGroceryList() {
        return data;
     }
 
-    async function shareList(listId: number, email: string): Promise<void> {
-        try {
-            let route = '/api/groceryList/share'
-            await $fetch(route, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: {id: listId, email: email}
-            });
-        } catch (error) {
-            console.error('Error sharing list:', error);
-            throw error;
+    /** The invite link to a list (a new one, or the maker's still-fresh one): sharing a list is only by link */
+    async function createInviteLink(listId: number): Promise<TInviteLink> {
+        const response = await $fetch<{ data: TInviteLink }>(`/api/groceryList/${listId}/inviteLink`, { method: 'POST' });
+        if (!response?.data?.url) {
+            throw new Error('No invite link in the response');
         }
+        return response.data;
     }
 
     async function unshareList(listId: number, userId: number): Promise<void> {
@@ -383,18 +365,6 @@ export function useGroceryList() {
         }
     }
 
-    async function updatePendingListStatus(id: number, status: 'accepted' | 'declined'): Promise<any> {
-        try {
-            return await $fetch('/api/groceryList/pending/action', {
-                method: 'POST',
-                body: { id, status }
-            });
-        } catch (error) {
-            console.error('Error updating pending list status:', error);
-            throw error;
-        }
-    }
-
     async function updateList(id: number, name: string): Promise<any> {
         try {
             const response = await fetch('/api/groceryList/update', {
@@ -423,10 +393,9 @@ export function useGroceryList() {
         lists,
         totalPrice,
         fetchLists,
-        fetchPendingLists,
         favorite,
         createList,
-        shareList,
+        createInviteLink,
         unshareList,
         deleteList,
         fetchItems,
@@ -436,7 +405,6 @@ export function useGroceryList() {
         clearItem,
         increaseItems,
         decreaseItems,
-        updatePendingListStatus,
         updateList,
     }
 }

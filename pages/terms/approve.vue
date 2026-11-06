@@ -4,6 +4,7 @@ import { useI18nStore } from '~/stores/i18n'
 import { useRouter } from 'vue-router'
 import {useAuth} from "~/composables/useAuth";
 import { useAuthStore} from "~/stores/auth";
+import { afterLoginPath } from "~/utils/pendingInvite";
 
 import Card from 'primevue/card'
 import Checkbox from 'primevue/checkbox'
@@ -37,7 +38,7 @@ onMounted(async () => {
 const approveTerms = async () => {
   const user = await auth.approveTerms();
   authStore.setUser(user)
-  router.push('/');
+  router.push(afterLoginPath());
 };
 </script>
 

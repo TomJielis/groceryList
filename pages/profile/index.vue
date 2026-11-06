@@ -9,7 +9,6 @@ import LanguageSettings from '~/components/profile/LanguageSettings.vue';
 import AccountActions from '~/components/profile/AccountActions.vue';
 import DeactivateAccountModal from '~/components/profile/DeactivateAccountModal.vue';
 import {useAuth} from "~/composables/useAuth";
-import PendingLists from "~/components/list/PendingGroceryList.vue";
 
 definePageMeta({
   middleware: ['auth', 'terms'],
@@ -92,11 +91,6 @@ function handleLogout() { authStore.clearAuth(); router.push('/auth/login'); }
         <div class="list-item-row rounded p-5">
           <ProfileInformation :user="authStore.user" @update="handleProfileUpdate" />
         </div>
-      </div>
-
-      <!-- Pending Lists -->
-      <div>
-        <PendingLists />
       </div>
 
       <!-- Navigation Links -->

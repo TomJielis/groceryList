@@ -1,21 +1,13 @@
 import { test, expect } from '../support/test'
-import { createList, openListMenu } from '../support/helpers'
-import { FRIEND_EMAIL } from '../support/users'
+import { createList, shareLink } from '../support/helpers'
 
-test('share a list with someone (invite)', async ({ page }) => {
+test('sharing a list gives an invite link (copied to the clipboard without a share sheet)', async ({ page }) => {
   const name = await createList(page, 'share')
-  await openListMenu(page, name)
-  await page.getByRole('menuitem', { name: 'Share' }).click()
+  const first = await shareLink(page, name)
 
-  const dialog = page.getByRole('dialog', { name: 'Share List' })
-  const emailInput = dialog.getByPlaceholder('Email address')
-  const shareButton = dialog.getByRole('button', { name: 'Share' })
-  await emailInput.fill('not-an-email')
-  await expect(dialog.getByText('Please enter a valid email address')).toBeVisible()
-  await expect(shareButton).toBeDisabled()
+  // Sharing again soon gives the same link, so earlier shared ones keep working
+  expect(await shareLink(page, name)).toBe(first)
 
-  await emailInput.fill(FRIEND_EMAIL)
-  await shareButton.click()
-  await expect(page.getByText('List has been shared!')).toBeVisible()
-  await expect(dialog).toBeHidden()
+  // No email sharing any more: no dialog asking for an address
+  await expect(page.getByRole('dialog')).toHaveCount(0)
 })

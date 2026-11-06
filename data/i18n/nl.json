@@ -94,23 +94,12 @@
     "editDescription": "Wijzig de naam of beheer gedeelde gebruikers",
     "newList": "Nieuwe lijst",
     "sharedWith": "Gedeeld met",
-    "pendingInvites": "Uitnodigingen in afwachting",
-    "invitedBy": "Uitgenodigd door",
     "confirmDelete": "Weet je zeker dat je deze lijst wilt verwijderen?",
     "deleteTitle": "Lijst Verwijderen",
     "deleteListName": "Lijst",
     "deleteBtn": "Verwijderen",
-    "sharePrompt": "Voer een e-mailadres in om de lijst mee te delen:",
-    "emailAddress": "E-mailadres",
-    "shareEmailPlaceholder": "E-mail adres",
-    "shareTitle": "Lijst Delen",
-    "shareListName": "Lijst",
-    "shareBtn": "Delen",
-    "shared": "Lijst is gedeeld!",
     "updated": "Lijst is geupdate!",
     "created": "Lijst is aangemaakt!",
-    "approveOrDecline": "Keur gedeelde lijsten snel goed",
-    "pending": "Live",
     "delete-shared-user-body": "Weet je zeker dat je deze gebruiker wilt verwijderen?",
     "favorited": "Lijst als favoriet gemarkeerd!",
     "emptyState": {
@@ -132,20 +121,14 @@
       "updateBtn": "Lijst updaten",
       "name": "Naam"
     },
-    "pending-lists": "Uitnodigingen in afwachting",
-    "pending-list": "Uitnodiging in afwachting",
-    "invitations": "uitnodigingen",
     "name": "Naam",
-    "approve": "Goedkeuren",
-    "decline": "Afwijzen",
-    "noPending": "Geen uitnodigingen in afwachting",
-    "approvedMessage": "Lijst is toegevoegd aan je lijsten.",
-    "declinedMessage": "Uitnodiging voor lijst is afgewezen.",
     "created_by": "Aangemaakt door:",
     "sharedUsersTitle": "Gedeeld met",
     "sharedUsersNone": "Nog niet gedeeld met iemand",
     "sharedUserRemoved": "Gebruiker verwijderd uit lijst",
-    "noSharedUsers": "Deze lijst is nog niet gedeeld met anderen"
+    "noSharedUsers": "Deze lijst is nog niet gedeeld met anderen",
+    "shareLinkMessage": "Doe mee met {name} in {app}:",
+    "linkCopied": "Link gekopieerd"
   },
   "list": {
     "total": "Totaal",
@@ -259,7 +242,6 @@
     "deactivateAccountFailed": "Account deactiveren mislukt",
     "listCreateFailed": "Lijst aanmaken mislukt",
     "listDeleteFailed": "Lijst verwijderen mislukt",
-    "listShareFailed": "Lijst delen mislukt",
     "listFavoriteFailed": "Lijst favoriet maken mislukt",
     "loginFailed": "Inloggen mislukt",
     "registrationFailed": "Registratie mislukt",
@@ -273,7 +255,9 @@
     "failedToLoadTopItems": "Top items laden mislukt",
     "failedToLoadUsers": "Gebruikers laden mislukt",
     "failedToLoadUserDetails": "Gebruikersdetails laden mislukt",
-    "failedToUpdateUser": "Gebruiker bijwerken mislukt"
+    "failedToUpdateUser": "Gebruiker bijwerken mislukt",
+    "inviteLinkFailed": "Uitnodigingslink maken mislukt",
+    "linkCopyFailed": "Link kopiëren mislukt"
   },
   "deleteModal": {
     "typeListNameToDelete": "Ter bevestiging, typ de naam van de lijst:",
@@ -452,7 +436,15 @@
     "notFoundTitle": "Link niet gevonden",
     "notFoundBody": "Deze uitnodigingslink bestaat niet. Controleer of je de hele link hebt gekopieerd, of vraag om een nieuwe.",
     "loadFailed": "De uitnodiging kon niet worden geladen. Probeer het later opnieuw.",
-    "toSite": "Naar de website"
+    "toSite": "Naar de website",
+    "logInFirst": "Log in of maak een account aan om mee te doen.",
+    "logIn": "Inloggen",
+    "joining": "Je wordt toegevoegd…",
+    "accept": "Meedoen",
+    "decline": "Nee, bedankt",
+    "joinedName": "Je doet nu mee met {name}.",
+    "joinFailed": "Meedoen is niet gelukt. Probeer het later opnieuw.",
+    "retry": "Probeer opnieuw"
   },
   "recipeLink": {
     "title": "Gedeeld recept",

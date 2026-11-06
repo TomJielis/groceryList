@@ -1,15 +1,12 @@
 import { test, expect } from '../support/test'
-import { createList, listRow, open, openListMenu, sessionAs, shareList } from '../support/helpers'
-import { FRIEND_EMAIL, testUser } from '../support/users'
+import { createList, listRow, open, openListMenu, sessionAs, shareWith } from '../support/helpers'
+import { testUser } from '../support/users'
 
 test('a member leaves a shared list; the owner keeps it', async ({ page, browser }) => {
   const name = await createList(page, 'leave')
-  await shareList(page, name, FRIEND_EMAIL)
 
   const friend = await sessionAs(browser, testUser('friend'))
-  await open(friend.page, '/profile')
-  const invite = friend.page.locator('div').filter({ hasText: name }).filter({ has: friend.page.getByRole('button', { name: 'Approve' }) }).last()
-  await invite.getByRole('button', { name: 'Approve' }).click()
+  await shareWith(page, name, friend.page)
   await open(friend.page, '/')
 
   // Members only get favorite and leave in the menu
