@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useI18nStore } from '~/stores/i18n';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useAuthStore } from "~/stores/auth";
+import AppDownload from '~/components/info/AppDownload.vue';
 import { useIosDownload } from '~/composables/useIosDownload';
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 
 const appName = useRuntimeConfig().public.appName
-const ios = useIosDownload()
 
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
@@ -27,33 +27,39 @@ useHead({
 const features = [
   { icon: '📝', title: 'info.feature1Title', text: 'info.feature1Text' },
   { icon: '👨‍👩‍👧‍👦', title: 'info.feature2Title', text: 'info.feature2Text' },
+  { icon: '🍝', title: 'info.featureRecipesTitle', text: 'info.featureRecipesText' },
+  { icon: '⏱️', title: 'info.featureCookTitle', text: 'info.featureCookText' },
   { icon: '💳', title: 'info.feature3Title', text: 'info.feature3Text' },
+  { icon: '⌚', title: 'info.featureWidgetTitle', text: 'info.featureWidgetText' },
   { icon: '💡', title: 'info.feature4Title', text: 'info.feature4Text' },
   { icon: '🔒', title: 'info.feature5Title', text: 'info.feature5Text' },
 ];
 
-const screenshotBlocks = [
-  { img: '/info-screenshots/list-page.png', alt: 'Overzicht van alle lijsten', titleKey: 'info.screenListPageTitle', textKey: 'info.screenListPageText' },
-  { img: '/info-screenshots/grocerylist-items-open.png', alt: 'Open lijst met items', titleKey: 'info.screenItemsOpenTitle', textKey: 'info.screenItemsOpenText' },
-  { img: '/info-screenshots/grocerylist-items-open-and-checked.png', alt: 'Lijst met afgevinkte en open items', titleKey: 'info.screenItemsCheckedTitle', textKey: 'info.screenItemsCheckedText' },
-  { img: '/info-screenshots/add-items-to-groceryList.png', alt: 'Items toevoegen aan een lijst', titleKey: 'info.screenAddItemsTitle', textKey: 'info.screenAddItemsText' }
-];
+const lang = computed(() => (i18n.locale === 'nl' ? 'nl' : 'en'));
 
-// Made with the demo data in both languages (GroceryListExpo/store-screenshots/tools/website.js); follows the language
-const phoneScreenshotBlocks = computed(() => {
-  const dir = `/info-screenshots-mobile/${i18n.locale === 'nl' ? 'nl' : 'en'}`;
-  return [
-    { img: `${dir}/01-lists.png`, titleKey: 'info.mobileScreenLists', altKey: 'info.mobileScreenLists' },
-    { img: `${dir}/02-list.png`, titleKey: 'info.mobileScreenItems', altKey: 'info.mobileScreenItems' },
-    { img: `${dir}/03-add-items.png`, titleKey: 'info.screenAddItemsTitle', altKey: 'info.screenAddItemsTitle' },
-    { img: `${dir}/04-cards.png`, titleKey: 'info.mobileScreenCards', altKey: 'info.mobileScreenCards' },
-    { img: `${dir}/05-profile.png`, titleKey: 'info.mobileScreenProfile', altKey: 'info.mobileScreenProfile' },
-  ];
-});
+// "Werkt overal": the iPhone line says TestFlight while the app is in beta, the App Store afterwards (useIosDownload)
+const { isTestFlight } = useIosDownload();
+const platformLines = [isTestFlight ? 'info.pwaIOSTestFlight' : 'info.pwaIOS', 'info.pwaAndroid', 'info.pwaDesktop', 'info.pwaUpdates'];
 
+// The App Store slides (GroceryListExpo/store-screenshots, the iCloud set), made smaller; they carry their own headline
+const appScreens = computed(() => [
+  '01-lists', '02-list', '03-recipe', '04-cook', '05-cookbook', '06-import', '07-add-products', '08-cards', '09-widget', '10-stats',
+].map((name) => `/info-screenshots-app/${lang.value}/${name}.jpg`));
+
+// The website on a laptop, with the demo data (GroceryListExpo/store-screenshots/tools/website.js)
+const websiteScreens = computed(() => [
+  { name: '01-lists', titleKey: 'info.webListsTitle', textKey: 'info.webListsText' },
+  { name: '02-list', titleKey: 'info.webListTitle', textKey: 'info.webListText' },
+  { name: '03-recipes', titleKey: 'info.webRecipesTitle', textKey: 'info.webRecipesText' },
+  { name: '04-recipe', titleKey: 'info.webRecipeTitle', textKey: 'info.webRecipeText' },
+].map((screen) => ({ ...screen, img: `/info-screenshots/${lang.value}/${screen.name}.jpg` })));
+
+// The pictures fade in once the page is there. Reactive rather than a class added to the elements found then: switching
+// the language makes new picture elements (the other language's pictures), which have to show too
+const picturesShown = ref(false);
 onMounted(() => {
   requestAnimationFrame(() => {
-    document.querySelectorAll('.info-img').forEach(el => el.classList.add('loaded'))
+    picturesShown.value = true;
   });
 });
 </script>
@@ -72,10 +78,14 @@ onMounted(() => {
           </p>
         </div>
       </div>
+
+      <!-- The apps first: iPhone and Android -->
+      <AppDownload />
+
       <!-- Features -->
       <div>
         <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.featuresTitle') }}</h2>
-        <div class="flex flex-col gap-4">
+        <div class="grid gap-4 md:grid-cols-2">
           <Card
             v-for="feature in features"
             :key="feature.title"
@@ -93,16 +103,32 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Desktop Screenshots -->
+      <!-- The app on a phone: the App Store slides -->
       <div>
-        <h2 class="text-[1.4rem] font-light tracking-tight mb-10">
-          {{ t('info.screensTitle') }}
-        </h2>
+        <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.screenMobileTitle') }}</h2>
+        <p class="text-sm text-color-secondary leading-relaxed mb-6">{{ t('info.screenMobileText') }}</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4" data-testid="app-screens">
+          <img
+            v-for="img in appScreens"
+            :key="img"
+            :src="img"
+            :alt="t('info.screenMobileTitle')"
+            class="info-img w-full rounded-xl border border-surface-200 shadow-sm transition-opacity duration-700"
+            :class="{ loaded: picturesShown }"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <!-- The website on a laptop -->
+      <div>
+        <h2 class="text-[1.4rem] font-light tracking-tight mb-3">{{ t('info.screensTitle') }}</h2>
+        <p class="text-sm text-color-secondary leading-relaxed mb-10">{{ t('info.screensText') }}</p>
 
         <div class="flex flex-col gap-20">
           <div
-              v-for="(block, index) in screenshotBlocks"
-              :key="block.titleKey"
+              v-for="(block, index) in websiteScreens"
+              :key="block.name"
               class="grid md:grid-cols-2 gap-10 items-center"
           >
 
@@ -110,9 +136,10 @@ onMounted(() => {
             <div :class="index % 2 === 1 ? 'md:order-2' : ''">
               <img
                   :src="block.img"
-                  :alt="block.alt"
+                  :alt="t(block.titleKey)"
                   loading="lazy"
-                  class="info-img w-full rounded-xl border border-surface-200 shadow-sm opacity-0 transition-opacity duration-700"
+                  class="info-img w-full rounded-xl border border-surface-200 shadow-sm transition-opacity duration-700"
+                  :class="{ loaded: picturesShown }"
               />
             </div>
 
@@ -130,43 +157,17 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Mobile Screenshots -->
-      <div>
-        <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.screenMobileTitle') }}</h2>
-        <p class="text-sm text-color-secondary leading-relaxed mb-6">{{ t('info.screenMobileText') }}</p>
-        <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
-          <div v-for="m in phoneScreenshotBlocks" :key="m.img" class="flex flex-col gap-2">
-            <img
-              :src="m.img"
-              :alt="t(m.altKey)"
-              class="info-img w-full rounded border border-surface-200 aspect-[9/19] object-contain opacity-0 transition-opacity duration-700"
-              loading="lazy"
-            />
-            <span class="text-[0.6rem] uppercase tracking-[0.08em] text-color-secondary text-center font-medium">{{ t(m.titleKey) }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- PWA / Cross-platform -->
+      <!-- Where it works: the apps, the website in a browser (installable on a computer) -->
       <div>
         <h2 class="text-[1.4rem] font-light tracking-tight mb-6">{{ t('info.crossPlatformTitle') }}</h2>
         <p class="text-sm text-color-secondary leading-relaxed mb-6">{{ t('info.pwaIntro') }}</p>
         <div class="flex flex-col">
-          <div v-for="key in ['info.pwaDesktop', 'info.pwaAndroid', 'info.pwaIOS', 'info.pwaUpdates']" :key="key"
+          <div v-for="key in platformLines" :key="key"
                class="flex items-center gap-3 py-3 border-t border-surface-200 text-sm text-color-secondary">
             <span class="w-1 h-1 rounded-full bg-surface-300 flex-shrink-0"></span>
             {{ t(key) }}
           </div>
           <div class="border-t border-surface-200"></div>
-        </div>
-        <!-- The native apps: iPhone (TestFlight or the App Store, see useIosDownload), and the Android app from this site -->
-        <div class="flex flex-wrap gap-3 mt-6">
-          <a v-if="ios.url" :href="ios.url">
-            <Button icon="pi pi-apple" :label="ios.label.value" severity="secondary" outlined />
-          </a>
-          <NuxtLink to="/android">
-            <Button icon="pi pi-android" :label="t('android.infoLink')" severity="secondary" outlined />
-          </NuxtLink>
         </div>
       </div>
 
@@ -191,16 +192,4 @@ onMounted(() => {
 <style scoped>
 .info-img { opacity: 0; }
 .info-img.loaded { opacity: 1; }
-
-.info-img {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.info-img.loaded {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all .6s ease;
-}
 </style>
-
