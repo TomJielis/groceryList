@@ -442,7 +442,6 @@
     "invitesYou": "invites you",
     "aList": "to share a grocery list",
     "aCookbook": "to share a cookbook",
-    "download": "Download {app} from the App Store",
     "createAccount": "Create an account",
     "expiredTitle": "This link has expired",
     "expiredBody": "This invite link no longer works: it has expired or was withdrawn. Ask the person who invited you for a new link.",
@@ -613,5 +612,24 @@
       "button": "Make a cookbook"
     },
     "failed": "That didn't work. Please try again."
+  },
+  "android": {
+    "title": "Shoplisto for Android",
+    "subtitle": "Download the app straight from this website, without the Play Store.",
+    "download": "Download for Android",
+    "howTitle": "How to install it",
+    "step1": "Open this page on your Android phone and tap \"Download for Android\".",
+    "step2": "Open the downloaded file Shoplisto.apk (from the notification or your Downloads).",
+    "step3": "The first time, Android asks whether your browser may install apps: allow it (\"Install unknown apps\").",
+    "step4": "Tap \"Install\" and open Shoplisto. Log in, or create an account in the app.",
+    "warning": "Because the app doesn't come from the Play Store, Android may show a warning. That's normal for apps installed this way.",
+    "updates": "Small updates arrive in the app by themselves. For a bigger update, download the app here again and install it over the old one: you stay logged in.",
+    "unavailable": "The Android app isn't available for download yet.",
+    "iphone": "On an iPhone?",
+    "infoLink": "Download for Android"
+  },
+  "ios": {
+    "appStore": "Get {app} in the App Store",
+    "testFlight": "Try {app} via TestFlight (beta)"
   }
 }

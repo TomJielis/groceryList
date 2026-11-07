@@ -2,10 +2,12 @@
 import { useI18nStore } from '~/stores/i18n';
 import { computed, onMounted } from 'vue';
 import { useAuthStore } from "~/stores/auth";
+import { useIosDownload } from '~/composables/useIosDownload';
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 
 const appName = useRuntimeConfig().public.appName
+const ios = useIosDownload()
 
 const i18n = useI18nStore();
 const t = computed(() => i18n.t);
@@ -156,6 +158,15 @@ onMounted(() => {
             {{ t(key) }}
           </div>
           <div class="border-t border-surface-200"></div>
+        </div>
+        <!-- The native apps: iPhone (TestFlight or the App Store, see useIosDownload), and the Android app from this site -->
+        <div class="flex flex-wrap gap-3 mt-6">
+          <a v-if="ios.url" :href="ios.url">
+            <Button icon="pi pi-apple" :label="ios.label.value" severity="secondary" outlined />
+          </a>
+          <NuxtLink to="/android">
+            <Button icon="pi pi-android" :label="t('android.infoLink')" severity="secondary" outlined />
+          </NuxtLink>
         </div>
       </div>
 

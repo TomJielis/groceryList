@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useI18nStore } from '~/stores/i18n';
+import { useIosDownload } from '~/composables/useIosDownload';
 import { ingredientText, totalMinutes } from '~/utils/recipeFormat';
 import type { TRecipeIngredient } from '~/types/TRecipe';
 import Button from 'primevue/button'
@@ -54,8 +55,10 @@ if (recipe.value) {
   });
 }
 
-// Safari's Smart App Banner: "Open" (on this recipe) when the app is installed, "View" (App Store) when it isn't
-const appStoreId = /id(\d+)/.exec(config.appStoreUrl || '')?.[1] ?? null;
+// Safari's Smart App Banner: "Open" (on this recipe) when the app is installed, "View" (App Store) when it isn't;
+// only for an app in the App Store, none while it's in TestFlight (useIosDownload)
+const ios = useIosDownload();
+const appStoreId = ios.appStoreId;
 const pageUrl = useRequestURL().href;
 if (appStoreId) {
   useHead({ meta: [{ name: 'apple-itunes-app', content: `app-id=${appStoreId}, app-argument=${pageUrl}` }] });
@@ -105,8 +108,8 @@ if (appStoreId) {
             </div>
 
             <p class="text-sm leading-relaxed">{{ i18n.t('recipeLink.howToSave') }}</p>
-            <a v-if="config.appStoreUrl" :href="config.appStoreUrl" class="block">
-              <Button :label="i18n.t('inviteLink.download')" icon="pi pi-apple" class="w-full" />
+            <a v-if="ios.url" :href="ios.url" class="block">
+              <Button :label="ios.label.value" icon="pi pi-apple" class="w-full" />
             </a>
           </template>
 

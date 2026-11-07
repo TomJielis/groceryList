@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18nStore } from '~/stores/i18n';
+import { useIosDownload } from '~/composables/useIosDownload';
 import { useAuthStore } from '~/stores/auth';
 import { useListStore } from '~/stores/lists';
 import { useNotification } from '~/composables/useNotification';
@@ -161,8 +162,9 @@ if (preview.value?.status === 'valid') {
 }
 
 // Safari's Smart App Banner: "Open" (on this invite) when the app is installed, "View" (App Store) when it isn't;
-// only Safari knows which, a page can't. Needs the App Store link (NUXT_PUBLIC_APP_STORE_URL, with the app's id).
-const appStoreId = /id(\d+)/.exec(config.appStoreUrl || '')?.[1] ?? null;
+// only Safari knows which, a page can't. Only for an app in the App Store: none while it's in TestFlight (useIosDownload).
+const ios = useIosDownload();
+const appStoreId = ios.appStoreId;
 const pageUrl = useRequestURL().href;
 if (appStoreId) {
   useHead({ meta: [{ name: 'apple-itunes-app', content: `app-id=${appStoreId}, app-argument=${pageUrl}` }] });
@@ -214,8 +216,8 @@ if (appStoreId) {
             <NuxtLink to="/auth/register" class="block text-center text-sm underline">
               {{ i18n.t('inviteLink.createAccount') }}
             </NuxtLink>
-            <a v-if="config.appStoreUrl" :href="config.appStoreUrl" class="block">
-              <Button :label="i18n.t('inviteLink.download')" icon="pi pi-apple" severity="secondary" outlined class="w-full" />
+            <a v-if="ios.url" :href="ios.url" class="block">
+              <Button :label="ios.label.value" icon="pi pi-apple" severity="secondary" outlined class="w-full" />
             </a>
           </template>
 

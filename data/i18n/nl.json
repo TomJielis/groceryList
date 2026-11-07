@@ -442,7 +442,6 @@
     "invitesYou": "nodigt je uit",
     "aList": "om een boodschappenlijst te delen",
     "aCookbook": "om een kookboek te delen",
-    "download": "Download {app} in de App Store",
     "createAccount": "Account aanmaken",
     "expiredTitle": "Deze link is verlopen",
     "expiredBody": "Deze uitnodigingslink werkt niet meer: hij is verlopen of ingetrokken. Vraag degene die je uitnodigde om een nieuwe link.",
@@ -613,5 +612,24 @@
       "button": "Kookboek maken"
     },
     "failed": "Dat lukte niet. Probeer het opnieuw."
+  },
+  "android": {
+    "title": "Shoplisto voor Android",
+    "subtitle": "Download de app rechtstreeks van deze website, zonder de Play Store.",
+    "download": "Downloaden voor Android",
+    "howTitle": "Zo installeer je hem",
+    "step1": "Open deze pagina op je Android-telefoon en tik op \"Downloaden voor Android\".",
+    "step2": "Open het gedownloade bestand Shoplisto.apk (via de melding of je Downloads).",
+    "step3": "De eerste keer vraagt Android of je browser apps mag installeren: sta dat toe (\"Onbekende apps installeren\").",
+    "step4": "Tik op \"Installeren\" en open Shoplisto. Log in, of maak een account aan in de app.",
+    "warning": "Omdat de app niet uit de Play Store komt, kan Android een waarschuwing tonen. Dat is normaal voor apps die je zo installeert.",
+    "updates": "Kleine updates komen vanzelf in de app. Voor een grotere update download je de app hier opnieuw en installeer je hem over de oude heen: je blijft ingelogd.",
+    "unavailable": "De Android-app is nog niet te downloaden.",
+    "iphone": "Heb je een iPhone?",
+    "infoLink": "Downloaden voor Android"
+  },
+  "ios": {
+    "appStore": "Haal {app} in de App Store",
+    "testFlight": "Probeer {app} via TestFlight (bèta)"
   }
 }

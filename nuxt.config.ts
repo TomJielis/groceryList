@@ -56,6 +56,12 @@ export default defineNuxtConfig({
             url: process.env.API_URL || '0.0.0.0:8000',
             basePath: process.env.API_BASE_PATH || '/api',
         },
+        // The Android app (APK) offered on /android: downloads/Shoplisto.apk in this repository, so a new APK goes out
+        // with a normal release (commit it, ./release.sh). A relative path counts from where the server runs; another
+        // place: NUXT_ANDROID_APK_PATH. No file: the page says the Android app isn't available yet
+        androidApk: {
+            path: 'downloads/Shoplisto.apk',
+        },
         // iOS Universal Links, overridden by NUXT_APP_LINKS_APPLE_TEAM_ID / NUXT_APP_LINKS_IOS_BUNDLE_ID
         appLinks: {
             appleTeamId: '',
@@ -69,6 +75,9 @@ export default defineNuxtConfig({
             // The app's App Store page (https://apps.apple.com/app/id<Apple ID from App Store Connect>), for the invite
             // link page's download button and Safari's app banner; NUXT_PUBLIC_APP_STORE_URL overrides it
             appStoreUrl: 'https://apps.apple.com/app/id6824506915',
+            // The public TestFlight link (NUXT_PUBLIC_TEST_FLIGHT_URL), used instead of the App Store while the app is in
+            // beta (useIosDownload). Without it, once Apple has approved the app, every page links to the App Store
+            testFlightUrl: '',
             termsVersion: '1.3',
             lastUpdatedTerms: '01-11-2026',
         },
