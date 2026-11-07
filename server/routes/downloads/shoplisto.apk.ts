@@ -2,8 +2,9 @@ import { createReadStream } from 'node:fs'
 import { getMethod, sendStream, setResponseHeaders, setResponseStatus } from 'h3'
 import { androidApk } from '~/server/api/utils/androidApk'
 
-// The Android app itself. The content type makes a phone offer to install it; the date in the cache check lets a newer
-// APK through as soon as it's on the server. HEAD too: some browsers and download managers check the file first.
+// The Android app itself. The content type makes a phone offer to install it. No-cache, also for Cloudflare (which caches
+// .apk addresses by default): a new APK is downloaded as soon as it's on the server. HEAD too: some browsers and download
+// managers check the file first.
 export default defineEventHandler(async (event) => {
     const method = getMethod(event)
     if (method !== 'GET' && method !== 'HEAD') {
@@ -11,7 +12,11 @@ export default defineEventHandler(async (event) => {
     }
     const apk = await androidApk()
     if (!apk) {
-        throw createError({ statusCode: 404, statusMessage: 'The Android app is not available' })
+        // Never cached: Cloudflare caches .apk addresses by default, and a cached "not found" would keep the download
+        // broken for hours after the APK is there
+        setResponseHeaders(event, { 'Cache-Control': 'no-store' })
+        setResponseStatus(event, 404)
+        return { message: 'The Android app is not available' }
     }
     setResponseHeaders(event, {
         'Content-Type': 'application/vnd.android.package-archive',

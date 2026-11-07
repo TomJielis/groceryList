@@ -57,8 +57,9 @@ export default defineNuxtConfig({
             basePath: process.env.API_BASE_PATH || '/api',
         },
         // The Android app (APK) offered on /android: downloads/Shoplisto.apk in this repository, so a new APK goes out
-        // with a normal release (commit it, ./release.sh). A relative path counts from where the server runs; another
-        // place: NUXT_ANDROID_APK_PATH. No file: the page says the Android app isn't available yet
+        // with a normal release (commit it, ./release.sh). A relative path counts from the project folder (also when
+        // `nuxt start` runs the server from .output); another place: NUXT_ANDROID_APK_PATH. No file: the page says the
+        // Android app isn't available yet
         androidApk: {
             path: 'downloads/Shoplisto.apk',
         },
