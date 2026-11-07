@@ -31,6 +31,7 @@ export default defineNuxtConfig({
     },
     serverHandlers: [
         { route: '/.well-known/apple-app-site-association', handler: '~/server/handlers/apple-app-site-association.ts' },
+        { route: '/.well-known/assetlinks.json', handler: '~/server/handlers/assetlinks.ts' },
     ],
     modules: ['@pinia/nuxt', '@primevue/nuxt-module'],
     css: ['@/assets/css/tailwind.css', '@/assets/css/main.css', '@/assets/css/app-theme.css', 'primeicons/primeicons.css'],
@@ -63,10 +64,15 @@ export default defineNuxtConfig({
         androidApk: {
             path: 'downloads/Shoplisto.apk',
         },
-        // iOS Universal Links, overridden by NUXT_APP_LINKS_APPLE_TEAM_ID / NUXT_APP_LINKS_IOS_BUNDLE_ID
+        // iOS Universal Links, overridden by NUXT_APP_LINKS_APPLE_TEAM_ID / NUXT_APP_LINKS_IOS_BUNDLE_ID; Android App Links below
         appLinks: {
             appleTeamId: '',
             iosBundleId: 'com.tomjielis.groceryListExpo',
+            // Android App Links (/.well-known/assetlinks.json): the app's package and the SHA-256 fingerprint of the key
+            // its APK is signed with (public, Android shows it to anyone); comma-separated for more keys, e.g. a Play
+            // Store signing key later. Overridden by NUXT_APP_LINKS_ANDROID_PACKAGE / NUXT_APP_LINKS_ANDROID_SHA256_FINGERPRINTS
+            androidPackage: 'com.tomjielis.groceryListExpo',
+            androidSha256Fingerprints: 'D9:F5:E7:2A:02:1F:A4:42:F2:91:74:4D:B4:9A:E3:52:BA:02:7F:B1:1C:C2:87:97:66:0F:7E:BD:FD:9F:00:80',
         },
         public: {
             // The name shown everywhere on the site (titles, logo text, texts with {app}); set NUXT_PUBLIC_APP_NAME in .env
