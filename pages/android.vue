@@ -10,16 +10,17 @@ const config = useRuntimeConfig().public
 const i18n = useI18nStore()
 const ios = useIosDownload()
 
-type ApkInfo = { available: boolean; size: number | null; updated_at: string | null }
+type ApkInfo = { available: boolean; size: number | null; updated_at: string | null; build: number | null }
 const { data, pending } = await useFetch<{ data: ApkInfo }>('/api/android/info')
 const apk = computed(() => data.value?.data ?? null)
 
-// "63 MB · 7 november 2026"
+// "Build 68 · 63 MB · 7 november 2026"
 const details = computed(() => {
   if (!apk.value?.available || !apk.value.size || !apk.value.updated_at) return ''
   const size = `${Math.round(apk.value.size / 1_000_000)} MB`
   const date = new Date(apk.value.updated_at).toLocaleDateString(i18n.locale === 'nl' ? 'nl-NL' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-  return `${size} · ${date}`
+  const build = apk.value.build ? `${i18n.t('android.build')} ${apk.value.build} · ` : ''
+  return `${build}${size} · ${date}`
 })
 
 const steps = ['android.step1', 'android.step2', 'android.step3', 'android.step4']

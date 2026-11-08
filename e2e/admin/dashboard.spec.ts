@@ -9,7 +9,7 @@ test('the admin dashboard shows every statistic and links on', async ({ page }) 
     'Total users', 'New users', 'Active users', 'Verified emails', 'Invalid login attempts (this month)',
     'Items added', 'Items checked', 'Lists created', 'Shared lists',
     'Recipes added', 'Cookbooks created', 'Total recipes', 'Shared cookbooks', 'Total spend',
-    'Daily Activity', 'Version Distribution', 'Top 10 Active Lists',
+    'Daily Activity', 'Version Distribution', 'Users per Platform', 'Top 10 Active Lists',
   ]) {
     await expect(page.getByText(title, { exact: true }).first(), title).toBeVisible()
   }

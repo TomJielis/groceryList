@@ -95,6 +95,22 @@ export function useAdminApi() {
         return await response.json();
     }
 
+    async function getStatsPlatforms(month?: string) {
+        const params = month ? `?month=${month}` : '';
+        const response = await fetch(`/api/admin/stats/platforms${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch platforms stats: ${response.statusText}`);
+        }
+
+        return await response.json();
+    }
+
     async function getUsers() {
         const response = await fetch('/api/admin/users', {
             method: 'GET',
@@ -212,6 +228,7 @@ export function useAdminApi() {
         getStatsRecipes,
         getStatsActivity,
         getStatsVersions,
+        getStatsPlatforms,
         getUsers,
         getUserDetail,
         getStatsTopItems,

@@ -20,6 +20,7 @@ test('the Android page offers the APK when the server has one, with how to insta
 
   await expect(page.getByRole('button', { name: 'Download for Android' })).toBeVisible()
   await expect(page.getByText(`${Math.round(info.size / 1_000_000)} MB`)).toBeVisible()
+  if (info.build) await expect(page.getByText(`Build ${info.build}`)).toBeVisible()
   await expect(page.getByText('How to install it')).toBeVisible()
   await expect(page.getByText('Install unknown apps', { exact: false })).toBeVisible()
 

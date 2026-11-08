@@ -13,7 +13,7 @@ definePageMeta({
 })
 
 const i18n = useI18nStore()
-const { getStatsUsers, getStatsItems, getStatsLists, getStatsRecipes, getStatsActivity, getStatsVersions, getStatsTopItems, getUsers, getStatsSpend, getEmails } = useAdminApi()
+const { getStatsUsers, getStatsItems, getStatsLists, getStatsRecipes, getStatsActivity, getStatsVersions, getStatsPlatforms, getStatsTopItems, getUsers, getStatsSpend, getEmails } = useAdminApi()
 
 const loading = ref(true)
 const error = ref<string | null>(null)
@@ -24,6 +24,7 @@ const statsLists = ref<any>(null)
 const statsRecipes = ref<any>(null)
 const statsActivity = ref<any>(null)
 const statsVersions = ref<any>(null)
+const statsPlatforms = ref<any>(null)
 const statsTopItems = ref<any>(null)
 const statsSpend = ref<any>(null)
 const allUsers = ref<any[]>([])
@@ -58,13 +59,14 @@ const loadData = async (month?: string) => {
   error.value = null
   try {
     const monthParam = month || selectedMonth.value
-    const [users, items, lists, recipes, activity, versions, topItems, usersData, spend, emails] = await Promise.all([
+    const [users, items, lists, recipes, activity, versions, platforms, topItems, usersData, spend, emails] = await Promise.all([
       getStatsUsers(monthParam),
       getStatsItems(monthParam),
       getStatsLists(monthParam),
       getStatsRecipes(monthParam),
       getStatsActivity(monthParam),
       getStatsVersions(monthParam),
+      getStatsPlatforms(monthParam),
       getStatsTopItems(monthParam),
       getUsers(),
       getStatsSpend(monthParam),
@@ -76,6 +78,7 @@ const loadData = async (month?: string) => {
     statsRecipes.value = recipes
     statsActivity.value = activity
     statsVersions.value = versions
+    statsPlatforms.value = platforms
     statsTopItems.value = topItems
     allUsers.value = usersData.users || []
     statsSpend.value = spend
@@ -128,6 +131,18 @@ const versionLabels = computed(() => {
 const versionData = computed(() => {
   if (!statsVersions.value?.current_month?.breakdown) return []
   return Object.values(statsVersions.value.current_month.breakdown).map((v: any) => v.count)
+})
+
+const platformLabels = computed(() => [
+  i18n.t('admin.platformWebsite'),
+  i18n.t('admin.platformIphone'),
+  i18n.t('admin.platformAndroid'),
+])
+
+const platformData = computed(() => {
+  const breakdown = statsPlatforms.value?.current_month?.breakdown
+  if (!breakdown) return []
+  return [breakdown.website.count, breakdown.ios.count, breakdown.android.count]
 })
 
 const topItemsMostAdded = computed(() => {
@@ -352,7 +367,7 @@ const userColumns = [
           </p>
         </div>
 
-        <!-- Version + Top Lists -->
+        <!-- Version + Platforms + Top Lists -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="border-t border-surface-200 pt-6">
             <h2 class="text-base font-medium mb-2">
@@ -369,6 +384,24 @@ const userColumns = [
             />
             <p v-else class="text-color-secondary text-center py-8">
               {{ i18n.t('admin.noVersionData') }}
+            </p>
+          </div>
+
+          <div class="border-t border-surface-200 pt-6">
+            <h2 class="text-base font-medium mb-2">
+              {{ i18n.t('admin.platformDistribution') }}
+            </h2>
+            <p class="text-sm text-color-secondary mb-4">
+              {{ statsPlatforms?.current_month?.active_users ?? 0 }} {{ i18n.t('admin.platformActiveUsers') }},
+              {{ statsPlatforms?.current_month?.on_multiple_platforms ?? 0 }} {{ i18n.t('admin.platformMultiple') }}
+            </p>
+            <AdminDoughnutChart
+              v-if="statsPlatforms?.current_month?.active_users > 0"
+              :labels="platformLabels"
+              :data="platformData"
+            />
+            <p v-else class="text-color-secondary text-center py-8">
+              {{ i18n.t('admin.noPlatformData') }}
             </p>
           </div>
 
