@@ -78,7 +78,7 @@ export default defineNuxtConfig({
             // The name shown everywhere on the site (titles, logo text, texts with {app}); set NUXT_PUBLIC_APP_NAME in .env
             appName: 'Shoplisto',
             // Where users can reach you (terms, support page); set NUXT_PUBLIC_SUPPORT_EMAIL in .env
-            supportEmail: 'tomjielis@gmail.com',
+            supportEmail: 'shoplisto@googlegroups.com',
             // The app's App Store page (https://apps.apple.com/app/id<Apple ID from App Store Connect>), for the invite
             // link page's download button and Safari's app banner; NUXT_PUBLIC_APP_STORE_URL overrides it
             appStoreUrl: 'https://apps.apple.com/app/id6824506915',
