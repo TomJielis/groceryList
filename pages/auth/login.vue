@@ -38,7 +38,7 @@ async function handleLogin() {
   try {
     const data = await login(userData.value)
     authStore.setUser(data.user)
-    authStore.setToken(data.token)
+    authStore.markLoggedIn()
     i18n.setLocale(data.user.language || 'nl')
     // Back to an invite link opened before logging in, if any
     router.push(afterLoginPath())

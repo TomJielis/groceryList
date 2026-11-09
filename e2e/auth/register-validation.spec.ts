@@ -26,7 +26,7 @@ test('the register page shows a message for each invalid field', async ({ page }
   await submit(page, { name: 'E2E', email: uniqueEmail('register'), password: 'short' })
   await expect(page.getByText('Your password must be at least 8 characters.')).toBeVisible()
 
-  // An address that has an account; a fresh one each run, as the rate limit counts per address
+  // An address that has an account answers like a new one, so nobody can find out who has an account
   await submit(page, { name: 'E2E', email: testUser('mail').email, password: 'longenough1' })
-  await expect(page.getByText('An account with this email address already exists.')).toBeVisible()
+  await expect(page.getByText('A verification email has been sent. Please check your inbox.')).toBeVisible()
 })

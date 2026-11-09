@@ -11,7 +11,8 @@ test('a withdrawn invite link says it no longer works and does not add you', asy
   const linkToken = invitePath.split('/').pop()!
 
   // Withdrawn by its maker (the API treats withdrawn like expired)
-  const bearer = await page.evaluate(() => JSON.parse(localStorage.getItem('auth') || '{}').token as string)
+  const cookie = (await page.context().cookies()).find((c) => c.name === 'token')
+  const bearer = decodeURIComponent(cookie!.value)
   const res = await page.request.delete(`${API}/api/invite-links/${linkToken}/delete`, {
     headers: { Authorization: `Bearer ${bearer}`, Accept: 'application/json' },
   })

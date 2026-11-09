@@ -1,5 +1,10 @@
 import { defineStore } from 'pinia';
 import { useI18nStore } from '~/stores/i18n';
+import { useSocket } from '~/composables/useSocket';
+
+// The real token only lives in the httpOnly cookie, out of reach of scripts on the page. The store just remembers
+// that there is a login, for the route checks.
+const LOGGED_IN = 'cookie';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -21,15 +26,22 @@ export const useAuthStore = defineStore('auth', {
         i18n.setLocale(language === 'nl' ? 'nl' : 'en');
       }
     },
-    setToken(token: string) {
-      this.token = token;
+    markLoggedIn() {
+      this.token = LOGGED_IN;
     },
     clearAuth() {
+      // The live updates connection logged in with this user: the next one starts with the next login
+      useSocket().disconnect();
       this.user = null;
       this.token = null;
       const i18n = useI18nStore();
       i18n.setLocale('en'); // reset to English when logged out
     },
   },
-  persist: true,
+  persist: {
+    // Logins from before the token moved out of the browser's storage: replaces what is saved there
+    afterHydrate: (context) => {
+      if (context.store.token && context.store.token !== LOGGED_IN) context.store.token = LOGGED_IN;
+    },
+  },
 })

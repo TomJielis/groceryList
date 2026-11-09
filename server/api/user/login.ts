@@ -22,9 +22,9 @@ export default defineEventHandler(async (event) => {
 
     setCookie(event, 'token', response.access_token, {
         httpOnly: true,
-        secure: false, // Set to true only if HTTPS is enabled
+        secure: !import.meta.dev, // The website is on HTTPS; the dev server on plain localhost
         path: '/',
-        sameSite: 'lax', // Use 'lax' for development on localhost
+        sameSite: 'lax',
         maxAge: 60 * 60 * 24 * 28, // 4 weeks
     });
 
@@ -34,6 +34,5 @@ export default defineEventHandler(async (event) => {
     return {
         success: true,
         user: response.user,
-        token: response.access_token,
     };
 });
