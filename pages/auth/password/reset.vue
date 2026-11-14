@@ -13,14 +13,21 @@ const i18n = useI18nStore()
 const { showNotification } = useNotification()
 const { resetPassword } = useAuth()
 const mailSent = ref(false)
+const sending = ref(false)
 const userData = ref({ email: '' })
 
+// Sending the mail takes a few seconds. A second tap meanwhile would send a second mail, and every new request
+// makes the link in the previous mail invalid, so the button stays off until the first one is done.
 async function handleResetPassword() {
+  if (sending.value) return
+  sending.value = true
   try {
     await resetPassword(userData.value)
     mailSent.value = true
   } catch {
     showNotification(i18n.t('errors.passwordResetFailed'))
+  } finally {
+    sending.value = false
   }
 }
 </script>
@@ -64,7 +71,7 @@ async function handleResetPassword() {
                   class="w-full"
                 />
               </div>
-              <Button type="submit" :label="i18n.t('auth.sendBtn')" class="w-full" />
+              <Button type="submit" :label="i18n.t('auth.sendBtn')" :loading="sending" :disabled="sending" class="w-full" />
             </form>
 
             <NuxtLink to="/auth/login" class="text-sm">
