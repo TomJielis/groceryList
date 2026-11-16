@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import {useAuth} from "~/composables/useAuth";
 import { useAuthStore} from "~/stores/auth";
 import { afterLoginPath } from "~/utils/pendingInvite";
+import { termsOutdated } from "~/utils/termsVersion";
 
 import Card from 'primevue/card'
 import Checkbox from 'primevue/checkbox'
@@ -22,9 +23,15 @@ const acceptedTerms = ref(false)
 
 onMounted(async () => {
   try {
-    const user = await auth.me()
+    // The API answers { user: {...} }
+    const user = (await auth.me())?.user
     if (user) {
       authStore.setUser(user)
+      // The saved login can be older than the account: accepted meanwhile in the app (or another browser), then
+      // there's nothing to accept here
+      if (user.accepted_terms && !termsOutdated(user.accepted_terms_version || '1.0', useRuntimeConfig().public.termsVersion)) {
+        router.replace(afterLoginPath())
+      }
     } else {
       authStore.clearAuth()
       router.push('/auth/login')
