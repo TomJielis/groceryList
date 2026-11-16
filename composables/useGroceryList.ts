@@ -10,6 +10,22 @@ const itemsByListId = ref<Map<number, TGroceryListItem[]>>(new Map());
 const lists = ref<TGroceryList[]>([]);
 const currentListId = ref<number | null>(null);
 
+// The requests for one product go to the server one after the other, in the order they were made. Sent at once, a
+// quick + then − could arrive the other way round: the − on quantity 1 deletes the product, and the + finds nothing.
+// The screen still changes right away (each action updates the list before its request).
+const itemRequests = new Map<number, Promise<unknown>>();
+
+function inOrder<T>(itemId: number, call: () => Promise<T>): Promise<T> {
+    const previous = itemRequests.get(itemId) ?? Promise.resolve();
+    const next = previous.catch(() => undefined).then(call);
+    itemRequests.set(itemId, next);
+    // Forgotten once nothing is waiting behind it
+    next.catch(() => undefined).finally(() => {
+        if (itemRequests.get(itemId) === next) itemRequests.delete(itemId);
+    });
+    return next;
+}
+
 /**
  * Helper function to notify other users via Socket.io
  * Only works on client-side and when currentListId is set
@@ -201,13 +217,13 @@ export function useGroceryList() {
 
         try {
             let route = '/api/groceryListItem/delete'
-            await $fetch(route, {
+            await inOrder(item.id, () => $fetch(route, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: {id: item.id}
-            });
+            }));
 
             // Notify other users via Socket.io AFTER successful API call
             notifyOtherUsers(currentListId.value, {...item, deleted: true});
@@ -236,13 +252,13 @@ export function useGroceryList() {
         // Then update on server
         try {
             let route = '/api/groceryListItem/checked';
-            await $fetch(route, {
+            await inOrder(updatedItem.id, () => $fetch(route, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: { id: updatedItem.id, checked: updatedItem.checked }
-            });
+            }));
 
             // Notify other users via Socket.io AFTER successful API call
             notifyOtherUsers(currentListId.value, updatedItem);
@@ -272,13 +288,13 @@ export function useGroceryList() {
 
         try {
             let route = '/api/groceryListItem/update'
-            await $fetch(route, {
+            await inOrder(item.id, () => $fetch(route, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: {item}
-            });
+            }));
 
             // Notify other users via Socket.io AFTER successful API call
             notifyOtherUsers(currentListId.value, item);
@@ -304,13 +320,13 @@ export function useGroceryList() {
 
         try {
             let route = '/api/groceryListItem/increase'
-            await $fetch(route, {
+            await inOrder(item.id, () => $fetch(route, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: {id: item.id}
-            });
+            }));
 
             // Notify other users via Socket.io AFTER successful API call
             notifyOtherUsers(currentListId.value, {...item, quantity: item.quantity + 1});
@@ -347,13 +363,13 @@ export function useGroceryList() {
 
         try {
             let route = '/api/groceryListItem/decrease'
-            await $fetch(route, {
+            await inOrder(item.id, () => $fetch(route, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: {id: item.id}
-            });
+            }));
 
             // Notify other users via Socket.io AFTER successful API call
             const notificationData = newQuantity < 1
