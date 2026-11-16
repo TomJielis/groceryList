@@ -58,7 +58,7 @@ hr {
           <!-- Header -->
           <div class="py-4 border-b border-surface-200 mb-6">
             <h1 class="text-xl font-semibold">Terms of Use &amp; Privacy Policy</h1>
-            <p class="text-xs text-color-secondary mt-1">Laatste versie: 1.3 | Laatst bijgewerkt: 01-11-2026</p>
+            <p class="text-xs text-color-secondary mt-1">Laatste versie: 1.4 | Laatst bijgewerkt: 16-11-2026</p>
           </div>
 
           <!-- Content -->
@@ -98,7 +98,7 @@ hr {
                 <li>Bij een mislukte inlogpoging: het tijdstip, het IP-adres en het ingevoerde e-mailadres</li>
                 <li>Wanneer je voor het laatst actief was</li>
                 <li>Als je meldingen toestaat: de pushtoken van je apparaat</li>
-                <li>Een logboek van de e-mails die de applicatie stuurt (activatie, wachtwoord herstellen, uitnodigingen): ontvanger, onderwerp, inhoud en of het verzenden lukte</li>
+                <li>Een logboek van de e-mails die de applicatie stuurt (activatie, wachtwoord herstellen, meldingen): ontvanger, onderwerp, inhoud en of het verzenden lukte</li>
               </ul>
               <h3>4. Doeleinden van gegevensverwerking</h3>
               <p>Deze gegevens worden gebruikt om:</p>
@@ -137,7 +137,7 @@ hr {
               <p>Je inloggeschiedenis, mislukte inlogpogingen en het e-maillogboek (met IP-adressen en e-mailadressen) worden maximaal 12 maanden bewaard en daarna automatisch verwijderd. Een supportgesprek wordt automatisch verwijderd 12 maanden na het laatste bericht.</p>
               <p>Je kunt je account op elk moment verwijderen. Daarmee worden direct en permanent uit de database verwijderd: je account, je lijsten met hun producten, je kookboeken met alle recepten en foto's erin (ook voor wie je ze deelde), je klantenkaarten, je uitnodigingen, je inloggeschiedenis, mislukte inlogpogingen met jouw e-mailadres, de e-mails aan jou in het e-maillogboek, je supportvragen en de pushtokens van je apparaten.</p>
               <p>Recepten die je aan het kookboek van iemand anders hebt toegevoegd, blijven daar staan, zonder je naam.</p>
-              <p>Al verzonden e-mails staan ook in de mailbox van de ontvanger en het verzendaccount van de beheerder (Gmail); die vallen buiten de applicatie en kunnen daar niet worden verwijderd.</p>
+              <p>Al verzonden e-mails staan ook in de mailbox van de ontvanger, in de verzendlogs van de e-maildienst (Brevo, die deze een beperkte tijd bewaart) en, bij supportmail, in de mailbox van de beheerder; die vallen buiten de applicatie en kunnen daar niet worden verwijderd.</p>
               <h3>9. Cookies en lokale opslag</h3>
               <p>De website gebruikt alleen technische cookies en localStorage, en de app de opslag op je apparaat, om je ingelogd te houden en je voorkeuren (zoals je taal) te bewaren. Er worden <span class="underline">geen analyse-, tracking- of advertentiecookies</span> gebruikt en je wordt niet gevolgd op andere websites of apps. Wel worden je logins vastgelegd voor de beveiliging van je account (zie artikel 3, 4 en 8).</p>
               <h3>10. Jouw rechten</h3>
@@ -214,14 +214,15 @@ hr {
               <p>Voor de werking van de applicatie maakt de Beheerder gebruik van vertrouwde externe diensten. Zij verwerken gegevens uitsluitend in opdracht van de Beheerder en alleen voor zover nodig:</p>
               <ul>
                 <li>Hosting: de server waarop de applicatie en de database draaien</li>
-                <li>E-mail (Gmail): voor activatie-, herstel- en uitnodigingsmails, en voor antwoorden op supportvragen</li>
+                <li>Cloudflare: beveiligt en levert de website en de verbinding met de server, en stuurt e-mail aan het supportadres door naar de mailbox van de beheerder (Gmail)</li>
+                <li>E-mail (Brevo, EU): verstuurt de e-mails van de applicatie, zoals activatie, wachtwoord herstellen en meldingen over supportvragen, en ontvangt daarvoor je naam, je e-mailadres en de inhoud van de e-mail</li>
                 <li>Pushmeldingen (Expo en Apple Push Notification service): ontvangen de pushtoken van je apparaat en de tekst van de melding, zoals de naam van een lijst en van wie er iets aan heeft gedaan</li>
               </ul>
               <p>De Beheerder blijft verantwoordelijk voor een zorgvuldige omgang met deze gegevens, in overeenstemming met de AVG.</p>
             </section>
             <section class="border-t border-surface-200 py-4">
               <h2>English version</h2>
-              <p class="text-xs text-color-secondary mb-4">Latest version: 1.3 — Last updated: 01-11-2026</p>
+              <p class="text-xs text-color-secondary mb-4">Latest version: 1.4 — Last updated: 16-11-2026</p>
               <h3>1. About this application</h3>
               <p>This application ("{{ appName }}") is a personal web application that allows users to create, view, share, edit, and delete grocery lists, and to keep recipes in cookbooks they can share as well. The application is developed for personal use and aims to make managing groceries and recipes more organized.</p>
               <h3>2. Application administrator</h3>
@@ -252,7 +253,7 @@ hr {
                 <li>For a failed login attempt: the time, the IP address and the email address entered</li>
                 <li>When you were last active</li>
                 <li>If you allow notifications: the push token of your device</li>
-                <li>A log of the emails the application sends (activation, password reset, invitations): recipient, subject, content and whether sending succeeded</li>
+                <li>A log of the emails the application sends (activation, password reset, notifications): recipient, subject, content and whether sending succeeded</li>
               </ul>
               <h4>4. Purposes of data processing</h4>
               <p>This data is used to:</p>
@@ -291,7 +292,7 @@ hr {
               <p>Your login history, failed login attempts and the email log (with IP addresses and email addresses) are kept for at most 12 months and are then removed automatically. A support conversation is removed automatically 12 months after its last message.</p>
               <p>You can delete your account at any time. This immediately and permanently removes from the database: your account, your lists with their products, your cookbooks with all recipes and photos in them (also for the people you shared them with), your loyalty cards, your invitations, your login history, failed login attempts with your email address, the emails to you in the email log, your support questions and the push tokens of your devices.</p>
               <p>Recipes you added to someone else's cookbook stay there, without your name.</p>
-              <p>Emails already sent are also in the recipient's mailbox and the administrator's sending account (Gmail); those are outside the application and cannot be removed there.</p>
+              <p>Emails already sent are also in the recipient's mailbox, in the sending logs of the email service (Brevo, which keeps them for a limited time) and, for support mail, in the administrator's mailbox; those are outside the application and cannot be removed there.</p>
               <h4>9. Cookies and local storage</h4>
               <p>The website only uses technical cookies and localStorage, and the app your device's storage, to keep you logged in and to remember your preferences (such as your language). No <span class="underline">analytics, tracking or advertising cookies</span> are used, and you are not followed on other websites or apps. Your logins are recorded to protect your account (see articles 3, 4 and 8).</p>
               <h4>10. Your rights</h4>
@@ -364,7 +365,8 @@ hr {
               <p>For the application to work, the Administrator uses trusted external services. They process data only on behalf of the Administrator and only as far as needed:</p>
               <ul>
                 <li>Hosting: the server that runs the application and the database</li>
-                <li>Email (Gmail): for activation, password reset and invitation emails, and for answers to support questions</li>
+                <li>Cloudflare: protects and delivers the website and the connection to the server, and forwards email to the support address to the administrator's mailbox (Gmail)</li>
+                <li>Email (Brevo, EU): sends the application's emails, such as activation, password reset and notifications about support questions, and receives your name, your email address and the content of the email for that</li>
                 <li>Push notifications (Expo and Apple Push Notification service): receive the push token of your device and the text of the notification, such as the name of a list and of who did something on it</li>
               </ul>
               <p>The Administrator remains responsible for handling this data carefully, in accordance with the GDPR.</p>

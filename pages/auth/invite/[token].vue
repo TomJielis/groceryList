@@ -7,6 +7,7 @@ import { useAuthStore } from '~/stores/auth';
 import { useListStore } from '~/stores/lists';
 import { useNotification } from '~/composables/useNotification';
 import { rememberInvite, forgetInvite } from '~/utils/pendingInvite';
+import { termsOutdated } from '~/utils/termsVersion';
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import ProgressSpinner from 'primevue/progressspinner'
@@ -42,7 +43,7 @@ const asking = ref(false);
 
 function needsTerms(user: any): boolean {
   if (!user) return false;
-  return !user.accepted_terms || (user.accepted_terms_version || '1.0') !== config.termsVersion;
+  return !user.accepted_terms || termsOutdated(user.accepted_terms_version || '1.0', config.termsVersion);
 }
 
 // Asked again here, with the login: says whether you're already in it (then it just opens), and whether it still works

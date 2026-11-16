@@ -85,7 +85,7 @@ export default defineNuxtConfig({
             // The public TestFlight link (NUXT_PUBLIC_TEST_FLIGHT_URL), used instead of the App Store while the app is in
             // beta (useIosDownload). Without it, once Apple has approved the app, every page links to the App Store
             testFlightUrl: '',
-            termsVersion: '1.3',
+            termsVersion: '1.4',
             lastUpdatedTerms: '01-11-2026',
         },
     },
