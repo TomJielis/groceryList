@@ -102,3 +102,26 @@ export function listDays(entries: TWeekMenuEntry[], today: string): { days: stri
     const upcoming = days.filter(day => day >= today)
     return { days, chosen: upcoming.length > 0 ? upcoming : days }
 }
+
+/**
+ * The recipes planned most recently (the latest day first), each once: the picker offers them first, as most families
+ * eat a few dishes over and over. The same as the app's recentRecipeIds.
+ */
+export function recentRecipeIds(entries: Pick<TWeekMenuEntry, 'date' | 'recipe'>[], max: number): number[] {
+    const ids: number[] = []
+    for (const entry of [...entries].sort((a, b) => b.date.localeCompare(a.date))) {
+        if (!ids.includes(entry.recipe.id)) ids.push(entry.recipe.id)
+        if (ids.length === max) break
+    }
+    return ids
+}
+
+// Per recipe the days it's planned on (YYYY-MM-DD, in order): the picker says "already on Thu 19 Nov"
+export function plannedDays(entries: Pick<TWeekMenuEntry, 'date' | 'recipe'>[]): Map<number, string[]> {
+    const days = new Map<number, string[]>()
+    for (const entry of entries) {
+        const known = days.get(entry.recipe.id) ?? []
+        if (!known.includes(entry.date)) days.set(entry.recipe.id, [...known, entry.date].sort())
+    }
+    return days
+}

@@ -7,17 +7,19 @@ import InputText from 'primevue/inputtext'
 import deleteModal from '~/components/deleteModal.vue'
 import Loader from '~/components/Loader.vue'
 import { useGroceryList } from '~/composables/useGroceryList'
-import { useNotification } from '~/composables/useNotification'
+import { ACTION_DURATION_MS, useNotification } from '~/composables/useNotification'
 import { useRecipes } from '~/composables/useRecipes'
 import { useShareLink } from '~/composables/useShareLink'
 import { useWeekMenu } from '~/composables/useWeekMenu'
 import { useSocket } from '~/composables/useSocket'
 import { useAuthStore } from '~/stores/auth'
 import { useI18nStore } from '~/stores/i18n'
-import type { TRecipeSummary } from '~/types/TRecipe'
+import { RECIPE_CATEGORIES } from '~/types/TRecipe'
+import type { TRecipeCategory, TRecipeSummary } from '~/types/TRecipe'
 import type { TWeekMenu, TWeekMenuEntry } from '~/types/TWeekMenu'
 import {
-  MAX_LIST_QUANTITY, addDays, combineWeekIngredients, dayLabel, fromDateKey, listDays, mondayOf, toDateKey, weekDays, weekLabel,
+  MAX_LIST_QUANTITY, addDays, combineWeekIngredients, dayLabel, fromDateKey, listDays, mondayOf, plannedDays, recentRecipeIds, toDateKey,
+  weekDays, weekLabel,
 } from '~/utils/weekMenu'
 
 definePageMeta({
@@ -112,7 +114,8 @@ async function loadWeek() {
       return
     }
     if (changeVersion !== startedVersion) return void loadWeek()
-    entries.value = fetched
+    // A dish just taken out (its "Undo" still offered) stays out
+    entries.value = fetched.filter(entry => !removals.has(entry.id))
     weekState.value = 'loaded'
   } catch {
     if (request === weekRequest && weekState.value !== 'loaded') weekState.value = 'failed'
@@ -238,18 +241,53 @@ function create() {
 }
 
 // ----- Planning a dish -----
+// How many recently planned recipes the picker offers first, from the four weeks before the one shown
+const RECENT_COUNT = 5
+const RECENT_DAYS = 28
+type PickFilter = 'all' | 'favorites' | TRecipeCategory
 const pickDate = ref<string | null>(null)
 const pickSearch = ref('')
+const pickFilter = ref<PickFilter>('all')
+const recentIds = ref<number[]>([])
+// Only the filters that have recipes
+const pickFilters = computed<{ value: PickFilter; label: string }[]>(() => [
+  { value: 'all', label: i18n.t('recipes.allCategories') },
+  ...(recipes.value.some(recipe => recipe.favorite) ? [{ value: 'favorites' as const, label: i18n.t('recipes.favorites') }] : []),
+  ...RECIPE_CATEGORIES.filter(category => recipes.value.some(recipe => recipe.categories.includes(category)))
+    .map(value => ({ value, label: i18n.t(`recipes.category.${value}`) })),
+])
+// Without a search or filter: what was planned recently first (most families eat a few dishes over and over)
+const pickRecent = computed(() => (pickSearch.value.trim() || pickFilter.value !== 'all'
+  ? []
+  : recentIds.value.map(id => recipes.value.find(recipe => recipe.id === id)).filter((recipe): recipe is TRecipeSummary => Boolean(recipe))))
+// Then everything else, favorites first and A to Z
 const pickRecipes = computed(() => {
   const query = pickSearch.value.trim().toLowerCase()
+  const filter = pickFilter.value
   return recipes.value
+    .filter(recipe => !pickRecent.value.includes(recipe))
     .filter(recipe => !query || recipe.title.toLowerCase().includes(query)
       || (recipe.ingredient_names ?? []).some(name => name.toLowerCase().includes(query)))
+    .filter(recipe => filter === 'all' || (filter === 'favorites' ? recipe.favorite : recipe.categories.includes(filter)))
     .sort((a, b) => Number(b.favorite) - Number(a.favorite) || a.title.localeCompare(b.title))
 })
+// A recipe planned this week already says on which day, so the same dish isn't planned twice by accident
+const plannedThisWeek = computed(() => plannedDays(entries.value))
+function plannedOn(recipe: TRecipeSummary) {
+  const on = plannedThisWeek.value.get(recipe.id)
+  return on ? i18n.t('weekMenu.pickPlannedOn').split('{days}').join(on.map(day => dayLabel(fromDateKey(day), i18n.locale)).join(', ')) : ''
+}
 async function openPicker(date: string) {
   pickSearch.value = ''
+  pickFilter.value = 'all'
   pickDate.value = date
+  // Only a suggestion: without it the picker works just the same
+  if (menu.value) {
+    const menuId = menu.value.id
+    weekMenu.fetchEntries(menuId, toDateKey(addDays(monday.value, -RECENT_DAYS)), toDateKey(addDays(monday.value, -1)))
+      .then((earlier) => { if (menu.value?.id === menuId) recentIds.value = recentRecipeIds(earlier, RECENT_COUNT) })
+      .catch(() => undefined)
+  }
   if (recipes.value.length === 0) await fetchRecipes().catch(() => undefined)
 }
 function pickRecipe(recipe: TRecipeSummary) {
@@ -294,22 +332,49 @@ async function changeEntry(entry: TWeekMenuEntry, change: { date?: string; servi
     showNotification(i18n.t('weekMenu.updateFailed'))
   }
 }
-async function removeEntry(entry: TWeekMenuEntry) {
-  if (!menu.value) return
+// Taken out at once, removed for real only when "Undo" wasn't clicked in time: undone, the dish is back as it was (its
+// check, its place on the day), instead of planned again
+const removals = new Map<number, { timer: ReturnType<typeof setTimeout>; commit: () => Promise<void> }>()
+function removeEntry(entry: TWeekMenuEntry) {
+  if (!menu.value || removals.has(entry.id)) return
   const menuId = menu.value.id
-  const shownWeek = weekRequest
+  const week = toDateKey(monday.value)
+  // Back only into the week it was taken from (another week or menu shown by now: that one isn't touched)
+  const putBack = () => {
+    if (menu.value?.id === menuId && toDateKey(monday.value) === week) entries.value = sortByDay([...entries.value.filter(e => e.id !== entry.id), entry])
+  }
   entryId.value = null
   latest.set(entry.id, (latest.get(entry.id) ?? 0) + 1)
   entries.value = entries.value.filter(e => e.id !== entry.id)
-  try {
-    await whileChanging(() => inOrder(entry.id, () => weekMenu.removeEntry(menuId, entry.id)))
-    tellOthers(menuId)
-  } catch {
-    // Back only into the week it was taken from (another week or menu shown by now: that one isn't touched)
-    if (weekRequest === shownWeek && menu.value?.id === menuId) entries.value = sortByDay([...entries.value, entry])
-    showNotification(i18n.t('weekMenu.removeFailed'))
+  const commit = async () => {
+    removals.delete(entry.id)
+    try {
+      await whileChanging(() => inOrder(entry.id, () => weekMenu.removeEntry(menuId, entry.id)))
+      tellOthers(menuId)
+    } catch {
+      putBack()
+      showNotification(i18n.t('weekMenu.removeFailed'))
+    }
   }
+  removals.set(entry.id, { timer: setTimeout(commit, ACTION_DURATION_MS), commit })
+  showSuccess(i18n.t('weekMenu.removed').split('{title}').join(entry.recipe.title), ACTION_DURATION_MS, {
+    label: i18n.t('weekMenu.undo'),
+    onClick: () => {
+      const removal = removals.get(entry.id)
+      if (!removal) return
+      clearTimeout(removal.timer)
+      removals.delete(entry.id)
+      putBack()
+    },
+  })
 }
+// Leaving the page: what's still waiting is removed now
+onBeforeUnmount(() => {
+  removals.forEach((removal) => {
+    clearTimeout(removal.timer)
+    void removal.commit()
+  })
+})
 function openRecipe(entry: TWeekMenuEntry) {
   // from: back on the recipe goes here again, not to the recipes overview
   router.push({ path: `/recipes/${entry.recipe.id}`, query: { servings: String(entry.servings), from: 'week-menu' } })
@@ -399,6 +464,17 @@ function addWeek() {
   })
 }
 
+// ----- Two or more menus (an own one and a shared one): the name on top chooses which -----
+const switchOpen = ref(false)
+function membersOf(option: TWeekMenu) {
+  const people = [option.created_by, ...option.members].filter(p => p && p.id !== userId.value) as { name: string }[]
+  return people.length ? i18n.t('weekMenu.members').split('{names}').join(people.map(p => p.name).join(', ')) : ''
+}
+function chooseMenu(id: number) {
+  switchOpen.value = false
+  selectedId.value = id
+}
+
 // ----- The menu itself -----
 const optionsOpen = ref(false)
 const newName = ref('')
@@ -468,6 +544,13 @@ function confirmDelete() {
   <div class="week-shell px-4 py-6">
     <div class="w-full max-w-6xl mx-auto flex flex-col gap-5">
       <PageHeader back-to="/recipes" :title="menu?.name ?? i18n.t('weekMenu.title')" :subtitle="membersLine">
+        <template v-if="menu && menus.length > 1" #title>
+          <button type="button" class="week-switch" :aria-label="`${menu.name}: ${i18n.t('weekMenu.switchHint')}`" aria-haspopup="dialog"
+            data-testid="week-menu-switch" @click="switchOpen = true">
+            <h1 class="page-heading truncate">{{ menu.name }}</h1>
+            <i class="pi pi-chevron-down" aria-hidden="true" />
+          </button>
+        </template>
         <template v-if="menu" #actions>
           <div class="flex gap-2">
             <Button
@@ -504,21 +587,6 @@ function confirmDelete() {
       </div>
 
       <template v-else>
-        <!-- An own menu and a shared one: choose which -->
-        <div v-if="menus.length > 1" class="flex flex-wrap gap-2">
-          <Button
-            v-for="option in menus"
-            :key="option.id"
-            :label="option.name"
-            size="small"
-            :severity="option.id === menu.id ? undefined : 'secondary'"
-            :outlined="option.id !== menu.id"
-            :aria-pressed="option.id === menu.id"
-            rounded
-            @click="selectedId = option.id"
-          />
-        </div>
-
         <!-- The week: big, with what's planned and what's on the list, and the button that puts the rest on one -->
         <div class="week-hero rounded-2xl px-5 py-5 md:px-7 flex flex-col md:flex-row md:items-center gap-4">
           <div class="flex items-center gap-3 flex-1">
@@ -558,7 +626,7 @@ function confirmDelete() {
             v-for="day in days"
             :key="toDateKey(day)"
             class="week-day"
-            :class="{ 'is-today': toDateKey(day) === todayKey, 'is-empty': !entriesOn(toDateKey(day)).length }"
+            :class="{ 'is-today': toDateKey(day) === todayKey, 'is-past': toDateKey(day) < todayKey, 'is-empty': !entriesOn(toDateKey(day)).length }"
             :aria-current="toDateKey(day) === todayKey ? 'date' : undefined"
             :data-testid="`week-menu-day-${toDateKey(day)}`"
           >
@@ -610,20 +678,58 @@ function confirmDelete() {
   <Dialog :visible="pickDate !== null" modal :header="pickDate ? i18n.t('weekMenu.pickTitle').split('{day}').join(dayLabel(fromDateKey(pickDate), i18n.locale)) : ''"
     :style="{ width: '28rem', maxWidth: '90vw' }" @update:visible="value => { if (!value) pickDate = null }">
     <InputText v-model="pickSearch" :placeholder="i18n.t('weekMenu.pickSearch')" :aria-label="i18n.t('weekMenu.pickSearch')" class="w-full mb-3" data-testid="week-menu-pick-search" />
+    <div v-if="pickFilters.length > 1" class="flex flex-wrap gap-2 mb-3">
+      <Button v-for="option in pickFilters" :key="option.value" :label="option.label" size="small" rounded
+        :icon="option.value === 'favorites' ? 'pi pi-star-fill' : undefined"
+        :severity="pickFilter === option.value ? undefined : 'secondary'" :outlined="pickFilter !== option.value"
+        :aria-pressed="pickFilter === option.value" :data-testid="`week-menu-pick-filter-${option.value}`"
+        @click="pickFilter = option.value" />
+    </div>
     <div class="max-h-96 overflow-y-auto flex flex-col">
-      <p v-if="pickRecipes.length === 0" class="py-6 text-center text-sm text-surface-500">{{ i18n.t('weekMenu.pickEmpty') }}</p>
+      <p v-if="recipes.length === 0" class="py-6 text-center text-sm text-surface-500">{{ i18n.t('weekMenu.pickEmpty') }}</p>
+      <p v-else-if="pickRecent.length === 0 && pickRecipes.length === 0" class="py-6 text-center text-sm text-surface-500">{{ i18n.t('weekMenu.pickNoMatch') }}</p>
+      <template v-for="(group, groupIndex) in [pickRecent, pickRecipes]" :key="groupIndex">
+        <p v-if="pickRecent.length && group.length" class="mt-2 mb-1 text-xs font-semibold text-surface-500">
+          {{ groupIndex === 0 ? i18n.t('weekMenu.pickRecent') : i18n.t('weekMenu.pickAll') }}
+        </p>
+        <button
+          v-for="recipe in group"
+          :key="recipe.id"
+          class="flex items-center gap-3 py-2 text-left hover:bg-surface-50 rounded"
+          :disabled="busy"
+          :data-testid="`week-menu-pick-${recipe.id}`"
+          @click="pickRecipe(recipe)"
+        >
+          <img v-if="recipe.thumb_url" :src="recipe.thumb_url" alt="" class="w-10 h-10 rounded-lg object-cover" />
+          <span v-else class="w-10 h-10 rounded-lg bg-surface-100 flex items-center justify-center"><i class="pi pi-image text-surface-300" /></span>
+          <span class="flex-1 flex flex-col">
+            <span class="text-sm">{{ recipe.title }}</span>
+            <span v-if="plannedOn(recipe)" class="text-xs text-amber-700" :data-testid="`week-menu-pick-planned-${recipe.id}`">{{ plannedOn(recipe) }}</span>
+          </span>
+          <i v-if="recipe.favorite" class="pi pi-star-fill text-yellow-500 text-xs" />
+        </button>
+      </template>
+    </div>
+  </Dialog>
+
+  <!-- Choosing between the user's week menus: the one shown has a check -->
+  <Dialog v-model:visible="switchOpen" modal :header="i18n.t('weekMenu.switchTitle')" :style="{ width: '24rem', maxWidth: '90vw' }">
+    <div class="flex flex-col">
       <button
-        v-for="recipe in pickRecipes"
-        :key="recipe.id"
-        class="flex items-center gap-3 py-2 text-left hover:bg-surface-50 rounded"
-        :disabled="busy"
-        :data-testid="`week-menu-pick-${recipe.id}`"
-        @click="pickRecipe(recipe)"
+        v-for="option in menus"
+        :key="option.id"
+        type="button"
+        class="flex items-center gap-3 py-3 px-2 text-left rounded hover:bg-surface-50"
+        :aria-pressed="option.id === menu?.id"
+        :data-testid="`week-menu-choose-${option.id}`"
+        @click="chooseMenu(option.id)"
       >
-        <img v-if="recipe.thumb_url" :src="recipe.thumb_url" alt="" class="w-10 h-10 rounded-lg object-cover" />
-        <span v-else class="w-10 h-10 rounded-lg bg-surface-100 flex items-center justify-center"><i class="pi pi-image text-surface-300" /></span>
-        <span class="flex-1 text-sm">{{ recipe.title }}</span>
-        <i v-if="recipe.favorite" class="pi pi-star-fill text-yellow-500 text-xs" />
+        <i class="pi pi-calendar text-surface-500" aria-hidden="true" />
+        <span class="flex-1 flex flex-col min-w-0">
+          <span class="text-sm truncate" :class="{ 'font-semibold': option.id === menu?.id }">{{ option.name }}</span>
+          <span v-if="membersOf(option)" class="text-xs text-surface-500 truncate">{{ membersOf(option) }}</span>
+        </span>
+        <i v-if="option.id === menu?.id" class="pi pi-check text-primary-600" aria-hidden="true" />
       </button>
     </div>
   </Dialog>
@@ -794,6 +900,12 @@ function confirmDelete() {
 }
 .week-day.is-today { border-color: #5ebd8a; box-shadow: 0 2px 10px rgba(94, 189, 138, 0.2); }
 .week-day.is-empty { padding: 8px 12px; }
+/* Gone by: dimmed, so the eye goes to today and what's coming (still there to look back at or change) */
+.week-day.is-past { opacity: 0.55; }
+.week-day.is-past:hover, .week-day.is-past:focus-within { opacity: 1; }
+.week-switch { display: flex; align-items: center; gap: 8px; min-width: 0; text-align: left; border-radius: 6px; }
+.week-switch:hover { color: #3f9a6b; }
+.week-switch i { font-size: 14px; color: var(--p-surface-500); }
 @media (min-width: 1024px) { .week-day, .week-day.is-empty { min-height: 220px; padding: 12px; } }
 
 .week-day-head { display: flex; align-items: baseline; gap: 6px; }

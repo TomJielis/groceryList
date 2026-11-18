@@ -174,16 +174,21 @@ test('a second week menu is only made after a warning', async ({ page }) => {
   await page.getByTestId('week-menu-new').click()
   await expect(page.getByText('You already have a week menu')).toBeVisible()
   await page.getByRole('button', { name: 'Cancel' }).click()
-  await expect(page.getByRole('button', { name: 'Week menu', exact: true })).toHaveCount(0)
+  await expect(page.getByTestId('week-menu-switch')).toHaveCount(0)
 
-  // Confirmed: a second one, and a choice between the two
+  // Confirmed: a second one, and a choice between the two under its name
   await page.getByTestId('week-menu-options').click()
   await page.getByTestId('week-menu-new').click()
   await page.getByTestId('week-menu-new-confirm').click()
-  await expect(page.getByRole('button', { name: 'Week menu', exact: true })).toHaveCount(2)
+  await page.getByTestId('week-menu-switch').click()
+  const choices = page.getByRole('dialog', { name: 'Choose a week menu' }).locator('[data-testid^="week-menu-choose-"]')
+  await expect(choices).toHaveCount(2)
+  // The first one again
+  await choices.first().click()
+  await expect(page.getByRole('dialog', { name: 'Choose a week menu' })).toHaveCount(0)
 })
 
-test('putting dishes on a list: choose the days, the others stay new', async ({ page }) => {
+test('putting dishes on a list: choose the days, the others stay new; the picker says what is planned, and Undo brings a dish back', async ({ page }) => {
   const listName = await createList(page, 'week-days')
   await createCookbook(page, 'week-days')
   await createRecipe(page, 'E2E Day one')
@@ -217,6 +222,32 @@ test('putting dishes on a list: choose the days, the others stay new', async ({ 
   await expect(page.getByTestId(`week-menu-day-${today}`).getByText(`On "${listName}"`)).toBeVisible()
   await expect(page.getByTestId(`week-menu-day-${other}`).getByText(`On "${listName}"`)).toHaveCount(0)
   await expect(page.getByTestId('week-menu-add-week')).toHaveText(/Put on my list \(1 new\)/)
+
+  // Choosing another dish: one planned this week already says on which day
+  await page.getByTestId(`week-menu-add-${today}`).click()
+  const picker = page.getByRole('dialog')
+  await expect(picker.getByText(/^Already on /).first()).toBeVisible()
+  await picker.getByRole('button', { name: 'Close' }).click()
+
+  // A dish taken out comes back with "Undo", as it was (still on the list)
+  const todayCard = page.getByTestId(`week-menu-day-${today}`)
+  await todayCard.getByRole('button', { name: 'Options for E2E Day one' }).click()
+  await page.getByTestId('week-menu-remove').click()
+  await expect(todayCard.getByText('E2E Day one')).toHaveCount(0)
+  await page.getByTestId('notification-action').click()
+  await expect(todayCard.getByText(`On "${listName}"`)).toBeVisible()
+
+  // Without "Undo" it goes for real: still gone after loading the page again
+  const otherCard = page.getByTestId(`week-menu-day-${other}`)
+  await otherCard.getByRole('button', { name: 'Options for E2E Day two' }).click()
+  await page.getByTestId('week-menu-remove').click()
+  await expect(page.getByTestId('notification-action')).toBeVisible()
+  await expect(page.getByTestId('notification-action')).toHaveCount(0, { timeout: 8000 })
+  await expect(async () => {
+    await page.reload()
+    await expect(todayCard.getByText('E2E Day one')).toBeVisible({ timeout: 2000 })
+    await expect(otherCard.getByText('E2E Day two')).toHaveCount(0)
+  }).toPass()
 })
 
 // Two people with the same week menu open: what one plans or changes shows up for the other without reloading

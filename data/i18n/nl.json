@@ -734,6 +734,14 @@
     "newMenuTitle": "Je hebt al een weekmenu",
     "newMenuBody": "Met een tweede menu plan je los van \"{name}\". Meestal wil je dat niet: je kunt ook iedereen uitnodigen in je huidige menu.",
     "newMenuConfirm": "Toch een nieuw weekmenu",
-    "whichDays": "Voor welke dagen?"
+    "whichDays": "Voor welke dagen?",
+    "pickRecent": "Recent gepland",
+    "pickAll": "Alle recepten",
+    "pickPlannedOn": "Staat al op {days}",
+    "pickNoMatch": "Geen recepten gevonden.",
+    "removed": "{title} is uit het menu gehaald",
+    "undo": "Ongedaan maken",
+    "switchTitle": "Kies een weekmenu",
+    "switchHint": "Wissel van weekmenu"
   }
 }

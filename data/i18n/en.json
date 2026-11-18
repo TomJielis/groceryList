@@ -734,6 +734,14 @@
     "newMenuTitle": "You already have a week menu",
     "newMenuBody": "With a second menu you plan apart from \"{name}\". Usually you don't want that: you can also invite everyone to your current menu.",
     "newMenuConfirm": "Make a new week menu anyway",
-    "whichDays": "For which days?"
+    "whichDays": "For which days?",
+    "pickRecent": "Planned recently",
+    "pickAll": "All recipes",
+    "pickPlannedOn": "Already on {days}",
+    "pickNoMatch": "No recipes match.",
+    "removed": "{title} was taken out of the menu",
+    "undo": "Undo",
+    "switchTitle": "Choose a week menu",
+    "switchHint": "Switch to another week menu"
   }
 }

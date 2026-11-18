@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useNotification} from '~/composables/useNotification';
 
-const {message, visible, type} = useNotification();
+const {message, visible, type, action, runAction} = useNotification();
 </script>
 
 <template>
@@ -61,6 +61,17 @@ const {message, visible, type} = useNotification();
 
         <!-- Message -->
         <span class="flex-1">{{ message }}</span>
+
+        <!-- A button, e.g. "Undo" -->
+        <button
+          v-if="action"
+          type="button"
+          class="flex-shrink-0 font-semibold underline underline-offset-2"
+          data-testid="notification-action"
+          @click="runAction"
+        >
+          {{ action.label }}
+        </button>
       </div>
     </div>
   </Transition>

@@ -26,7 +26,10 @@ const slots = useSlots()
           </svg>
         </NuxtLink>
         <div class="min-w-0">
-          <h1 class="page-heading truncate">{{ title }}</h1>
+          <!-- A page can make its title more than text (the week menu: a button that switches menus) -->
+          <slot name="title">
+            <h1 class="page-heading truncate">{{ title }}</h1>
+          </slot>
           <p v-if="subtitle" class="text-sm text-color-secondary">{{ subtitle }}</p>
         </div>
       </div>
