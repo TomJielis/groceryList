@@ -14,18 +14,22 @@ function loginToken(handshake: { auth?: Record<string, unknown>, headers: { cook
   return cookie ? decodeURIComponent(cookie) : undefined
 }
 
-// Whether the user of a connection is on a list, according to the API. Without a valid login: never, so an app that
-// doesn't send its token yet keeps working, it just gets its updates when it refreshes.
-function createListAccess(token: string | undefined) {
+// Whether the user of a connection is in a list (or week menu: endpoint), according to the API. Without a valid
+// login: never, so an app that doesn't send its token yet keeps working, it just gets its updates when it refreshes.
+// A positive answer is kept for the connection until forget() (leaving the room); an id not known is looked up again,
+// waiting for the interval instead of answering "no" from an older lookup (a menu made or joined just now).
+function createAccess(token: string | undefined, endpoint: string) {
   let listIds = new Set<number>()
   let lookup: Promise<void> | null = null
   let lastLookup = 0
 
-  const refresh = () => {
+  const refresh = async (): Promise<void> => {
     if (lookup) return lookup
-    if (Date.now() - lastLookup < LOOKUP_INTERVAL_MS) return Promise.resolve()
+    const wait = LOOKUP_INTERVAL_MS - (Date.now() - lastLookup)
+    if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait))
+    if (lookup) return lookup
     lastLookup = Date.now()
-    lookup = apiClient('/grocery-list/index', { method: 'GET' }, token)
+    lookup = apiClient(endpoint, { method: 'GET' }, token)
       .then((response) => {
         listIds = new Set((response.data as unknown as { id: number }[]).map((list) => Number(list.id)))
       })
@@ -38,13 +42,21 @@ function createListAccess(token: string | undefined) {
     return lookup
   }
 
-  return async (listId: number): Promise<boolean> => {
+  const may = async (listId: number): Promise<boolean> => {
     if (!token || !Number.isInteger(listId)) return false
     if (listIds.has(listId)) return true
     await refresh()
     return listIds.has(listId)
   }
+  // Out of the room (left, removed, or the menu is gone): asked again next time
+  const forget = (listId: number) => listIds.delete(listId)
+
+  return { may, forget }
 }
+
+// At most one signal per menu per this many ms from one connection; a burst (+ + +) ends with one more signal, so the
+// last change is never missed
+const SIGNAL_INTERVAL_MS = 500
 
 export default defineEventHandler(async (event) => {
   // Skip if this is not a socket.io request
@@ -62,7 +74,42 @@ export default defineEventHandler(async (event) => {
     })
 
     io.on('connection', (socket) => {
-      const mayAccess = createListAccess(loginToken(socket.handshake))
+      const token = loginToken(socket.handshake)
+      const mayAccess = createAccess(token, '/grocery-list/index').may
+      // Week menus the same way: only someone in the menu follows it (older apps never ask)
+      const menuAccess = createAccess(token, '/week-menus/index')
+
+      socket.on('join-week-menu', async (menuId: number) => {
+        if (await menuAccess.may(Number(menuId))) socket.join(`week-menu-${Number(menuId)}`)
+      })
+
+      socket.on('leave-week-menu', (menuId: number) => {
+        socket.leave(`week-menu-${Number(menuId)}`)
+        menuAccess.forget(Number(menuId))
+      })
+
+      // Someone planned, moved, changed or put dishes on a list: the others fetch the week again from the API
+      const lastSignal = new Map<number, number>()
+      const trailing = new Map<number, ReturnType<typeof setTimeout>>()
+      const signal = (menuId: number) => {
+        lastSignal.set(menuId, Date.now())
+        socket.to(`week-menu-${menuId}`).emit('week-menu-refresh', { menuId })
+      }
+      socket.on('week-menu-updated', async (data: { menuId: number }) => {
+        const menuId = Number(data?.menuId)
+        if (!(await menuAccess.may(menuId))) return
+        const wait = SIGNAL_INTERVAL_MS - (Date.now() - (lastSignal.get(menuId) ?? 0))
+        if (wait <= 0) return signal(menuId)
+        if (trailing.has(menuId)) return
+        trailing.set(menuId, setTimeout(() => {
+          trailing.delete(menuId)
+          signal(menuId)
+        }, wait))
+      })
+      socket.on('disconnect', () => {
+        trailing.forEach(timer => clearTimeout(timer))
+        trailing.clear()
+      })
 
       socket.on('join-list', async (listId: number) => {
         if (await mayAccess(Number(listId))) socket.join(`list-${Number(listId)}`)

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useI18nStore } from '~/stores/i18n';
 import { useSocket } from '~/composables/useSocket';
+import { resetWeekMenus } from '~/composables/useWeekMenu';
 
 // The real token only lives in the httpOnly cookie, out of reach of scripts on the page. The store just remembers
 // that there is a login, for the route checks.
@@ -32,6 +33,8 @@ export const useAuthStore = defineStore('auth', {
     clearAuth() {
       // The live updates connection logged in with this user: the next one starts with the next login
       useSocket().disconnect();
+      // The week menus of this user (names of the people in them) aren't shown to the next one
+      resetWeekMenus();
       this.user = null;
       this.token = null;
       const i18n = useI18nStore();

@@ -8,6 +8,12 @@ import { useRecipes } from '~/composables/useRecipes'
 import { useNotification } from '~/composables/useNotification'
 import { useI18nStore } from '~/stores/i18n'
 import { ingredientText, totalMinutes } from '~/utils/recipeFormat'
+import { useCookbooks } from '~/composables/useCookbooks'
+import { useWeekMenu } from '~/composables/useWeekMenu'
+import { useSocket } from '~/composables/useSocket'
+import Dialog from 'primevue/dialog'
+import { addDays, dayLabel, mondayOf, toDateKey } from '~/utils/weekMenu'
+import { useAuthStore } from '~/stores/auth'
 import type { TRecipe } from '~/types/TRecipe'
 
 definePageMeta({
@@ -30,7 +36,9 @@ const servings = ref(1)
 onMounted(async () => {
   try {
     recipe.value = await fetchRecipe(recipeId)
-    servings.value = recipe.value.servings
+    // Opened from the week menu: for the number of servings it's planned for
+    const planned = Number(route.query.servings)
+    servings.value = Number.isInteger(planned) && planned > 0 && planned <= 99 ? planned : recipe.value.servings
   } catch {
     notFound.value = true
   } finally {
@@ -65,6 +73,75 @@ async function toggleFavorite() {
   }
 }
 
+// Only seen through a week menu (someone else's recipe): an own copy can go into the user's cookbook
+const onlyInWeekMenu = computed(() => recipe.value?.in_recipe_book === false)
+const { cookbooks, fetchCookbooks } = useCookbooks()
+const auth = useAuthStore()
+const savingCopy = ref(false)
+
+async function saveCopy() {
+  if (!recipe.value || savingCopy.value) return
+  savingCopy.value = true
+  try {
+    if (cookbooks.value.length === 0) await fetchCookbooks()
+    // The favourite cookbook, else the user's own, else the first
+    const cookbook = cookbooks.value.find(c => c.favorite)
+      ?? cookbooks.value.find(c => String(c.created_by?.id) === String(auth.user?.id))
+      ?? cookbooks.value[0]
+    if (!cookbook) {
+      showNotification(i18n.t('recipes.saveCopyNoCookbook'))
+      return
+    }
+    const copy = await $fetch<{ data: { id: number } }>(`/api/recipes/${recipe.value.id}/copy`, { method: 'POST', body: { cookbookId: cookbook.id } })
+    showSuccess(i18n.t('recipes.saveCopyDone'))
+    router.replace(`/recipes/${copy.data.id}`)
+  } catch (error: any) {
+    // Saved before: to that copy (or the recipe in a cookbook of theirs)
+    const existing = error?.statusCode === 409 ? error?.data?.data?.recipe_id : null
+    showNotification(i18n.t(error?.statusCode === 409 ? 'recipes.saveCopyAlready' : 'recipes.saveCopyFailed'))
+    if (existing) router.replace(`/recipes/${existing}`)
+  } finally {
+    savingCopy.value = false
+  }
+}
+
+// ----- "Plan": this recipe on a day of a week menu (this week or next) -----
+const weekMenu = useWeekMenu()
+const planOpen = ref(false)
+const planMenuId = ref<number | null>(null)
+const planBusy = ref(false)
+const planDays = computed(() => Array.from({ length: 14 }, (_, index) => addDays(mondayOf(new Date()), index)))
+const todayKey = toDateKey(new Date())
+
+async function openPlan() {
+  planOpen.value = true
+  try {
+    await weekMenu.fetchMenus()
+  } catch {
+    showNotification(i18n.t('weekMenu.loadFailed'))
+  }
+  planMenuId.value = planMenuId.value ?? weekMenu.menus.value[0]?.id ?? null
+}
+async function planOn(day: Date) {
+  if (!recipe.value || planMenuId.value === null || planBusy.value) return
+  planBusy.value = true
+  try {
+    const remembered = Number(localStorage.getItem(`weekMenuServings:${planMenuId.value}`))
+    await weekMenu.plan(planMenuId.value, toDateKey(day), recipe.value.id, remembered > 0 ? remembered : undefined)
+    // The others in the menu see it right away
+    useSocket().notifyWeekMenuUpdate(planMenuId.value)
+    planOpen.value = false
+    showSuccess(i18n.t('weekMenu.planned').split('{title}').join(recipe.value.title).split('{day}').join(dayLabel(day, i18n.locale)))
+  } catch {
+    showNotification(i18n.t('weekMenu.planFailed'))
+  } finally {
+    planBusy.value = false
+  }
+}
+
+// Opened from the week menu: back goes there again
+const backTo = computed(() => (route.query.from === 'week-menu' ? '/recipes/week-menu' : '/recipes'))
+
 const showDeleteModal = ref(false)
 
 async function confirmDelete() {
@@ -85,15 +162,37 @@ async function confirmDelete() {
       <Loader v-if="loading" />
 
       <template v-else-if="notFound || !recipe">
-        <PageHeader back-to="/recipes" :title="i18n.t('recipes.title')" />
+        <PageHeader :back-to="backTo" :title="i18n.t('recipes.title')" />
         <p class="py-12 text-center text-sm text-surface-500">{{ i18n.t('recipes.notFound') }}</p>
       </template>
 
       <template v-else>
-        <PageHeader back-to="/recipes" :title="recipe.title" :subtitle="subtitle">
+        <PageHeader :back-to="backTo" :title="recipe.title" :subtitle="subtitle">
           <template #actions>
             <div class="flex flex-wrap gap-2">
               <Button
+                v-if="onlyInWeekMenu"
+                icon="pi pi-bookmark"
+                :label="i18n.t('recipes.saveCopy')"
+                severity="secondary"
+                outlined
+                :loading="savingCopy"
+                data-testid="recipe-save-copy"
+                @click="saveCopy"
+              />
+              <!-- Planning takes a recipe from your own recipe book -->
+              <Button
+                v-if="!onlyInWeekMenu"
+                icon="pi pi-calendar-plus"
+                :label="i18n.t('weekMenu.plan')"
+                severity="secondary"
+                outlined
+                data-testid="recipe-plan"
+                @click="openPlan"
+              />
+              <!-- A favourite is one of your own recipes: not for one you only see through a week menu -->
+              <Button
+                v-if="!onlyInWeekMenu"
                 :icon="recipe.favorite ? 'pi pi-star-fill' : 'pi pi-star'"
                 :label="i18n.t('recipes.favorite')"
                 severity="secondary"
@@ -121,6 +220,10 @@ async function confirmDelete() {
             </div>
           </template>
         </PageHeader>
+
+        <p v-if="onlyInWeekMenu" class="text-sm rounded bg-surface-100 px-3 py-2" data-testid="recipe-week-menu-only">
+          {{ i18n.t('recipes.saveCopyHint') }}
+        </p>
 
         <img
           v-if="recipe.image_url"
@@ -211,6 +314,38 @@ async function confirmDelete() {
     </div>
   </div>
 
+  <Dialog v-model:visible="planOpen" modal :header="i18n.t('weekMenu.planTitle')" :style="{ width: '30rem', maxWidth: '90vw' }">
+    <template v-if="weekMenu.loaded.value && weekMenu.menus.value.length === 0">
+      <p class="text-sm text-surface-600 mb-4">{{ i18n.t('weekMenu.planNoMenu') }}</p>
+      <Button :label="i18n.t('weekMenu.toWeekMenu')" icon="pi pi-calendar" @click="router.push('/recipes/week-menu')" />
+    </template>
+    <template v-else>
+      <template v-if="weekMenu.menus.value.length > 1">
+        <p class="mb-2 text-xs font-semibold text-surface-500">{{ i18n.t('weekMenu.planWhichMenu') }}</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <Button v-for="option in weekMenu.menus.value" :key="option.id" :label="option.name" size="small" rounded
+            :severity="option.id === planMenuId ? undefined : 'secondary'" :outlined="option.id !== planMenuId"
+            :aria-pressed="option.id === planMenuId" @click="planMenuId = option.id" />
+        </div>
+      </template>
+      <p class="mb-2 text-xs font-semibold text-surface-500">{{ i18n.t('weekMenu.planWhichDay') }}</p>
+      <div class="grid grid-cols-7 gap-2">
+        <button
+          v-for="day in planDays"
+          :key="toDateKey(day)"
+          class="plan-day"
+          :class="{ 'is-today': toDateKey(day) === todayKey, 'is-past': toDateKey(day) < todayKey }"
+          :disabled="planBusy || planMenuId === null"
+          :data-testid="`recipe-plan-${toDateKey(day)}`"
+          @click="planOn(day)"
+        >
+          <span class="text-[11px] text-surface-500">{{ dayLabel(day, i18n.locale).split(' ')[0] }}</span>
+          <span class="text-base font-semibold">{{ day.getDate() }}</span>
+        </button>
+      </div>
+    </template>
+  </Dialog>
+
   <deleteModal
     :is-visible="showDeleteModal"
     :title="i18n.t('recipes.deleteTitle')"
@@ -224,6 +359,13 @@ async function confirmDelete() {
 </template>
 
 <style scoped>
+.plan-day {
+  display: flex; flex-direction: column; align-items: center; padding: 6px 0; border-radius: 10px;
+  border: 1px solid var(--p-surface-200); transition: border-color 0.15s, background 0.15s;
+}
+.plan-day:hover:not(:disabled) { border-color: #5ebd8a; background: rgba(94, 189, 138, 0.08); }
+.plan-day.is-today { border-color: #5ebd8a; color: #3f9a6b; }
+.plan-day.is-past { opacity: 0.45; }
 .recipe-shell {
   font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
   background: transparent;

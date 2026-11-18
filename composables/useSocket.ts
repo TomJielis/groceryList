@@ -4,6 +4,8 @@ import { ref } from 'vue'
 let socket: Socket | null = null
 const isConnected = ref(false)
 const joinedRooms = new Set<number>()
+// Week menus followed, joined again after every (re)connect
+const joinedMenus = new Set<number>()
 
 export function useSocket() {
   const connect = () => {
@@ -23,15 +25,12 @@ export function useSocket() {
       timeout: 10000,
     })
 
+    // After every (re)connect: re-join all tracked rooms so other users' updates reach us again (a reconnect loses
+    // the rooms on the server; socket.io v4 fires 'connect' again, its 'reconnect' event is the Manager's)
     socket.on('connect', () => {
       isConnected.value = true
-    })
-
-    // After every reconnect: re-join all tracked rooms so other users' updates reach us again
-    socket.on('reconnect', () => {
-      joinedRooms.forEach(listId => {
-        socket?.emit('join-list', listId)
-      })
+      joinedRooms.forEach(listId => socket?.emit('join-list', listId))
+      joinedMenus.forEach(menuId => socket?.emit('join-week-menu', menuId))
     })
 
     socket.on('disconnect', () => {
@@ -51,6 +50,7 @@ export function useSocket() {
       socket = null
       isConnected.value = false
       joinedRooms.clear()
+      joinedMenus.clear()
     }
   }
 
@@ -59,14 +59,8 @@ export function useSocket() {
 
     // Track the room so we can re-join after reconnect
     joinedRooms.add(listId)
-
-    if (socket && !socket.connected) {
-      socket.once('connect', () => {
-        socket?.emit('join-list', listId)
-      })
-    } else {
-      socket?.emit('join-list', listId)
-    }
+    // Not connected yet: the connect handler joins it
+    if (socket?.connected) socket.emit('join-list', listId)
   }
 
   const leaveList = (listId: number) => {
@@ -100,8 +94,41 @@ export function useSocket() {
     socket?.off('item-changed', callback)
   }
 
+  // ----- Week menus: the others in the menu are told something changed, and fetch it again -----
+  const joinWeekMenu = (menuId: number) => {
+    if (!socket) connect()
+    joinedMenus.add(menuId)
+    if (socket?.connected) socket.emit('join-week-menu', menuId)
+  }
+
+  const leaveWeekMenu = (menuId: number) => {
+    joinedMenus.delete(menuId)
+    socket?.emit('leave-week-menu', menuId)
+  }
+
+  // Call after the API took the change
+  // (also from a page that had no connection yet, like a recipe planned from its own page: sent once connected)
+  const notifyWeekMenuUpdate = (menuId: number) => {
+    if (!socket) connect()
+    socket?.emit('week-menu-updated', { menuId })
+  }
+
+  const onWeekMenuRefresh = (callback: (data: { menuId: number }) => void) => {
+    if (!socket) connect()
+    socket?.on('week-menu-refresh', callback)
+  }
+
+  const offWeekMenuRefresh = (callback: (data: { menuId: number }) => void) => {
+    socket?.off('week-menu-refresh', callback)
+  }
+
   return {
     socket,
+    joinWeekMenu,
+    leaveWeekMenu,
+    notifyWeekMenuUpdate,
+    onWeekMenuRefresh,
+    offWeekMenuRefresh,
     isConnected,
     connect,
     disconnect,

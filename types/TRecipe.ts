@@ -44,6 +44,8 @@ export type TRecipe = TRecipeSummary & {
     source_url: string | null;
     created_by: { id: number; name: string } | null;
     cookbook_name: string | null;
+    // False for a recipe only seen through a week menu (not in the user's recipe book); missing from an older API
+    in_recipe_book?: boolean;
     ingredients: TRecipeIngredient[];
     steps: string[];
     updated_at: string;

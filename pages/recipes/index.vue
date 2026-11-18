@@ -189,6 +189,15 @@ async function confirmDelete() {
         </div>
         <div class="flex gap-3">
           <Button
+            v-if="!showCookbookForm"
+            icon="pi pi-calendar"
+            :label="i18n.t('weekMenu.open')"
+            severity="secondary"
+            outlined
+            data-testid="recipes-week-menu"
+            @click="router.push('/recipes/week-menu')"
+          />
+          <Button
             v-if="showCookbookForm"
             icon="pi pi-times"
             :label="i18n.t('common.cancel')"

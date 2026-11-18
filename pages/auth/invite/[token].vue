@@ -18,7 +18,11 @@ import ProgressSpinner from 'primevue/progressspinner'
 // join; after logging in (or registering and verifying first) you come back here and are asked. Or it says the link
 // expired.
 type Preview =
-  | { status: 'valid'; type: 'list' | 'cookbook'; id: number; name: string; invited_by: string | null; already_member?: boolean | null }
+  | {
+      status: 'valid'; type: 'list' | 'cookbook' | 'week_menu'; id: number; name: string; invited_by: string | null; already_member?: boolean | null
+      // A week menu link, for someone with an own week menu with dishes: they can bring those along
+      own_menu?: { id: number; name: string; entries_count: number } | null
+    }
   | { status: 'expired' | 'not_found' | 'error' }
 
 const config = useRuntimeConfig().public
@@ -71,8 +75,14 @@ async function check() {
 }
 
 // The list, or the recipes page on the cookbook
-async function openInvited(type: 'list' | 'cookbook', id: number) {
+async function openInvited(type: 'list' | 'cookbook' | 'week_menu', id: number) {
   forgetInvite();
+  if (type === 'week_menu') {
+    // The week menu page opens the menu just joined
+    localStorage.setItem('weekMenuSelected', String(id));
+    await router.replace('/recipes/week-menu');
+    return;
+  }
   if (type === 'cookbook') {
     await router.replace({ path: '/recipes', query: { cookbook: String(id) } });
     return;
@@ -82,13 +92,14 @@ async function openInvited(type: 'list' | 'cookbook', id: number) {
 }
 
 // "Meedoen"
-async function join() {
+// bringMenuId: a week menu link, and the user's own menu (the one the page named) whose dishes go along
+async function join(bringMenuId?: number) {
   joining.value = true;
   joinFailed.value = false;
   try {
-    const joined = (await $fetch<{ data: { type: 'list' | 'cookbook'; id: number; name: string; already_member: boolean } }>(
-      `/api/inviteLink/${encodeURIComponent(token)}/accept`, { method: 'POST' })).data;
-    if (!joined.already_member) showSuccess(i18n.t('inviteLink.joinedName').replace('{name}', joined.name), 3000);
+    const joined = (await $fetch<{ data: { type: 'list' | 'cookbook' | 'week_menu'; id: number; name: string; already_member: boolean } }>(
+      `/api/inviteLink/${encodeURIComponent(token)}/accept`, { method: 'POST', body: bringMenuId ? { bringMenuId } : {} })).data;
+    if (!joined.already_member) showSuccess(i18n.t('inviteLink.joinedName').split('{name}').join(joined.name), 3000);
     asking.value = false;
     await openInvited(joined.type, joined.id);
   } catch (error: any) {
@@ -144,7 +155,7 @@ const title = computed(() => {
 const invitation = computed(() => {
   const p = preview.value;
   if (!p || p.status !== 'valid') return '';
-  return `${p.invited_by ?? '?'} ${i18n.t('inviteLink.invitesYou')} ${i18n.t(p.type === 'list' ? 'inviteLink.aList' : 'inviteLink.aCookbook')}`;
+  return `${p.invited_by ?? '?'} ${i18n.t('inviteLink.invitesYou')} ${i18n.t(p.type === 'list' ? 'inviteLink.aList' : p.type === 'week_menu' ? 'inviteLink.aWeekMenu' : 'inviteLink.aCookbook')}`;
 });
 
 // The preview block WhatsApp, iMessage and the like show for the link: who invites you to what, with the app icon
@@ -203,8 +214,19 @@ if (appStoreId) {
             <Button :label="i18n.t('inviteLink.retry')" class="w-full" @click="asking ? join() : check()" />
           </template>
 
+          <!-- A week menu while you have an own one with dishes: bring them along (one menu after), or keep your own -->
+          <template v-else-if="asking && preview?.status === 'valid' && preview.type === 'week_menu' && preview.own_menu">
+            <p class="text-sm leading-relaxed">
+              {{ i18n.t(preview.own_menu.entries_count === 1 ? 'inviteLink.ownMenuOne' : 'inviteLink.ownMenu').split('{name}').join(preview.own_menu.name).split('{count}').join(String(preview.own_menu.entries_count)) }}
+            </p>
+            <Button :label="i18n.t('inviteLink.joinBring')" class="w-full" data-testid="invite-join-bring" @click="join(preview.own_menu.id)" />
+            <Button :label="i18n.t('inviteLink.joinKeep')" severity="secondary" outlined class="w-full" data-testid="invite-join"
+              @click="join()" />
+            <Button :label="i18n.t('inviteLink.decline')" text class="w-full" data-testid="invite-decline" @click="decline" />
+          </template>
+
           <template v-else-if="asking">
-            <Button :label="i18n.t('inviteLink.accept')" class="w-full" data-testid="invite-join" @click="join" />
+            <Button :label="i18n.t('inviteLink.accept')" class="w-full" data-testid="invite-join" @click="join()" />
             <Button :label="i18n.t('inviteLink.decline')" severity="secondary" outlined class="w-full"
               data-testid="invite-decline" @click="decline" />
           </template>
